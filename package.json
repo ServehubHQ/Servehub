@@ -9,7 +9,9 @@
   },
   "dependencies": {
     "apollo-link-http": "^1.5.16",
+    "graphql": "^14.6.0",
     "next": "9.2.2",
+    "now": "^17.0.4",
     "ra-data-hasura-graphql": "^0.1.9",
     "react": "16.13.0",
     "react-admin": "^3.2.3",
