@@ -1,0 +1,68 @@
+{
+  "env": {
+    "browser": true,
+    "node": true,
+    "jest/globals": true,
+    "react-native-globals/all": true
+  },
+  "extends": [
+    "standard",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "plugin:react-native/all",
+    "prettier",
+    "prettier/standard",
+    "prettier/@typescript-eslint",
+    "prettier/react"
+  ],
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "project": ["./tsconfig.json", "*/tsconfig.json"]
+  },
+  "plugins": [
+    "react",
+    "react-hooks",
+    "react-native",
+    "@typescript-eslint",
+    "jest",
+    "react-native-globals"
+  ],
+  "settings": {
+    "react": {
+      "version": "16.9"
+    }
+  },
+  "rules": {
+    "no-unused-vars": "off",
+    "comma-dangle": ["error", "always-multiline"],
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "error",
+    "react-native/no-raw-text": ["off"],
+    "react-native/sort-styles": "off",
+    "react-native/split-platform-components": "off",
+    "react/no-children-prop": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "args": "none",
+        "varsIgnorePattern": "_.+"
+      }
+    ],
+    "@typescript-eslint/camelcase": "warn",
+    "@typescript-eslint/no-var-requires": "warn",
+    "@typescript-eslint/no-object-literal-type-assertion": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/explicit-member-accessibility": "off",
+    "@typescript-eslint/no-empty-interface": "off",
+    "@typescript-eslint/no-empty-function": "off"
+  }
+}

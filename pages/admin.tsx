@@ -1,40 +1,31 @@
-import { createHttpLink } from 'apollo-link-http'
-import { NextPage, NextPageContext } from 'next'
+import { NextPage } from 'next'
 import buildHasuraProvider from 'ra-data-hasura-graphql'
 import { useEffect, useState } from 'react'
 import { Admin, Resource } from 'react-admin'
-import Router from 'next/router'
-import { nhost } from '../lib/nhost'
-import { JobList, JobEdit, JobCreate, JobIcon } from '../resources/jobs'
+import { getApolloClient } from '../lib/apollo'
+import { useAuth } from '../lib/auth'
+import { useAuthenticationRequired } from '../lib/useAuthenticationRequired'
+import { JobCreate, JobEdit, JobIcon, JobList } from '../resources/jobs'
 
 interface AdminPageProps {}
 
 const AdminPage: NextPage<AdminPageProps> = ({}: AdminPageProps) => {
+  useAuthenticationRequired()
   const [dataProvider, setDataProvider] = useState()
+  const { isAuthenticated } = useAuth()
 
   useEffect(() => {
     ;(async () => {
-      if (!dataProvider) {
-        const jwt = nhost.auth().getJWTToken()
-        if (!jwt) {
-          Router.push(`/login?next=${Router.pathname}`)
-          return
-        }
+      if (!dataProvider && isAuthenticated) {
+        const client = getApolloClient()
 
-        const hasuraProvider = await buildHasuraProvider({
-          clientOptions: {
-            link: createHttpLink({
-              uri: 'https://hasura-rf2zfg3c.nhost.app/v1/graphql',
-              headers: {
-                authorization: jwt ? `Bearer ${jwt}` : '',
-              },
-            }),
-          },
-        })
+        console.log('buildHasuraProvider')
+        const hasuraProvider = await buildHasuraProvider({ client })
+        console.log('hasuraProvider', hasuraProvider)
         setDataProvider(() => hasuraProvider)
       }
     })()
-  }, [setDataProvider, dataProvider])
+  }, [setDataProvider, dataProvider, isAuthenticated])
 
   if (!dataProvider) {
     return <div>Loading...</div>
