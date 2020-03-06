@@ -155,6 +155,7 @@ export default function LoginPage() {
   )
 
   useEffect(() => {
+    console.log('login effect', isAuthenticated)
     if (isAuthenticated) {
       router.push(router.query.next ? router.query.next.toString() : '/')
     }

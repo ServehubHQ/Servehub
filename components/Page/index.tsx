@@ -6,11 +6,15 @@ import {
   Toolbar,
   Typography,
   makeStyles,
+  IconButton,
+  Menu,
+  MenuItem,
 } from '@material-ui/core'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { ReactNode } from 'react'
+import { ReactNode, useCallback, useState, MouseEvent } from 'react'
 import { useAuth } from '../../lib/auth'
+import { AccountCircle } from '@material-ui/icons'
 
 interface PageProps {
   children: ReactNode
@@ -25,8 +29,30 @@ const useStyles = makeStyles((theme) => ({
 
 export function Page({ children }: PageProps) {
   const router = useRouter()
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, logout } = useAuth()
   const styles = useStyles()
+
+  const [
+    accountMenuAnchorEl,
+    setAccountMenuAnchorEl,
+  ] = useState<null | HTMLElement>(null)
+
+  const handleLogoutClick = useCallback(() => {
+    logout()
+    setAccountMenuAnchorEl(null)
+  }, [logout])
+
+  const handleMenuClick = useCallback(
+    (event: MouseEvent<HTMLButtonElement>) => {
+      setAccountMenuAnchorEl(event.currentTarget)
+    },
+    [setAccountMenuAnchorEl],
+  )
+
+  const handleMenuClose = useCallback(() => {
+    setAccountMenuAnchorEl(null)
+  }, [setAccountMenuAnchorEl])
+
   return (
     <>
       <AppBar position='static'>
@@ -40,9 +66,37 @@ export function Page({ children }: PageProps) {
               </Link>
             </Box>
             {isAuthenticated ? (
-              <Link href={`/admin`} passHref>
-                <Button color='inherit'>Admin</Button>
-              </Link>
+              <>
+                <IconButton
+                  aria-label='user account'
+                  aria-controls='menu-appbar'
+                  aria-haspopup='true'
+                  onClick={handleMenuClick}
+                  color='inherit'
+                >
+                  <AccountCircle />
+                </IconButton>
+                <Menu
+                  id='menu-appbar'
+                  anchorEl={accountMenuAnchorEl}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  open={!!accountMenuAnchorEl}
+                  onClose={handleMenuClose}
+                >
+                  <Link href={`/admin`} passHref>
+                    <MenuItem component='a'>Admin</MenuItem>
+                  </Link>
+                  <MenuItem onClick={handleLogoutClick}>Logout</MenuItem>
+                </Menu>
+              </>
             ) : (
               <Link href={`/login?next=${router.pathname}`} passHref>
                 <Button color='inherit'>Login</Button>

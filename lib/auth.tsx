@@ -12,9 +12,14 @@ interface Auth {
     register_data?: any,
   ) => Promise<void>
   signInAnonymously: () => Promise<void>
-  logout: (allSessions: boolean) => Promise<void>
+  logout: (allSessions?: boolean) => Promise<void>
   activate_account: (secret_token: string) => Promise<void>
   new_password: (secret_token: string, new_password: string) => Promise<void>
+}
+
+interface AuthContextValue {
+  isAuthenticated: boolean
+  logout: () => void
 }
 
 nhost.initializeApp({
@@ -24,23 +29,27 @@ nhost.initializeApp({
 const auth: Auth | undefined =
   typeof window !== 'undefined' ? nhost.auth() : null
 
-const AuthContext = createContext({
-  isAuthenticated: auth && !!auth.getJWTToken(),
-})
+function getAuthContextValue(): AuthContextValue {
+  return {
+    isAuthenticated: !!auth && !!auth.getJWTToken(),
+    logout: () => auth?.logout(),
+  }
+}
+
+const AuthContext = createContext<AuthContextValue>(getAuthContextValue())
 
 export function AuthProvider(props: any) {
   const [contextValue, setContextValue] = useState({})
 
   useEffect(() => {
-    auth!.onAuthStateChanged(() => {
-      console.log('auth state changed!', {
-        isAuthenticated: auth && !!auth.getJWTToken(),
-      })
+    console.log('register onAuthStateChanged', getAuthContextValue())
 
-      setContextValue({
-        isAuthenticated: auth && !!auth.getJWTToken(),
-      })
+    auth!.onAuthStateChanged(() => {
+      console.log('auth state changed!', getAuthContextValue())
+      setContextValue(getAuthContextValue())
     })
+
+    setContextValue(getAuthContextValue())
   }, [setContextValue])
 
   return <AuthContext.Provider value={contextValue} {...props} />
