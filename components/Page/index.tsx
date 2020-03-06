@@ -25,6 +25,13 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: 'none',
     color: theme.palette.primary.contrastText,
   },
+  navButton: {
+    marginRight: theme.spacing(1),
+
+    '&:last-child': {
+      marginRight: 0,
+    },
+  },
 }))
 
 export function Page({ children }: PageProps) {
@@ -91,16 +98,31 @@ export function Page({ children }: PageProps) {
                   open={!!accountMenuAnchorEl}
                   onClose={handleMenuClose}
                 >
-                  <Link href={`/admin`} passHref>
-                    <MenuItem component='a'>Admin</MenuItem>
-                  </Link>
+                  <MenuItem>
+                    <Link href={`/admin`} passHref>
+                      Admin
+                    </Link>
+                  </MenuItem>
                   <MenuItem onClick={handleLogoutClick}>Logout</MenuItem>
                 </Menu>
               </>
             ) : (
-              <Link href={`/login?next=${router.pathname}`} passHref>
-                <Button color='inherit'>Login</Button>
-              </Link>
+              <>
+                <Link href={`/login?next=${router.pathname}`} passHref>
+                  <Button color='inherit' className={styles.navButton}>
+                    Login
+                  </Button>
+                </Link>
+                <Link href='/signup' passHref>
+                  <Button
+                    variant='outlined'
+                    color='inherit'
+                    className={styles.navButton}
+                  >
+                    Signup
+                  </Button>
+                </Link>
+              </>
             )}
           </Toolbar>
         </Container>

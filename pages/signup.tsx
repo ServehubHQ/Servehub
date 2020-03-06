@@ -130,7 +130,11 @@ export default function LoginPage() {
       }
 
       try {
-        await auth!.login(formData.email.value, formData.password.value)
+        await auth!.register(
+          formData.email.value,
+          formData.email.value,
+          formData.password.value,
+        )
       } catch (e) {
         console.error(e)
 
@@ -150,12 +154,13 @@ export default function LoginPage() {
         })
         return
       }
+
+      await auth!.login(formData.email.value, formData.password.value)
     },
     [formData],
   )
 
   useEffect(() => {
-    console.log('login effect', isAuthenticated)
     if (isAuthenticated) {
       router.push(router.query.next ? router.query.next.toString() : '/')
     }
@@ -170,7 +175,7 @@ export default function LoginPage() {
             <LockOutlined />
           </Avatar>
           <Typography component='h1' variant='h5'>
-            Login
+            Signup
           </Typography>
           <form className={styles.form} noValidate onSubmit={handleSubmit}>
             <TextField
@@ -214,12 +219,12 @@ export default function LoginPage() {
               className={styles.submit}
               fullWidth
             >
-              Login
+              Signup
             </Button>
             <Grid container>
               <Grid item>
-                <Link href='/signup' variant='body2'>
-                  {"Don't have an account? Sign Up"}
+                <Link href='/login' variant='body2'>
+                  {'Already have an account? Login'}
                 </Link>
               </Grid>
             </Grid>
