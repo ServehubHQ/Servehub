@@ -1,12 +1,19 @@
-import { createContext, ReactNode, useContext } from 'react'
-import { Auth } from './Auth'
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
+import { AuthClient } from '../AuthClient'
+import { getAuthClient } from '../getAuthClient'
 
 interface AuthContextValue {
   isAuthenticated: boolean
-  auth?: Auth
+  auth?: AuthClient
 }
 
-function getAuthContextValue(auth: Auth): AuthContextValue {
+function getAuthContextValue(auth: AuthClient): AuthContextValue {
   return {
     isAuthenticated: auth?.isAuthenticated() || false,
     auth,
@@ -19,22 +26,30 @@ const AuthContext = createContext<AuthContextValue>({
 })
 
 interface AuthProviderProps {
-  auth: Auth | string
+  auth?: AuthClient | string
   children: ReactNode
 }
 
 export function AuthProvider({ auth, children }: AuthProviderProps) {
-  if (auth === Auth.jsonRepresentation) {
-    auth = new Auth()
+  if (!auth) {
+    console.log('new auth from SSR')
+    auth = getAuthClient()
     auth.refreshToken()
   }
 
-  return (
-    <AuthContext.Provider
-      value={getAuthContextValue(auth as Auth)}
-      children={children}
-    />
+  const [contextValue, setContextValue] = useState(
+    getAuthContextValue(auth as AuthClient),
   )
+
+  useEffect(
+    () =>
+      (auth as AuthClient).onAuthStateChanged(() => {
+        setContextValue(getAuthContextValue(auth as AuthClient))
+      }),
+    [auth, setContextValue],
+  )
+
+  return <AuthContext.Provider value={contextValue} children={children} />
 }
 
 export function useAuth() {

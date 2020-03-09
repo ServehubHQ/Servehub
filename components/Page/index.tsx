@@ -99,8 +99,8 @@ export function Page({ children }: PageProps) {
                   onClose={handleMenuClose}
                 >
                   <MenuItem>
-                    <Link href={`/admin`} passHref>
-                      Admin
+                    <Link href={`/admin`}>
+                      <a>Admin</a>
                     </Link>
                   </MenuItem>
                   <MenuItem onClick={handleLogoutClick}>Logout</MenuItem>

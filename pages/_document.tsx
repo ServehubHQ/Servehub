@@ -8,7 +8,7 @@ import Document, {
 } from 'next/document'
 import React from 'react'
 
-class ServeHubDocument extends Document {
+export default class ServeHubDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
     const sheets = new ServerStyleSheets()
     const originalRenderPage = ctx.renderPage
@@ -54,5 +54,3 @@ class ServeHubDocument extends Document {
     )
   }
 }
-
-export default ServeHubDocument

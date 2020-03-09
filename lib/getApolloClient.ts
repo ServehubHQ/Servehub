@@ -7,12 +7,17 @@ import {
 } from '@apollo/client'
 import { setContext } from '@apollo/link-context'
 import fetch from 'cross-fetch'
-import { Auth } from './auth/Auth'
+import { AuthClient } from './AuthClient'
 
 let apolloClient: ApolloClient<NormalizedCacheObject>
 
-export function getApolloClient(auth: Auth) {
-  if (apolloClient) {
+export function getApolloClient(
+  auth: AuthClient,
+  data?: NormalizedCacheObject,
+) {
+  const isBrowser = typeof window !== 'undefined'
+
+  if (isBrowser && apolloClient) {
     return apolloClient
   }
 
@@ -31,8 +36,16 @@ export function getApolloClient(auth: Auth) {
     }
   })
 
+  const cache = new InMemoryCache()
+
+  if (data) {
+    cache.restore(data)
+  }
+
   apolloClient = new ApolloClient({
-    cache: new InMemoryCache(),
+    connectToDevTools: isBrowser,
+    ssrMode: !isBrowser,
+    cache,
     link: from([authLink, httpLink]),
   })
 
