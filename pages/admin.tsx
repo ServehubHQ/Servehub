@@ -7,17 +7,15 @@ import { useAuth } from '../lib/auth'
 import { useAuthenticationRequired } from '../lib/useAuthenticationRequired'
 import { JobCreate, JobEdit, JobIcon, JobList } from '../resources/jobs'
 
-interface AdminPageProps {}
-
-const AdminPage: NextPage<AdminPageProps> = ({}: AdminPageProps) => {
+const AdminPage: NextPage = () => {
   useAuthenticationRequired()
   const [dataProvider, setDataProvider] = useState()
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, auth } = useAuth()
 
   useEffect(() => {
     ;(async () => {
       if (!dataProvider && isAuthenticated) {
-        const client = getApolloClient()
+        const client = getApolloClient(auth)
 
         console.log('buildHasuraProvider')
         const hasuraProvider = await buildHasuraProvider({ client })
@@ -25,7 +23,7 @@ const AdminPage: NextPage<AdminPageProps> = ({}: AdminPageProps) => {
         setDataProvider(() => hasuraProvider)
       }
     })()
-  }, [setDataProvider, dataProvider, isAuthenticated])
+  }, [setDataProvider, dataProvider, isAuthenticated, auth])
 
   if (!dataProvider) {
     return <div>Loading...</div>

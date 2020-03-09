@@ -1,27 +1,38 @@
-import { gql } from '@apollo/client'
-import { useEffect } from 'react'
+import { gql, useQuery } from '@apollo/client'
+import { Typography } from '@material-ui/core'
 import { Page } from '../components/Page'
-import { getApolloClient } from '../lib/apollo'
-import { useAuth } from '../lib/auth'
 
 export default function HomePage() {
-  const { isAuthenticated } = useAuth()
-  useEffect(() => {
-    if (!isAuthenticated) return
+  // const { isAuthenticated } = useAuth()
 
-    const client = getApolloClient()
+  const { data } = useQuery(gql`
+    {
+      jobs {
+        id
+      }
+    }
+  `)
+  // useEffect(() => {
+  //   if (!isAuthenticated) return
 
-    client
-      .query({
-        query: gql`
-          {
-            jobs {
-              id
-            }
-          }
-        `,
-      })
-      .then(console.log)
-  }, [isAuthenticated])
-  return <Page>Home</Page>
+  //   const client = getApolloClient()
+
+  //   client
+  //     .query({
+  //       query: gql`
+  //         {
+  //           jobs {
+  //             id
+  //           }
+  //         }
+  //       `,
+  //     })
+  //     .then(console.log)
+  // }, [isAuthenticated])
+  return (
+    <Page>
+      <Typography variant='h1'>Home</Typography>
+      <pre>{JSON.stringify(data, null, 2)}</pre>
+    </Page>
+  )
 }

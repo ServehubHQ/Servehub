@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
 
 export function Page({ children }: PageProps) {
   const router = useRouter()
-  const { isAuthenticated, logout } = useAuth()
+  const { isAuthenticated, auth } = useAuth()
   const styles = useStyles()
 
   const [
@@ -45,9 +45,9 @@ export function Page({ children }: PageProps) {
   ] = useState<null | HTMLElement>(null)
 
   const handleLogoutClick = useCallback(() => {
-    logout()
+    auth!.logout()
     setAccountMenuAnchorEl(null)
-  }, [logout])
+  }, [auth])
 
   const handleMenuClick = useCallback(
     (event: MouseEvent<HTMLButtonElement>) => {

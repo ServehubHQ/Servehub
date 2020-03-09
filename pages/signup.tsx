@@ -9,9 +9,9 @@ import {
   Typography,
 } from '@material-ui/core'
 import { LockOutlined } from '@material-ui/icons'
-import Router, { useRouter } from 'next/router'
-import { ChangeEvent, FormEvent, useCallback, useState, useEffect } from 'react'
-import { auth, useAuth } from '../lib/auth'
+import { useRouter } from 'next/router'
+import { ChangeEvent, FormEvent, useCallback, useEffect, useState } from 'react'
+import { useAuth } from '../lib/auth'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -62,7 +62,7 @@ interface FormData {
 }
 
 export default function LoginPage() {
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, auth } = useAuth()
   const router = useRouter()
   const styles = useStyles()
 
@@ -130,7 +130,7 @@ export default function LoginPage() {
       }
 
       try {
-        await auth!.register(
+        await auth!.signup(
           formData.email.value,
           formData.email.value,
           formData.password.value,
@@ -138,18 +138,11 @@ export default function LoginPage() {
       } catch (e) {
         console.error(e)
 
-        let error = 'Unknown error'
-        try {
-          error = e.data.message
-        } catch (e) {
-          //noop
-        }
-
         setFormData({
           ...formData,
           password: {
             ...formData.password,
-            error: error.replace('username', 'email'),
+            error: e.data.message.replace('username', 'email'),
           },
         })
         return
@@ -157,7 +150,7 @@ export default function LoginPage() {
 
       await auth!.login(formData.email.value, formData.password.value)
     },
-    [formData],
+    [formData, auth],
   )
 
   useEffect(() => {

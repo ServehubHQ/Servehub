@@ -6,21 +6,23 @@ import {
   NormalizedCacheObject,
 } from '@apollo/client'
 import { setContext } from '@apollo/link-context'
-import { auth } from './auth'
+import fetch from 'cross-fetch'
+import { Auth } from './auth/Auth'
 
 let apolloClient: ApolloClient<NormalizedCacheObject>
 
-export function getApolloClient() {
+export function getApolloClient(auth: Auth) {
   if (apolloClient) {
     return apolloClient
   }
 
   const httpLink = new HttpLink({
     uri: 'https://hasura-rf2zfg3c.nhost.app/v1/graphql',
+    fetch,
   })
 
   const authLink = setContext((a, { headers }) => {
-    const jwt = auth?.getJWTToken()
+    const jwt = auth?.getToken()
     return {
       headers: {
         ...headers,
