@@ -12,7 +12,7 @@ import { AuthClient } from './AuthClient'
 let apolloClient: ApolloClient<NormalizedCacheObject>
 
 export function getApolloClient(
-  auth: AuthClient,
+  auth?: AuthClient,
   data?: NormalizedCacheObject,
 ) {
   const isBrowser = typeof window !== 'undefined'

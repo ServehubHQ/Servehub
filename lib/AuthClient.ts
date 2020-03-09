@@ -5,7 +5,6 @@ import { NextPageContext } from 'next'
 import { destroyCookie, parseCookies, setCookie } from 'nookies'
 
 export class AuthClient {
-  static jsonRepresentation = 'UninitializedAuth'
   baseUrl = 'https://backend-rf2zfg3c.nhost.app'
   stateChangeCallbacks: (() => void)[] = []
   context?: NextPageContext
@@ -152,7 +151,7 @@ export class AuthClient {
   }
 
   toJSON() {
-    return undefined
+    return null
   }
 
   async signup(

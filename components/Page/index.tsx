@@ -13,7 +13,7 @@ import {
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { ReactNode, useCallback, useState, MouseEvent } from 'react'
-import { useAuth } from '../../lib/auth'
+import { useAuth } from '../../lib/useAuth'
 import { AccountCircle } from '@material-ui/icons'
 
 interface PageProps {
@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
 
 export function Page({ children }: PageProps) {
   const router = useRouter()
-  const { isAuthenticated, auth } = useAuth()
+  const { isAuthenticated, authClient } = useAuth()
   const styles = useStyles()
 
   const [
@@ -45,9 +45,9 @@ export function Page({ children }: PageProps) {
   ] = useState<null | HTMLElement>(null)
 
   const handleLogoutClick = useCallback(() => {
-    auth!.logout()
+    authClient!.logout()
     setAccountMenuAnchorEl(null)
-  }, [auth])
+  }, [authClient])
 
   const handleMenuClick = useCallback(
     (event: MouseEvent<HTMLButtonElement>) => {

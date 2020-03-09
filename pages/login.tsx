@@ -11,7 +11,8 @@ import {
 import { LockOutlined } from '@material-ui/icons'
 import { useRouter } from 'next/router'
 import { ChangeEvent, FormEvent, useCallback, useEffect, useState } from 'react'
-import { useAuth } from '../lib/auth'
+import { useAuth } from '../lib/useAuth'
+import { withData } from '../lib/withData'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -61,8 +62,8 @@ interface FormData {
   }
 }
 
-export default function LoginPage() {
-  const { isAuthenticated, auth } = useAuth()
+export default withData({ ssr: false })(function LoginPage() {
+  const { isAuthenticated, authClient } = useAuth()
   const router = useRouter()
   const styles = useStyles()
 
@@ -130,7 +131,7 @@ export default function LoginPage() {
       }
 
       try {
-        await auth!.login(formData.email.value, formData.password.value)
+        await authClient!.login(formData.email.value, formData.password.value)
       } catch (e) {
         console.error(e)
 
@@ -143,7 +144,7 @@ export default function LoginPage() {
         })
       }
     },
-    [formData, auth],
+    [formData, authClient],
   )
 
   useEffect(() => {
@@ -220,4 +221,4 @@ export default function LoginPage() {
       </Grid>
     </Grid>
   )
-}
+})

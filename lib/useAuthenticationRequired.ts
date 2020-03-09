@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { useAuth } from './auth'
+import { useAuth } from './useAuth'
 import { useEffect } from 'react'
 
 export function useAuthenticationRequired() {

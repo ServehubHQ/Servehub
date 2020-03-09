@@ -10,7 +10,7 @@ import React from 'react'
 import { AuthClient } from './AuthClient'
 import { getApolloClient } from './getApolloClient'
 import { getAuthClient } from './getAuthClient'
-import { AuthProvider } from './auth'
+import { AuthProvider } from './useAuth'
 
 type DataContext = NextPageContext &
   NextAppContext & {
@@ -80,18 +80,17 @@ export const withData = ({ ssr = true } = {}) => (PageComponent: NextPage) => {
     authClient,
     ...pageProps
   }: DataContext) => {
-    let client
-    if (apolloClient) {
-      // Happens on: getDataFromTree & next.js ssr
-      client = apolloClient
-    } else {
-      // Happens on: next.js csr
-      client = getApolloClient(getAuthClient(), apolloState)
+    if (!authClient && typeof window !== 'undefined') {
+      authClient = getAuthClient()
+    }
+
+    if (!apolloClient) {
+      apolloClient = getApolloClient(authClient)
     }
 
     return (
-      <AuthProvider auth={authClient}>
-        <ApolloProvider client={client}>
+      <AuthProvider client={authClient}>
+        <ApolloProvider client={apolloClient}>
           <PageComponent {...(pageProps as any)} />
         </ApolloProvider>
       </AuthProvider>

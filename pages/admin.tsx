@@ -2,20 +2,20 @@ import { NextPage } from 'next'
 import buildHasuraProvider from 'ra-data-hasura-graphql'
 import { useEffect, useState } from 'react'
 import { Admin, Resource } from 'react-admin'
-import { getApolloClient } from '../lib/apollo'
-import { useAuth } from '../lib/auth'
+import { getApolloClient } from '../lib/getApolloClient'
+import { useAuth } from '../lib/useAuth'
 import { useAuthenticationRequired } from '../lib/useAuthenticationRequired'
 import { JobCreate, JobEdit, JobIcon, JobList } from '../resources/jobs'
 
 const AdminPage: NextPage = () => {
   useAuthenticationRequired()
   const [dataProvider, setDataProvider] = useState()
-  const { isAuthenticated, auth } = useAuth()
+  const { isAuthenticated, authClient } = useAuth()
 
   useEffect(() => {
     ;(async () => {
       if (!dataProvider && isAuthenticated) {
-        const client = getApolloClient(auth)
+        const client = getApolloClient(authClient)
 
         console.log('buildHasuraProvider')
         const hasuraProvider = await buildHasuraProvider({ client })
@@ -23,7 +23,7 @@ const AdminPage: NextPage = () => {
         setDataProvider(() => hasuraProvider)
       }
     })()
-  }, [setDataProvider, dataProvider, isAuthenticated, auth])
+  }, [setDataProvider, dataProvider, isAuthenticated, authClient])
 
   if (!dataProvider) {
     return <div>Loading...</div>
