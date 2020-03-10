@@ -4,6 +4,21 @@ import moment from 'moment'
 import { NextPageContext } from 'next'
 import { destroyCookie, parseCookies, setCookie } from 'nookies'
 
+interface ErrorResponseData {
+  statusCode: number
+  error: string
+  message: string
+}
+
+export class AuthError extends Error {
+  data?: ErrorResponseData
+
+  constructor(data?: ErrorResponseData) {
+    super(data?.message)
+    this.data = data
+  }
+}
+
 export class AuthClient {
   baseUrl = 'https://backend-rf2zfg3c.nhost.app'
   stateChangeCallbacks: (() => void)[] = []
@@ -14,7 +29,7 @@ export class AuthClient {
   }
 
   isAuthenticated(): boolean {
-    return this.getToken() !== undefined
+    return Boolean(this.getToken())
   }
 
   getToken(): string | undefined {
@@ -42,25 +57,57 @@ export class AuthClient {
     }
   }
 
+  async signup(
+    email: string,
+    username: string,
+    password: string,
+    metadata?: any,
+  ): Promise<void> {
+    const response = await fetch(`${this.baseUrl}/auth/local/register`, {
+      method: 'POST',
+      body: JSON.stringify({
+        username,
+        email,
+        password,
+        register_data: metadata,
+      }),
+      headers: {
+        'content-type': 'application/json',
+        accept: 'application/json',
+      },
+    })
+
+    const data = await response.json()
+    if (response.status - 200 < 100) {
+      console.log('signup success', data)
+      this.setTokens(data)
+    } else {
+      console.log('signup fail', data)
+      throw new AuthError(data)
+    }
+  }
+
   async login(username: string, password: string): Promise<void> {
-    try {
-      const response = await fetch(`${this.baseUrl}/auth/local/login`, {
-        method: 'POST',
-        body: JSON.stringify({
-          username,
-          password,
-        }),
-        headers: {
-          'content-type': 'application/json',
-          accept: 'application/json',
-        },
-      })
-      const data = await response.json()
+    const response = await fetch(`${this.baseUrl}/auth/local/login`, {
+      method: 'POST',
+      body: JSON.stringify({
+        username,
+        password,
+      }),
+      headers: {
+        'content-type': 'application/json',
+        accept: 'application/json',
+      },
+    })
+
+    const data = await response.json()
+
+    if (response.status - 200 < 100) {
       console.log('login success', data)
       this.setTokens(data)
-    } catch (e) {
-      console.log('login fail', e.response)
-      throw e.response
+    } else {
+      console.log('login fail', data)
+      throw new AuthError(data)
     }
   }
 
@@ -152,15 +199,6 @@ export class AuthClient {
 
   toJSON() {
     return null
-  }
-
-  async signup(
-    email: string,
-    username: string,
-    password: string,
-    metadata?: any,
-  ): Promise<void> {
-    console.warn('TODO: implement signup')
   }
 
   async activateAccount(secretToken: string): Promise<void> {

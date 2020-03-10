@@ -27,8 +27,6 @@ type DataContext = NextPageContext &
 export const initContext = async (ctx: DataContext) => {
   const inAppContext = Boolean(ctx.ctx)
 
-  // We consider installing `withData({ ssr: true })` on global App level
-  // as antipattern since it disables project wide Automatic Static Optimization.
   if (process.env.NODE_ENV === 'development') {
     if (inAppContext) {
       console.warn(
@@ -41,7 +39,6 @@ export const initContext = async (ctx: DataContext) => {
   const authClient =
     ctx.authClient || getAuthClient(inAppContext ? ctx.ctx : ctx)
 
-  // Initialize ApolloClient if not already done
   const apolloClient =
     ctx.apolloClient || getApolloClient(authClient, ctx.apolloState)
 
@@ -49,7 +46,7 @@ export const initContext = async (ctx: DataContext) => {
   // Otherwise, the component would have to call initApollo() again but this
   // time without the context. Once that happens, the following code will make sure we send
   // the prop as `null` to the browser.
-  // @ts-ignore
+  // @ts-ignore - I know, but extending ApolloClient for toJSON is a PITA
   apolloClient.toJSON = () => null
 
   // Add apolloClient to NextPageContext & NextAppContext.
@@ -65,14 +62,6 @@ export const initContext = async (ctx: DataContext) => {
   return ctx
 }
 
-/**
- * Creates a withData HOC
- * that provides the apolloContext
- * to a next.js Page or AppTree.
- * @param  {Object} withApolloOptions
- * @param  {Boolean} [withApolloOptions.ssr=false]
- * @returns {(PageComponent: ReactNode) => ReactNode}
- */
 export const withData = ({ ssr = true } = {}) => (PageComponent: NextPage) => {
   const WithData = ({
     apolloClient,
@@ -109,7 +98,6 @@ export const withData = ({ ssr = true } = {}) => (PageComponent: NextPage) => {
       const inAppContext = Boolean(ctx.ctx)
       const { apolloClient, authClient } = await initContext(ctx)
 
-      // Run wrapped getInitialProps methods
       let pageProps = {}
       if (PageComponent.getInitialProps) {
         pageProps = await PageComponent.getInitialProps(ctx)
@@ -163,10 +151,10 @@ export const withData = ({ ssr = true } = {}) => (PageComponent: NextPage) => {
 
       return {
         ...pageProps,
-        // Extract query data from the Apollo store
         apolloState: apolloClient!.cache.extract(),
-        // Provide the client for ssr. As soon as this payload
-        // gets JSON.stringified it will remove itself.
+
+        // Provide the clients for ssr. As soon as this payload
+        // gets JSON.stringified they will remove themselves via toJSON.
         apolloClient: ctx.apolloClient,
         authClient: ctx.authClient,
       }
