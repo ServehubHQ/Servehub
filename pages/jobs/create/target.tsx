@@ -1,9 +1,11 @@
 import {
   Box,
   Button,
+  FormControl,
   Grid,
-  MenuItem,
+  InputLabel,
   Paper,
+  Select,
   TextField,
   Typography,
 } from '@material-ui/core'
@@ -12,29 +14,29 @@ import { useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 import { CreateJobSteps } from '../../../components/CreateJobSteps'
 import { Page } from '../../../components/Page'
-import { SelectField } from '../../../components/SelectField'
 import {
   useInsertTargetMutation,
   useSetJobTargetMutation,
 } from '../../../graphql-codegen'
+import { useAuthRequired } from '../../../lib/useAuthRequired'
 
 interface FormData {
   name: string
   street: string
-  unit: string
+  unit?: string
+  postalCode: string
   city: string
   province: string
 }
 
 // export default withData()(function JobsCreateTargetPage() {
 export default function JobsCreateTargetPage() {
+  useAuthRequired()
   const router = useRouter()
   const [insertTarget] = useInsertTargetMutation()
   const [setJobTarget] = useSetJobTargetMutation()
 
-  const { register, handleSubmit, errors, control, setError } = useForm<
-    FormData
-  >()
+  const { register, handleSubmit, errors, setError } = useForm<FormData>()
 
   const handleFormValid = useCallback(
     async (formData: FormData) => {
@@ -102,7 +104,6 @@ export default function JobsCreateTargetPage() {
                   <TextField
                     variant='filled'
                     margin='normal'
-                    required
                     label='Unit'
                     name='unit'
                     autoFocus
@@ -113,6 +114,19 @@ export default function JobsCreateTargetPage() {
                   />
                 </Grid>
               </Grid>
+
+              <TextField
+                variant='filled'
+                margin='normal'
+                required
+                label='Postal Code'
+                name='postalCode'
+                autoFocus
+                fullWidth
+                inputRef={register({ required: true })}
+                error={Boolean(errors.postalCode)}
+                helperText={errors.postalCode?.message}
+              />
 
               <Grid container spacing={2}>
                 <Grid item sm={8} xs={12}>
@@ -131,28 +145,31 @@ export default function JobsCreateTargetPage() {
                 </Grid>
 
                 <Grid item sm={4} xs={12}>
-                  <SelectField
-                    label='Province'
-                    name='province'
-                    control={control}
-                    rules={{ required: true }}
-                    fullWidth
-                    required
-                  >
-                    <MenuItem value='NL'>Newfoundland and Labrador</MenuItem>
-                    <MenuItem value='PE'>Prince Edward Island</MenuItem>
-                    <MenuItem value='NS'>Nova Scotia</MenuItem>
-                    <MenuItem value='NB'>New Brunswick</MenuItem>
-                    <MenuItem value='QC'>Quebec</MenuItem>
-                    <MenuItem value='ON'>Ontario</MenuItem>
-                    <MenuItem value='MB'>Manitoba</MenuItem>
-                    <MenuItem value='SK'>Saskatchewan</MenuItem>
-                    <MenuItem value='AB'>Alberta</MenuItem>
-                    <MenuItem value='BC'>British Columbia</MenuItem>
-                    <MenuItem value='YT'>Yukon</MenuItem>
-                    <MenuItem value='NT'>Northwest Territories</MenuItem>
-                    <MenuItem value='NU'>Nunavut</MenuItem>
-                  </SelectField>
+                  <FormControl variant='filled' margin='normal' fullWidth>
+                    <InputLabel htmlFor='province'>Province</InputLabel>
+                    <Select
+                      native
+                      name='province'
+                      id='province'
+                      inputRef={register({ required: true })}
+                      required
+                      defaultValue='ON'
+                    >
+                      <option value='NL'>Newfoundland and Labrador</option>
+                      <option value='PE'>Prince Edward Island</option>
+                      <option value='NS'>Nova Scotia</option>
+                      <option value='NB'>New Brunswick</option>
+                      <option value='QC'>Quebec</option>
+                      <option value='ON'>Ontario</option>
+                      <option value='MB'>Manitoba</option>
+                      <option value='SK'>Saskatchewan</option>
+                      <option value='AB'>Alberta</option>
+                      <option value='BC'>British Columbia</option>
+                      <option value='YT'>Yukon</option>
+                      <option value='NT'>Northwest Territories</option>
+                      <option value='NU'>Nunavut</option>
+                    </Select>
+                  </FormControl>
                 </Grid>
               </Grid>
 

@@ -9,6 +9,7 @@ export function getAuthClient(context?: NextPageContext) {
   if (isBrowser) {
     if (!globalAuth) {
       globalAuth = new AuthClient()
+      setInterval(() => globalAuth.refreshToken(), 1000 * 60 * 10)
     }
     return globalAuth
   } else {

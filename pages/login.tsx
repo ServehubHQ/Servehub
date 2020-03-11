@@ -13,6 +13,7 @@ import { useRouter } from 'next/router'
 import { useCallback, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useAuth } from '../lib/useAuth'
+import { encodeQuerystring } from '../lib/encodeQuerystring'
 
 export const useStyles = makeStyles((theme) => ({
   root: {
@@ -75,7 +76,10 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      router.push(router.query.next ? router.query.next.toString() : '/')
+      const { next, ...params } = router.query
+      const path = next || '/'
+      const queryString = encodeQuerystring(params)
+      router.push(`${path}${queryString ? '?' : ''}${queryString}`)
     }
   }, [isAuthenticated, router])
 

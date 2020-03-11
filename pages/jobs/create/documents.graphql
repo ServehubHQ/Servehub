@@ -1,0 +1,8 @@
+query JobsCreateDocuments($jobId: uuid!) {
+  __typename
+  documents(where: { job_id: { _eq: $jobId } }) {
+    id
+    pickup
+    title
+  }
+}

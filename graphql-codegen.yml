@@ -11,7 +11,8 @@ generates:
       - 'typescript-operations'
       - 'typescript-react-apollo'
     config:
-      gqlImport: \@apollo/client#gql
+      gqlImport: '@apollo/client#gql'
       withComponent: false
       withHOC: false
       withHooks: true
+      reactApolloVersion: 3

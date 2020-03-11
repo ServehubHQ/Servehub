@@ -1,6 +1,6 @@
-import { gql } from '\@apollo/client';
-import * as ApolloReactCommon from '@apollo/react-common';
-import * as ApolloReactHooks from '@apollo/react-hooks';
+import { gql } from '@apollo/client';
+import * as ApolloReactCommon from '@apollo/client';
+import * as ApolloReactHooks from '@apollo/client';
 export type Maybe<T> = T | null;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -2593,6 +2593,19 @@ export type Uuid_Comparison_Exp = {
   _nin?: Maybe<Array<Scalars['uuid']>>;
 };
 
+export type DeleteDocumentMutationVariables = {
+  id: Scalars['uuid'];
+};
+
+
+export type DeleteDocumentMutation = (
+  { __typename?: 'mutation_root' }
+  & { delete_documents: Maybe<(
+    { __typename?: 'documents_mutation_response' }
+    & Pick<Documents_Mutation_Response, 'affected_rows'>
+  )> }
+);
+
 export type InsertDocumentMutationVariables = {
   jobId: Scalars['uuid'];
   title: Scalars['String'];
@@ -2632,10 +2645,11 @@ export type InsertJobMutation = (
 
 export type InsertTargetMutationVariables = {
   name: Scalars['String'];
-  city: Scalars['String'];
-  province: Scalars['String'];
   street: Scalars['String'];
   unit?: Maybe<Scalars['String']>;
+  postalCode: Scalars['String'];
+  city: Scalars['String'];
+  province: Scalars['String'];
 };
 
 
@@ -2680,7 +2694,52 @@ export type SetRoleMutation = (
   )> }
 );
 
+export type JobsCreateDocumentsQueryVariables = {
+  jobId: Scalars['uuid'];
+};
 
+
+export type JobsCreateDocumentsQuery = (
+  { __typename: 'query_root' }
+  & { documents: Array<(
+    { __typename?: 'documents' }
+    & Pick<Documents, 'id' | 'pickup' | 'title'>
+  )> }
+);
+
+
+export const DeleteDocumentDocument = gql`
+    mutation DeleteDocument($id: uuid!) {
+  delete_documents(where: {id: {_eq: $id}}) {
+    affected_rows
+  }
+}
+    `;
+export type DeleteDocumentMutationFn = ApolloReactCommon.MutationFunction<DeleteDocumentMutation, DeleteDocumentMutationVariables>;
+
+/**
+ * __useDeleteDocumentMutation__
+ *
+ * To run a mutation, you first call `useDeleteDocumentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteDocumentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteDocumentMutation, { data, loading, error }] = useDeleteDocumentMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteDocumentMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteDocumentMutation, DeleteDocumentMutationVariables>) {
+        return ApolloReactHooks.useMutation<DeleteDocumentMutation, DeleteDocumentMutationVariables>(DeleteDocumentDocument, baseOptions);
+      }
+export type DeleteDocumentMutationHookResult = ReturnType<typeof useDeleteDocumentMutation>;
+export type DeleteDocumentMutationResult = ApolloReactCommon.MutationResult<DeleteDocumentMutation>;
+export type DeleteDocumentMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteDocumentMutation, DeleteDocumentMutationVariables>;
 export const InsertDocumentDocument = gql`
     mutation InsertDocument($jobId: uuid!, $title: String!, $pickup: Boolean!, $city: String, $postalCode: String, $province: String, $street: String, $unit: String) {
   __typename
@@ -2764,8 +2823,8 @@ export type InsertJobMutationHookResult = ReturnType<typeof useInsertJobMutation
 export type InsertJobMutationResult = ApolloReactCommon.MutationResult<InsertJobMutation>;
 export type InsertJobMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertJobMutation, InsertJobMutationVariables>;
 export const InsertTargetDocument = gql`
-    mutation InsertTarget($name: String!, $city: String!, $province: String!, $street: String!, $unit: String) {
-  insert_targets(objects: {city: $city, name: $name, province: $province, street: $street, unit: $unit}) {
+    mutation InsertTarget($name: String!, $street: String!, $unit: String, $postalCode: String!, $city: String!, $province: String!) {
+  insert_targets(objects: {city: $city, name: $name, street: $street, unit: $unit, postal_code: $postalCode, province: $province}) {
     returning {
       id
     }
@@ -2788,10 +2847,11 @@ export type InsertTargetMutationFn = ApolloReactCommon.MutationFunction<InsertTa
  * const [insertTargetMutation, { data, loading, error }] = useInsertTargetMutation({
  *   variables: {
  *      name: // value for 'name'
- *      city: // value for 'city'
- *      province: // value for 'province'
  *      street: // value for 'street'
  *      unit: // value for 'unit'
+ *      postalCode: // value for 'postalCode'
+ *      city: // value for 'city'
+ *      province: // value for 'province'
  *   },
  * });
  */
@@ -2869,3 +2929,39 @@ export function useSetRoleMutation(baseOptions?: ApolloReactHooks.MutationHookOp
 export type SetRoleMutationHookResult = ReturnType<typeof useSetRoleMutation>;
 export type SetRoleMutationResult = ApolloReactCommon.MutationResult<SetRoleMutation>;
 export type SetRoleMutationOptions = ApolloReactCommon.BaseMutationOptions<SetRoleMutation, SetRoleMutationVariables>;
+export const JobsCreateDocumentsDocument = gql`
+    query JobsCreateDocuments($jobId: uuid!) {
+  __typename
+  documents(where: {job_id: {_eq: $jobId}}) {
+    id
+    pickup
+    title
+  }
+}
+    `;
+
+/**
+ * __useJobsCreateDocumentsQuery__
+ *
+ * To run a query within a React component, call `useJobsCreateDocumentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useJobsCreateDocumentsQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useJobsCreateDocumentsQuery({
+ *   variables: {
+ *      jobId: // value for 'jobId'
+ *   },
+ * });
+ */
+export function useJobsCreateDocumentsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<JobsCreateDocumentsQuery, JobsCreateDocumentsQueryVariables>) {
+        return ApolloReactHooks.useQuery<JobsCreateDocumentsQuery, JobsCreateDocumentsQueryVariables>(JobsCreateDocumentsDocument, baseOptions);
+      }
+export function useJobsCreateDocumentsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<JobsCreateDocumentsQuery, JobsCreateDocumentsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<JobsCreateDocumentsQuery, JobsCreateDocumentsQueryVariables>(JobsCreateDocumentsDocument, baseOptions);
+        }
+export type JobsCreateDocumentsQueryHookResult = ReturnType<typeof useJobsCreateDocumentsQuery>;
+export type JobsCreateDocumentsLazyQueryHookResult = ReturnType<typeof useJobsCreateDocumentsLazyQuery>;
+export type JobsCreateDocumentsQueryResult = ApolloReactCommon.QueryResult<JobsCreateDocumentsQuery, JobsCreateDocumentsQueryVariables>;

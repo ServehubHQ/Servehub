@@ -1,17 +1,19 @@
 mutation InsertTarget(
   $name: String!
-  $city: String!
-  $province: String!
   $street: String!
   $unit: String
+  $postalCode: String!
+  $city: String!
+  $province: String!
 ) {
   insert_targets(
     objects: {
       city: $city
       name: $name
-      province: $province
       street: $street
       unit: $unit
+      postal_code: $postalCode
+      province: $province
     }
   ) {
     returning {

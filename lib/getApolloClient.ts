@@ -26,10 +26,11 @@ export function getApolloClient(
     fetch,
   })
 
-  const authLink = setContext((a, { headers }) => {
+  const authLink = setContext(async (a, { headers }) => {
     if (!authClient || !authClient.isAuthenticated()) {
       console.warn('attempted unauthorized GraphQL request')
     }
+    await authClient.refreshToken()
     const jwt = authClient?.getToken()
     const roles = authClient?.getRoles() || []
 

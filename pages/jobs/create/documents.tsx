@@ -11,6 +11,13 @@ import {
   Switch,
   TextField,
   Typography,
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  IconButton,
 } from '@material-ui/core'
 import { useRouter } from 'next/router'
 import { useCallback } from 'react'
@@ -18,7 +25,13 @@ import { useDropzone } from 'react-dropzone'
 import { useForm } from 'react-hook-form'
 import { CreateJobSteps } from '../../../components/CreateJobSteps'
 import { Page } from '../../../components/Page'
-import { useInsertDocumentMutation } from '../../../graphql-codegen'
+import {
+  useInsertDocumentMutation,
+  useJobsCreateDocumentsQuery,
+  useDeleteDocumentMutation,
+} from '../../../graphql-codegen'
+import { useAuthRequired } from '../../../lib/useAuthRequired'
+import { Delete } from '@material-ui/icons'
 
 export const useStyles = makeStyles((theme) => ({
   dropzone: {
@@ -38,9 +51,14 @@ interface FormData {
 }
 
 export default function JobsCreateDocumentsPage() {
+  useAuthRequired()
   const styles = useStyles()
   const router = useRouter()
+  const { data, refetch } = useJobsCreateDocumentsQuery({
+    variables: { jobId: router.query.id },
+  })
   const [insertDocument] = useInsertDocumentMutation()
+  const [deleteDocument] = useDeleteDocumentMutation()
   const { register, handleSubmit, errors, watch } = useForm<FormData>()
   const pickup = watch('pickup')
 
@@ -51,25 +69,73 @@ export default function JobsCreateDocumentsPage() {
     }, []),
   })
 
+  const handleDeleteDocumentClick = useCallback(
+    (id: string) => async () => {
+      await deleteDocument({ variables: { id } })
+      await refetch()
+    },
+    [deleteDocument, refetch],
+  )
+
   const handleFormValid = useCallback(
     async (formData: FormData) => {
+      console.log('handleFormValid', { ...formData, jobId: router.query.id })
       await insertDocument({
         variables: { ...formData, jobId: router.query.id },
       })
+      await refetch()
     },
-    [insertDocument, router],
+    [insertDocument, router, refetch],
   )
+
+  const handleNextClick = useCallback(() => {
+    console.log('push route', router.pathname)
+  }, [router])
 
   return (
     <Page>
       <Paper>
         <Box p={2}>
-          <Typography component='h1' variant='h5'>
-            Create Job
-          </Typography>
+          <Typography variant='h5'>Create Job</Typography>
 
           <CreateJobSteps activeStep={1} />
 
+          {(data?.documents.length || 0) > 0 ? (
+            <Box mb={2}>
+              <TableContainer>
+                <Table aria-label='documents'>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Title</TableCell>
+                      <TableCell align='right'>Requires Pickup</TableCell>
+                      <TableCell align='right'>Delete</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {data?.documents.map((document) => (
+                      <TableRow key={document.id}>
+                        <TableCell component='th' scope='row'>
+                          {document.title}
+                        </TableCell>
+                        <TableCell align='right'>
+                          {document.pickup ? 'Yes' : 'No'}
+                        </TableCell>
+                        <TableCell align='right'>
+                          <IconButton
+                            onClick={handleDeleteDocumentClick(document.id)}
+                          >
+                            <Delete fontSize='small' />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Box>
+          ) : null}
+
+          <Typography variant='h6'>Add Document</Typography>
           <form noValidate onSubmit={handleSubmit(handleFormValid)}>
             <Box display='flex' flexDirection='column'>
               <TextField
@@ -113,12 +179,11 @@ export default function JobsCreateDocumentsPage() {
                       <TextField
                         variant='filled'
                         margin='normal'
-                        required
                         label='Unit'
                         name='unit'
                         autoFocus
                         fullWidth
-                        inputRef={register({ required: true })}
+                        inputRef={register()}
                         error={Boolean(errors.unit)}
                         helperText={errors.unit?.message}
                       />
@@ -142,14 +207,18 @@ export default function JobsCreateDocumentsPage() {
                     </Grid>
 
                     <Grid item sm={4} xs={12}>
-                      <FormControl variant='filled' margin='normal' fullWidth>
+                      <FormControl
+                        variant='filled'
+                        margin='normal'
+                        fullWidth
+                        required
+                      >
                         <InputLabel htmlFor='province'>Province</InputLabel>
                         <Select
                           native
                           name='province'
                           id='province'
                           inputRef={register({ required: true })}
-                          required
                           defaultValue='ON'
                         >
                           <option value='NL'>Newfoundland and Labrador</option>
@@ -179,16 +248,23 @@ export default function JobsCreateDocumentsPage() {
                   <Box p={5} alignItems='center'>
                     <input {...getInputProps()} />
                     <Typography align='center'>
-                      Drop files or click here to upload.
+                      Drop or click to upload files
                     </Typography>
                   </Box>
                 </Paper>
               )}
 
-              <Box mt={2} display='flex' justifyContent='flex-end'>
-                <Button type='submit' variant='contained' color='primary'>
-                  Add Document
-                </Button>
+              <Box mt={2}>
+                <Grid container spacing={2} justify='flex-end' direction='row'>
+                  <Grid item>
+                    <Button type='submit' variant='contained' color='primary'>
+                      Add Document
+                    </Button>
+                  </Grid>
+                  <Grid item>
+                    <Button onClick={handleNextClick}>Next</Button>
+                  </Grid>
+                </Grid>
               </Box>
             </Box>
           </form>
