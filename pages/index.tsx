@@ -1,22 +1,24 @@
-import { gql, useQuery } from '@apollo/client'
-import { Typography } from '@material-ui/core'
+import { Button, Typography } from '@material-ui/core'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { Page } from '../components/Page'
-import { withData } from '../lib/withData'
+import { useAuth } from '../lib/useAuth'
 
-export default withData()(function HomePage() {
-  const { data, loading } = useQuery(gql`
-    {
-      jobs {
-        id
-      }
-    }
-  `)
-  console.log('query', { loading, data })
+export default function HomePage() {
+  const { isAuthenticated } = useAuth()
+  const router = useRouter()
+
+  if (isAuthenticated && typeof window !== 'undefined') {
+    router.push('/jobs')
+    return <div />
+  }
 
   return (
     <Page>
-      <Typography variant='h1'>Home</Typography>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
+      <Typography variant='h1'>Welcome</Typography>
+      <Link href='/signup' passHref>
+        <Button>Get Started</Button>
+      </Link>
     </Page>
   )
-})
+}

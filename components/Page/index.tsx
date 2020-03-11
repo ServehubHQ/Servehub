@@ -66,14 +66,19 @@ export function Page({ children }: PageProps) {
         <Container fixed>
           <Toolbar>
             <Box flexGrow={1}>
-              <Link href={`/login?next=${router.pathname}`} passHref>
+              <Link href='/' passHref>
                 <Typography variant='h6' component='a' className={styles.brand}>
-                  Serve Hub
+                  Servehub
                 </Typography>
               </Link>
             </Box>
             {isAuthenticated ? (
               <>
+                <Link href='/jobs/create' passHref>
+                  <Button color='inherit' className={styles.navButton}>
+                    New Job
+                  </Button>
+                </Link>
                 <IconButton
                   aria-label='user account'
                   aria-controls='menu-appbar'

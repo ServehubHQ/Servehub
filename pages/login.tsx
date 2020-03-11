@@ -3,6 +3,7 @@ import {
   Button,
   Grid,
   Link,
+  makeStyles,
   Paper,
   TextField,
   Typography,
@@ -11,16 +12,48 @@ import { LockOutlined } from '@material-ui/icons'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { useAuth } from '../../lib/useAuth'
-import { withData } from '../../lib/withData'
-import { useStyles } from './styles'
+import { useAuth } from '../lib/useAuth'
+
+export const useStyles = makeStyles((theme) => ({
+  root: {
+    height: '100vh',
+  },
+  image: {
+    backgroundImage: 'url(https://source.unsplash.com/random)',
+    backgroundRepeat: 'no-repeat',
+    backgroundColor:
+      theme.palette.type === 'dark'
+        ? theme.palette.grey[900]
+        : theme.palette.grey[50],
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+  },
+  paper: {
+    margin: theme.spacing(8, 4),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+}))
 
 interface FormData {
   email: string
   password: string
 }
 
-export default withData({ ssr: false })(function SignupPage() {
+// export default withData({ ssr: false, authenticationRequired: false })(
+export default function LoginPage() {
   const { isAuthenticated, authClient } = useAuth()
   const router = useRouter()
   const styles = useStyles()
@@ -29,16 +62,13 @@ export default withData({ ssr: false })(function SignupPage() {
   const handleFormValid = useCallback(
     async ({ email, password }: FormData) => {
       try {
-        await authClient!.signup(email, email, password)
+        await authClient!.login(email, password)
       } catch (e) {
         console.error(e)
 
         const message = e.data?.message.replace('username', 'email')
-        setError('email', 'server', message)
-        return
+        setError('password', 'server', message)
       }
-
-      await authClient!.login(email, password)
     },
     [setError, authClient],
   )
@@ -58,7 +88,7 @@ export default withData({ ssr: false })(function SignupPage() {
             <LockOutlined />
           </Avatar>
           <Typography component='h1' variant='h5'>
-            Signup
+            Login
           </Typography>
           <form
             className={styles.form}
@@ -70,6 +100,7 @@ export default withData({ ssr: false })(function SignupPage() {
               margin='normal'
               required
               fullWidth
+              id='email'
               label='Email Address'
               name='email'
               autoComplete='email'
@@ -86,6 +117,7 @@ export default withData({ ssr: false })(function SignupPage() {
               name='password'
               label='Password'
               type='password'
+              id='password'
               autoComplete='current-password'
               inputRef={register({ required: true })}
               error={Boolean(errors.password)}
@@ -98,12 +130,12 @@ export default withData({ ssr: false })(function SignupPage() {
               className={styles.submit}
               fullWidth
             >
-              Signup
+              Login
             </Button>
             <Grid container>
               <Grid item>
-                <Link href='/login' variant='body2'>
-                  {'Already have an account? Login'}
+                <Link href='/signup' variant='body2'>
+                  {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
             </Grid>
@@ -112,4 +144,4 @@ export default withData({ ssr: false })(function SignupPage() {
       </Grid>
     </Grid>
   )
-})
+}

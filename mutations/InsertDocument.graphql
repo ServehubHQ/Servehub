@@ -1,0 +1,33 @@
+mutation InsertDocument(
+  $jobId: uuid!
+  $pickup: Boolean!
+  $city: String
+  $postalCode: String
+  $province: String
+  $street: String
+  $unit: String
+) {
+  __typename
+  insert_documents(
+    objects: {
+      job_id: $jobId
+      pickup: $pickup
+      city: $city
+      postal_code: $postalCode
+      province: $province
+      street: $street
+      unit: $unit
+    }
+  ) {
+    returning {
+      city
+      created_at
+      id
+      pickup
+      postal_code
+      province
+      street
+      unit
+    }
+  }
+}

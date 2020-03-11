@@ -1,0 +1,21 @@
+mutation InsertTarget(
+  $name: String!
+  $city: String!
+  $province: String!
+  $street: String!
+  $unit: String
+) {
+  insert_targets(
+    objects: {
+      city: $city
+      name: $name
+      province: $province
+      street: $street
+      unit: $unit
+    }
+  ) {
+    returning {
+      id
+    }
+  }
+}

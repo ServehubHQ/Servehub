@@ -1,0 +1,8 @@
+mutation SetJobTarget($id: uuid!, $targetId: uuid!) {
+  update_jobs(where: { id: { _eq: $id } }, _set: { target_id: $targetId }) {
+    returning {
+      id
+      target_id
+    }
+  }
+}

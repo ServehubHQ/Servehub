@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "gen": "graphql-codegen --config codegen.yml",
+    "gen-watch": "graphql-codegen --watch --config codegen.yml"
   },
   "dependencies": {
     "@apollo/client": "^3.0.0-beta.38",
@@ -33,6 +35,7 @@
     "subscriptions-transport-ws": "^0.9.16"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^1.13.0",
     "@types/jwt-decode": "^2.2.1",
     "@types/node": "^13.7.7",
     "@types/react": "^16.9.23",
@@ -50,6 +53,10 @@
     "eslint-plugin-standard": "^4.0.1",
     "prettier": "^1.19.1",
     "standard": "^14.3.1",
-    "typescript": "^3.8.3"
+    "typescript": "^3.8.3",
+    "@graphql-codegen/typescript": "1.13.0",
+    "@graphql-codegen/typescript-operations": "1.13.0",
+    "@graphql-codegen/typescript-react-apollo": "1.13.0",
+    "@graphql-codegen/introspection": "1.13.0"
   }
 }

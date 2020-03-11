@@ -1,0 +1,7 @@
+mutation InsertJob {
+  insert_jobs(objects: {}) {
+    returning {
+      id
+    }
+  }
+}

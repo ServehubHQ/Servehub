@@ -3,6 +3,8 @@ import {
   Button,
   Grid,
   Link,
+  makeStyles,
+  MenuItem,
   Paper,
   TextField,
   Typography,
@@ -11,33 +13,77 @@ import { LockOutlined } from '@material-ui/icons'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { useAuth } from '../../lib/useAuth'
-import { withData } from '../../lib/withData'
-import { useStyles } from './styles'
+import { SelectField } from '../components/SelectField'
+import { useSetRoleMutation } from '../graphql.gen'
+import { useAuth } from '../lib/useAuth'
+
+export const useStyles = makeStyles((theme) => ({
+  root: {
+    height: '100vh',
+  },
+  image: {
+    backgroundImage: 'url(https://source.unsplash.com/random)',
+    backgroundRepeat: 'no-repeat',
+    backgroundColor:
+      theme.palette.type === 'dark'
+        ? theme.palette.grey[900]
+        : theme.palette.grey[50],
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+  },
+  paper: {
+    margin: theme.spacing(8, 4),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+}))
 
 interface FormData {
   email: string
   password: string
+  role: string
 }
 
-export default withData({ ssr: false })(function LoginPage() {
+// export default withData({ ssr: false, authenticationRequired: false })(
+export default function SignupPage() {
   const { isAuthenticated, authClient } = useAuth()
   const router = useRouter()
   const styles = useStyles()
-  const { register, handleSubmit, errors, setError } = useForm<FormData>()
+  const { register, handleSubmit, errors, setError, control } = useForm<
+    FormData
+  >()
+  const [setRole] = useSetRoleMutation()
 
   const handleFormValid = useCallback(
-    async ({ email, password }: FormData) => {
+    async ({ email, password, role }: FormData) => {
       try {
-        await authClient!.login(email, password)
+        await authClient!.signup(email, email, password)
       } catch (e) {
         console.error(e)
 
         const message = e.data?.message.replace('username', 'email')
-        setError('password', 'server', message)
+        setError('email', 'server', message)
+        return
       }
+
+      await authClient!.login(email, password)
+      await setRole({
+        variables: { role },
+      })
     },
-    [setError, authClient],
+    [setError, authClient, setRole],
   )
 
   useEffect(() => {
@@ -55,7 +101,7 @@ export default withData({ ssr: false })(function LoginPage() {
             <LockOutlined />
           </Avatar>
           <Typography component='h1' variant='h5'>
-            Login
+            Signup
           </Typography>
           <form
             className={styles.form}
@@ -67,7 +113,6 @@ export default withData({ ssr: false })(function LoginPage() {
               margin='normal'
               required
               fullWidth
-              id='email'
               label='Email Address'
               name='email'
               autoComplete='email'
@@ -84,12 +129,24 @@ export default withData({ ssr: false })(function LoginPage() {
               name='password'
               label='Password'
               type='password'
-              id='password'
               autoComplete='current-password'
               inputRef={register({ required: true })}
               error={Boolean(errors.password)}
               helperText={errors.password?.message}
             />
+            <SelectField
+              name='role'
+              label='Role'
+              control={control}
+              rules={{ required: true }}
+              required
+              fullWidth
+              error={Boolean(errors.role)}
+              helperText={errors.role?.message}
+            >
+              <MenuItem value='lawyer'>Lawyer</MenuItem>
+              <MenuItem value='server'>Process Server</MenuItem>
+            </SelectField>
             <Button
               type='submit'
               variant='contained'
@@ -97,12 +154,12 @@ export default withData({ ssr: false })(function LoginPage() {
               className={styles.submit}
               fullWidth
             >
-              Login
+              Signup
             </Button>
             <Grid container>
               <Grid item>
-                <Link href='/signup' variant='body2'>
-                  {"Don't have an account? Sign Up"}
+                <Link href='/login' variant='body2'>
+                  {'Already have an account? Login'}
                 </Link>
               </Grid>
             </Grid>
@@ -111,4 +168,4 @@ export default withData({ ssr: false })(function LoginPage() {
       </Grid>
     </Grid>
   )
-})
+}

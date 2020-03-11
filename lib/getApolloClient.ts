@@ -12,7 +12,7 @@ import { AuthClient } from './AuthClient'
 let apolloClient: ApolloClient<NormalizedCacheObject>
 
 export function getApolloClient(
-  auth?: AuthClient,
+  authClient: AuthClient,
   data?: NormalizedCacheObject,
 ) {
   const isBrowser = typeof window !== 'undefined'
@@ -27,11 +27,26 @@ export function getApolloClient(
   })
 
   const authLink = setContext((a, { headers }) => {
-    const jwt = auth?.getToken()
+    if (!authClient || !authClient.isAuthenticated()) {
+      console.warn('attempted unauthorized GraphQL request')
+    }
+    const jwt = authClient?.getToken()
+    const roles = authClient?.getRoles() || []
+
     return {
       headers: {
         ...headers,
-        ...(jwt ? { authorization: `Bearer ${jwt}` } : {}),
+        ...(jwt
+          ? {
+              authorization: `Bearer ${jwt}`,
+              'x-hasura-role':
+                roles.indexOf('lawyer') !== -1
+                  ? 'lawyer'
+                  : roles.indexOf('server') !== -1
+                  ? 'server'
+                  : 'user',
+            }
+          : {}),
       },
     }
   })

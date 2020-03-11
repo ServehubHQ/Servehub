@@ -37,6 +37,24 @@ export class AuthClient {
     return cookies.token
   }
 
+  getRoles(): string[] {
+    const cookies = parseCookies(this.context)
+    if (!cookies.token) {
+      return []
+    }
+
+    const parsedToken = jwtDecode(cookies.token) as {
+      ['https://hasura.io/jwt/claims']: {
+        ['x-hasura-is-anonymous']: 'false'
+        ['x-hasura-default-role']: 'user'
+        ['x-hasura-allowed-roles']: string[]
+        ['x-hasura-user-id']: string
+      }
+    }
+
+    return parsedToken['https://hasura.io/jwt/claims']['x-hasura-allowed-roles']
+  }
+
   onAuthStateChanged(callback: () => void): () => void {
     this.stateChangeCallbacks.push(callback)
     console.log('onAuthStateChanged added', this.stateChangeCallbacks)
@@ -77,13 +95,12 @@ export class AuthClient {
       },
     })
 
-    const data = await response.json()
-    if (response.status - 200 < 100) {
-      console.log('signup success', data)
-      this.setTokens(data)
-    } else {
+    if (response.status - 200 > 100) {
+      const data = await response.json()
       console.log('signup fail', data)
       throw new AuthError(data)
+    } else {
+      console.log('signup success')
     }
   }
 
@@ -149,24 +166,24 @@ export class AuthClient {
       }
     }
 
-    try {
-      const response = await fetch(`${this.baseUrl}/auth/refresh-token`, {
-        method: 'post',
-        body: JSON.stringify({
-          refresh_token: refreshToken,
-        }),
-        headers: {
-          'content-type': 'application/json',
-          accept: 'application/json',
-        },
-      })
+    const response = await fetch(`${this.baseUrl}/auth/refresh-token`, {
+      method: 'post',
+      body: JSON.stringify({
+        refresh_token: refreshToken,
+      }),
+      headers: {
+        'content-type': 'application/json',
+        accept: 'application/json',
+      },
+    })
 
+    if (response.status - 200 < 100) {
       const data = await response.json()
       console.log('refresh success', data)
       this.setTokens(data)
-    } catch (e) {
-      console.log('refresh fail', e.response)
-      throw e
+    } else {
+      console.log('refresh fail, logging out', response)
+      this.logout()
     }
   }
 
