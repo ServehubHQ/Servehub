@@ -20,7 +20,7 @@ import {
   IconButton,
 } from '@material-ui/core'
 import { useRouter } from 'next/router'
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { useForm } from 'react-hook-form'
 import { CreateJobSteps } from '../../../components/CreateJobSteps'
@@ -32,6 +32,9 @@ import {
 } from '../../../graphql-codegen'
 import { useAuthRequired } from '../../../lib/useAuthRequired'
 import { Delete } from '@material-ui/icons'
+import nhost from 'nhost-js-sdk'
+import { config } from '../../../lib/config'
+import { useAuth } from '../../../lib/useAuth'
 
 export const useStyles = makeStyles((theme) => ({
   dropzone: {
@@ -52,10 +55,12 @@ interface FormData {
 
 export default function JobsCreateDocumentsPage() {
   useAuthRequired()
+  const { authClient } = useAuth()
   const styles = useStyles()
   const router = useRouter()
+  const jobId = useMemo(() => router.query.id, [router])
   const { data, refetch } = useJobsCreateDocumentsQuery({
-    variables: { jobId: router.query.id },
+    variables: { jobId },
   })
   const [insertDocument] = useInsertDocumentMutation()
   const [deleteDocument] = useDeleteDocumentMutation()
@@ -63,10 +68,35 @@ export default function JobsCreateDocumentsPage() {
   const pickup = watch('pickup')
 
   const { getRootProps, getInputProps } = useDropzone({
-    onDrop: useCallback((uploadedFiles) => {
-      // TODO: handle uploaded files
-      console.log('uploadedFiles', uploadedFiles)
-    }, []),
+    onDrop: useCallback(
+      async (uploadedFiles) => {
+        nhost.initializeApp({ endpoint: config.nhostBackendUrl })
+        const storage = nhost.storage()
+
+        // a needed hack, since we're not using their auth lib
+        storage.inMemory.jwt_token = authClient!.getToken()
+
+        for (const file of uploadedFiles) {
+          const result = await storage.put(
+            `/documents/${jobId}/${Math.round(Math.random() * 1000)}`,
+            file,
+            {},
+            (event: ProgressEvent) => {
+              if (event.lengthComputable) {
+                console.log('upload spinning')
+              } else {
+                console.log('upload', event.loaded, '/', event.total)
+              }
+            },
+          )
+          console.log(result)
+          const url = `${config.nhostBackendUrl}/${result.key}?token=${result.token}`
+          console.log(url)
+        }
+        console.log('uploadedFiles', uploadedFiles)
+      },
+      [jobId, authClient],
+    ),
   })
 
   const handleDeleteDocumentClick = useCallback(
@@ -79,13 +109,13 @@ export default function JobsCreateDocumentsPage() {
 
   const handleFormValid = useCallback(
     async (formData: FormData) => {
-      console.log('handleFormValid', { ...formData, jobId: router.query.id })
+      console.log('handleFormValid', { ...formData, jobId })
       await insertDocument({
-        variables: { ...formData, jobId: router.query.id },
+        variables: { ...formData, jobId },
       })
       await refetch()
     },
-    [insertDocument, router, refetch],
+    [insertDocument, refetch],
   )
 
   const handleNextClick = useCallback(() => {

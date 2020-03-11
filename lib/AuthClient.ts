@@ -3,6 +3,7 @@ import jwtDecode from 'jwt-decode'
 import moment from 'moment'
 import { NextPageContext } from 'next'
 import { destroyCookie, parseCookies, setCookie } from 'nookies'
+import { config } from './config'
 
 interface ErrorResponseData {
   statusCode: number
@@ -20,7 +21,7 @@ export class AuthError extends Error {
 }
 
 export class AuthClient {
-  baseUrl = 'https://backend-rf2zfg3c.nhost.app'
+  baseUrl = config.nhostBackendUrl
   stateChangeCallbacks: (() => void)[] = []
   context?: NextPageContext
 
