@@ -16,7 +16,7 @@ import { SelectField } from '../../../components/SelectField'
 import {
   useInsertTargetMutation,
   useSetJobTargetMutation,
-} from '../../../graphql.gen'
+} from '../../../graphql-codegen'
 
 interface FormData {
   name: string

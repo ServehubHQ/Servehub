@@ -1,0 +1,17 @@
+overwrite: true
+schema:
+  - https://hasura-rf2zfg3c.nhost.app/v1/graphql:
+      headers:
+        x-hasura-admin-secret: ${HASURA_ADMIN_SECRET}
+documents: '**/*.graphql'
+generates:
+  graphql-codegen.tsx:
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-react-apollo'
+    config:
+      gqlImport: \@apollo/client#gql
+      withComponent: false
+      withHOC: false
+      withHooks: true

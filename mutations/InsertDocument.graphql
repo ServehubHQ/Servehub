@@ -1,5 +1,6 @@
 mutation InsertDocument(
   $jobId: uuid!
+  $title: String!
   $pickup: Boolean!
   $city: String
   $postalCode: String
@@ -12,6 +13,7 @@ mutation InsertDocument(
     objects: {
       job_id: $jobId
       pickup: $pickup
+      title: $title
       city: $city
       postal_code: $postalCode
       province: $province

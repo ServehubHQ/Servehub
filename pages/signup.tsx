@@ -14,7 +14,7 @@ import { useRouter } from 'next/router'
 import { useCallback, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { SelectField } from '../components/SelectField'
-import { useSetRoleMutation } from '../graphql.gen'
+import { useSetRoleMutation } from '../graphql-codegen'
 import { useAuth } from '../lib/useAuth'
 
 export const useStyles = makeStyles((theme) => ({

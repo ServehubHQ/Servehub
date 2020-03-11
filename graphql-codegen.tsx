@@ -1,6 +1,6 @@
-import gql from 'graphql-tag';
-import * as ApolloReactCommon from '@apollo/client';
-import * as ApolloReactHooks from '@apollo/client';
+import { gql } from '\@apollo/client';
+import * as ApolloReactCommon from '@apollo/react-common';
+import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -15,7 +15,7 @@ export type Scalars = {
 };
 
 export type Auth_Auth_Providers = {
-   __typename: 'auth_auth_providers';
+   __typename?: 'auth_auth_providers';
   provider: Scalars['String'];
   user_providers: Array<Auth_User_Providers>;
   user_providers_aggregate: Auth_User_Providers_Aggregate;
@@ -40,13 +40,13 @@ export type Auth_Auth_ProvidersUser_Providers_AggregateArgs = {
 };
 
 export type Auth_Auth_Providers_Aggregate = {
-   __typename: 'auth_auth_providers_aggregate';
+   __typename?: 'auth_auth_providers_aggregate';
   aggregate?: Maybe<Auth_Auth_Providers_Aggregate_Fields>;
   nodes: Array<Auth_Auth_Providers>;
 };
 
 export type Auth_Auth_Providers_Aggregate_Fields = {
-   __typename: 'auth_auth_providers_aggregate_fields';
+   __typename?: 'auth_auth_providers_aggregate_fields';
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<Auth_Auth_Providers_Max_Fields>;
   min?: Maybe<Auth_Auth_Providers_Min_Fields>;
@@ -87,7 +87,7 @@ export type Auth_Auth_Providers_Insert_Input = {
 };
 
 export type Auth_Auth_Providers_Max_Fields = {
-   __typename: 'auth_auth_providers_max_fields';
+   __typename?: 'auth_auth_providers_max_fields';
   provider?: Maybe<Scalars['String']>;
 };
 
@@ -96,7 +96,7 @@ export type Auth_Auth_Providers_Max_Order_By = {
 };
 
 export type Auth_Auth_Providers_Min_Fields = {
-   __typename: 'auth_auth_providers_min_fields';
+   __typename?: 'auth_auth_providers_min_fields';
   provider?: Maybe<Scalars['String']>;
 };
 
@@ -105,7 +105,7 @@ export type Auth_Auth_Providers_Min_Order_By = {
 };
 
 export type Auth_Auth_Providers_Mutation_Response = {
-   __typename: 'auth_auth_providers_mutation_response';
+   __typename?: 'auth_auth_providers_mutation_response';
   affected_rows: Scalars['Int'];
   returning: Array<Auth_Auth_Providers>;
 };
@@ -139,7 +139,7 @@ export enum Auth_Auth_Providers_Update_Column {
 }
 
 export type Auth_Refresh_Tokens = {
-   __typename: 'auth_refresh_tokens';
+   __typename?: 'auth_refresh_tokens';
   created_at: Scalars['timestamptz'];
   expires_at: Scalars['timestamptz'];
   refresh_token: Scalars['uuid'];
@@ -148,13 +148,13 @@ export type Auth_Refresh_Tokens = {
 };
 
 export type Auth_Refresh_Tokens_Aggregate = {
-   __typename: 'auth_refresh_tokens_aggregate';
+   __typename?: 'auth_refresh_tokens_aggregate';
   aggregate?: Maybe<Auth_Refresh_Tokens_Aggregate_Fields>;
   nodes: Array<Auth_Refresh_Tokens>;
 };
 
 export type Auth_Refresh_Tokens_Aggregate_Fields = {
-   __typename: 'auth_refresh_tokens_aggregate_fields';
+   __typename?: 'auth_refresh_tokens_aggregate_fields';
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<Auth_Refresh_Tokens_Max_Fields>;
   min?: Maybe<Auth_Refresh_Tokens_Min_Fields>;
@@ -201,7 +201,7 @@ export type Auth_Refresh_Tokens_Insert_Input = {
 };
 
 export type Auth_Refresh_Tokens_Max_Fields = {
-   __typename: 'auth_refresh_tokens_max_fields';
+   __typename?: 'auth_refresh_tokens_max_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
   expires_at?: Maybe<Scalars['timestamptz']>;
 };
@@ -212,7 +212,7 @@ export type Auth_Refresh_Tokens_Max_Order_By = {
 };
 
 export type Auth_Refresh_Tokens_Min_Fields = {
-   __typename: 'auth_refresh_tokens_min_fields';
+   __typename?: 'auth_refresh_tokens_min_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
   expires_at?: Maybe<Scalars['timestamptz']>;
 };
@@ -223,7 +223,7 @@ export type Auth_Refresh_Tokens_Min_Order_By = {
 };
 
 export type Auth_Refresh_Tokens_Mutation_Response = {
-   __typename: 'auth_refresh_tokens_mutation_response';
+   __typename?: 'auth_refresh_tokens_mutation_response';
   affected_rows: Scalars['Int'];
   returning: Array<Auth_Refresh_Tokens>;
 };
@@ -269,7 +269,7 @@ export enum Auth_Refresh_Tokens_Update_Column {
 }
 
 export type Auth_User_Accounts = {
-   __typename: 'auth_user_accounts';
+   __typename?: 'auth_user_accounts';
   created_at: Scalars['timestamptz'];
   email?: Maybe<Scalars['String']>;
   id: Scalars['uuid'];
@@ -281,13 +281,13 @@ export type Auth_User_Accounts = {
 };
 
 export type Auth_User_Accounts_Aggregate = {
-   __typename: 'auth_user_accounts_aggregate';
+   __typename?: 'auth_user_accounts_aggregate';
   aggregate?: Maybe<Auth_User_Accounts_Aggregate_Fields>;
   nodes: Array<Auth_User_Accounts>;
 };
 
 export type Auth_User_Accounts_Aggregate_Fields = {
-   __typename: 'auth_user_accounts_aggregate_fields';
+   __typename?: 'auth_user_accounts_aggregate_fields';
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<Auth_User_Accounts_Max_Fields>;
   min?: Maybe<Auth_User_Accounts_Min_Fields>;
@@ -342,7 +342,7 @@ export type Auth_User_Accounts_Insert_Input = {
 };
 
 export type Auth_User_Accounts_Max_Fields = {
-   __typename: 'auth_user_accounts_max_fields';
+   __typename?: 'auth_user_accounts_max_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
   email?: Maybe<Scalars['String']>;
   password?: Maybe<Scalars['String']>;
@@ -359,7 +359,7 @@ export type Auth_User_Accounts_Max_Order_By = {
 };
 
 export type Auth_User_Accounts_Min_Fields = {
-   __typename: 'auth_user_accounts_min_fields';
+   __typename?: 'auth_user_accounts_min_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
   email?: Maybe<Scalars['String']>;
   password?: Maybe<Scalars['String']>;
@@ -376,7 +376,7 @@ export type Auth_User_Accounts_Min_Order_By = {
 };
 
 export type Auth_User_Accounts_Mutation_Response = {
-   __typename: 'auth_user_accounts_mutation_response';
+   __typename?: 'auth_user_accounts_mutation_response';
   affected_rows: Scalars['Int'];
   returning: Array<Auth_User_Accounts>;
 };
@@ -434,7 +434,7 @@ export enum Auth_User_Accounts_Update_Column {
 }
 
 export type Auth_User_Providers = {
-   __typename: 'auth_user_providers';
+   __typename?: 'auth_user_providers';
   authProviderByAuthProvider: Auth_Auth_Providers;
   auth_provider: Scalars['String'];
   auth_provider_unique_id: Scalars['String'];
@@ -446,13 +446,13 @@ export type Auth_User_Providers = {
 };
 
 export type Auth_User_Providers_Aggregate = {
-   __typename: 'auth_user_providers_aggregate';
+   __typename?: 'auth_user_providers_aggregate';
   aggregate?: Maybe<Auth_User_Providers_Aggregate_Fields>;
   nodes: Array<Auth_User_Providers>;
 };
 
 export type Auth_User_Providers_Aggregate_Fields = {
-   __typename: 'auth_user_providers_aggregate_fields';
+   __typename?: 'auth_user_providers_aggregate_fields';
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<Auth_User_Providers_Max_Fields>;
   min?: Maybe<Auth_User_Providers_Min_Fields>;
@@ -507,7 +507,7 @@ export type Auth_User_Providers_Insert_Input = {
 };
 
 export type Auth_User_Providers_Max_Fields = {
-   __typename: 'auth_user_providers_max_fields';
+   __typename?: 'auth_user_providers_max_fields';
   auth_provider?: Maybe<Scalars['String']>;
   auth_provider_unique_id?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
@@ -522,7 +522,7 @@ export type Auth_User_Providers_Max_Order_By = {
 };
 
 export type Auth_User_Providers_Min_Fields = {
-   __typename: 'auth_user_providers_min_fields';
+   __typename?: 'auth_user_providers_min_fields';
   auth_provider?: Maybe<Scalars['String']>;
   auth_provider_unique_id?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
@@ -537,7 +537,7 @@ export type Auth_User_Providers_Min_Order_By = {
 };
 
 export type Auth_User_Providers_Mutation_Response = {
-   __typename: 'auth_user_providers_mutation_response';
+   __typename?: 'auth_user_providers_mutation_response';
   affected_rows: Scalars['Int'];
   returning: Array<Auth_User_Providers>;
 };
@@ -604,7 +604,7 @@ export type Boolean_Comparison_Exp = {
 };
 
 export type Documents = {
-   __typename: 'documents';
+   __typename?: 'documents';
   city?: Maybe<Scalars['String']>;
   created_at: Scalars['timestamptz'];
   id: Scalars['uuid'];
@@ -614,18 +614,19 @@ export type Documents = {
   postal_code?: Maybe<Scalars['String']>;
   province?: Maybe<Scalars['String']>;
   street?: Maybe<Scalars['String']>;
+  title: Scalars['String'];
   unit?: Maybe<Scalars['String']>;
   updated_at: Scalars['timestamptz'];
 };
 
 export type Documents_Aggregate = {
-   __typename: 'documents_aggregate';
+   __typename?: 'documents_aggregate';
   aggregate?: Maybe<Documents_Aggregate_Fields>;
   nodes: Array<Documents>;
 };
 
 export type Documents_Aggregate_Fields = {
-   __typename: 'documents_aggregate_fields';
+   __typename?: 'documents_aggregate_fields';
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<Documents_Max_Fields>;
   min?: Maybe<Documents_Min_Fields>;
@@ -661,6 +662,7 @@ export type Documents_Bool_Exp = {
   postal_code?: Maybe<String_Comparison_Exp>;
   province?: Maybe<String_Comparison_Exp>;
   street?: Maybe<String_Comparison_Exp>;
+  title?: Maybe<String_Comparison_Exp>;
   unit?: Maybe<String_Comparison_Exp>;
   updated_at?: Maybe<Timestamptz_Comparison_Exp>;
 };
@@ -679,17 +681,19 @@ export type Documents_Insert_Input = {
   postal_code?: Maybe<Scalars['String']>;
   province?: Maybe<Scalars['String']>;
   street?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
   unit?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 export type Documents_Max_Fields = {
-   __typename: 'documents_max_fields';
+   __typename?: 'documents_max_fields';
   city?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   postal_code?: Maybe<Scalars['String']>;
   province?: Maybe<Scalars['String']>;
   street?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
   unit?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
@@ -700,17 +704,19 @@ export type Documents_Max_Order_By = {
   postal_code?: Maybe<Order_By>;
   province?: Maybe<Order_By>;
   street?: Maybe<Order_By>;
+  title?: Maybe<Order_By>;
   unit?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
 
 export type Documents_Min_Fields = {
-   __typename: 'documents_min_fields';
+   __typename?: 'documents_min_fields';
   city?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   postal_code?: Maybe<Scalars['String']>;
   province?: Maybe<Scalars['String']>;
   street?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
   unit?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
@@ -721,12 +727,13 @@ export type Documents_Min_Order_By = {
   postal_code?: Maybe<Order_By>;
   province?: Maybe<Order_By>;
   street?: Maybe<Order_By>;
+  title?: Maybe<Order_By>;
   unit?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
 
 export type Documents_Mutation_Response = {
-   __typename: 'documents_mutation_response';
+   __typename?: 'documents_mutation_response';
   affected_rows: Scalars['Int'];
   returning: Array<Documents>;
 };
@@ -752,6 +759,7 @@ export type Documents_Order_By = {
   postal_code?: Maybe<Order_By>;
   province?: Maybe<Order_By>;
   street?: Maybe<Order_By>;
+  title?: Maybe<Order_By>;
   unit?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
@@ -765,6 +773,7 @@ export enum Documents_Select_Column {
   PostalCode = 'postal_code',
   Province = 'province',
   Street = 'street',
+  Title = 'title',
   Unit = 'unit',
   UpdatedAt = 'updated_at'
 }
@@ -778,6 +787,7 @@ export type Documents_Set_Input = {
   postal_code?: Maybe<Scalars['String']>;
   province?: Maybe<Scalars['String']>;
   street?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
   unit?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
@@ -791,12 +801,13 @@ export enum Documents_Update_Column {
   PostalCode = 'postal_code',
   Province = 'province',
   Street = 'street',
+  Title = 'title',
   Unit = 'unit',
   UpdatedAt = 'updated_at'
 }
 
 export type Jobs = {
-   __typename: 'jobs';
+   __typename?: 'jobs';
   created_at: Scalars['timestamptz'];
   description?: Maybe<Scalars['String']>;
   id: Scalars['uuid'];
@@ -810,13 +821,13 @@ export type Jobs = {
 };
 
 export type Jobs_Aggregate = {
-   __typename: 'jobs_aggregate';
+   __typename?: 'jobs_aggregate';
   aggregate?: Maybe<Jobs_Aggregate_Fields>;
   nodes: Array<Jobs>;
 };
 
 export type Jobs_Aggregate_Fields = {
-   __typename: 'jobs_aggregate_fields';
+   __typename?: 'jobs_aggregate_fields';
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<Jobs_Max_Fields>;
   min?: Maybe<Jobs_Min_Fields>;
@@ -873,7 +884,7 @@ export type Jobs_Insert_Input = {
 };
 
 export type Jobs_Max_Fields = {
-   __typename: 'jobs_max_fields';
+   __typename?: 'jobs_max_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
   description?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
@@ -886,7 +897,7 @@ export type Jobs_Max_Order_By = {
 };
 
 export type Jobs_Min_Fields = {
-   __typename: 'jobs_min_fields';
+   __typename?: 'jobs_min_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
   description?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
@@ -899,7 +910,7 @@ export type Jobs_Min_Order_By = {
 };
 
 export type Jobs_Mutation_Response = {
-   __typename: 'jobs_mutation_response';
+   __typename?: 'jobs_mutation_response';
   affected_rows: Scalars['Int'];
   returning: Array<Jobs>;
 };
@@ -977,7 +988,7 @@ export type Jsonb_Comparison_Exp = {
 };
 
 export type Mutation_Root = {
-   __typename: 'mutation_root';
+   __typename?: 'mutation_root';
   delete_auth_auth_providers?: Maybe<Auth_Auth_Providers_Mutation_Response>;
   delete_auth_refresh_tokens?: Maybe<Auth_Refresh_Tokens_Mutation_Response>;
   delete_auth_user_accounts?: Maybe<Auth_User_Accounts_Mutation_Response>;
@@ -1195,7 +1206,7 @@ export enum Order_By {
 }
 
 export type Query_Root = {
-   __typename: 'query_root';
+   __typename?: 'query_root';
   auth_auth_providers: Array<Auth_Auth_Providers>;
   auth_auth_providers_aggregate: Auth_Auth_Providers_Aggregate;
   auth_auth_providers_by_pk?: Maybe<Auth_Auth_Providers>;
@@ -1459,7 +1470,7 @@ export type Query_RootUsers_By_PkArgs = {
 };
 
 export type Roles = {
-   __typename: 'roles';
+   __typename?: 'roles';
   role: Scalars['String'];
   user_roles: Array<User_Roles>;
   user_roles_aggregate: User_Roles_Aggregate;
@@ -1504,13 +1515,13 @@ export type RolesUsers_AggregateArgs = {
 };
 
 export type Roles_Aggregate = {
-   __typename: 'roles_aggregate';
+   __typename?: 'roles_aggregate';
   aggregate?: Maybe<Roles_Aggregate_Fields>;
   nodes: Array<Roles>;
 };
 
 export type Roles_Aggregate_Fields = {
-   __typename: 'roles_aggregate_fields';
+   __typename?: 'roles_aggregate_fields';
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<Roles_Max_Fields>;
   min?: Maybe<Roles_Min_Fields>;
@@ -1553,7 +1564,7 @@ export type Roles_Insert_Input = {
 };
 
 export type Roles_Max_Fields = {
-   __typename: 'roles_max_fields';
+   __typename?: 'roles_max_fields';
   role?: Maybe<Scalars['String']>;
 };
 
@@ -1562,7 +1573,7 @@ export type Roles_Max_Order_By = {
 };
 
 export type Roles_Min_Fields = {
-   __typename: 'roles_min_fields';
+   __typename?: 'roles_min_fields';
   role?: Maybe<Scalars['String']>;
 };
 
@@ -1571,7 +1582,7 @@ export type Roles_Min_Order_By = {
 };
 
 export type Roles_Mutation_Response = {
-   __typename: 'roles_mutation_response';
+   __typename?: 'roles_mutation_response';
   affected_rows: Scalars['Int'];
   returning: Array<Roles>;
 };
@@ -1624,7 +1635,7 @@ export type String_Comparison_Exp = {
 };
 
 export type Subscription_Root = {
-   __typename: 'subscription_root';
+   __typename?: 'subscription_root';
   auth_auth_providers: Array<Auth_Auth_Providers>;
   auth_auth_providers_aggregate: Auth_Auth_Providers_Aggregate;
   auth_auth_providers_by_pk?: Maybe<Auth_Auth_Providers>;
@@ -1888,7 +1899,7 @@ export type Subscription_RootUsers_By_PkArgs = {
 };
 
 export type Targets = {
-   __typename: 'targets';
+   __typename?: 'targets';
   city: Scalars['String'];
   created_at: Scalars['timestamptz'];
   id: Scalars['uuid'];
@@ -1921,13 +1932,13 @@ export type TargetsJobs_AggregateArgs = {
 };
 
 export type Targets_Aggregate = {
-   __typename: 'targets_aggregate';
+   __typename?: 'targets_aggregate';
   aggregate?: Maybe<Targets_Aggregate_Fields>;
   nodes: Array<Targets>;
 };
 
 export type Targets_Aggregate_Fields = {
-   __typename: 'targets_aggregate_fields';
+   __typename?: 'targets_aggregate_fields';
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<Targets_Max_Fields>;
   min?: Maybe<Targets_Min_Fields>;
@@ -1985,7 +1996,7 @@ export type Targets_Insert_Input = {
 };
 
 export type Targets_Max_Fields = {
-   __typename: 'targets_max_fields';
+   __typename?: 'targets_max_fields';
   city?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   name?: Maybe<Scalars['String']>;
@@ -2008,7 +2019,7 @@ export type Targets_Max_Order_By = {
 };
 
 export type Targets_Min_Fields = {
-   __typename: 'targets_min_fields';
+   __typename?: 'targets_min_fields';
   city?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   name?: Maybe<Scalars['String']>;
@@ -2031,7 +2042,7 @@ export type Targets_Min_Order_By = {
 };
 
 export type Targets_Mutation_Response = {
-   __typename: 'targets_mutation_response';
+   __typename?: 'targets_mutation_response';
   affected_rows: Scalars['Int'];
   returning: Array<Targets>;
 };
@@ -2110,7 +2121,7 @@ export type Timestamptz_Comparison_Exp = {
 };
 
 export type User_Roles = {
-   __typename: 'user_roles';
+   __typename?: 'user_roles';
   created_at: Scalars['timestamptz'];
   id: Scalars['uuid'];
   role: Scalars['String'];
@@ -2120,13 +2131,13 @@ export type User_Roles = {
 };
 
 export type User_Roles_Aggregate = {
-   __typename: 'user_roles_aggregate';
+   __typename?: 'user_roles_aggregate';
   aggregate?: Maybe<User_Roles_Aggregate_Fields>;
   nodes: Array<User_Roles>;
 };
 
 export type User_Roles_Aggregate_Fields = {
-   __typename: 'user_roles_aggregate_fields';
+   __typename?: 'user_roles_aggregate_fields';
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<User_Roles_Max_Fields>;
   min?: Maybe<User_Roles_Min_Fields>;
@@ -2176,7 +2187,7 @@ export type User_Roles_Insert_Input = {
 };
 
 export type User_Roles_Max_Fields = {
-   __typename: 'user_roles_max_fields';
+   __typename?: 'user_roles_max_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
   role?: Maybe<Scalars['String']>;
 };
@@ -2187,7 +2198,7 @@ export type User_Roles_Max_Order_By = {
 };
 
 export type User_Roles_Min_Fields = {
-   __typename: 'user_roles_min_fields';
+   __typename?: 'user_roles_min_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
   role?: Maybe<Scalars['String']>;
 };
@@ -2198,7 +2209,7 @@ export type User_Roles_Min_Order_By = {
 };
 
 export type User_Roles_Mutation_Response = {
-   __typename: 'user_roles_mutation_response';
+   __typename?: 'user_roles_mutation_response';
   affected_rows: Scalars['Int'];
   returning: Array<User_Roles>;
 };
@@ -2245,7 +2256,7 @@ export enum User_Roles_Update_Column {
 }
 
 export type Users = {
-   __typename: 'users';
+   __typename?: 'users';
   active: Scalars['Boolean'];
   avatar_url?: Maybe<Scalars['String']>;
   created_at: Scalars['timestamptz'];
@@ -2347,13 +2358,13 @@ export type UsersUser_Roles_AggregateArgs = {
 };
 
 export type Users_Aggregate = {
-   __typename: 'users_aggregate';
+   __typename?: 'users_aggregate';
   aggregate?: Maybe<Users_Aggregate_Fields>;
   nodes: Array<Users>;
 };
 
 export type Users_Aggregate_Fields = {
-   __typename: 'users_aggregate_fields';
+   __typename?: 'users_aggregate_fields';
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<Users_Max_Fields>;
   min?: Maybe<Users_Min_Fields>;
@@ -2442,7 +2453,7 @@ export type Users_Insert_Input = {
 };
 
 export type Users_Max_Fields = {
-   __typename: 'users_max_fields';
+   __typename?: 'users_max_fields';
   avatar_url?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   default_role?: Maybe<Scalars['String']>;
@@ -2463,7 +2474,7 @@ export type Users_Max_Order_By = {
 };
 
 export type Users_Min_Fields = {
-   __typename: 'users_min_fields';
+   __typename?: 'users_min_fields';
   avatar_url?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   default_role?: Maybe<Scalars['String']>;
@@ -2484,7 +2495,7 @@ export type Users_Min_Order_By = {
 };
 
 export type Users_Mutation_Response = {
-   __typename: 'users_mutation_response';
+   __typename?: 'users_mutation_response';
   affected_rows: Scalars['Int'];
   returning: Array<Users>;
 };
@@ -2584,6 +2595,7 @@ export type Uuid_Comparison_Exp = {
 
 export type InsertDocumentMutationVariables = {
   jobId: Scalars['uuid'];
+  title: Scalars['String'];
   pickup: Scalars['Boolean'];
   city?: Maybe<Scalars['String']>;
   postalCode?: Maybe<Scalars['String']>;
@@ -2596,9 +2608,9 @@ export type InsertDocumentMutationVariables = {
 export type InsertDocumentMutation = (
   { __typename: 'mutation_root' }
   & { insert_documents: Maybe<(
-    { __typename: 'documents_mutation_response' }
+    { __typename?: 'documents_mutation_response' }
     & { returning: Array<(
-      { __typename: 'documents' }
+      { __typename?: 'documents' }
       & Pick<Documents, 'city' | 'created_at' | 'id' | 'pickup' | 'postal_code' | 'province' | 'street' | 'unit'>
     )> }
   )> }
@@ -2608,11 +2620,11 @@ export type InsertJobMutationVariables = {};
 
 
 export type InsertJobMutation = (
-  { __typename: 'mutation_root' }
+  { __typename?: 'mutation_root' }
   & { insert_jobs: Maybe<(
-    { __typename: 'jobs_mutation_response' }
+    { __typename?: 'jobs_mutation_response' }
     & { returning: Array<(
-      { __typename: 'jobs' }
+      { __typename?: 'jobs' }
       & Pick<Jobs, 'id'>
     )> }
   )> }
@@ -2628,11 +2640,11 @@ export type InsertTargetMutationVariables = {
 
 
 export type InsertTargetMutation = (
-  { __typename: 'mutation_root' }
+  { __typename?: 'mutation_root' }
   & { insert_targets: Maybe<(
-    { __typename: 'targets_mutation_response' }
+    { __typename?: 'targets_mutation_response' }
     & { returning: Array<(
-      { __typename: 'targets' }
+      { __typename?: 'targets' }
       & Pick<Targets, 'id'>
     )> }
   )> }
@@ -2645,11 +2657,11 @@ export type SetJobTargetMutationVariables = {
 
 
 export type SetJobTargetMutation = (
-  { __typename: 'mutation_root' }
+  { __typename?: 'mutation_root' }
   & { update_jobs: Maybe<(
-    { __typename: 'jobs_mutation_response' }
+    { __typename?: 'jobs_mutation_response' }
     & { returning: Array<(
-      { __typename: 'jobs' }
+      { __typename?: 'jobs' }
       & Pick<Jobs, 'id' | 'target_id'>
     )> }
   )> }
@@ -2661,18 +2673,18 @@ export type SetRoleMutationVariables = {
 
 
 export type SetRoleMutation = (
-  { __typename: 'mutation_root' }
+  { __typename?: 'mutation_root' }
   & { insert_user_roles: Maybe<(
-    { __typename: 'user_roles_mutation_response' }
+    { __typename?: 'user_roles_mutation_response' }
     & Pick<User_Roles_Mutation_Response, 'affected_rows'>
   )> }
 );
 
 
 export const InsertDocumentDocument = gql`
-    mutation InsertDocument($jobId: uuid!, $pickup: Boolean!, $city: String, $postalCode: String, $province: String, $street: String, $unit: String) {
+    mutation InsertDocument($jobId: uuid!, $title: String!, $pickup: Boolean!, $city: String, $postalCode: String, $province: String, $street: String, $unit: String) {
   __typename
-  insert_documents(objects: {job_id: $jobId, pickup: $pickup, city: $city, postal_code: $postalCode, province: $province, street: $street, unit: $unit}) {
+  insert_documents(objects: {job_id: $jobId, pickup: $pickup, title: $title, city: $city, postal_code: $postalCode, province: $province, street: $street, unit: $unit}) {
     returning {
       city
       created_at
@@ -2702,6 +2714,7 @@ export type InsertDocumentMutationFn = ApolloReactCommon.MutationFunction<Insert
  * const [insertDocumentMutation, { data, loading, error }] = useInsertDocumentMutation({
  *   variables: {
  *      jobId: // value for 'jobId'
+ *      title: // value for 'title'
  *      pickup: // value for 'pickup'
  *      city: // value for 'city'
  *      postalCode: // value for 'postalCode'

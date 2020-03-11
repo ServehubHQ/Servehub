@@ -2,7 +2,7 @@ import { Box, Paper, Typography } from '@material-ui/core'
 import { useRouter } from 'next/router'
 import { CreateJobSteps } from '../../../components/CreateJobSteps'
 import { Page } from '../../../components/Page'
-import { useInsertJobMutation } from '../../../graphql.gen'
+import { useInsertJobMutation } from '../../../graphql-codegen'
 import { useEffect } from 'react'
 
 export default function JobsCreateTargetPage() {

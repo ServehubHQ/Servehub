@@ -6,8 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "gen": "graphql-codegen --config codegen.yml",
-    "gen-watch": "graphql-codegen --watch --config codegen.yml"
+    "gen": "graphql-codegen --config graphql-codegen.yml",
+    "gen-watch": "graphql-codegen --watch --config graphql-codegen.yml"
   },
   "dependencies": {
     "@apollo/client": "^3.0.0-beta.38",
@@ -30,6 +30,7 @@
     "react": "^16.13.0",
     "react-admin": "^3.2.3",
     "react-dom": "^16.13.0",
+    "react-dropzone": "^10.2.1",
     "react-hook-form": "^5.0.3",
     "seamless-immutable": "^7.1.4",
     "subscriptions-transport-ws": "^0.9.16"
