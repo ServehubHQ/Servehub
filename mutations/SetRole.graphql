@@ -1,5 +1,5 @@
-mutation SetRole($role: String!) {
-  insert_user_roles(objects: [{ role: $role }]) {
+mutation SetRole($role: String!, $userId: uuid!) {
+  insert_user_roles(objects: [{ role: $role, user_id: $userId }]) {
     affected_rows
   }
 }

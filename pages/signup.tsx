@@ -14,7 +14,6 @@ import { useRouter } from 'next/router'
 import { useCallback, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { SelectField } from '../components/SelectField'
-import { useSetRoleMutation } from '../graphql-codegen'
 import { useAuth } from '../lib/useAuth'
 
 export const useStyles = makeStyles((theme) => ({
@@ -56,7 +55,6 @@ interface FormData {
   role: string
 }
 
-// export default withData({ ssr: false, authenticationRequired: false })(
 export default function SignupPage() {
   const { isAuthenticated, authClient } = useAuth()
   const router = useRouter()
@@ -64,26 +62,28 @@ export default function SignupPage() {
   const { register, handleSubmit, errors, setError, control } = useForm<
     FormData
   >()
-  const [setRole] = useSetRoleMutation()
 
   const handleFormValid = useCallback(
     async ({ email, password, role }: FormData) => {
       try {
-        await authClient!.signup(email, email, password)
+        await authClient!.signup(email, email, password, { role })
       } catch (e) {
         console.error(e)
 
         const message = e.data?.message.replace('username', 'email')
-        setError('email', 'server', message)
+        setError(
+          'email',
+          'server',
+          message === 'An internal server error occurred'
+            ? 'This email is already in use'
+            : message,
+        )
         return
       }
 
       await authClient!.login(email, password)
-      await setRole({
-        variables: { role },
-      })
     },
-    [setError, authClient, setRole],
+    [setError, authClient],
   )
 
   useEffect(() => {
@@ -109,7 +109,7 @@ export default function SignupPage() {
             onSubmit={handleSubmit(handleFormValid)}
           >
             <TextField
-              variant='outlined'
+              variant='filled'
               margin='normal'
               required
               fullWidth
@@ -122,7 +122,7 @@ export default function SignupPage() {
               helperText={errors.email?.message}
             />
             <TextField
-              variant='outlined'
+              variant='filled'
               margin='normal'
               required
               fullWidth

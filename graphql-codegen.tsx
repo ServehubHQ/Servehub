@@ -2695,6 +2695,7 @@ export type SetJobTargetMutation = (
 
 export type SetRoleMutationVariables = {
   role: Scalars['String'];
+  userId: Scalars['uuid'];
 };
 
 
@@ -2911,8 +2912,8 @@ export type SetJobTargetMutationHookResult = ReturnType<typeof useSetJobTargetMu
 export type SetJobTargetMutationResult = ApolloReactCommon.MutationResult<SetJobTargetMutation>;
 export type SetJobTargetMutationOptions = ApolloReactCommon.BaseMutationOptions<SetJobTargetMutation, SetJobTargetMutationVariables>;
 export const SetRoleDocument = gql`
-    mutation SetRole($role: String!) {
-  insert_user_roles(objects: [{role: $role}]) {
+    mutation SetRole($role: String!, $userId: uuid!) {
+  insert_user_roles(objects: [{role: $role, user_id: $userId}]) {
     affected_rows
   }
 }
@@ -2933,6 +2934,7 @@ export type SetRoleMutationFn = ApolloReactCommon.MutationFunction<SetRoleMutati
  * const [setRoleMutation, { data, loading, error }] = useSetRoleMutation({
  *   variables: {
  *      role: // value for 'role'
+ *      userId: // value for 'userId'
  *   },
  * });
  */

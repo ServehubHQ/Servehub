@@ -21,6 +21,7 @@ export class AuthError extends Error {
 }
 
 export class AuthClient {
+  isAdmin = false
   baseUrl = config.nhostBackendUrl
   stateChangeCallbacks: (() => void)[] = []
   context?: NextPageContext

@@ -11,11 +11,21 @@ import { AuthClient } from './AuthClient'
 
 let apolloClient: ApolloClient<NormalizedCacheObject>
 
+interface AdminAuth {
+  isAdmin: boolean
+  adminSecret: string
+}
+
 export function getApolloClient(
-  authClient: AuthClient,
+  auth: AuthClient | AdminAuth,
   data?: NormalizedCacheObject,
 ) {
   const isBrowser = typeof window !== 'undefined'
+  if (auth.isAdmin && isBrowser) {
+    throw new Error('Attempted admin auth in browser')
+  }
+  const authClient = auth.isAdmin ? null : (auth as AuthClient)
+  const adminAtuh = auth.isAdmin ? (auth as AdminAuth) : null
 
   if (isBrowser && apolloClient) {
     return apolloClient
@@ -27,9 +37,20 @@ export function getApolloClient(
   })
 
   const authLink = setContext(async (a, { headers }) => {
-    if (!authClient || !authClient.isAuthenticated()) {
-      console.warn('attempted unauthorized GraphQL request')
+    if (adminAtuh) {
+      return {
+        headers: {
+          ...headers,
+          'x-hasura-admin-secret': adminAtuh.adminSecret,
+          'x-hasura-role': 'admin',
+        },
+      }
     }
+
+    if (!authClient) {
+      throw new Error('Attempting GraphQL request without auth')
+    }
+
     await authClient.refreshToken()
     const jwt = authClient?.getToken()
     const roles = authClient?.getRoles() || []
