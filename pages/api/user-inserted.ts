@@ -3,12 +3,9 @@ import {
   SetRoleDocument,
   SetRoleMutation,
   SetRoleMutationVariables,
-  SetStripeCustomerIdDocument,
-  SetStripeCustomerIdMutation,
-  SetStripeCustomerIdMutationVariables,
 } from '../../graphql-codegen'
+import { createStripeCustomer } from '../../lib/createStripeCustomer'
 import { getApolloClient } from '../../lib/getApolloClient'
-import { getStripeServerClient } from '../../lib/getStripeServerClient'
 import hasuraWebhookValid from '../../lib/hasuraWebhookValid'
 
 export default async function UserInsertedApi(
@@ -37,17 +34,8 @@ export default async function UserInsertedApi(
     mutation: SetRoleDocument,
   })
 
-  if (role === 'lawyer') {
-    const stripe = getStripeServerClient()
-    const customer = await stripe.customers.create()
-
-    await apollo.mutate<
-      SetStripeCustomerIdMutation,
-      SetStripeCustomerIdMutationVariables
-    >({
-      variables: { userId: user.id, stripeCustomerId: customer.id },
-      mutation: SetStripeCustomerIdDocument,
-    })
+  if (role === 'lawyer' && !user.stripe_customer_id) {
+    await createStripeCustomer(apollo, user.id)
   }
 
   res.send('okay')

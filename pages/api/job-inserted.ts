@@ -11,11 +11,13 @@ import { config } from '../../lib/config'
 import { getApolloClient } from '../../lib/getApolloClient'
 import { getStripeServerClient } from '../../lib/getStripeServerClient'
 import hasuraWebhookValid from '../../lib/hasuraWebhookValid'
+import { createStripeCustomer } from '../../lib/createStripeCustomer'
 
-export default async function JobInsertedApi(
+export default async function jobInsertedApi(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
+  console.log('jobInsertedApi')
   if (!hasuraWebhookValid(req, res)) return
   if (!config.hasuraAdminSecret || !config.stripeSecretKey) {
     throw new Error('Missing secrets required for Hasura webhooks')
@@ -39,27 +41,33 @@ export default async function JobInsertedApi(
     variables: { jobId: job.id },
   })
 
-  if (!data.users[0].stripe_customer_id) {
-    throw new Error('Job created by a user without a stripe_customer_id')
+  const stripeCustomerId = !data.jobs[0].lawyer.stripe_customer_id
+    ? await createStripeCustomer(apollo, data.jobs[0].lawyer.id)
+    : data.jobs[0].lawyer.stripe_customer_id
+
+  if (!job.stripe_payment_intent_id) {
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: 10000,
+      currency: 'cad',
+      customer: stripeCustomerId,
+    })
+
+    const { errors } = await apollo.mutate<
+      SetJobStripePaymentIntentMutation,
+      SetJobStripePaymentIntentMutationVariables
+    >({
+      variables: {
+        jobId: job.id,
+        stripePaymentIntentId: paymentIntent.id,
+        stripePaymentIntentClientSecret: paymentIntent.client_secret!,
+      },
+      mutation: SetJobStripePaymentIntentDocument,
+    })
+
+    if (errors) {
+      console.error(errors)
+    }
   }
-
-  const paymentIntent = await stripe.paymentIntents.create({
-    amount: 10000,
-    currency: 'cad',
-    customer: data.users[0].stripe_customer_id,
-  })
-
-  await apollo.mutate<
-    SetJobStripePaymentIntentMutation,
-    SetJobStripePaymentIntentMutationVariables
-  >({
-    variables: {
-      jobId: job.id,
-      stripePaymentIntentId: paymentIntent.id,
-      stripePaymentIntentClientSecret: paymentIntent.client_secret!,
-    },
-    mutation: SetJobStripePaymentIntentDocument,
-  })
 
   res.send('okay')
 }

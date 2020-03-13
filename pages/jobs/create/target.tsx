@@ -92,7 +92,6 @@ export default function JobsCreateTargetPage() {
                     required
                     label='Street Address'
                     name='street'
-                    autoFocus
                     fullWidth
                     inputRef={register({ required: true })}
                     error={Boolean(errors.street)}
@@ -106,7 +105,6 @@ export default function JobsCreateTargetPage() {
                     margin='normal'
                     label='Unit'
                     name='unit'
-                    autoFocus
                     fullWidth
                     inputRef={register({ required: true })}
                     error={Boolean(errors.unit)}
@@ -121,7 +119,6 @@ export default function JobsCreateTargetPage() {
                 required
                 label='Postal Code'
                 name='postalCode'
-                autoFocus
                 fullWidth
                 inputRef={register({ required: true })}
                 error={Boolean(errors.postalCode)}
@@ -136,7 +133,6 @@ export default function JobsCreateTargetPage() {
                     required
                     label='City'
                     name='city'
-                    autoFocus
                     fullWidth
                     inputRef={register({ required: true })}
                     error={Boolean(errors.city)}

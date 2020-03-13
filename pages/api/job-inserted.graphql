@@ -1,6 +1,10 @@
 query JobInserted($jobId: uuid!) {
-  users(where: { id: { _eq: $jobId } }) {
-    stripe_customer_id
+  jobs(where: { id: { _eq: $jobId } }) {
     id
+    stripe_payment_intent_id
+    lawyer {
+      stripe_customer_id
+      id
+    }
   }
 }

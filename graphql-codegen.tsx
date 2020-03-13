@@ -2776,9 +2776,13 @@ export type JobInsertedQueryVariables = {
 
 export type JobInsertedQuery = (
   { __typename?: 'query_root' }
-  & { users: Array<(
-    { __typename?: 'users' }
-    & Pick<Users, 'stripe_customer_id' | 'id'>
+  & { jobs: Array<(
+    { __typename?: 'jobs' }
+    & Pick<Jobs, 'id' | 'stripe_payment_intent_id'>
+    & { lawyer: (
+      { __typename?: 'users' }
+      & Pick<Users, 'stripe_customer_id' | 'id'>
+    ) }
   )> }
 );
 
@@ -2792,6 +2796,19 @@ export type JobsCreateDocumentsQuery = (
   & { documents: Array<(
     { __typename?: 'documents' }
     & Pick<Documents, 'id' | 'pickup' | 'title' | 'url' | 'street'>
+  )> }
+);
+
+export type JobsCreatePaymentQueryVariables = {
+  jobId: Scalars['uuid'];
+};
+
+
+export type JobsCreatePaymentQuery = (
+  { __typename?: 'query_root' }
+  & { jobs: Array<(
+    { __typename?: 'jobs' }
+    & Pick<Jobs, 'stripe_payment_intent_client_secret' | 'id'>
   )> }
 );
 
@@ -3088,9 +3105,13 @@ export type SetStripeCustomerIdMutationResult = ApolloReactCommon.MutationResult
 export type SetStripeCustomerIdMutationOptions = ApolloReactCommon.BaseMutationOptions<SetStripeCustomerIdMutation, SetStripeCustomerIdMutationVariables>;
 export const JobInsertedDocument = gql`
     query JobInserted($jobId: uuid!) {
-  users(where: {id: {_eq: $jobId}}) {
-    stripe_customer_id
+  jobs(where: {id: {_eq: $jobId}}) {
     id
+    stripe_payment_intent_id
+    lawyer {
+      stripe_customer_id
+      id
+    }
   }
 }
     `;
@@ -3158,3 +3179,37 @@ export function useJobsCreateDocumentsLazyQuery(baseOptions?: ApolloReactHooks.L
 export type JobsCreateDocumentsQueryHookResult = ReturnType<typeof useJobsCreateDocumentsQuery>;
 export type JobsCreateDocumentsLazyQueryHookResult = ReturnType<typeof useJobsCreateDocumentsLazyQuery>;
 export type JobsCreateDocumentsQueryResult = ApolloReactCommon.QueryResult<JobsCreateDocumentsQuery, JobsCreateDocumentsQueryVariables>;
+export const JobsCreatePaymentDocument = gql`
+    query JobsCreatePayment($jobId: uuid!) {
+  jobs(where: {id: {_eq: $jobId}}) {
+    stripe_payment_intent_client_secret
+    id
+  }
+}
+    `;
+
+/**
+ * __useJobsCreatePaymentQuery__
+ *
+ * To run a query within a React component, call `useJobsCreatePaymentQuery` and pass it any options that fit your needs.
+ * When your component renders, `useJobsCreatePaymentQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useJobsCreatePaymentQuery({
+ *   variables: {
+ *      jobId: // value for 'jobId'
+ *   },
+ * });
+ */
+export function useJobsCreatePaymentQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<JobsCreatePaymentQuery, JobsCreatePaymentQueryVariables>) {
+        return ApolloReactHooks.useQuery<JobsCreatePaymentQuery, JobsCreatePaymentQueryVariables>(JobsCreatePaymentDocument, baseOptions);
+      }
+export function useJobsCreatePaymentLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<JobsCreatePaymentQuery, JobsCreatePaymentQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<JobsCreatePaymentQuery, JobsCreatePaymentQueryVariables>(JobsCreatePaymentDocument, baseOptions);
+        }
+export type JobsCreatePaymentQueryHookResult = ReturnType<typeof useJobsCreatePaymentQuery>;
+export type JobsCreatePaymentLazyQueryHookResult = ReturnType<typeof useJobsCreatePaymentLazyQuery>;
+export type JobsCreatePaymentQueryResult = ApolloReactCommon.QueryResult<JobsCreatePaymentQuery, JobsCreatePaymentQueryVariables>;

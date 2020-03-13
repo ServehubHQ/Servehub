@@ -1,4 +1,10 @@
-import { Box, Button, Paper, Typography } from '@material-ui/core'
+import {
+  Box,
+  Button,
+  Paper,
+  Typography,
+  FormHelperText,
+} from '@material-ui/core'
 import {
   CardCvcElement,
   CardExpiryElement,
@@ -6,11 +12,13 @@ import {
   useElements,
   useStripe,
 } from '@stripe/react-stripe-js'
-import { useCallback } from 'react'
+import { useCallback, useState, useMemo } from 'react'
 import { CreateJobSteps } from '../../../components/CreateJobSteps'
 import { Page } from '../../../components/Page'
 import { StripeField } from '../../../components/StripeField'
 import { useAuthRequired } from '../../../lib/useAuthRequired'
+import { useJobsCreatePaymentQuery } from '../../../graphql-codegen'
+import { useRouter } from 'next/router'
 
 interface FormData {
   name: string
@@ -23,8 +31,16 @@ interface FormData {
 
 export default function JobsCreatePaymentPage() {
   useAuthRequired()
+  const router = useRouter()
   const stripe = useStripe()
   const elements = useElements()
+  const [error, setError] = useState<string | undefined>()
+  const jobId = useMemo(() => router.query.id, [router])
+  const { data } = useJobsCreatePaymentQuery({ variables: { jobId } })
+  const stripeClientSecret = useMemo(
+    () => data?.jobs[0].stripe_payment_intent_client_secret,
+    [data],
+  )
 
   const handleSubmit = useCallback(
     async (event) => {
@@ -32,20 +48,21 @@ export default function JobsCreatePaymentPage() {
       if (!stripe || !elements) return
 
       const card = elements.getElement(CardNumberElement)
-      console.log('card', card)
 
-      const { error, paymentMethod } = await stripe.createPaymentMethod({
-        type: 'card',
-        card: card!,
+      if (!card) {
+        throw new Error('Unable to locate Stripe CardNumberElement')
+      }
+
+      const { error } = await stripe.confirmCardPayment(stripeClientSecret!, {
+        payment_method: { card },
+        save_payment_method: true,
       })
 
       if (error) {
-        console.log('[error]', error)
-      } else {
-        console.log('[PaymentMethod]', paymentMethod)
+        setError(error.message)
       }
     },
-    [stripe, elements],
+    [stripe, elements, setError, stripeClientSecret],
   )
 
   return (
@@ -59,6 +76,8 @@ export default function JobsCreatePaymentPage() {
           <CreateJobSteps activeStep={3} />
 
           <form onSubmit={handleSubmit}>
+            <FormHelperText error>{error}</FormHelperText>
+
             <StripeField
               Element={CardNumberElement}
               label='Card Number'
@@ -86,7 +105,7 @@ export default function JobsCreatePaymentPage() {
                 type='submit'
                 variant='contained'
                 color='primary'
-                disabled={!stripe || !elements}
+                disabled={!stripe || !elements || !stripeClientSecret}
               >
                 Next
               </Button>
