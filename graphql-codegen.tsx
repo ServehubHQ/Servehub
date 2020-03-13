@@ -2282,6 +2282,7 @@ export type Users = {
   role: Roles;
   secret_token: Scalars['uuid'];
   secret_token_expires_at: Scalars['timestamptz'];
+  stripe_customer_id?: Maybe<Scalars['String']>;
   updated_at: Scalars['timestamptz'];
   user_accounts: Array<Auth_User_Accounts>;
   user_accounts_aggregate: Auth_User_Accounts_Aggregate;
@@ -2419,6 +2420,7 @@ export type Users_Bool_Exp = {
   role?: Maybe<Roles_Bool_Exp>;
   secret_token?: Maybe<Uuid_Comparison_Exp>;
   secret_token_expires_at?: Maybe<Timestamptz_Comparison_Exp>;
+  stripe_customer_id?: Maybe<String_Comparison_Exp>;
   updated_at?: Maybe<Timestamptz_Comparison_Exp>;
   user_accounts?: Maybe<Auth_User_Accounts_Bool_Exp>;
   user_providers?: Maybe<Auth_User_Providers_Bool_Exp>;
@@ -2457,6 +2459,7 @@ export type Users_Insert_Input = {
   role?: Maybe<Roles_Obj_Rel_Insert_Input>;
   secret_token?: Maybe<Scalars['uuid']>;
   secret_token_expires_at?: Maybe<Scalars['timestamptz']>;
+  stripe_customer_id?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
   user_accounts?: Maybe<Auth_User_Accounts_Arr_Rel_Insert_Input>;
   user_providers?: Maybe<Auth_User_Providers_Arr_Rel_Insert_Input>;
@@ -2471,6 +2474,7 @@ export type Users_Max_Fields = {
   display_name?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
   secret_token_expires_at?: Maybe<Scalars['timestamptz']>;
+  stripe_customer_id?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
@@ -2481,6 +2485,7 @@ export type Users_Max_Order_By = {
   display_name?: Maybe<Order_By>;
   email?: Maybe<Order_By>;
   secret_token_expires_at?: Maybe<Order_By>;
+  stripe_customer_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
 
@@ -2492,6 +2497,7 @@ export type Users_Min_Fields = {
   display_name?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
   secret_token_expires_at?: Maybe<Scalars['timestamptz']>;
+  stripe_customer_id?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
@@ -2502,6 +2508,7 @@ export type Users_Min_Order_By = {
   display_name?: Maybe<Order_By>;
   email?: Maybe<Order_By>;
   secret_token_expires_at?: Maybe<Order_By>;
+  stripe_customer_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
 
@@ -2536,6 +2543,7 @@ export type Users_Order_By = {
   role?: Maybe<Roles_Order_By>;
   secret_token?: Maybe<Order_By>;
   secret_token_expires_at?: Maybe<Order_By>;
+  stripe_customer_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
   user_accounts_aggregate?: Maybe<Auth_User_Accounts_Aggregate_Order_By>;
   user_providers_aggregate?: Maybe<Auth_User_Providers_Aggregate_Order_By>;
@@ -2558,6 +2566,7 @@ export enum Users_Select_Column {
   RegisterData = 'register_data',
   SecretToken = 'secret_token',
   SecretTokenExpiresAt = 'secret_token_expires_at',
+  StripeCustomerId = 'stripe_customer_id',
   UpdatedAt = 'updated_at'
 }
 
@@ -2573,6 +2582,7 @@ export type Users_Set_Input = {
   register_data?: Maybe<Scalars['jsonb']>;
   secret_token?: Maybe<Scalars['uuid']>;
   secret_token_expires_at?: Maybe<Scalars['timestamptz']>;
+  stripe_customer_id?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
@@ -2588,6 +2598,7 @@ export enum Users_Update_Column {
   RegisterData = 'register_data',
   SecretToken = 'secret_token',
   SecretTokenExpiresAt = 'secret_token_expires_at',
+  StripeCustomerId = 'stripe_customer_id',
   UpdatedAt = 'updated_at'
 }
 
@@ -2704,6 +2715,20 @@ export type SetRoleMutation = (
   & { insert_user_roles: Maybe<(
     { __typename?: 'user_roles_mutation_response' }
     & Pick<User_Roles_Mutation_Response, 'affected_rows'>
+  )> }
+);
+
+export type SetStripeCustomerIdMutationVariables = {
+  userId: Scalars['uuid'];
+  stripeCustomerId: Scalars['String'];
+};
+
+
+export type SetStripeCustomerIdMutation = (
+  { __typename?: 'mutation_root' }
+  & { update_users: Maybe<(
+    { __typename?: 'users_mutation_response' }
+    & Pick<Users_Mutation_Response, 'affected_rows'>
   )> }
 );
 
@@ -2944,6 +2969,39 @@ export function useSetRoleMutation(baseOptions?: ApolloReactHooks.MutationHookOp
 export type SetRoleMutationHookResult = ReturnType<typeof useSetRoleMutation>;
 export type SetRoleMutationResult = ApolloReactCommon.MutationResult<SetRoleMutation>;
 export type SetRoleMutationOptions = ApolloReactCommon.BaseMutationOptions<SetRoleMutation, SetRoleMutationVariables>;
+export const SetStripeCustomerIdDocument = gql`
+    mutation SetStripeCustomerId($userId: uuid!, $stripeCustomerId: String!) {
+  update_users(where: {id: {_eq: $userId}}, _set: {stripe_customer_id: $stripeCustomerId}) {
+    affected_rows
+  }
+}
+    `;
+export type SetStripeCustomerIdMutationFn = ApolloReactCommon.MutationFunction<SetStripeCustomerIdMutation, SetStripeCustomerIdMutationVariables>;
+
+/**
+ * __useSetStripeCustomerIdMutation__
+ *
+ * To run a mutation, you first call `useSetStripeCustomerIdMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetStripeCustomerIdMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setStripeCustomerIdMutation, { data, loading, error }] = useSetStripeCustomerIdMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *      stripeCustomerId: // value for 'stripeCustomerId'
+ *   },
+ * });
+ */
+export function useSetStripeCustomerIdMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SetStripeCustomerIdMutation, SetStripeCustomerIdMutationVariables>) {
+        return ApolloReactHooks.useMutation<SetStripeCustomerIdMutation, SetStripeCustomerIdMutationVariables>(SetStripeCustomerIdDocument, baseOptions);
+      }
+export type SetStripeCustomerIdMutationHookResult = ReturnType<typeof useSetStripeCustomerIdMutation>;
+export type SetStripeCustomerIdMutationResult = ApolloReactCommon.MutationResult<SetStripeCustomerIdMutation>;
+export type SetStripeCustomerIdMutationOptions = ApolloReactCommon.BaseMutationOptions<SetStripeCustomerIdMutation, SetStripeCustomerIdMutationVariables>;
 export const JobsCreateDocumentsDocument = gql`
     query JobsCreateDocuments($jobId: uuid!) {
   __typename

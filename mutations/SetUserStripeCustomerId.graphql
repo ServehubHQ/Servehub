@@ -1,0 +1,8 @@
+mutation SetStripeCustomerId($userId: uuid!, $stripeCustomerId: String!) {
+  update_users(
+    where: { id: { _eq: $userId } }
+    _set: { stripe_customer_id: $stripeCustomerId }
+  ) {
+    affected_rows
+  }
+}

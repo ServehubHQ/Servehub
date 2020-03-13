@@ -81,7 +81,7 @@ export default function SignupPage() {
         return
       }
 
-      await authClient!.login(email, password)
+      // await authClient!.login(email, password)
     },
     [setError, authClient],
   )
