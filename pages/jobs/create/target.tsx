@@ -68,7 +68,7 @@ export default function JobsCreateTargetPage() {
             Create Job
           </Typography>
 
-          <CreateJobSteps activeStep={1} />
+          <CreateJobSteps activeStep={0} />
 
           <form noValidate onSubmit={handleSubmit(handleFormValid)}>
             <Box display='flex' flexDirection='column'>

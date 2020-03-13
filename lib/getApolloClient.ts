@@ -8,12 +8,12 @@ import {
 import { setContext } from '@apollo/link-context'
 import fetch from 'cross-fetch'
 import { AuthClient } from './AuthClient'
+import { config } from './config'
 
 let apolloClient: ApolloClient<NormalizedCacheObject>
 
 interface AdminAuth {
   isAdmin: boolean
-  adminSecret: string
 }
 
 export function getApolloClient(
@@ -25,7 +25,6 @@ export function getApolloClient(
     throw new Error('Attempted admin auth in browser')
   }
   const authClient = auth.isAdmin ? null : (auth as AuthClient)
-  const adminAtuh = auth.isAdmin ? (auth as AdminAuth) : null
 
   if (isBrowser && apolloClient) {
     return apolloClient
@@ -37,11 +36,16 @@ export function getApolloClient(
   })
 
   const authLink = setContext(async (a, { headers }) => {
-    if (adminAtuh) {
+    if (auth.isAdmin) {
+      if (!config.hasuraAdminSecret) {
+        throw new Error(
+          'Attempt to make admin GraphQL request without hasura admin secret.',
+        )
+      }
       return {
         headers: {
           ...headers,
-          'x-hasura-admin-secret': adminAtuh.adminSecret,
+          'x-hasura-admin-secret': config.hasuraAdminSecret,
           'x-hasura-role': 'admin',
         },
       }

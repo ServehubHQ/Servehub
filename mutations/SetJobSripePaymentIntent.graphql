@@ -1,0 +1,15 @@
+mutation SetJobStripePaymentIntent(
+  $jobId: uuid!
+  $stripePaymentIntentId: String!
+  $stripePaymentIntentClientSecret: String!
+) {
+  update_jobs(
+    where: { id: { _eq: $jobId } }
+    _set: {
+      stripe_payment_intent_id: $stripePaymentIntentId
+      stripe_payment_intent_client_secret: $stripePaymentIntentClientSecret
+    }
+  ) {
+    affected_rows
+  }
+}

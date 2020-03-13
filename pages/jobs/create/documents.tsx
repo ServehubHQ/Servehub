@@ -112,8 +112,8 @@ export default function JobsCreateDocumentsPage() {
   )
 
   const handleNextClick = useCallback(() => {
-    console.log('push route', router.pathname)
-  }, [router])
+    router.push(`/jobs/create/payment?id=${jobId}`)
+  }, [router, jobId])
 
   return (
     <Page>
@@ -142,16 +142,13 @@ export default function JobsCreateDocumentsPage() {
                         </TableCell>
                         <TableCell align='right'>
                           {document.url ? (
-                            <Link href={document.url} passHref>
-                              <IconButton
-                                {...({
-                                  target: '_blank',
-                                  rel: 'noopener noreferrer',
-                                } as any)}
-                              >
-                                <Description fontSize='small' />
-                              </IconButton>
-                            </Link>
+                            <IconButton
+                              href={document.url}
+                              target='_blank'
+                              rel='noopener noreferrer'
+                            >
+                              <Description fontSize='small' />
+                            </IconButton>
                           ) : (
                             document.street
                           )}

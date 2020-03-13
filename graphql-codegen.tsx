@@ -826,6 +826,8 @@ export type Jobs = {
   lawyer_user_id: Scalars['uuid'];
   server?: Maybe<Users>;
   server_user_id?: Maybe<Scalars['uuid']>;
+  stripe_payment_intent_client_secret?: Maybe<Scalars['String']>;
+  stripe_payment_intent_id?: Maybe<Scalars['String']>;
   target?: Maybe<Targets>;
   target_id?: Maybe<Scalars['uuid']>;
   updated_at: Scalars['timestamptz'];
@@ -872,6 +874,8 @@ export type Jobs_Bool_Exp = {
   lawyer_user_id?: Maybe<Uuid_Comparison_Exp>;
   server?: Maybe<Users_Bool_Exp>;
   server_user_id?: Maybe<Uuid_Comparison_Exp>;
+  stripe_payment_intent_client_secret?: Maybe<String_Comparison_Exp>;
+  stripe_payment_intent_id?: Maybe<String_Comparison_Exp>;
   target?: Maybe<Targets_Bool_Exp>;
   target_id?: Maybe<Uuid_Comparison_Exp>;
   updated_at?: Maybe<Timestamptz_Comparison_Exp>;
@@ -889,6 +893,8 @@ export type Jobs_Insert_Input = {
   lawyer_user_id?: Maybe<Scalars['uuid']>;
   server?: Maybe<Users_Obj_Rel_Insert_Input>;
   server_user_id?: Maybe<Scalars['uuid']>;
+  stripe_payment_intent_client_secret?: Maybe<Scalars['String']>;
+  stripe_payment_intent_id?: Maybe<Scalars['String']>;
   target?: Maybe<Targets_Obj_Rel_Insert_Input>;
   target_id?: Maybe<Scalars['uuid']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
@@ -898,12 +904,16 @@ export type Jobs_Max_Fields = {
    __typename?: 'jobs_max_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
   description?: Maybe<Scalars['String']>;
+  stripe_payment_intent_client_secret?: Maybe<Scalars['String']>;
+  stripe_payment_intent_id?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 export type Jobs_Max_Order_By = {
   created_at?: Maybe<Order_By>;
   description?: Maybe<Order_By>;
+  stripe_payment_intent_client_secret?: Maybe<Order_By>;
+  stripe_payment_intent_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
 
@@ -911,12 +921,16 @@ export type Jobs_Min_Fields = {
    __typename?: 'jobs_min_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
   description?: Maybe<Scalars['String']>;
+  stripe_payment_intent_client_secret?: Maybe<Scalars['String']>;
+  stripe_payment_intent_id?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 export type Jobs_Min_Order_By = {
   created_at?: Maybe<Order_By>;
   description?: Maybe<Order_By>;
+  stripe_payment_intent_client_secret?: Maybe<Order_By>;
+  stripe_payment_intent_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
 
@@ -945,6 +959,8 @@ export type Jobs_Order_By = {
   lawyer_user_id?: Maybe<Order_By>;
   server?: Maybe<Users_Order_By>;
   server_user_id?: Maybe<Order_By>;
+  stripe_payment_intent_client_secret?: Maybe<Order_By>;
+  stripe_payment_intent_id?: Maybe<Order_By>;
   target?: Maybe<Targets_Order_By>;
   target_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
@@ -956,6 +972,8 @@ export enum Jobs_Select_Column {
   Id = 'id',
   LawyerUserId = 'lawyer_user_id',
   ServerUserId = 'server_user_id',
+  StripePaymentIntentClientSecret = 'stripe_payment_intent_client_secret',
+  StripePaymentIntentId = 'stripe_payment_intent_id',
   TargetId = 'target_id',
   UpdatedAt = 'updated_at'
 }
@@ -966,6 +984,8 @@ export type Jobs_Set_Input = {
   id?: Maybe<Scalars['uuid']>;
   lawyer_user_id?: Maybe<Scalars['uuid']>;
   server_user_id?: Maybe<Scalars['uuid']>;
+  stripe_payment_intent_client_secret?: Maybe<Scalars['String']>;
+  stripe_payment_intent_id?: Maybe<Scalars['String']>;
   target_id?: Maybe<Scalars['uuid']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
@@ -976,6 +996,8 @@ export enum Jobs_Update_Column {
   Id = 'id',
   LawyerUserId = 'lawyer_user_id',
   ServerUserId = 'server_user_id',
+  StripePaymentIntentClientSecret = 'stripe_payment_intent_client_secret',
+  StripePaymentIntentId = 'stripe_payment_intent_id',
   TargetId = 'target_id',
   UpdatedAt = 'updated_at'
 }
@@ -2687,6 +2709,21 @@ export type InsertTargetMutation = (
   )> }
 );
 
+export type SetJobStripePaymentIntentMutationVariables = {
+  jobId: Scalars['uuid'];
+  stripePaymentIntentId: Scalars['String'];
+  stripePaymentIntentClientSecret: Scalars['String'];
+};
+
+
+export type SetJobStripePaymentIntentMutation = (
+  { __typename?: 'mutation_root' }
+  & { update_jobs: Maybe<(
+    { __typename?: 'jobs_mutation_response' }
+    & Pick<Jobs_Mutation_Response, 'affected_rows'>
+  )> }
+);
+
 export type SetJobTargetMutationVariables = {
   id: Scalars['uuid'];
   targetId: Scalars['uuid'];
@@ -2729,6 +2766,19 @@ export type SetStripeCustomerIdMutation = (
   & { update_users: Maybe<(
     { __typename?: 'users_mutation_response' }
     & Pick<Users_Mutation_Response, 'affected_rows'>
+  )> }
+);
+
+export type JobInsertedQueryVariables = {
+  jobId: Scalars['uuid'];
+};
+
+
+export type JobInsertedQuery = (
+  { __typename?: 'query_root' }
+  & { users: Array<(
+    { __typename?: 'users' }
+    & Pick<Users, 'stripe_customer_id' | 'id'>
   )> }
 );
 
@@ -2900,6 +2950,40 @@ export function useInsertTargetMutation(baseOptions?: ApolloReactHooks.MutationH
 export type InsertTargetMutationHookResult = ReturnType<typeof useInsertTargetMutation>;
 export type InsertTargetMutationResult = ApolloReactCommon.MutationResult<InsertTargetMutation>;
 export type InsertTargetMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertTargetMutation, InsertTargetMutationVariables>;
+export const SetJobStripePaymentIntentDocument = gql`
+    mutation SetJobStripePaymentIntent($jobId: uuid!, $stripePaymentIntentId: String!, $stripePaymentIntentClientSecret: String!) {
+  update_jobs(where: {id: {_eq: $jobId}}, _set: {stripe_payment_intent_id: $stripePaymentIntentId, stripe_payment_intent_client_secret: $stripePaymentIntentClientSecret}) {
+    affected_rows
+  }
+}
+    `;
+export type SetJobStripePaymentIntentMutationFn = ApolloReactCommon.MutationFunction<SetJobStripePaymentIntentMutation, SetJobStripePaymentIntentMutationVariables>;
+
+/**
+ * __useSetJobStripePaymentIntentMutation__
+ *
+ * To run a mutation, you first call `useSetJobStripePaymentIntentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetJobStripePaymentIntentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setJobStripePaymentIntentMutation, { data, loading, error }] = useSetJobStripePaymentIntentMutation({
+ *   variables: {
+ *      jobId: // value for 'jobId'
+ *      stripePaymentIntentId: // value for 'stripePaymentIntentId'
+ *      stripePaymentIntentClientSecret: // value for 'stripePaymentIntentClientSecret'
+ *   },
+ * });
+ */
+export function useSetJobStripePaymentIntentMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SetJobStripePaymentIntentMutation, SetJobStripePaymentIntentMutationVariables>) {
+        return ApolloReactHooks.useMutation<SetJobStripePaymentIntentMutation, SetJobStripePaymentIntentMutationVariables>(SetJobStripePaymentIntentDocument, baseOptions);
+      }
+export type SetJobStripePaymentIntentMutationHookResult = ReturnType<typeof useSetJobStripePaymentIntentMutation>;
+export type SetJobStripePaymentIntentMutationResult = ApolloReactCommon.MutationResult<SetJobStripePaymentIntentMutation>;
+export type SetJobStripePaymentIntentMutationOptions = ApolloReactCommon.BaseMutationOptions<SetJobStripePaymentIntentMutation, SetJobStripePaymentIntentMutationVariables>;
 export const SetJobTargetDocument = gql`
     mutation SetJobTarget($id: uuid!, $targetId: uuid!) {
   update_jobs(where: {id: {_eq: $id}}, _set: {target_id: $targetId}) {
@@ -3002,6 +3086,40 @@ export function useSetStripeCustomerIdMutation(baseOptions?: ApolloReactHooks.Mu
 export type SetStripeCustomerIdMutationHookResult = ReturnType<typeof useSetStripeCustomerIdMutation>;
 export type SetStripeCustomerIdMutationResult = ApolloReactCommon.MutationResult<SetStripeCustomerIdMutation>;
 export type SetStripeCustomerIdMutationOptions = ApolloReactCommon.BaseMutationOptions<SetStripeCustomerIdMutation, SetStripeCustomerIdMutationVariables>;
+export const JobInsertedDocument = gql`
+    query JobInserted($jobId: uuid!) {
+  users(where: {id: {_eq: $jobId}}) {
+    stripe_customer_id
+    id
+  }
+}
+    `;
+
+/**
+ * __useJobInsertedQuery__
+ *
+ * To run a query within a React component, call `useJobInsertedQuery` and pass it any options that fit your needs.
+ * When your component renders, `useJobInsertedQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useJobInsertedQuery({
+ *   variables: {
+ *      jobId: // value for 'jobId'
+ *   },
+ * });
+ */
+export function useJobInsertedQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<JobInsertedQuery, JobInsertedQueryVariables>) {
+        return ApolloReactHooks.useQuery<JobInsertedQuery, JobInsertedQueryVariables>(JobInsertedDocument, baseOptions);
+      }
+export function useJobInsertedLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<JobInsertedQuery, JobInsertedQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<JobInsertedQuery, JobInsertedQueryVariables>(JobInsertedDocument, baseOptions);
+        }
+export type JobInsertedQueryHookResult = ReturnType<typeof useJobInsertedQuery>;
+export type JobInsertedLazyQueryHookResult = ReturnType<typeof useJobInsertedLazyQuery>;
+export type JobInsertedQueryResult = ApolloReactCommon.QueryResult<JobInsertedQuery, JobInsertedQueryVariables>;
 export const JobsCreateDocumentsDocument = gql`
     query JobsCreateDocuments($jobId: uuid!) {
   __typename

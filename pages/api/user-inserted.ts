@@ -1,30 +1,21 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import Stripe from 'stripe'
 import {
   SetRoleDocument,
+  SetRoleMutation,
+  SetRoleMutationVariables,
   SetStripeCustomerIdDocument,
+  SetStripeCustomerIdMutation,
+  SetStripeCustomerIdMutationVariables,
 } from '../../graphql-codegen'
-import { config } from '../../lib/config'
 import { getApolloClient } from '../../lib/getApolloClient'
+import { getStripeServerClient } from '../../lib/getStripeServerClient'
+import hasuraWebhookValid from '../../lib/hasuraWebhookValid'
 
 export default async function UserInsertedApi(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  if (!config.hasuraAdminSecret || !config.stripeSecretKey) {
-    throw new Error('Missing secrets required for Hasura webhooks')
-  }
-
-  if (req.headers['x-hasura-webhook-secret'] !== config.hasuraWebhookSecret) {
-    console.log(
-      'invalid secret',
-      req.headers['x-hasura-webhook-secret'],
-      config.hasuraWebhookSecret,
-      req.headers,
-    )
-    res.writeHead(403).end()
-    return
-  }
+  if (!hasuraWebhookValid(req, res)) return
 
   const {
     event: {
@@ -39,23 +30,21 @@ export default async function UserInsertedApi(
     return
   }
 
-  const apollo = getApolloClient({
-    isAdmin: true,
-    adminSecret: config.hasuraAdminSecret,
-  })
+  const apollo = getApolloClient({ isAdmin: true })
 
-  await apollo.mutate({
+  await apollo.mutate<SetRoleMutation, SetRoleMutationVariables>({
     variables: { userId: user.id, role },
     mutation: SetRoleDocument,
   })
 
   if (role === 'lawyer') {
-    const stripe = new Stripe(config.stripeSecretKey, {
-      apiVersion: config.stripeApiVersion,
-    })
+    const stripe = getStripeServerClient()
     const customer = await stripe.customers.create()
 
-    await apollo.mutate({
+    await apollo.mutate<
+      SetStripeCustomerIdMutation,
+      SetStripeCustomerIdMutationVariables
+    >({
       variables: { userId: user.id, stripeCustomerId: customer.id },
       mutation: SetStripeCustomerIdDocument,
     })

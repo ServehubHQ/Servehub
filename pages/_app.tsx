@@ -5,9 +5,13 @@ import {
 } from '@apollo/client'
 import { ThemeProvider } from '@material-ui/core'
 import CssBaseline from '@material-ui/core/CssBaseline'
+import { Elements } from '@stripe/react-stripe-js'
+import { loadStripe } from '@stripe/stripe-js'
 import { AppContext as NextAppContext, AppProps } from 'next/app'
 import Head from 'next/head'
+import { useMemo } from 'react'
 import { AuthClient } from '../lib/AuthClient'
+import { config } from '../lib/config'
 import { getApolloClient } from '../lib/getApolloClient'
 import { getAuthClient } from '../lib/getAuthClient'
 import { theme } from '../lib/theme'
@@ -36,12 +40,16 @@ export default function ServeHubApp({
     apolloClient = getApolloClient(authClient, apolloState)
   }
 
+  const stripe = useMemo(() => loadStripe(config.stripePublishableKey), [])
+
   return (
     <AuthProvider client={authClient}>
       <ApolloProvider client={apolloClient}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <Component {...pageProps} />
+          <Elements stripe={stripe}>
+            <Component {...pageProps} />
+          </Elements>
         </ThemeProvider>
       </ApolloProvider>
     </AuthProvider>

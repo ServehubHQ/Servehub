@@ -1,0 +1,6 @@
+query JobInserted($jobId: uuid!) {
+  users(where: { id: { _eq: $jobId } }) {
+    stripe_customer_id
+    id
+  }
+}
