@@ -4,5 +4,7 @@ query JobsCreateDocuments($jobId: uuid!) {
     id
     pickup
     title
+    url
+    street
   }
 }

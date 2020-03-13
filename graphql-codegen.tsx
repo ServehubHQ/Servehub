@@ -617,6 +617,7 @@ export type Documents = {
   title: Scalars['String'];
   unit?: Maybe<Scalars['String']>;
   updated_at: Scalars['timestamptz'];
+  url?: Maybe<Scalars['String']>;
 };
 
 export type Documents_Aggregate = {
@@ -665,6 +666,7 @@ export type Documents_Bool_Exp = {
   title?: Maybe<String_Comparison_Exp>;
   unit?: Maybe<String_Comparison_Exp>;
   updated_at?: Maybe<Timestamptz_Comparison_Exp>;
+  url?: Maybe<String_Comparison_Exp>;
 };
 
 export enum Documents_Constraint {
@@ -684,6 +686,7 @@ export type Documents_Insert_Input = {
   title?: Maybe<Scalars['String']>;
   unit?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
+  url?: Maybe<Scalars['String']>;
 };
 
 export type Documents_Max_Fields = {
@@ -696,6 +699,7 @@ export type Documents_Max_Fields = {
   title?: Maybe<Scalars['String']>;
   unit?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
+  url?: Maybe<Scalars['String']>;
 };
 
 export type Documents_Max_Order_By = {
@@ -707,6 +711,7 @@ export type Documents_Max_Order_By = {
   title?: Maybe<Order_By>;
   unit?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
+  url?: Maybe<Order_By>;
 };
 
 export type Documents_Min_Fields = {
@@ -719,6 +724,7 @@ export type Documents_Min_Fields = {
   title?: Maybe<Scalars['String']>;
   unit?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
+  url?: Maybe<Scalars['String']>;
 };
 
 export type Documents_Min_Order_By = {
@@ -730,6 +736,7 @@ export type Documents_Min_Order_By = {
   title?: Maybe<Order_By>;
   unit?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
+  url?: Maybe<Order_By>;
 };
 
 export type Documents_Mutation_Response = {
@@ -762,6 +769,7 @@ export type Documents_Order_By = {
   title?: Maybe<Order_By>;
   unit?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
+  url?: Maybe<Order_By>;
 };
 
 export enum Documents_Select_Column {
@@ -775,7 +783,8 @@ export enum Documents_Select_Column {
   Street = 'street',
   Title = 'title',
   Unit = 'unit',
-  UpdatedAt = 'updated_at'
+  UpdatedAt = 'updated_at',
+  Url = 'url'
 }
 
 export type Documents_Set_Input = {
@@ -790,6 +799,7 @@ export type Documents_Set_Input = {
   title?: Maybe<Scalars['String']>;
   unit?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
+  url?: Maybe<Scalars['String']>;
 };
 
 export enum Documents_Update_Column {
@@ -803,7 +813,8 @@ export enum Documents_Update_Column {
   Street = 'street',
   Title = 'title',
   Unit = 'unit',
-  UpdatedAt = 'updated_at'
+  UpdatedAt = 'updated_at',
+  Url = 'url'
 }
 
 export type Jobs = {
@@ -2610,6 +2621,7 @@ export type InsertDocumentMutationVariables = {
   jobId: Scalars['uuid'];
   title: Scalars['String'];
   pickup: Scalars['Boolean'];
+  url?: Maybe<Scalars['String']>;
   city?: Maybe<Scalars['String']>;
   postalCode?: Maybe<Scalars['String']>;
   province?: Maybe<Scalars['String']>;
@@ -2703,7 +2715,7 @@ export type JobsCreateDocumentsQuery = (
   { __typename: 'query_root' }
   & { documents: Array<(
     { __typename?: 'documents' }
-    & Pick<Documents, 'id' | 'pickup' | 'title'>
+    & Pick<Documents, 'id' | 'pickup' | 'title' | 'url' | 'street'>
   )> }
 );
 
@@ -2741,9 +2753,9 @@ export type DeleteDocumentMutationHookResult = ReturnType<typeof useDeleteDocume
 export type DeleteDocumentMutationResult = ApolloReactCommon.MutationResult<DeleteDocumentMutation>;
 export type DeleteDocumentMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteDocumentMutation, DeleteDocumentMutationVariables>;
 export const InsertDocumentDocument = gql`
-    mutation InsertDocument($jobId: uuid!, $title: String!, $pickup: Boolean!, $city: String, $postalCode: String, $province: String, $street: String, $unit: String) {
+    mutation InsertDocument($jobId: uuid!, $title: String!, $pickup: Boolean!, $url: String, $city: String, $postalCode: String, $province: String, $street: String, $unit: String) {
   __typename
-  insert_documents(objects: {job_id: $jobId, pickup: $pickup, title: $title, city: $city, postal_code: $postalCode, province: $province, street: $street, unit: $unit}) {
+  insert_documents(objects: {job_id: $jobId, pickup: $pickup, url: $url, title: $title, city: $city, postal_code: $postalCode, province: $province, street: $street, unit: $unit}) {
     returning {
       city
       created_at
@@ -2775,6 +2787,7 @@ export type InsertDocumentMutationFn = ApolloReactCommon.MutationFunction<Insert
  *      jobId: // value for 'jobId'
  *      title: // value for 'title'
  *      pickup: // value for 'pickup'
+ *      url: // value for 'url'
  *      city: // value for 'city'
  *      postalCode: // value for 'postalCode'
  *      province: // value for 'province'
@@ -2936,6 +2949,8 @@ export const JobsCreateDocumentsDocument = gql`
     id
     pickup
     title
+    url
+    street
   }
 }
     `;

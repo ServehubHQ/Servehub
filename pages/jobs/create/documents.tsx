@@ -4,37 +4,36 @@ import {
   FormControl,
   FormControlLabel,
   Grid,
+  IconButton,
   InputLabel,
   makeStyles,
   Paper,
   Select,
   Switch,
-  TextField,
-  Typography,
-  TableContainer,
   Table,
+  TableBody,
+  TableCell,
+  TableContainer,
   TableHead,
   TableRow,
-  TableCell,
-  TableBody,
-  IconButton,
+  TextField,
+  Typography,
 } from '@material-ui/core'
+import { Delete, Description } from '@material-ui/icons'
 import { useRouter } from 'next/router'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { useForm } from 'react-hook-form'
 import { CreateJobSteps } from '../../../components/CreateJobSteps'
 import { Page } from '../../../components/Page'
 import {
+  useDeleteDocumentMutation,
   useInsertDocumentMutation,
   useJobsCreateDocumentsQuery,
-  useDeleteDocumentMutation,
 } from '../../../graphql-codegen'
+import { uploadFile } from '../../../lib/uploadFile'
 import { useAuthRequired } from '../../../lib/useAuthRequired'
-import { Delete } from '@material-ui/icons'
-import nhost from 'nhost-js-sdk'
-import { config } from '../../../lib/config'
-import { useAuth } from '../../../lib/useAuth'
+import Link from 'next/link'
 
 export const useStyles = makeStyles((theme) => ({
   dropzone: {
@@ -46,6 +45,7 @@ export const useStyles = makeStyles((theme) => ({
 interface FormData {
   pickup: boolean
   title: string
+  url?: string
   street?: string
   unit?: string
   postalCode?: string
@@ -55,7 +55,6 @@ interface FormData {
 
 export default function JobsCreateDocumentsPage() {
   useAuthRequired()
-  const { authClient } = useAuth()
   const styles = useStyles()
   const router = useRouter()
   const jobId = useMemo(() => router.query.id, [router])
@@ -64,38 +63,32 @@ export default function JobsCreateDocumentsPage() {
   })
   const [insertDocument] = useInsertDocumentMutation()
   const [deleteDocument] = useDeleteDocumentMutation()
-  const { register, handleSubmit, errors, watch } = useForm<FormData>()
-  const pickup = watch('pickup')
+  const {
+    register,
+    handleSubmit,
+    errors,
+    watch,
+    getValues,
+    setValue,
+  } = useForm<FormData>()
+  const { pickup, url: documentUrl } = watch(['pickup', 'url'])
+
+  useEffect(() => {
+    register({ name: 'url' })
+  }, [register])
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: useCallback(
       async (uploadedFiles) => {
-        nhost.initializeApp({ endpoint: config.nhostBackendUrl })
-        const storage = nhost.storage()
-
-        // a needed hack, since we're not using their auth lib
-        storage.inMemory.jwt_token = authClient!.getToken()
-
-        for (const file of uploadedFiles) {
-          const result = await storage.put(
-            `/documents/${jobId}/${Math.round(Math.random() * 1000)}`,
-            file,
-            {},
-            (event: ProgressEvent) => {
-              if (event.lengthComputable) {
-                console.log('upload spinning')
-              } else {
-                console.log('upload', event.loaded, '/', event.total)
-              }
-            },
-          )
-          console.log(result)
-          const url = `${config.nhostBackendUrl}/${result.key}?token=${result.token}`
-          console.log(url)
-        }
-        console.log('uploadedFiles', uploadedFiles)
+        const url = await uploadFile(
+          uploadedFiles[0],
+          `/documents/${jobId}`,
+          getValues()['title'],
+        )
+        console.log(url)
+        setValue('url', url)
       },
-      [jobId, authClient],
+      [jobId, getValues, setValue],
     ),
   })
 
@@ -115,7 +108,7 @@ export default function JobsCreateDocumentsPage() {
       })
       await refetch()
     },
-    [insertDocument, refetch],
+    [insertDocument, refetch, jobId],
   )
 
   const handleNextClick = useCallback(() => {
@@ -137,7 +130,7 @@ export default function JobsCreateDocumentsPage() {
                   <TableHead>
                     <TableRow>
                       <TableCell>Title</TableCell>
-                      <TableCell align='right'>Requires Pickup</TableCell>
+                      <TableCell align='right'>Location</TableCell>
                       <TableCell align='right'>Delete</TableCell>
                     </TableRow>
                   </TableHead>
@@ -148,7 +141,20 @@ export default function JobsCreateDocumentsPage() {
                           {document.title}
                         </TableCell>
                         <TableCell align='right'>
-                          {document.pickup ? 'Yes' : 'No'}
+                          {document.url ? (
+                            <Link href={document.url} passHref>
+                              <IconButton
+                                {...({
+                                  target: '_blank',
+                                  rel: 'noopener noreferrer',
+                                } as any)}
+                              >
+                                <Description fontSize='small' />
+                              </IconButton>
+                            </Link>
+                          ) : (
+                            document.street
+                          )}
                         </TableCell>
                         <TableCell align='right'>
                           <IconButton
@@ -277,9 +283,23 @@ export default function JobsCreateDocumentsPage() {
                 >
                   <Box p={5} alignItems='center'>
                     <input {...getInputProps()} />
-                    <Typography align='center'>
-                      Drop or click to upload files
-                    </Typography>
+                    {documentUrl ? (
+                      <Typography align='center'>
+                        {'Doument uploaded! '}
+                        <a
+                          href={documentUrl}
+                          target='_blank'
+                          rel='noopener noreferrer'
+                        >
+                          Preview here,
+                        </a>
+                        {' or upload another to replace.'}
+                      </Typography>
+                    ) : (
+                      <Typography align='center'>
+                        Drop or click to upload files
+                      </Typography>
+                    )}
                   </Box>
                 </Paper>
               )}
