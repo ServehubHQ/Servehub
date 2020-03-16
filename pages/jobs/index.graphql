@@ -7,6 +7,8 @@ query JobsList {
     target {
       id
       name
+
+      ...JobMapTarget
     }
   }
 }

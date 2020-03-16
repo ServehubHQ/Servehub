@@ -884,7 +884,8 @@ export type Jobs_Bool_Exp = {
 };
 
 export enum Jobs_Constraint {
-  JobsPkey = 'jobs_pkey'
+  JobsPkey = 'jobs_pkey',
+  JobsTargetIdKey = 'jobs_target_id_key'
 }
 
 export type Jobs_Insert_Input = {
@@ -2644,6 +2645,11 @@ export type Uuid_Comparison_Exp = {
   _nin?: Maybe<Array<Scalars['uuid']>>;
 };
 
+export type JobMapTargetFragment = (
+  { __typename?: 'targets' }
+  & Pick<Targets, 'id' | 'street' | 'unit' | 'city' | 'postal_code' | 'province'>
+);
+
 export type DeleteDocumentMutationVariables = {
   id: Scalars['uuid'];
 };
@@ -2819,6 +2825,7 @@ export type JobDetialsQuery = (
     & { target: Maybe<(
       { __typename?: 'targets' }
       & Pick<Targets, 'id' | 'name'>
+      & JobMapTargetFragment
     )> }
   )> }
 );
@@ -2860,11 +2867,21 @@ export type JobsListQuery = (
     & { target: Maybe<(
       { __typename?: 'targets' }
       & Pick<Targets, 'id' | 'name'>
+      & JobMapTargetFragment
     )> }
   )> }
 );
 
-
+export const JobMapTargetFragmentDoc = gql`
+    fragment JobMapTarget on targets {
+  id
+  street
+  unit
+  city
+  postal_code
+  province
+}
+    `;
 export const DeleteDocumentDocument = gql`
     mutation DeleteDocument($id: uuid!) {
   delete_documents(where: {id: {_eq: $id}}) {
@@ -3234,10 +3251,11 @@ export const JobDetialsDocument = gql`
     target {
       id
       name
+      ...JobMapTarget
     }
   }
 }
-    `;
+    ${JobMapTargetFragmentDoc}`;
 
 /**
  * __useJobDetialsQuery__
@@ -3345,10 +3363,11 @@ export const JobsListDocument = gql`
     target {
       id
       name
+      ...JobMapTarget
     }
   }
 }
-    `;
+    ${JobMapTargetFragmentDoc}`;
 
 /**
  * __useJobsListQuery__

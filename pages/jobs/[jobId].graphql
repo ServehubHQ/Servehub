@@ -7,6 +7,8 @@ query JobDetials($jobId: uuid!) {
     target {
       id
       name
+
+      ...JobMapTarget
     }
   }
 }

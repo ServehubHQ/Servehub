@@ -1,0 +1,8 @@
+fragment JobMapTarget on targets {
+  id
+  street
+  unit
+  city
+  postal_code
+  province
+}

@@ -1,17 +1,20 @@
 import {
   Box,
+  Breadcrumbs,
+  Card,
+  CardContent,
+  CardHeader,
   Grid,
+  Link as MuiLink,
   Paper,
   Typography,
-  Breadcrumbs,
-  Link as MuiLink,
 } from '@material-ui/core'
-import { CheckBox, CheckBoxOutlineBlank } from '@material-ui/icons'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { JobMap } from '../../components/JobMap'
 import { Page } from '../../components/Page'
 import { useJobDetialsQuery } from '../../graphql-codegen'
 import { useAuthRequired } from '../../lib/useAuthRequired'
-import Link from 'next/link'
 
 export default function JobDetailsPage() {
   useAuthRequired()
@@ -22,9 +25,9 @@ export default function JobDetailsPage() {
 
   return (
     <Page>
-      <Paper>
-        <Box p={2}>
-          <Box mb={4}>
+      <Box mb={4}>
+        <Paper>
+          <Box p={2}>
             <Breadcrumbs aria-label='breadcrumb'>
               <Link href='/jobs' passHref>
                 <MuiLink color='inherit'>Jobs</MuiLink>
@@ -34,30 +37,30 @@ export default function JobDetailsPage() {
               </Typography>
             </Breadcrumbs>
           </Box>
-          <Grid container>
-            <Grid item sm={4}>
+        </Paper>
+      </Box>
+      <Grid container spacing={4}>
+        <Grid item sm={8} lg={6}>
+          <Card>
+            <CardHeader title='Job Details' />
+            <CardContent>
               <Typography variant='subtitle1' color='textSecondary'>
                 Target
               </Typography>
               <Typography variant='h6' component='h2'>
                 {data?.jobs_by_pk?.target?.name}
               </Typography>
-            </Grid>
-            <Grid item sm={2}>
-              <Typography variant='subtitle1' color='textSecondary'>
-                Paid
-              </Typography>
-              <Typography variant='h6' component='h2'>
-                {data?.jobs_by_pk?.stripe_payment_intent_succeeded ? (
-                  <CheckBox />
-                ) : (
-                  <CheckBoxOutlineBlank />
-                )}
-              </Typography>
-            </Grid>
-          </Grid>
-        </Box>
-      </Paper>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item sm={4} lg={6}>
+          <Paper>
+            {data?.jobs_by_pk?.target ? (
+              <JobMap target={data.jobs_by_pk.target} />
+            ) : null}
+          </Paper>
+        </Grid>
+      </Grid>
     </Page>
   )
 }

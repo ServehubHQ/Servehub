@@ -13,7 +13,7 @@ import {
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { ReactNode, useCallback, useState, MouseEvent } from 'react'
-import { useAuth } from '../../lib/useAuth'
+import { useAuth } from '../lib/useAuth'
 import { AccountCircle } from '@material-ui/icons'
 
 interface PageProps {
