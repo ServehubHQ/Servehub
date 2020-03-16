@@ -6,18 +6,18 @@ import {
   SetJobStripePaymentIntentDocument,
   SetJobStripePaymentIntentMutation,
   SetJobStripePaymentIntentMutationVariables,
-} from '../../graphql-codegen'
-import { config } from '../../lib/config'
-import { getApolloClient } from '../../lib/getApolloClient'
-import { getStripeServerClient } from '../../lib/getStripeServerClient'
-import hasuraWebhookValid from '../../lib/hasuraWebhookValid'
-import { createStripeCustomer } from '../../lib/createStripeCustomer'
+} from '../../../graphql-codegen'
+import { config } from '../../../lib/config'
+import { getApolloClient } from '../../../lib/getApolloClient'
+import { getStripeServerClient } from '../../../lib/getStripeServerClient'
+import hasuraWebhookValid from '../../../lib/hasuraWebhookValid'
+import { createStripeCustomer } from '../../../lib/createStripeCustomer'
 
-export default async function jobInsertedApi(
+export default async function hasurajobInsertedApi(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  console.log('jobInsertedApi')
+  console.log('hasurajobInsertedApi')
   if (!hasuraWebhookValid(req, res)) return
   if (!config.hasuraAdminSecret || !config.stripeSecretKey) {
     throw new Error('Missing secrets required for Hasura webhooks')
@@ -50,6 +50,9 @@ export default async function jobInsertedApi(
       amount: 10000,
       currency: 'cad',
       customer: stripeCustomerId,
+      metadata: {
+        jobId: job.id,
+      },
     })
 
     const { errors } = await apollo.mutate<
@@ -69,5 +72,5 @@ export default async function jobInsertedApi(
     }
   }
 
-  res.send('okay')
+  res.send('✔')
 }

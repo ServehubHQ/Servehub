@@ -16,7 +16,7 @@ export default async function hasuraWebhookValid(
       config.hasuraWebhookSecret,
       req.headers,
     )
-    res.writeHead(403).end()
+    res.status(403).end()
     return false
   } else {
     return true

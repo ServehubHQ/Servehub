@@ -60,9 +60,12 @@ export default function JobsCreatePaymentPage() {
 
       if (error) {
         setError(error.message)
+        return
       }
+
+      router.push(`/jobs/${jobId}`)
     },
-    [stripe, elements, setError, stripeClientSecret],
+    [stripe, elements, setError, stripeClientSecret, router, jobId],
   )
 
   return (

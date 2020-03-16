@@ -828,6 +828,7 @@ export type Jobs = {
   server_user_id?: Maybe<Scalars['uuid']>;
   stripe_payment_intent_client_secret?: Maybe<Scalars['String']>;
   stripe_payment_intent_id?: Maybe<Scalars['String']>;
+  stripe_payment_intent_succeeded: Scalars['Boolean'];
   target?: Maybe<Targets>;
   target_id?: Maybe<Scalars['uuid']>;
   updated_at: Scalars['timestamptz'];
@@ -876,6 +877,7 @@ export type Jobs_Bool_Exp = {
   server_user_id?: Maybe<Uuid_Comparison_Exp>;
   stripe_payment_intent_client_secret?: Maybe<String_Comparison_Exp>;
   stripe_payment_intent_id?: Maybe<String_Comparison_Exp>;
+  stripe_payment_intent_succeeded?: Maybe<Boolean_Comparison_Exp>;
   target?: Maybe<Targets_Bool_Exp>;
   target_id?: Maybe<Uuid_Comparison_Exp>;
   updated_at?: Maybe<Timestamptz_Comparison_Exp>;
@@ -895,6 +897,7 @@ export type Jobs_Insert_Input = {
   server_user_id?: Maybe<Scalars['uuid']>;
   stripe_payment_intent_client_secret?: Maybe<Scalars['String']>;
   stripe_payment_intent_id?: Maybe<Scalars['String']>;
+  stripe_payment_intent_succeeded?: Maybe<Scalars['Boolean']>;
   target?: Maybe<Targets_Obj_Rel_Insert_Input>;
   target_id?: Maybe<Scalars['uuid']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
@@ -961,6 +964,7 @@ export type Jobs_Order_By = {
   server_user_id?: Maybe<Order_By>;
   stripe_payment_intent_client_secret?: Maybe<Order_By>;
   stripe_payment_intent_id?: Maybe<Order_By>;
+  stripe_payment_intent_succeeded?: Maybe<Order_By>;
   target?: Maybe<Targets_Order_By>;
   target_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
@@ -974,6 +978,7 @@ export enum Jobs_Select_Column {
   ServerUserId = 'server_user_id',
   StripePaymentIntentClientSecret = 'stripe_payment_intent_client_secret',
   StripePaymentIntentId = 'stripe_payment_intent_id',
+  StripePaymentIntentSucceeded = 'stripe_payment_intent_succeeded',
   TargetId = 'target_id',
   UpdatedAt = 'updated_at'
 }
@@ -986,6 +991,7 @@ export type Jobs_Set_Input = {
   server_user_id?: Maybe<Scalars['uuid']>;
   stripe_payment_intent_client_secret?: Maybe<Scalars['String']>;
   stripe_payment_intent_id?: Maybe<Scalars['String']>;
+  stripe_payment_intent_succeeded?: Maybe<Scalars['Boolean']>;
   target_id?: Maybe<Scalars['uuid']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
@@ -998,6 +1004,7 @@ export enum Jobs_Update_Column {
   ServerUserId = 'server_user_id',
   StripePaymentIntentClientSecret = 'stripe_payment_intent_client_secret',
   StripePaymentIntentId = 'stripe_payment_intent_id',
+  StripePaymentIntentSucceeded = 'stripe_payment_intent_succeeded',
   TargetId = 'target_id',
   UpdatedAt = 'updated_at'
 }
@@ -2724,6 +2731,19 @@ export type SetJobStripePaymentIntentMutation = (
   )> }
 );
 
+export type SetJobStripePaymentIntentSucceededMutationVariables = {
+  stripePaymentIntentId: Scalars['String'];
+};
+
+
+export type SetJobStripePaymentIntentSucceededMutation = (
+  { __typename?: 'mutation_root' }
+  & { update_jobs: Maybe<(
+    { __typename?: 'jobs_mutation_response' }
+    & Pick<Jobs_Mutation_Response, 'affected_rows'>
+  )> }
+);
+
 export type SetJobTargetMutationVariables = {
   id: Scalars['uuid'];
   targetId: Scalars['uuid'];
@@ -2786,6 +2806,23 @@ export type JobInsertedQuery = (
   )> }
 );
 
+export type JobDetialsQueryVariables = {
+  jobId: Scalars['uuid'];
+};
+
+
+export type JobDetialsQuery = (
+  { __typename?: 'query_root' }
+  & { jobs_by_pk: Maybe<(
+    { __typename?: 'jobs' }
+    & Pick<Jobs, 'id' | 'description' | 'stripe_payment_intent_succeeded'>
+    & { target: Maybe<(
+      { __typename?: 'targets' }
+      & Pick<Targets, 'id' | 'name'>
+    )> }
+  )> }
+);
+
 export type JobsCreateDocumentsQueryVariables = {
   jobId: Scalars['uuid'];
 };
@@ -2809,6 +2846,21 @@ export type JobsCreatePaymentQuery = (
   & { jobs: Array<(
     { __typename?: 'jobs' }
     & Pick<Jobs, 'stripe_payment_intent_client_secret' | 'id'>
+  )> }
+);
+
+export type JobsListQueryVariables = {};
+
+
+export type JobsListQuery = (
+  { __typename?: 'query_root' }
+  & { jobs: Array<(
+    { __typename?: 'jobs' }
+    & Pick<Jobs, 'id' | 'description' | 'stripe_payment_intent_succeeded'>
+    & { target: Maybe<(
+      { __typename?: 'targets' }
+      & Pick<Targets, 'id' | 'name'>
+    )> }
   )> }
 );
 
@@ -3001,6 +3053,38 @@ export function useSetJobStripePaymentIntentMutation(baseOptions?: ApolloReactHo
 export type SetJobStripePaymentIntentMutationHookResult = ReturnType<typeof useSetJobStripePaymentIntentMutation>;
 export type SetJobStripePaymentIntentMutationResult = ApolloReactCommon.MutationResult<SetJobStripePaymentIntentMutation>;
 export type SetJobStripePaymentIntentMutationOptions = ApolloReactCommon.BaseMutationOptions<SetJobStripePaymentIntentMutation, SetJobStripePaymentIntentMutationVariables>;
+export const SetJobStripePaymentIntentSucceededDocument = gql`
+    mutation SetJobStripePaymentIntentSucceeded($stripePaymentIntentId: String!) {
+  update_jobs(where: {stripe_payment_intent_id: {_eq: $stripePaymentIntentId}}, _set: {stripe_payment_intent_succeeded: true}) {
+    affected_rows
+  }
+}
+    `;
+export type SetJobStripePaymentIntentSucceededMutationFn = ApolloReactCommon.MutationFunction<SetJobStripePaymentIntentSucceededMutation, SetJobStripePaymentIntentSucceededMutationVariables>;
+
+/**
+ * __useSetJobStripePaymentIntentSucceededMutation__
+ *
+ * To run a mutation, you first call `useSetJobStripePaymentIntentSucceededMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetJobStripePaymentIntentSucceededMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setJobStripePaymentIntentSucceededMutation, { data, loading, error }] = useSetJobStripePaymentIntentSucceededMutation({
+ *   variables: {
+ *      stripePaymentIntentId: // value for 'stripePaymentIntentId'
+ *   },
+ * });
+ */
+export function useSetJobStripePaymentIntentSucceededMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SetJobStripePaymentIntentSucceededMutation, SetJobStripePaymentIntentSucceededMutationVariables>) {
+        return ApolloReactHooks.useMutation<SetJobStripePaymentIntentSucceededMutation, SetJobStripePaymentIntentSucceededMutationVariables>(SetJobStripePaymentIntentSucceededDocument, baseOptions);
+      }
+export type SetJobStripePaymentIntentSucceededMutationHookResult = ReturnType<typeof useSetJobStripePaymentIntentSucceededMutation>;
+export type SetJobStripePaymentIntentSucceededMutationResult = ApolloReactCommon.MutationResult<SetJobStripePaymentIntentSucceededMutation>;
+export type SetJobStripePaymentIntentSucceededMutationOptions = ApolloReactCommon.BaseMutationOptions<SetJobStripePaymentIntentSucceededMutation, SetJobStripePaymentIntentSucceededMutationVariables>;
 export const SetJobTargetDocument = gql`
     mutation SetJobTarget($id: uuid!, $targetId: uuid!) {
   update_jobs(where: {id: {_eq: $id}}, _set: {target_id: $targetId}) {
@@ -3141,6 +3225,45 @@ export function useJobInsertedLazyQuery(baseOptions?: ApolloReactHooks.LazyQuery
 export type JobInsertedQueryHookResult = ReturnType<typeof useJobInsertedQuery>;
 export type JobInsertedLazyQueryHookResult = ReturnType<typeof useJobInsertedLazyQuery>;
 export type JobInsertedQueryResult = ApolloReactCommon.QueryResult<JobInsertedQuery, JobInsertedQueryVariables>;
+export const JobDetialsDocument = gql`
+    query JobDetials($jobId: uuid!) {
+  jobs_by_pk(id: $jobId) {
+    id
+    description
+    stripe_payment_intent_succeeded
+    target {
+      id
+      name
+    }
+  }
+}
+    `;
+
+/**
+ * __useJobDetialsQuery__
+ *
+ * To run a query within a React component, call `useJobDetialsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useJobDetialsQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useJobDetialsQuery({
+ *   variables: {
+ *      jobId: // value for 'jobId'
+ *   },
+ * });
+ */
+export function useJobDetialsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<JobDetialsQuery, JobDetialsQueryVariables>) {
+        return ApolloReactHooks.useQuery<JobDetialsQuery, JobDetialsQueryVariables>(JobDetialsDocument, baseOptions);
+      }
+export function useJobDetialsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<JobDetialsQuery, JobDetialsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<JobDetialsQuery, JobDetialsQueryVariables>(JobDetialsDocument, baseOptions);
+        }
+export type JobDetialsQueryHookResult = ReturnType<typeof useJobDetialsQuery>;
+export type JobDetialsLazyQueryHookResult = ReturnType<typeof useJobDetialsLazyQuery>;
+export type JobDetialsQueryResult = ApolloReactCommon.QueryResult<JobDetialsQuery, JobDetialsQueryVariables>;
 export const JobsCreateDocumentsDocument = gql`
     query JobsCreateDocuments($jobId: uuid!) {
   __typename
@@ -3213,3 +3336,41 @@ export function useJobsCreatePaymentLazyQuery(baseOptions?: ApolloReactHooks.Laz
 export type JobsCreatePaymentQueryHookResult = ReturnType<typeof useJobsCreatePaymentQuery>;
 export type JobsCreatePaymentLazyQueryHookResult = ReturnType<typeof useJobsCreatePaymentLazyQuery>;
 export type JobsCreatePaymentQueryResult = ApolloReactCommon.QueryResult<JobsCreatePaymentQuery, JobsCreatePaymentQueryVariables>;
+export const JobsListDocument = gql`
+    query JobsList {
+  jobs {
+    id
+    description
+    stripe_payment_intent_succeeded
+    target {
+      id
+      name
+    }
+  }
+}
+    `;
+
+/**
+ * __useJobsListQuery__
+ *
+ * To run a query within a React component, call `useJobsListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useJobsListQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useJobsListQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useJobsListQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<JobsListQuery, JobsListQueryVariables>) {
+        return ApolloReactHooks.useQuery<JobsListQuery, JobsListQueryVariables>(JobsListDocument, baseOptions);
+      }
+export function useJobsListLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<JobsListQuery, JobsListQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<JobsListQuery, JobsListQueryVariables>(JobsListDocument, baseOptions);
+        }
+export type JobsListQueryHookResult = ReturnType<typeof useJobsListQuery>;
+export type JobsListLazyQueryHookResult = ReturnType<typeof useJobsListLazyQuery>;
+export type JobsListQueryResult = ApolloReactCommon.QueryResult<JobsListQuery, JobsListQueryVariables>;

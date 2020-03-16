@@ -1,0 +1,8 @@
+mutation SetJobStripePaymentIntentSucceeded($stripePaymentIntentId: String!) {
+  update_jobs(
+    where: { stripe_payment_intent_id: { _eq: $stripePaymentIntentId } }
+    _set: { stripe_payment_intent_succeeded: true }
+  ) {
+    affected_rows
+  }
+}

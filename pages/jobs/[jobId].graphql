@@ -1,0 +1,12 @@
+query JobDetials($jobId: uuid!) {
+  jobs_by_pk(id: $jobId) {
+    id
+    description
+    stripe_payment_intent_succeeded
+
+    target {
+      id
+      name
+    }
+  }
+}

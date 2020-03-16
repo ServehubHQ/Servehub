@@ -1,0 +1,12 @@
+query JobsList {
+  jobs {
+    id
+    description
+    stripe_payment_intent_succeeded
+
+    target {
+      id
+      name
+    }
+  }
+}

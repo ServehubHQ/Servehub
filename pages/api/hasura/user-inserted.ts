@@ -3,15 +3,16 @@ import {
   SetRoleDocument,
   SetRoleMutation,
   SetRoleMutationVariables,
-} from '../../graphql-codegen'
-import { createStripeCustomer } from '../../lib/createStripeCustomer'
-import { getApolloClient } from '../../lib/getApolloClient'
-import hasuraWebhookValid from '../../lib/hasuraWebhookValid'
+} from '../../../graphql-codegen'
+import { createStripeCustomer } from '../../../lib/createStripeCustomer'
+import { getApolloClient } from '../../../lib/getApolloClient'
+import hasuraWebhookValid from '../../../lib/hasuraWebhookValid'
 
-export default async function UserInsertedApi(
+export default async function hasuraUserInserted(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
+  console.log('hasuraUserInserted')
   if (!hasuraWebhookValid(req, res)) return
 
   const {
@@ -23,8 +24,7 @@ export default async function UserInsertedApi(
 
   const role = user.register_data.role
   if (role !== 'lawyer' && role !== 'server') {
-    res.writeHead(403).end()
-    return
+    return res.status(403).end()
   }
 
   const apollo = getApolloClient({ isAdmin: true })
@@ -38,5 +38,5 @@ export default async function UserInsertedApi(
     await createStripeCustomer(apollo, user.id)
   }
 
-  res.send('okay')
+  res.send('✔')
 }

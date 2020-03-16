@@ -5,4 +5,5 @@ export const config = {
   stripePublishableKey: 'pk_test_Lkg8hgz6A0PYHin7ogg9uvlY00zEY7djQM',
   stripeSecretKey: process.env.STRIPE_SECRET_KEY,
   stripeApiVersion: '2020-03-02' as '2020-03-02',
+  stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
 }
