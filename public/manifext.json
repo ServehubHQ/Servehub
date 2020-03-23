@@ -1,0 +1,20 @@
+{
+  "name": "Servehub",
+  "short_name": "Servehub",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "background_color": "#FFFFFF",
+  "display": "fullscreen",
+  "start_url": "/",
+  "theme_color": "#000"
+}
