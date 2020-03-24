@@ -28,6 +28,7 @@
     "micro-cors": "^0.1.1",
     "moment": "^2.24.0",
     "next": "^9.3.0",
+    "next-offline": "^5.0.0",
     "nhost-js-sdk": "^1.2.0",
     "nookies": "^2.0.8",
     "now": "^17.0.4",
