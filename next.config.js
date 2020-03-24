@@ -8,6 +8,6 @@ module.exports = withOffline({
   generateInDevMode: true,
   workboxOpts: {
     swSrc: join(__dirname, 'serviceWorker', 'index.ts'),
-    swDest: './service-worker.js',
+    swDest: './static/service-worker.js',
   },
 })
