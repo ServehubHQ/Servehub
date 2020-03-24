@@ -1,11 +1,13 @@
 require('dotenv').config()
 const withOffline = require('next-offline')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const nextConfig = {
   target: 'serverless',
-  transformManifest: (manifest) => ['/'].concat(manifest),
-  generateInDevMode: false,
+  // transformManifest: (manifest) => ['/'].concat(manifest),
+  generateInDevMode: true,
   // workboxOpts: {
+  // importScripts: ['./serviceWorker/pushNotifications.js'],
   //   swDest: 'static/service-worker.js',
   //   runtimeCaching: [
   //     {
@@ -25,6 +27,9 @@ const nextConfig = {
   //     },
   //   ],
   // },
+  // this will output your push listener file to .next folder
+  // check CopyWebpackPlugin docs if you want to change the destination (e.g. /static or /.next/static)
+  // plugins: [new CopyWebpackPlugin(['./serviceWorker/pushNotifications.ts'])],
 }
 
 module.exports = withOffline(nextConfig)
