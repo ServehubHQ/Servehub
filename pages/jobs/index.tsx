@@ -70,7 +70,7 @@ export default function JobListPage() {
               </Grid>
               <Grid item sm={6} lg={8}>
                 <CardMedia className={styles.map}>
-                  <JobMap target={job.target!} />
+                  {job.target ? <JobMap target={job.target} /> : null}
                 </CardMedia>
               </Grid>
             </Grid>

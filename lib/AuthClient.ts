@@ -11,6 +11,17 @@ interface ErrorResponseData {
   message: string
 }
 
+type ParsedToken = {
+  exp: number
+  iat: number
+  ['https://hasura.io/jwt/claims']: {
+    ['x-hasura-is-anonymous']: 'false'
+    ['x-hasura-default-role']: 'user'
+    ['x-hasura-allowed-roles']: string[]
+    ['x-hasura-user-id']: string
+  }
+}
+
 export class AuthError extends Error {
   data?: ErrorResponseData
 
@@ -40,21 +51,11 @@ export class AuthClient {
   }
 
   getRoles(): string[] {
-    const cookies = parseCookies(this.context)
-    if (!cookies.token) {
-      return []
-    }
+    return this.getTokenClaim('x-hasura-allowed-roles') || []
+  }
 
-    const parsedToken = jwtDecode(cookies.token) as {
-      ['https://hasura.io/jwt/claims']: {
-        ['x-hasura-is-anonymous']: 'false'
-        ['x-hasura-default-role']: 'user'
-        ['x-hasura-allowed-roles']: string[]
-        ['x-hasura-user-id']: string
-      }
-    }
-
-    return parsedToken['https://hasura.io/jwt/claims']['x-hasura-allowed-roles']
+  getUserId() {
+    return this.getTokenClaim('x-hasura-user-id')
   }
 
   onAuthStateChanged(callback: () => void): () => void {
@@ -161,7 +162,7 @@ export class AuthClient {
     }
 
     if (token) {
-      const { exp: expiry } = jwtDecode(token)
+      const { exp: expiry } = this.parseToken(token)
       if (moment.unix(expiry).isAfter()) {
         console.log('refreshToken jwt not expired')
         return
@@ -229,5 +230,22 @@ export class AuthClient {
     newPassword: string,
   ): Promise<void> {
     console.warn('TODO: update password')
+  }
+
+  parseToken(token: string) {
+    return jwtDecode(token) as ParsedToken
+  }
+
+  getTokenClaim<T extends keyof ParsedToken['https://hasura.io/jwt/claims']>(
+    key: T,
+  ): ParsedToken['https://hasura.io/jwt/claims'][T] | null {
+    const cookies = parseCookies(this.context)
+    if (!cookies.token) {
+      return null
+    }
+
+    const parsedToken = this.parseToken(cookies.token)
+
+    return parsedToken['https://hasura.io/jwt/claims'][key]
   }
 }

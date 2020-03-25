@@ -9,9 +9,13 @@ import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 import { AppContext as NextAppContext, AppProps } from 'next/app'
 import Head from 'next/head'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { AuthClient } from '../lib/AuthClient'
 import { config } from '../lib/config'
+import {
+  getAndSaveMessagingToken,
+  initMessaging,
+} from '../lib/firebaseMessaging'
 import { getApolloClient } from '../lib/getApolloClient'
 import { getAuthClient } from '../lib/getAuthClient'
 import { theme } from '../lib/theme'
@@ -41,6 +45,11 @@ export default function ServeHubApp({
   }
 
   const stripe = useMemo(() => loadStripe(config.stripePublishableKey), [])
+
+  useEffect(() => {
+    initMessaging()
+    getAndSaveMessagingToken()
+  })
 
   return (
     <AuthProvider client={authClient}>

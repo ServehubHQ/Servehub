@@ -2304,6 +2304,7 @@ export type Users = {
   default_role: Scalars['String'];
   display_name: Scalars['String'];
   email?: Maybe<Scalars['String']>;
+  firebase_messaging_token?: Maybe<Scalars['String']>;
   id: Scalars['uuid'];
   is_anonymous: Scalars['Boolean'];
   refresh_tokens: Array<Auth_Refresh_Tokens>;
@@ -2443,6 +2444,7 @@ export type Users_Bool_Exp = {
   default_role?: Maybe<String_Comparison_Exp>;
   display_name?: Maybe<String_Comparison_Exp>;
   email?: Maybe<String_Comparison_Exp>;
+  firebase_messaging_token?: Maybe<String_Comparison_Exp>;
   id?: Maybe<Uuid_Comparison_Exp>;
   is_anonymous?: Maybe<Boolean_Comparison_Exp>;
   refresh_tokens?: Maybe<Auth_Refresh_Tokens_Bool_Exp>;
@@ -2459,6 +2461,7 @@ export type Users_Bool_Exp = {
 
 export enum Users_Constraint {
   UsersEmailKey = 'users_email_key',
+  UsersFirebaseMessagingTokenKey = 'users_firebase_messaging_token_key',
   UsersPkey = 'users_pkey',
   UsersSecretTokenKey = 'users_secret_token_key'
 }
@@ -2482,6 +2485,7 @@ export type Users_Insert_Input = {
   default_role?: Maybe<Scalars['String']>;
   display_name?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
+  firebase_messaging_token?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   is_anonymous?: Maybe<Scalars['Boolean']>;
   refresh_tokens?: Maybe<Auth_Refresh_Tokens_Arr_Rel_Insert_Input>;
@@ -2503,6 +2507,7 @@ export type Users_Max_Fields = {
   default_role?: Maybe<Scalars['String']>;
   display_name?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
+  firebase_messaging_token?: Maybe<Scalars['String']>;
   secret_token_expires_at?: Maybe<Scalars['timestamptz']>;
   stripe_customer_id?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
@@ -2514,6 +2519,7 @@ export type Users_Max_Order_By = {
   default_role?: Maybe<Order_By>;
   display_name?: Maybe<Order_By>;
   email?: Maybe<Order_By>;
+  firebase_messaging_token?: Maybe<Order_By>;
   secret_token_expires_at?: Maybe<Order_By>;
   stripe_customer_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
@@ -2526,6 +2532,7 @@ export type Users_Min_Fields = {
   default_role?: Maybe<Scalars['String']>;
   display_name?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
+  firebase_messaging_token?: Maybe<Scalars['String']>;
   secret_token_expires_at?: Maybe<Scalars['timestamptz']>;
   stripe_customer_id?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
@@ -2537,6 +2544,7 @@ export type Users_Min_Order_By = {
   default_role?: Maybe<Order_By>;
   display_name?: Maybe<Order_By>;
   email?: Maybe<Order_By>;
+  firebase_messaging_token?: Maybe<Order_By>;
   secret_token_expires_at?: Maybe<Order_By>;
   stripe_customer_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
@@ -2566,6 +2574,7 @@ export type Users_Order_By = {
   default_role?: Maybe<Order_By>;
   display_name?: Maybe<Order_By>;
   email?: Maybe<Order_By>;
+  firebase_messaging_token?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   is_anonymous?: Maybe<Order_By>;
   refresh_tokens_aggregate?: Maybe<Auth_Refresh_Tokens_Aggregate_Order_By>;
@@ -2591,6 +2600,7 @@ export enum Users_Select_Column {
   DefaultRole = 'default_role',
   DisplayName = 'display_name',
   Email = 'email',
+  FirebaseMessagingToken = 'firebase_messaging_token',
   Id = 'id',
   IsAnonymous = 'is_anonymous',
   RegisterData = 'register_data',
@@ -2607,6 +2617,7 @@ export type Users_Set_Input = {
   default_role?: Maybe<Scalars['String']>;
   display_name?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
+  firebase_messaging_token?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   is_anonymous?: Maybe<Scalars['Boolean']>;
   register_data?: Maybe<Scalars['jsonb']>;
@@ -2623,6 +2634,7 @@ export enum Users_Update_Column {
   DefaultRole = 'default_role',
   DisplayName = 'display_name',
   Email = 'email',
+  FirebaseMessagingToken = 'firebase_messaging_token',
   Id = 'id',
   IsAnonymous = 'is_anonymous',
   RegisterData = 'register_data',
@@ -2719,6 +2731,20 @@ export type InsertTargetMutation = (
       { __typename?: 'targets' }
       & Pick<Targets, 'id'>
     )> }
+  )> }
+);
+
+export type SetFirebaseMessagingTokenMutationVariables = {
+  userId: Scalars['uuid'];
+  token: Scalars['String'];
+};
+
+
+export type SetFirebaseMessagingTokenMutation = (
+  { __typename?: 'mutation_root' }
+  & { update_users: Maybe<(
+    { __typename?: 'users_mutation_response' }
+    & Pick<Users_Mutation_Response, 'affected_rows'>
   )> }
 );
 
@@ -3036,6 +3062,39 @@ export function useInsertTargetMutation(baseOptions?: ApolloReactHooks.MutationH
 export type InsertTargetMutationHookResult = ReturnType<typeof useInsertTargetMutation>;
 export type InsertTargetMutationResult = ApolloReactCommon.MutationResult<InsertTargetMutation>;
 export type InsertTargetMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertTargetMutation, InsertTargetMutationVariables>;
+export const SetFirebaseMessagingTokenDocument = gql`
+    mutation SetFirebaseMessagingToken($userId: uuid!, $token: String!) {
+  update_users(_set: {firebase_messaging_token: $token}, where: {id: {_eq: $userId}}) {
+    affected_rows
+  }
+}
+    `;
+export type SetFirebaseMessagingTokenMutationFn = ApolloReactCommon.MutationFunction<SetFirebaseMessagingTokenMutation, SetFirebaseMessagingTokenMutationVariables>;
+
+/**
+ * __useSetFirebaseMessagingTokenMutation__
+ *
+ * To run a mutation, you first call `useSetFirebaseMessagingTokenMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetFirebaseMessagingTokenMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setFirebaseMessagingTokenMutation, { data, loading, error }] = useSetFirebaseMessagingTokenMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *      token: // value for 'token'
+ *   },
+ * });
+ */
+export function useSetFirebaseMessagingTokenMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SetFirebaseMessagingTokenMutation, SetFirebaseMessagingTokenMutationVariables>) {
+        return ApolloReactHooks.useMutation<SetFirebaseMessagingTokenMutation, SetFirebaseMessagingTokenMutationVariables>(SetFirebaseMessagingTokenDocument, baseOptions);
+      }
+export type SetFirebaseMessagingTokenMutationHookResult = ReturnType<typeof useSetFirebaseMessagingTokenMutation>;
+export type SetFirebaseMessagingTokenMutationResult = ApolloReactCommon.MutationResult<SetFirebaseMessagingTokenMutation>;
+export type SetFirebaseMessagingTokenMutationOptions = ApolloReactCommon.BaseMutationOptions<SetFirebaseMessagingTokenMutation, SetFirebaseMessagingTokenMutationVariables>;
 export const SetJobStripePaymentIntentDocument = gql`
     mutation SetJobStripePaymentIntent($jobId: uuid!, $stripePaymentIntentId: String!, $stripePaymentIntentClientSecret: String!) {
   update_jobs(where: {id: {_eq: $jobId}}, _set: {stripe_payment_intent_id: $stripePaymentIntentId, stripe_payment_intent_client_secret: $stripePaymentIntentClientSecret}) {

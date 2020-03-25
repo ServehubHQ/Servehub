@@ -1,0 +1,8 @@
+mutation SetFirebaseMessagingToken($userId: uuid!, $token: String!) {
+  update_users(
+    _set: { firebase_messaging_token: $token }
+    where: { id: { _eq: $userId } }
+  ) {
+    affected_rows
+  }
+}

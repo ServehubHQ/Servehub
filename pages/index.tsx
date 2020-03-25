@@ -19,6 +19,9 @@ export default function HomePage() {
       <Link href='/signup' passHref>
         <Button>Get Started</Button>
       </Link>
+      <Link href='/push-play' passHref>
+        <Button>Push Play</Button>
+      </Link>
     </Page>
   )
 }
