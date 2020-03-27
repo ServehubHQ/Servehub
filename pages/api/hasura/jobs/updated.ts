@@ -61,6 +61,7 @@ export default async function hasurajobUpdatedApi(
     body: 'Click here to learn more',
     icon: 'https://placekitten.com/360/240',
     badge: 'https://placekitten.com/512/512',
+    click_action: req.url,
     fcm_options: {
       link: req.url,
     },
