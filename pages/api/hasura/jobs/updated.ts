@@ -63,6 +63,8 @@ export default async function hasurajobUpdatedApi(
     },
   }
 
+  console.log('notification', notification)
+
   console.log(
     await messaging.sendMulticast({
       webpush: { notification },
