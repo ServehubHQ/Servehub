@@ -6,12 +6,12 @@ import {
   SetJobStripePaymentIntentDocument,
   SetJobStripePaymentIntentMutation,
   SetJobStripePaymentIntentMutationVariables,
-} from '../../../graphql-codegen'
-import { config } from '../../../lib/config'
-import { getApolloClient } from '../../../lib/getApolloClient'
-import { getStripeServerClient } from '../../../lib/getStripeServerClient'
-import hasuraWebhookValid from '../../../lib/hasuraWebhookValid'
-import { createStripeCustomer } from '../../../lib/createStripeCustomer'
+} from '../../../../graphql-codegen'
+import { config } from '../../../../lib/config'
+import { getApolloClient } from '../../../../lib/getApolloClient'
+import { getStripeServerClient } from '../../../../lib/getStripeServerClient'
+import hasuraWebhookValid from '../../../../lib/hasuraWebhookValid'
+import { createStripeCustomer } from '../../../../lib/createStripeCustomer'
 
 export default async function hasurajobInsertedApi(
   req: NextApiRequest,

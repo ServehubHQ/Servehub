@@ -57,7 +57,6 @@ export function getApolloClient(
 
     await authClient.refreshToken()
     const jwt = authClient?.getToken()
-    const roles = authClient?.getRoles() || []
 
     return {
       headers: {
@@ -65,12 +64,6 @@ export function getApolloClient(
         ...(jwt
           ? {
               authorization: `Bearer ${jwt}`,
-              'x-hasura-role':
-                roles.indexOf('lawyer') !== -1
-                  ? 'lawyer'
-                  : roles.indexOf('server') !== -1
-                  ? 'server'
-                  : 'user',
             }
           : {}),
       },

@@ -16,6 +16,7 @@ import Link from 'next/link'
 import { JobMap } from '../../components/JobMap'
 import { Page } from '../../components/Page'
 import { useJobsListQuery } from '../../graphql-codegen'
+import { useAuth } from '../../lib/useAuth'
 import { useAuthRequired } from '../../lib/useAuthRequired'
 
 export const useStyles = makeStyles((theme) => ({
@@ -33,11 +34,13 @@ export const useStyles = makeStyles((theme) => ({
 export default function JobListPage() {
   useAuthRequired()
   const styles = useStyles()
-  const { data, loading } = useJobsListQuery()
-  console.log('query', { loading, data })
+  const { authClient } = useAuth()
+  const { data } = useJobsListQuery({
+    variables: { userId: authClient?.getUserId() },
+  })
 
   return (
-    <Page>
+    <Page currentUser={data?.users[0]}>
       <Box mb={4}>
         <Paper elevation={2}>
           <Box p={2}>

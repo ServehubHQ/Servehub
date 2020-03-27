@@ -15,9 +15,12 @@ import { useRouter } from 'next/router'
 import { ReactNode, useCallback, useState, MouseEvent } from 'react'
 import { useAuth } from '../lib/useAuth'
 import { AccountCircle } from '@material-ui/icons'
+import { PageUserFragment } from '../graphql-codegen'
+import { getAndSaveMessagingToken } from '../lib/firebase'
 
 interface PageProps {
   children: ReactNode
+  currentUser?: PageUserFragment
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -34,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export function Page({ children }: PageProps) {
+export function Page({ children, currentUser }: PageProps) {
   const router = useRouter()
   const { isAuthenticated, authClient } = useAuth()
   const styles = useStyles()
@@ -60,6 +63,10 @@ export function Page({ children }: PageProps) {
     setAccountMenuAnchorEl(null)
   }, [setAccountMenuAnchorEl])
 
+  const handleEnableNotificationsClick = useCallback(() => {
+    getAndSaveMessagingToken()
+  }, [])
+  console.log('[Page]', currentUser)
   return (
     <>
       <AppBar position='static'>
@@ -74,11 +81,22 @@ export function Page({ children }: PageProps) {
             </Box>
             {isAuthenticated ? (
               <>
-                <Link href='/jobs/create' passHref>
-                  <Button color='inherit' className={styles.navButton}>
-                    New Job
+                {currentUser && !currentUser.firebase_messaging_token ? (
+                  <Button
+                    color='inherit'
+                    className={styles.navButton}
+                    onClick={handleEnableNotificationsClick}
+                  >
+                    Enable Notifications
                   </Button>
-                </Link>
+                ) : null}
+                {authClient?.getRole() === 'lawyer' ? (
+                  <Link href='/jobs/create' passHref>
+                    <Button color='inherit' className={styles.navButton}>
+                      New Job
+                    </Button>
+                  </Link>
+                ) : null}
                 <IconButton
                   aria-label='user account'
                   aria-controls='menu-appbar'

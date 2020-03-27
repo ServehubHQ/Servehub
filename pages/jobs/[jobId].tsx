@@ -20,8 +20,7 @@ export default function JobDetailsPage() {
   useAuthRequired()
   const router = useRouter()
   const { jobId } = router.query
-  const { data, loading } = useJobDetialsQuery({ variables: { jobId } })
-  console.log('query', { loading, data })
+  const { data } = useJobDetialsQuery({ variables: { jobId } })
 
   return (
     <Page>

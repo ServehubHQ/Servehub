@@ -1,0 +1,6 @@
+query IndexPage($userId: uuid) {
+  users(where: { id: { _eq: $userId } }) {
+    id
+    ...PageUser
+  }
+}

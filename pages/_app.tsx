@@ -7,15 +7,13 @@ import { ThemeProvider } from '@material-ui/core'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
+import firebase from 'firebase/app'
 import { AppContext as NextAppContext, AppProps } from 'next/app'
 import Head from 'next/head'
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 import { AuthClient } from '../lib/AuthClient'
 import { config } from '../lib/config'
-import {
-  getAndSaveMessagingToken,
-  initMessaging,
-} from '../lib/firebaseMessaging'
+import { getAndSaveMessagingToken, initFirebase } from '../lib/firebase'
 import { getApolloClient } from '../lib/getApolloClient'
 import { getAuthClient } from '../lib/getAuthClient'
 import { theme } from '../lib/theme'
@@ -46,11 +44,6 @@ export default function ServeHubApp({
 
   const stripe = useMemo(() => loadStripe(config.stripePublishableKey), [])
 
-  useEffect(() => {
-    initMessaging()
-    getAndSaveMessagingToken()
-  })
-
   return (
     <AuthProvider client={authClient}>
       <ApolloProvider client={apolloClient}>
@@ -73,16 +66,13 @@ type ServeHubContext = NextAppContext & {
   }
 }
 
-// export async function getServerSideProps({ ctx, AppTree }: ServeHubContext) {
 if (typeof window === 'undefined') {
   ServeHubApp.getInitialProps = async ({ ctx, AppTree }: ServeHubContext) => {
-    console.log('ServeHubApp.getInitialProps')
-
     const authClient = getAuthClient(ctx)
     await authClient.refreshToken()
 
     const apolloClient = getApolloClient(authClient)
-    // Ensure Next.js doesn't try to serlialize the ApolloClient
+    // Prevent apolloClient form being serialized
     // @ts-ignore - I know, but extending ApolloClient for toJSON is a PITA
     apolloClient.toJSON = () => null
 
@@ -116,4 +106,12 @@ if (typeof window === 'undefined') {
       apolloClient,
     }
   }
+} else {
+  initFirebase().then(async () => {
+    const messaging = firebase.messaging()
+    messaging.onTokenRefresh(getAndSaveMessagingToken)
+    messaging.onMessage((payload) => {
+      console.log('Message received', payload)
+    })
+  })
 }

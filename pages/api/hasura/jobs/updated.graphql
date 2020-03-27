@@ -1,0 +1,11 @@
+query JobUpdated {
+  users(
+    where: {
+      role: { role: { _eq: "server" } }
+      firebase_messaging_token: { _is_null: false }
+    }
+  ) {
+    firebase_messaging_token
+    id
+  }
+}

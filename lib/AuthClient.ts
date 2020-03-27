@@ -32,6 +32,7 @@ export class AuthError extends Error {
 }
 
 export class AuthClient {
+  currentlyRefreshing = false
   isAdmin = false
   baseUrl = config.nhostBackendUrl
   stateChangeCallbacks: (() => void)[] = []
@@ -50,8 +51,8 @@ export class AuthClient {
     return cookies.token
   }
 
-  getRoles(): string[] {
-    return this.getTokenClaim('x-hasura-allowed-roles') || []
+  getRole(): string | null {
+    return this.getTokenClaim('x-hasura-default-role')
   }
 
   getUserId() {
@@ -60,19 +61,20 @@ export class AuthClient {
 
   onAuthStateChanged(callback: () => void): () => void {
     this.stateChangeCallbacks.push(callback)
-    console.log('onAuthStateChanged added', this.stateChangeCallbacks)
-
     return () => {
       const index = this.stateChangeCallbacks.indexOf(callback)
       if (index !== -1) {
         this.stateChangeCallbacks.splice(index, 1)
       }
-      console.log('onAuthStateChanged removed', this.stateChangeCallbacks)
     }
   }
 
   authStateChanged() {
-    console.log('authStateChanged', this.stateChangeCallbacks)
+    console.log(
+      '[authStateChanged]',
+      this.stateChangeCallbacks.length,
+      'callbacks',
+    )
     for (const authChangeCallback of this.stateChangeCallbacks) {
       authChangeCallback()
     }
@@ -134,8 +136,8 @@ export class AuthClient {
   async logout(allSessions?: boolean): Promise<void> {
     const { refreshToken } = parseCookies(this.context)
 
-    destroyCookie(this.context, 'token')
-    destroyCookie(this.context, 'refreshToken')
+    destroyCookie(this.context, 'token', { path: '/' })
+    destroyCookie(this.context, 'refreshToken', { path: '/' })
 
     await fetch(`${this.baseUrl}/auth/logout${allSessions ? '-all' : ''}`, {
       method: 'POST',
@@ -151,20 +153,27 @@ export class AuthClient {
     this.authStateChanged()
   }
 
-  async refreshToken(): Promise<void> {
-    console.log('refreshToken')
+  async refreshToken(force = false): Promise<void> {
+    if (this.currentlyRefreshing) {
+      console.info('[refreshToken] currently refreshing')
+      return
+    } else {
+      this.currentlyRefreshing = true
+    }
     const cookies = parseCookies(this.context)
     const { token, refreshToken } = cookies
 
     if (typeof refreshToken !== 'string' || refreshToken === '') {
-      console.log('refreshToken no refresh token', cookies)
+      console.info('[refreshToken] no refresh token', cookies)
+      this.currentlyRefreshing = false
       return
     }
 
-    if (token) {
+    if (token && !force) {
       const { exp: expiry } = this.parseToken(token)
       if (moment.unix(expiry).isAfter()) {
-        console.log('refreshToken jwt not expired')
+        console.info('[refreshToken] jwt not expired')
+        this.currentlyRefreshing = false
         return
       }
     }
@@ -182,12 +191,13 @@ export class AuthClient {
 
     if (response.status - 200 < 100) {
       const data = await response.json()
-      console.log('refresh success', data)
+      console.info('[refreshToken] success')
       this.setTokens(data)
     } else {
-      console.log('refresh fail, logging out', response)
-      this.logout()
+      console.info('[refreshToken] fail, logging out')
+      await this.logout()
     }
+    this.currentlyRefreshing = false
   }
 
   setTokens({
@@ -206,10 +216,12 @@ export class AuthClient {
     setCookie(this.context, 'token', token, {
       sameSite: true,
       maxAge: 15 * 60, // 15 min
+      path: '/',
     })
     setCookie(this.context, 'refreshToken', refreshToken, {
       sameSite: true,
       maxAge: 365 * 24 * 60 * 60, // 1 year
+      path: '/',
     })
 
     if (!origToken) {

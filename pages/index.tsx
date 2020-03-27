@@ -3,10 +3,14 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { Page } from '../components/Page'
 import { useAuth } from '../lib/useAuth'
+import { useIndexPageQuery } from '../graphql-codegen'
 
 export default function HomePage() {
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, authClient } = useAuth()
   const router = useRouter()
+  const { data } = useIndexPageQuery({
+    variables: { userId: authClient?.getUserId() },
+  })
 
   if (isAuthenticated && typeof window !== 'undefined') {
     router.push('/jobs')
@@ -14,13 +18,10 @@ export default function HomePage() {
   }
 
   return (
-    <Page>
+    <Page currentUser={data?.users[0]}>
       <Typography variant='h1'>Welcome</Typography>
       <Link href='/signup' passHref>
         <Button>Get Started</Button>
-      </Link>
-      <Link href='/push-play' passHref>
-        <Button>Push Play</Button>
       </Link>
     </Page>
   )

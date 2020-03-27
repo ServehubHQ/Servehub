@@ -2461,7 +2461,6 @@ export type Users_Bool_Exp = {
 
 export enum Users_Constraint {
   UsersEmailKey = 'users_email_key',
-  UsersFirebaseMessagingTokenKey = 'users_firebase_messaging_token_key',
   UsersPkey = 'users_pkey',
   UsersSecretTokenKey = 'users_secret_token_key'
 }
@@ -2662,6 +2661,11 @@ export type JobMapTargetFragment = (
   & Pick<Targets, 'id' | 'street' | 'unit' | 'city' | 'postal_code' | 'province'>
 );
 
+export type PageUserFragment = (
+  { __typename?: 'users' }
+  & Pick<Users, 'id' | 'firebase_messaging_token'>
+);
+
 export type DeleteDocumentMutationVariables = {
   id: Scalars['uuid'];
 };
@@ -2804,6 +2808,9 @@ export type SetRoleMutation = (
   & { insert_user_roles: Maybe<(
     { __typename?: 'user_roles_mutation_response' }
     & Pick<User_Roles_Mutation_Response, 'affected_rows'>
+  )>, update_users: Maybe<(
+    { __typename?: 'users_mutation_response' }
+    & Pick<Users_Mutation_Response, 'affected_rows'>
   )> }
 );
 
@@ -2835,6 +2842,31 @@ export type JobInsertedQuery = (
       { __typename?: 'users' }
       & Pick<Users, 'stripe_customer_id' | 'id'>
     ) }
+  )> }
+);
+
+export type JobUpdatedQueryVariables = {};
+
+
+export type JobUpdatedQuery = (
+  { __typename?: 'query_root' }
+  & { users: Array<(
+    { __typename?: 'users' }
+    & Pick<Users, 'firebase_messaging_token' | 'id'>
+  )> }
+);
+
+export type IndexPageQueryVariables = {
+  userId?: Maybe<Scalars['uuid']>;
+};
+
+
+export type IndexPageQuery = (
+  { __typename?: 'query_root' }
+  & { users: Array<(
+    { __typename?: 'users' }
+    & Pick<Users, 'id'>
+    & PageUserFragment
   )> }
 );
 
@@ -2882,12 +2914,18 @@ export type JobsCreatePaymentQuery = (
   )> }
 );
 
-export type JobsListQueryVariables = {};
+export type JobsListQueryVariables = {
+  userId?: Maybe<Scalars['uuid']>;
+};
 
 
 export type JobsListQuery = (
   { __typename?: 'query_root' }
-  & { jobs: Array<(
+  & { users: Array<(
+    { __typename?: 'users' }
+    & Pick<Users, 'id'>
+    & PageUserFragment
+  )>, jobs: Array<(
     { __typename?: 'jobs' }
     & Pick<Jobs, 'id' | 'description' | 'stripe_payment_intent_succeeded'>
     & { target: Maybe<(
@@ -2906,6 +2944,12 @@ export const JobMapTargetFragmentDoc = gql`
   city
   postal_code
   province
+}
+    `;
+export const PageUserFragmentDoc = gql`
+    fragment PageUser on users {
+  id
+  firebase_messaging_token
 }
     `;
 export const DeleteDocumentDocument = gql`
@@ -3202,6 +3246,9 @@ export const SetRoleDocument = gql`
   insert_user_roles(objects: [{role: $role, user_id: $userId}]) {
     affected_rows
   }
+  update_users(where: {id: {_eq: $userId}}, _set: {default_role: $role}) {
+    affected_rows
+  }
 }
     `;
 export type SetRoleMutationFn = ApolloReactCommon.MutationFunction<SetRoleMutation, SetRoleMutationVariables>;
@@ -3301,6 +3348,73 @@ export function useJobInsertedLazyQuery(baseOptions?: ApolloReactHooks.LazyQuery
 export type JobInsertedQueryHookResult = ReturnType<typeof useJobInsertedQuery>;
 export type JobInsertedLazyQueryHookResult = ReturnType<typeof useJobInsertedLazyQuery>;
 export type JobInsertedQueryResult = ApolloReactCommon.QueryResult<JobInsertedQuery, JobInsertedQueryVariables>;
+export const JobUpdatedDocument = gql`
+    query JobUpdated {
+  users(where: {role: {role: {_eq: "server"}}, firebase_messaging_token: {_is_null: false}}) {
+    firebase_messaging_token
+    id
+  }
+}
+    `;
+
+/**
+ * __useJobUpdatedQuery__
+ *
+ * To run a query within a React component, call `useJobUpdatedQuery` and pass it any options that fit your needs.
+ * When your component renders, `useJobUpdatedQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useJobUpdatedQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useJobUpdatedQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<JobUpdatedQuery, JobUpdatedQueryVariables>) {
+        return ApolloReactHooks.useQuery<JobUpdatedQuery, JobUpdatedQueryVariables>(JobUpdatedDocument, baseOptions);
+      }
+export function useJobUpdatedLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<JobUpdatedQuery, JobUpdatedQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<JobUpdatedQuery, JobUpdatedQueryVariables>(JobUpdatedDocument, baseOptions);
+        }
+export type JobUpdatedQueryHookResult = ReturnType<typeof useJobUpdatedQuery>;
+export type JobUpdatedLazyQueryHookResult = ReturnType<typeof useJobUpdatedLazyQuery>;
+export type JobUpdatedQueryResult = ApolloReactCommon.QueryResult<JobUpdatedQuery, JobUpdatedQueryVariables>;
+export const IndexPageDocument = gql`
+    query IndexPage($userId: uuid) {
+  users(where: {id: {_eq: $userId}}) {
+    id
+    ...PageUser
+  }
+}
+    ${PageUserFragmentDoc}`;
+
+/**
+ * __useIndexPageQuery__
+ *
+ * To run a query within a React component, call `useIndexPageQuery` and pass it any options that fit your needs.
+ * When your component renders, `useIndexPageQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useIndexPageQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useIndexPageQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<IndexPageQuery, IndexPageQueryVariables>) {
+        return ApolloReactHooks.useQuery<IndexPageQuery, IndexPageQueryVariables>(IndexPageDocument, baseOptions);
+      }
+export function useIndexPageLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<IndexPageQuery, IndexPageQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<IndexPageQuery, IndexPageQueryVariables>(IndexPageDocument, baseOptions);
+        }
+export type IndexPageQueryHookResult = ReturnType<typeof useIndexPageQuery>;
+export type IndexPageLazyQueryHookResult = ReturnType<typeof useIndexPageLazyQuery>;
+export type IndexPageQueryResult = ApolloReactCommon.QueryResult<IndexPageQuery, IndexPageQueryVariables>;
 export const JobDetialsDocument = gql`
     query JobDetials($jobId: uuid!) {
   jobs_by_pk(id: $jobId) {
@@ -3414,7 +3528,11 @@ export type JobsCreatePaymentQueryHookResult = ReturnType<typeof useJobsCreatePa
 export type JobsCreatePaymentLazyQueryHookResult = ReturnType<typeof useJobsCreatePaymentLazyQuery>;
 export type JobsCreatePaymentQueryResult = ApolloReactCommon.QueryResult<JobsCreatePaymentQuery, JobsCreatePaymentQueryVariables>;
 export const JobsListDocument = gql`
-    query JobsList {
+    query JobsList($userId: uuid) {
+  users(where: {id: {_eq: $userId}}) {
+    id
+    ...PageUser
+  }
   jobs {
     id
     description
@@ -3426,7 +3544,8 @@ export const JobsListDocument = gql`
     }
   }
 }
-    ${JobMapTargetFragmentDoc}`;
+    ${PageUserFragmentDoc}
+${JobMapTargetFragmentDoc}`;
 
 /**
  * __useJobsListQuery__
@@ -3440,6 +3559,7 @@ export const JobsListDocument = gql`
  * @example
  * const { data, loading, error } = useJobsListQuery({
  *   variables: {
+ *      userId: // value for 'userId'
  *   },
  * });
  */
