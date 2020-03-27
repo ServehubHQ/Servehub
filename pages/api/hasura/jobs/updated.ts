@@ -12,7 +12,7 @@ export default async function hasurajobUpdatedApi(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  console.log('hasurajobUpdatedApi')
+  console.log('[hasurajobUpdatedApi] init')
   // if (!hasuraWebhookValid(req, res)) return
   if (!config.hasuraAdminSecret || !config.firebaseAdminCredentials) {
     throw new Error('Missing secrets required for Hasura webhooks')
@@ -40,9 +40,12 @@ export default async function hasurajobUpdatedApi(
       ),
     })
   }
+  console.log('[hasurajobUpdatedApi] firebase admin init')
   const messaging = firebaseAdmin.messaging()
+  console.log('[hasurajobUpdatedApi] firebase messaging init')
 
   const apollo = getApolloClient({ isAdmin: true })
+  console.log('[hasurajobUpdatedApi] apollo init')
 
   const { data } = await apollo.query<
     JobUpdatedQuery,
