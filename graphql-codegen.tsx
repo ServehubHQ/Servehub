@@ -2656,6 +2656,19 @@ export type Uuid_Comparison_Exp = {
   _nin?: Maybe<Array<Scalars['uuid']>>;
 };
 
+export type JobCardJobFragment = (
+  { __typename?: 'jobs' }
+  & Pick<Jobs, 'id'>
+  & { target: Maybe<(
+    { __typename?: 'targets' }
+    & Pick<Targets, 'id' | 'name'>
+    & JobMapTargetFragment
+  )>, server: Maybe<(
+    { __typename?: 'users' }
+    & Pick<Users, 'id'>
+  )> }
+);
+
 export type JobMapTargetFragment = (
   { __typename?: 'targets' }
   & Pick<Targets, 'id' | 'street' | 'unit' | 'city' | 'postal_code' | 'province'>
@@ -2664,6 +2677,19 @@ export type JobMapTargetFragment = (
 export type PageUserFragment = (
   { __typename?: 'users' }
   & Pick<Users, 'id' | 'firebase_messaging_token'>
+);
+
+export type ClaimJobMutationVariables = {
+  jobId: Scalars['uuid'];
+};
+
+
+export type ClaimJobMutation = (
+  { __typename?: 'mutation_root' }
+  & { update_jobs: Maybe<(
+    { __typename?: 'jobs_mutation_response' }
+    & Pick<Jobs_Mutation_Response, 'affected_rows'>
+  )> }
 );
 
 export type DeleteDocumentMutationVariables = {
@@ -2872,19 +2898,45 @@ export type IndexPageQuery = (
 
 export type JobDetialsQueryVariables = {
   jobId: Scalars['uuid'];
+  userId?: Maybe<Scalars['uuid']>;
 };
 
 
 export type JobDetialsQuery = (
   { __typename?: 'query_root' }
-  & { jobs_by_pk: Maybe<(
+  & { users: Array<(
+    { __typename?: 'users' }
+    & Pick<Users, 'id'>
+    & PageUserFragment
+  )>, jobs_by_pk: Maybe<(
     { __typename?: 'jobs' }
     & Pick<Jobs, 'id' | 'description' | 'stripe_payment_intent_succeeded'>
     & { target: Maybe<(
       { __typename?: 'targets' }
       & Pick<Targets, 'id' | 'name'>
       & JobMapTargetFragment
+    )>, server: Maybe<(
+      { __typename?: 'users' }
+      & Pick<Users, 'id'>
     )> }
+  )> }
+);
+
+export type JobsAvailableQueryVariables = {
+  userId?: Maybe<Scalars['uuid']>;
+};
+
+
+export type JobsAvailableQuery = (
+  { __typename?: 'query_root' }
+  & { users: Array<(
+    { __typename?: 'users' }
+    & Pick<Users, 'id'>
+    & PageUserFragment
+  )>, jobs: Array<(
+    { __typename?: 'jobs' }
+    & Pick<Jobs, 'id'>
+    & JobCardJobFragment
   )> }
 );
 
@@ -2927,12 +2979,8 @@ export type JobsListQuery = (
     & PageUserFragment
   )>, jobs: Array<(
     { __typename?: 'jobs' }
-    & Pick<Jobs, 'id' | 'description' | 'stripe_payment_intent_succeeded'>
-    & { target: Maybe<(
-      { __typename?: 'targets' }
-      & Pick<Targets, 'id' | 'name'>
-      & JobMapTargetFragment
-    )> }
+    & Pick<Jobs, 'id'>
+    & JobCardJobFragment
   )> }
 );
 
@@ -2946,12 +2994,57 @@ export const JobMapTargetFragmentDoc = gql`
   province
 }
     `;
+export const JobCardJobFragmentDoc = gql`
+    fragment JobCardJob on jobs {
+  id
+  target {
+    id
+    name
+    ...JobMapTarget
+  }
+  server {
+    id
+  }
+}
+    ${JobMapTargetFragmentDoc}`;
 export const PageUserFragmentDoc = gql`
     fragment PageUser on users {
   id
   firebase_messaging_token
 }
     `;
+export const ClaimJobDocument = gql`
+    mutation ClaimJob($jobId: uuid!) {
+  update_jobs(where: {id: {_eq: $jobId}}) {
+    affected_rows
+  }
+}
+    `;
+export type ClaimJobMutationFn = ApolloReactCommon.MutationFunction<ClaimJobMutation, ClaimJobMutationVariables>;
+
+/**
+ * __useClaimJobMutation__
+ *
+ * To run a mutation, you first call `useClaimJobMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useClaimJobMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [claimJobMutation, { data, loading, error }] = useClaimJobMutation({
+ *   variables: {
+ *      jobId: // value for 'jobId'
+ *   },
+ * });
+ */
+export function useClaimJobMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ClaimJobMutation, ClaimJobMutationVariables>) {
+        return ApolloReactHooks.useMutation<ClaimJobMutation, ClaimJobMutationVariables>(ClaimJobDocument, baseOptions);
+      }
+export type ClaimJobMutationHookResult = ReturnType<typeof useClaimJobMutation>;
+export type ClaimJobMutationResult = ApolloReactCommon.MutationResult<ClaimJobMutation>;
+export type ClaimJobMutationOptions = ApolloReactCommon.BaseMutationOptions<ClaimJobMutation, ClaimJobMutationVariables>;
 export const DeleteDocumentDocument = gql`
     mutation DeleteDocument($id: uuid!) {
   delete_documents(where: {id: {_eq: $id}}) {
@@ -3416,7 +3509,11 @@ export type IndexPageQueryHookResult = ReturnType<typeof useIndexPageQuery>;
 export type IndexPageLazyQueryHookResult = ReturnType<typeof useIndexPageLazyQuery>;
 export type IndexPageQueryResult = ApolloReactCommon.QueryResult<IndexPageQuery, IndexPageQueryVariables>;
 export const JobDetialsDocument = gql`
-    query JobDetials($jobId: uuid!) {
+    query JobDetials($jobId: uuid!, $userId: uuid) {
+  users(where: {id: {_eq: $userId}}) {
+    id
+    ...PageUser
+  }
   jobs_by_pk(id: $jobId) {
     id
     description
@@ -3426,9 +3523,13 @@ export const JobDetialsDocument = gql`
       name
       ...JobMapTarget
     }
+    server {
+      id
+    }
   }
 }
-    ${JobMapTargetFragmentDoc}`;
+    ${PageUserFragmentDoc}
+${JobMapTargetFragmentDoc}`;
 
 /**
  * __useJobDetialsQuery__
@@ -3443,6 +3544,7 @@ export const JobDetialsDocument = gql`
  * const { data, loading, error } = useJobDetialsQuery({
  *   variables: {
  *      jobId: // value for 'jobId'
+ *      userId: // value for 'userId'
  *   },
  * });
  */
@@ -3455,6 +3557,45 @@ export function useJobDetialsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryH
 export type JobDetialsQueryHookResult = ReturnType<typeof useJobDetialsQuery>;
 export type JobDetialsLazyQueryHookResult = ReturnType<typeof useJobDetialsLazyQuery>;
 export type JobDetialsQueryResult = ApolloReactCommon.QueryResult<JobDetialsQuery, JobDetialsQueryVariables>;
+export const JobsAvailableDocument = gql`
+    query JobsAvailable($userId: uuid) {
+  users(where: {id: {_eq: $userId}}) {
+    id
+    ...PageUser
+  }
+  jobs(where: {target_id: {_is_null: true}, stripe_payment_intent_succeeded: {_eq: true}}, order_by: {created_at: asc}) {
+    id
+    ...JobCardJob
+  }
+}
+    ${PageUserFragmentDoc}
+${JobCardJobFragmentDoc}`;
+
+/**
+ * __useJobsAvailableQuery__
+ *
+ * To run a query within a React component, call `useJobsAvailableQuery` and pass it any options that fit your needs.
+ * When your component renders, `useJobsAvailableQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useJobsAvailableQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useJobsAvailableQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<JobsAvailableQuery, JobsAvailableQueryVariables>) {
+        return ApolloReactHooks.useQuery<JobsAvailableQuery, JobsAvailableQueryVariables>(JobsAvailableDocument, baseOptions);
+      }
+export function useJobsAvailableLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<JobsAvailableQuery, JobsAvailableQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<JobsAvailableQuery, JobsAvailableQueryVariables>(JobsAvailableDocument, baseOptions);
+        }
+export type JobsAvailableQueryHookResult = ReturnType<typeof useJobsAvailableQuery>;
+export type JobsAvailableLazyQueryHookResult = ReturnType<typeof useJobsAvailableLazyQuery>;
+export type JobsAvailableQueryResult = ApolloReactCommon.QueryResult<JobsAvailableQuery, JobsAvailableQueryVariables>;
 export const JobsCreateDocumentsDocument = gql`
     query JobsCreateDocuments($jobId: uuid!) {
   __typename
@@ -3535,17 +3676,11 @@ export const JobsListDocument = gql`
   }
   jobs {
     id
-    description
-    stripe_payment_intent_succeeded
-    target {
-      id
-      name
-      ...JobMapTarget
-    }
+    ...JobCardJob
   }
 }
     ${PageUserFragmentDoc}
-${JobMapTargetFragmentDoc}`;
+${JobCardJobFragmentDoc}`;
 
 /**
  * __useJobsListQuery__

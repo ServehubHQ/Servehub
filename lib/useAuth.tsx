@@ -6,17 +6,20 @@ import {
   useState,
 } from 'react'
 import { AuthClient } from './AuthClient'
+import Maybe from 'graphql/tsutils/Maybe'
 
 interface AuthContextValue {
   isAuthenticated: boolean
   authClient?: AuthClient
-  role: string | undefined | null
+  role: Maybe<string>
+  userId: Maybe<string>
 }
 
 function getAuthContextValue(authClient?: AuthClient): AuthContextValue {
   return {
     isAuthenticated: authClient?.isAuthenticated() || false,
     role: authClient?.getRole(),
+    userId: authClient?.getUserId(),
     authClient,
   }
 }

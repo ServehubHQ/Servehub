@@ -1,4 +1,10 @@
-query JobDetials($jobId: uuid!) {
+#import "../../components/JobMap.graphql"
+#import "../../components/Page.graphql"
+query JobDetials($jobId: uuid!, $userId: uuid) {
+  users(where: { id: { _eq: $userId } }) {
+    id
+    ...PageUser
+  }
   jobs_by_pk(id: $jobId) {
     id
     description
@@ -9,6 +15,10 @@ query JobDetials($jobId: uuid!) {
       name
 
       ...JobMapTarget
+    }
+
+    server {
+      id
     }
   }
 }

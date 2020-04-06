@@ -1,0 +1,18 @@
+#import "../../../components/JobCard.graphql"
+query JobsAvailable($userId: uuid) {
+  users(where: { id: { _eq: $userId } }) {
+    id
+    ...PageUser
+  }
+  jobs(
+    where: {
+      target_id: { _is_null: true }
+      stripe_payment_intent_succeeded: { _eq: true }
+    }
+    order_by: { created_at: asc }
+  ) {
+    id
+
+    ...JobCardJob
+  }
+}

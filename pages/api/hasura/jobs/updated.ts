@@ -63,7 +63,7 @@ export default async function hasurajobUpdatedApi(
       body: 'Click here to learn more',
       icon: 'https://placekitten.com/360/240',
       badge: 'https://placekitten.com/512/512',
-      click_action: `https://64d7d76f.ngrok.io/jobs/${job.id}`,
+      click_action: `https://defrex.ngrok.io/jobs/${job.id}`,
     }
 
     console.log('notification', notification)

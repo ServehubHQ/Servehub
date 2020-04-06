@@ -1,0 +1,15 @@
+#import "./JobMap.graphql"
+fragment JobCardJob on jobs {
+  id
+
+  target {
+    id
+    name
+
+    ...JobMapTarget
+  }
+
+  server {
+    id
+  }
+}

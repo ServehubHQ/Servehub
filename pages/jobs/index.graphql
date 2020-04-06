@@ -1,3 +1,4 @@
+#import "../../components/JobCard.graphql"
 query JobsList($userId: uuid) {
   users(where: { id: { _eq: $userId } }) {
     id
@@ -5,14 +6,7 @@ query JobsList($userId: uuid) {
   }
   jobs {
     id
-    description
-    stripe_payment_intent_succeeded
 
-    target {
-      id
-      name
-
-      ...JobMapTarget
-    }
+    ...JobCardJob
   }
 }

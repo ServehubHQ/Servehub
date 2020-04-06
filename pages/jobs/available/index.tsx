@@ -1,14 +1,14 @@
 import { Box, Breadcrumbs, Paper, Typography } from '@material-ui/core'
-import JobCard from '../../components/JobCard'
-import { Page } from '../../components/Page'
-import { useJobsListQuery } from '../../graphql-codegen'
-import { useAuth } from '../../lib/useAuth'
-import { useAuthRequired } from '../../lib/useAuthRequired'
+import JobCard from '../../../components/JobCard'
+import { Page } from '../../../components/Page'
+import { useJobsAvailableQuery } from '../../../graphql-codegen'
+import { useAuth } from '../../../lib/useAuth'
+import { useAuthRequired } from '../../../lib/useAuthRequired'
 
-export default function JobListPage() {
+export default function JobsAvailablePage() {
   useAuthRequired()
   const { userId } = useAuth()
-  const { data } = useJobsListQuery({
+  const { data } = useJobsAvailableQuery({
     variables: { userId },
   })
 
