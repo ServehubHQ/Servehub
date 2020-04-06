@@ -1,0 +1,422 @@
+version: 2
+tables:
+- table:
+    schema: auth
+    name: auth_providers
+  array_relationships:
+  - name: user_providers
+    using:
+      foreign_key_constraint_on:
+        column: auth_provider
+        table:
+          schema: auth
+          name: user_providers
+- table:
+    schema: auth
+    name: refresh_tokens
+  object_relationships:
+  - name: user
+    using:
+      foreign_key_constraint_on: user_id
+- table:
+    schema: auth
+    name: user_accounts
+  object_relationships:
+  - name: user
+    using:
+      foreign_key_constraint_on: user_id
+- table:
+    schema: auth
+    name: user_providers
+  object_relationships:
+  - name: authProviderByAuthProvider
+    using:
+      foreign_key_constraint_on: auth_provider
+  - name: user
+    using:
+      foreign_key_constraint_on: user_id
+- table:
+    schema: public
+    name: documents
+  object_relationships:
+  - name: job
+    using:
+      foreign_key_constraint_on: job_id
+  insert_permissions:
+  - role: lawyer
+    permission:
+      check: {}
+      columns:
+      - city
+      - job_id
+      - pickup
+      - postal_code
+      - province
+      - street
+      - title
+      - unit
+      - url
+  select_permissions:
+  - role: lawyer
+    permission:
+      columns:
+      - city
+      - created_at
+      - id
+      - job_id
+      - pickup
+      - postal_code
+      - province
+      - street
+      - title
+      - unit
+      - updated_at
+      - url
+      filter:
+        job:
+          lawyer_user_id:
+            _eq: X-Hasura-User-Id
+      allow_aggregations: true
+  - role: server
+    permission:
+      columns:
+      - city
+      - created_at
+      - id
+      - job_id
+      - pickup
+      - postal_code
+      - province
+      - street
+      - title
+      - unit
+      - url
+      filter:
+        job:
+          server_user_id:
+            _eq: X-Hasura-User-Id
+  update_permissions:
+  - role: lawyer
+    permission:
+      columns:
+      - city
+      - pickup
+      - postal_code
+      - province
+      - street
+      - title
+      - unit
+      - url
+      filter:
+        job:
+          lawyer_user_id:
+            _eq: X-Hasura-User-Id
+  delete_permissions:
+  - role: lawyer
+    permission:
+      filter:
+        job:
+          lawyer_user_id:
+            _eq: X-Hasura-User-Id
+- table:
+    schema: public
+    name: jobs
+  object_relationships:
+  - name: lawyer
+    using:
+      foreign_key_constraint_on: lawyer_user_id
+  - name: server
+    using:
+      foreign_key_constraint_on: server_user_id
+  - name: target
+    using:
+      foreign_key_constraint_on: target_id
+  insert_permissions:
+  - role: lawyer
+    permission:
+      check: {}
+      set:
+        lawyer_user_id: x-hasura-User-Id
+      columns:
+      - description
+  select_permissions:
+  - role: lawyer
+    permission:
+      columns:
+      - created_at
+      - description
+      - id
+      - server_user_id
+      - stripe_payment_intent_client_secret
+      - stripe_payment_intent_succeeded
+      - target_id
+      filter:
+        lawyer_user_id:
+          _eq: X-Hasura-User-Id
+      allow_aggregations: true
+  - role: server
+    permission:
+      columns:
+      - created_at
+      - description
+      - id
+      - stripe_payment_intent_succeeded
+      - target_id
+      filter:
+        server_user_id:
+          _eq: X-Hasura-User-Id
+  update_permissions:
+  - role: lawyer
+    permission:
+      columns:
+      - description
+      - target_id
+      filter:
+        lawyer_user_id:
+          _eq: X-Hasura-User-Id
+  event_triggers:
+  - name: job-inserted
+    definition:
+      enable_manual: false
+      insert:
+        columns: '*'
+    retry_conf:
+      num_retries: 0
+      interval_sec: 10
+      timeout_sec: 60
+    webhook: https://servehub-bice.now.sh/api/hasura/jobs/inserted
+    headers:
+    - name: x-hasura-webhook-secret
+      value_from_env: SECRET_WEBHOOK_HEADER
+  - name: job-updated
+    definition:
+      enable_manual: false
+      update:
+        columns:
+        - stripe_payment_intent_succeeded
+        - description
+        - stripe_payment_intent_client_secret
+        - stripe_payment_intent_id
+        - created_at
+        - updated_at
+        - id
+        - lawyer_user_id
+        - server_user_id
+        - target_id
+    retry_conf:
+      num_retries: 0
+      interval_sec: 10
+      timeout_sec: 60
+    webhook: https://servehub-bice.now.sh/api/hasura/jobs/updated
+    headers:
+    - name: x-hasura-webhook-secret
+      value_from_env: SECRET_WEBHOOK_HEADER
+- table:
+    schema: public
+    name: roles
+  array_relationships:
+  - name: user_roles
+    using:
+      foreign_key_constraint_on:
+        column: role
+        table:
+          schema: public
+          name: user_roles
+  - name: users
+    using:
+      foreign_key_constraint_on:
+        column: default_role
+        table:
+          schema: public
+          name: users
+- table:
+    schema: public
+    name: targets
+  array_relationships:
+  - name: jobs
+    using:
+      foreign_key_constraint_on:
+        column: target_id
+        table:
+          schema: public
+          name: jobs
+  insert_permissions:
+  - role: lawyer
+    permission:
+      check: {}
+      columns:
+      - city
+      - name
+      - postal_code
+      - province
+      - street
+      - unit
+  select_permissions:
+  - role: lawyer
+    permission:
+      columns:
+      - city
+      - created_at
+      - id
+      - name
+      - postal_code
+      - province
+      - street
+      - unit
+      filter:
+        jobs:
+          lawyer_user_id:
+            _eq: X-Hasura-User-Id
+      allow_aggregations: true
+  - role: server
+    permission:
+      columns:
+      - city
+      - created_at
+      - id
+      - name
+      - postal_code
+      - province
+      - street
+      - unit
+      filter:
+        jobs:
+          server_user_id:
+            _eq: X-Hasura-User-Id
+  update_permissions:
+  - role: lawyer
+    permission:
+      columns:
+      - city
+      - name
+      - province
+      - street
+      - unit
+      filter:
+        jobs:
+          lawyer_user_id:
+            _eq: X-Hasura-User-Id
+  delete_permissions:
+  - role: lawyer
+    permission:
+      filter:
+        jobs:
+          lawyer_user_id:
+            _eq: X-Hasura-User-Id
+- table:
+    schema: public
+    name: user_roles
+  object_relationships:
+  - name: roleByRole
+    using:
+      foreign_key_constraint_on: role
+  - name: user
+    using:
+      foreign_key_constraint_on: user_id
+  insert_permissions:
+  - role: user
+    permission:
+      check:
+        role:
+          _in:
+          - lawyer
+          - server
+      set:
+        user_id: x-hasura-User-Id
+      columns:
+      - role
+  select_permissions:
+  - role: user
+    permission:
+      columns:
+      - role
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+      allow_aggregations: true
+- table:
+    schema: public
+    name: users
+  object_relationships:
+  - name: role
+    using:
+      foreign_key_constraint_on: default_role
+  array_relationships:
+  - name: refresh_tokens
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          schema: auth
+          name: refresh_tokens
+  - name: user_accounts
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          schema: auth
+          name: user_accounts
+  - name: user_providers
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          schema: auth
+          name: user_providers
+  - name: user_roles
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          schema: public
+          name: user_roles
+  select_permissions:
+  - role: lawyer
+    permission:
+      columns:
+      - created_at
+      - email
+      - firebase_messaging_token
+      - id
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+  - role: server
+    permission:
+      columns:
+      - created_at
+      - email
+      - firebase_messaging_token
+      - id
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+  update_permissions:
+  - role: lawyer
+    permission:
+      columns:
+      - firebase_messaging_token
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+  - role: server
+    permission:
+      columns:
+      - firebase_messaging_token
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+  event_triggers:
+  - name: user-inserted
+    definition:
+      enable_manual: false
+      insert:
+        columns: '*'
+    retry_conf:
+      num_retries: 0
+      interval_sec: 10
+      timeout_sec: 60
+    webhook: https://servehub-bice.now.sh/api/hasura/users/inserted
+    headers:
+    - name: x-hasura-webhook-secret
+      value_from_env: SECRET_WEBHOOK_HEADER

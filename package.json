@@ -31,6 +31,7 @@
     "moment": "^2.24.0",
     "next": "^9.3.2",
     "next-offline": "^5.0.0",
+    "nhost": "0.0.1",
     "nhost-js-sdk": "^1.2.0",
     "nookies": "^2.0.8",
     "now": "^17.1.1",
@@ -67,6 +68,7 @@
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-react-hooks": "^2.5.0",
     "eslint-plugin-standard": "^4.0.1",
+    "hasura-cli": "^1.1.1",
     "prettier": "^1.19.1",
     "standard": "^14.3.1",
     "typescript": "^3.8.3"
