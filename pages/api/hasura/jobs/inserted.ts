@@ -17,7 +17,7 @@ export default async function hasurajobInsertedApi(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  console.log('hasurajobInsertedApi')
+  console.log('[hasurajobInsertedApi] init')
   if (!hasuraWebhookValid(req, res)) return
   if (!config.hasuraAdminSecret || !config.stripeSecretKey) {
     throw new Error('Missing secrets required for Hasura webhooks')
@@ -28,7 +28,7 @@ export default async function hasurajobInsertedApi(
       data: { new: job },
     },
   } = req.body
-  console.log('job inserted', job)
+  console.log('[hasurajobInsertedApi] job inserted', job)
 
   const apollo = getApolloClient({ isAdmin: true })
   const stripe = getStripeServerClient()

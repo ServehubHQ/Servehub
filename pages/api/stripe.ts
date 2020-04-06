@@ -25,7 +25,7 @@ export default cors(async function stripeWebhook(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  console.log('stripeWebhook')
+  console.log('[stripeWebhook] init')
 
   if (!appConfig.stripeWebhookSecret) {
     throw new Error(

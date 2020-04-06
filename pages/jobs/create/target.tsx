@@ -106,7 +106,7 @@ export default function JobsCreateTargetPage() {
                     label='Unit'
                     name='unit'
                     fullWidth
-                    inputRef={register({ required: true })}
+                    inputRef={register()}
                     error={Boolean(errors.unit)}
                     helperText={errors.unit?.message}
                   />

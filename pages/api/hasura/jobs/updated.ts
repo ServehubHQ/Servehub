@@ -31,7 +31,7 @@ export default async function hasurajobUpdatedApi(
       }
     }
   }
-  console.log('job updated', job)
+  console.log('[hasurajobUpdatedApi] job updated', job)
 
   if (job.stripe_payment_intent_succeeded && !job.server_user_id) {
     if (firebaseAdmin.apps.length === 0) {
@@ -58,14 +58,12 @@ export default async function hasurajobUpdatedApi(
 
     console.log('[hasurajobUpdatedApi] data', data)
 
-    const currentUrl = new URL(req.url!)
-
     const notification: firebaseAdmin.messaging.WebpushConfig['notification'] = {
       title: 'New Job!',
       body: 'Click here to learn more',
       icon: 'https://placekitten.com/360/240',
       badge: 'https://placekitten.com/512/512',
-      click_action: `${currentUrl.protocol}://${currentUrl.host}/jobs/${job.id}`,
+      click_action: `https://64d7d76f.ngrok.io/jobs/${job.id}`,
     }
 
     console.log('notification', notification)

@@ -1,11 +1,11 @@
 import { config } from './config'
 import { NextApiResponse, NextApiRequest } from 'next'
 
-export default async function hasuraWebhookValid(
+export default function hasuraWebhookValid(
   req: NextApiRequest,
   res: NextApiResponse,
-) {
-  if (!config.hasuraAdminSecret) {
+): boolean {
+  if (!config.hasuraWebhookSecret) {
     throw new Error('Missing secrets required for Hasura webhooks')
   }
 
