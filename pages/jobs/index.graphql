@@ -1,10 +1,18 @@
 #import "../../components/JobCard.graphql"
-query JobsList($userId: uuid) {
+query JobsList($userId: uuid!, $isLawyer: Boolean!) {
   users(where: { id: { _eq: $userId } }) {
     id
     ...PageUser
   }
-  jobs {
+
+  lawyerJobs: jobs @include(if: $isLawyer) {
+    id
+
+    ...JobCardJob
+  }
+
+  serverJobs: jobs(where: { server_user_id: { _eq: $userId } })
+    @skip(if: $isLawyer) {
     id
 
     ...JobCardJob

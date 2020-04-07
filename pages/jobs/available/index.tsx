@@ -1,9 +1,17 @@
-import { Box, Breadcrumbs, Paper, Typography } from '@material-ui/core'
+import {
+  Box,
+  Breadcrumbs,
+  Paper,
+  Typography,
+  Grid,
+  Link as MuiLink,
+} from '@material-ui/core'
 import JobCard from '../../../components/JobCard'
 import { Page } from '../../../components/Page'
 import { useJobsAvailableQuery } from '../../../graphql-codegen'
 import { useAuth } from '../../../lib/useAuth'
 import { useAuthRequired } from '../../../lib/useAuthRequired'
+import Link from 'next/link'
 
 export default function JobsAvailablePage() {
   useAuthRequired()
@@ -18,7 +26,10 @@ export default function JobsAvailablePage() {
         <Paper elevation={2}>
           <Box p={2}>
             <Breadcrumbs aria-label='breadcrumb'>
-              <Typography color='textPrimary'>Jobs</Typography>
+              <Link href='/jobs' passHref>
+                <MuiLink color='inherit'>Jobs</MuiLink>
+              </Link>
+              <Typography color='textPrimary'>Available</Typography>
             </Breadcrumbs>
           </Box>
         </Paper>

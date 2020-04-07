@@ -2967,7 +2967,8 @@ export type JobsCreatePaymentQuery = (
 );
 
 export type JobsListQueryVariables = {
-  userId?: Maybe<Scalars['uuid']>;
+  userId: Scalars['uuid'];
+  isLawyer: Scalars['Boolean'];
 };
 
 
@@ -2977,7 +2978,11 @@ export type JobsListQuery = (
     { __typename?: 'users' }
     & Pick<Users, 'id'>
     & PageUserFragment
-  )>, jobs: Array<(
+  )>, lawyerJobs: Array<(
+    { __typename?: 'jobs' }
+    & Pick<Jobs, 'id'>
+    & JobCardJobFragment
+  )>, serverJobs: Array<(
     { __typename?: 'jobs' }
     & Pick<Jobs, 'id'>
     & JobCardJobFragment
@@ -3563,7 +3568,7 @@ export const JobsAvailableDocument = gql`
     id
     ...PageUser
   }
-  jobs(where: {target_id: {_is_null: true}, stripe_payment_intent_succeeded: {_eq: true}}, order_by: {created_at: asc}) {
+  jobs(where: {server_user_id: {_is_null: true}, stripe_payment_intent_succeeded: {_eq: true}}, order_by: {created_at: asc}) {
     id
     ...JobCardJob
   }
@@ -3669,12 +3674,16 @@ export type JobsCreatePaymentQueryHookResult = ReturnType<typeof useJobsCreatePa
 export type JobsCreatePaymentLazyQueryHookResult = ReturnType<typeof useJobsCreatePaymentLazyQuery>;
 export type JobsCreatePaymentQueryResult = ApolloReactCommon.QueryResult<JobsCreatePaymentQuery, JobsCreatePaymentQueryVariables>;
 export const JobsListDocument = gql`
-    query JobsList($userId: uuid) {
+    query JobsList($userId: uuid!, $isLawyer: Boolean!) {
   users(where: {id: {_eq: $userId}}) {
     id
     ...PageUser
   }
-  jobs {
+  lawyerJobs: jobs @include(if: $isLawyer) {
+    id
+    ...JobCardJob
+  }
+  serverJobs: jobs(where: {server_user_id: {_eq: $userId}}) @skip(if: $isLawyer) {
     id
     ...JobCardJob
   }
@@ -3695,6 +3704,7 @@ ${JobCardJobFragmentDoc}`;
  * const { data, loading, error } = useJobsListQuery({
  *   variables: {
  *      userId: // value for 'userId'
+ *      isLawyer: // value for 'isLawyer'
  *   },
  * });
  */

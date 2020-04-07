@@ -66,7 +66,7 @@ export function Page({ children, currentUser }: PageProps) {
   const handleEnableNotificationsClick = useCallback(() => {
     getAndSaveMessagingToken()
   }, [])
-  console.log('[Page]', currentUser)
+
   return (
     <>
       <AppBar position='static'>
