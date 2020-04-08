@@ -1,17 +1,16 @@
 import {
   Box,
   Breadcrumbs,
+  Link as MuiLink,
   Paper,
   Typography,
-  Grid,
-  Link as MuiLink,
 } from '@material-ui/core'
+import Link from 'next/link'
 import JobCard from '../../../components/JobCard'
 import { Page } from '../../../components/Page'
 import { useJobsAvailableQuery } from '../../../graphql-codegen'
 import { useAuth } from '../../../lib/useAuth'
 import { useAuthRequired } from '../../../lib/useAuthRequired'
-import Link from 'next/link'
 
 export default function JobsAvailablePage() {
   useAuthRequired()

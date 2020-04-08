@@ -1,11 +1,13 @@
 import {
   ApolloClient,
-  from,
   HttpLink,
   InMemoryCache,
   NormalizedCacheObject,
+  split,
 } from '@apollo/client'
+import { getMainDefinition } from '@apollo/client/utilities'
 import { setContext } from '@apollo/link-context'
+import { WebSocketLink } from '@apollo/link-ws'
 import fetch from 'cross-fetch'
 import { AuthClient } from './AuthClient'
 import { config } from './config'
@@ -30,12 +32,7 @@ export function getApolloClient(
     return apolloClient
   }
 
-  const httpLink = new HttpLink({
-    uri: 'https://hasura-rf2zfg3c.nhost.app/v1/graphql',
-    fetch,
-  })
-
-  const authLink = setContext(async (a, { headers }) => {
+  const httpLink = setContext(async (a, { headers }) => {
     if (auth.isAdmin) {
       if (!config.hasuraAdminSecret) {
         throw new Error(
@@ -55,20 +52,31 @@ export function getApolloClient(
       throw new Error('Attempting GraphQL request without auth')
     }
 
-    await authClient.refreshToken()
-    const jwt = authClient?.getToken()
-
     return {
       headers: {
         ...headers,
-        ...(jwt
-          ? {
-              authorization: `Bearer ${jwt}`,
-            }
-          : {}),
+        ...(await authClient.getRequestHeaders()),
       },
     }
-  })
+  }).concat(
+    new HttpLink({
+      uri: 'https://hasura-rf2zfg3c.nhost.app/v1/graphql',
+      fetch,
+    }),
+  )
+
+  const webSocketLink =
+    isBrowser &&
+    new WebSocketLink({
+      uri: 'wss://hasura-rf2zfg3c.nhost.app/v1/graphql',
+      options: {
+        lazy: true,
+        reconnect: true,
+        connectionParams: async () => ({
+          headers: await authClient?.getRequestHeaders(),
+        }),
+      },
+    })
 
   const cache = new InMemoryCache()
 
@@ -80,7 +88,19 @@ export function getApolloClient(
     connectToDevTools: isBrowser,
     ssrMode: !isBrowser,
     cache,
-    link: from([authLink, httpLink]),
+    link: webSocketLink
+      ? split(
+          ({ query }) => {
+            const definition = getMainDefinition(query)
+            return (
+              definition.kind === 'OperationDefinition' &&
+              definition.operation === 'subscription'
+            )
+          },
+          webSocketLink,
+          httpLink,
+        )
+      : httpLink,
   })
 
   return apolloClient

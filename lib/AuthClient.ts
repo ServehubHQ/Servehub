@@ -260,4 +260,15 @@ export class AuthClient {
 
     return parsedToken['https://hasura.io/jwt/claims'][key]
   }
+
+  async getRequestHeaders() {
+    await this.refreshToken()
+    const jwt = this.getToken()
+
+    return jwt
+      ? {
+          authorization: `Bearer ${jwt}`,
+        }
+      : {}
+  }
 }

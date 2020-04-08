@@ -1,5 +1,6 @@
 #import "../../components/JobMap.graphql"
 #import "../../components/Page.graphql"
+#import "../../components/Chat.graphql"
 query JobDetials($jobId: uuid!, $userId: uuid) {
   users(where: { id: { _eq: $userId } }) {
     id
@@ -20,5 +21,7 @@ query JobDetials($jobId: uuid!, $userId: uuid) {
     server {
       id
     }
+
+    ...ChatJob
   }
 }

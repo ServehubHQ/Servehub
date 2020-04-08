@@ -1,0 +1,5 @@
+mutation SendMessage($jobId: uuid!, $message: String!) {
+  insert_messages(objects: { job_id: $jobId, message: $message }) {
+    affected_rows
+  }
+}

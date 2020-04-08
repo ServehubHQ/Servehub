@@ -1028,6 +1028,158 @@ export type Jsonb_Comparison_Exp = {
   _nin?: Maybe<Array<Scalars['jsonb']>>;
 };
 
+export type Messages = {
+   __typename?: 'messages';
+  created_at: Scalars['timestamptz'];
+  id: Scalars['uuid'];
+  job: Jobs;
+  job_id: Scalars['uuid'];
+  message: Scalars['String'];
+  updated_at: Scalars['timestamptz'];
+  user: Users;
+  user_id: Scalars['uuid'];
+};
+
+export type Messages_Aggregate = {
+   __typename?: 'messages_aggregate';
+  aggregate?: Maybe<Messages_Aggregate_Fields>;
+  nodes: Array<Messages>;
+};
+
+export type Messages_Aggregate_Fields = {
+   __typename?: 'messages_aggregate_fields';
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<Messages_Max_Fields>;
+  min?: Maybe<Messages_Min_Fields>;
+};
+
+
+export type Messages_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Messages_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+export type Messages_Aggregate_Order_By = {
+  count?: Maybe<Order_By>;
+  max?: Maybe<Messages_Max_Order_By>;
+  min?: Maybe<Messages_Min_Order_By>;
+};
+
+export type Messages_Arr_Rel_Insert_Input = {
+  data: Array<Messages_Insert_Input>;
+  on_conflict?: Maybe<Messages_On_Conflict>;
+};
+
+export type Messages_Bool_Exp = {
+  _and?: Maybe<Array<Maybe<Messages_Bool_Exp>>>;
+  _not?: Maybe<Messages_Bool_Exp>;
+  _or?: Maybe<Array<Maybe<Messages_Bool_Exp>>>;
+  created_at?: Maybe<Timestamptz_Comparison_Exp>;
+  id?: Maybe<Uuid_Comparison_Exp>;
+  job?: Maybe<Jobs_Bool_Exp>;
+  job_id?: Maybe<Uuid_Comparison_Exp>;
+  message?: Maybe<String_Comparison_Exp>;
+  updated_at?: Maybe<Timestamptz_Comparison_Exp>;
+  user?: Maybe<Users_Bool_Exp>;
+  user_id?: Maybe<Uuid_Comparison_Exp>;
+};
+
+export enum Messages_Constraint {
+  MessagesPkey = 'messages_pkey'
+}
+
+export type Messages_Insert_Input = {
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  job?: Maybe<Jobs_Obj_Rel_Insert_Input>;
+  job_id?: Maybe<Scalars['uuid']>;
+  message?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+  user?: Maybe<Users_Obj_Rel_Insert_Input>;
+  user_id?: Maybe<Scalars['uuid']>;
+};
+
+export type Messages_Max_Fields = {
+   __typename?: 'messages_max_fields';
+  created_at?: Maybe<Scalars['timestamptz']>;
+  message?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+export type Messages_Max_Order_By = {
+  created_at?: Maybe<Order_By>;
+  message?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+};
+
+export type Messages_Min_Fields = {
+   __typename?: 'messages_min_fields';
+  created_at?: Maybe<Scalars['timestamptz']>;
+  message?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+export type Messages_Min_Order_By = {
+  created_at?: Maybe<Order_By>;
+  message?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+};
+
+export type Messages_Mutation_Response = {
+   __typename?: 'messages_mutation_response';
+  affected_rows: Scalars['Int'];
+  returning: Array<Messages>;
+};
+
+export type Messages_Obj_Rel_Insert_Input = {
+  data: Messages_Insert_Input;
+  on_conflict?: Maybe<Messages_On_Conflict>;
+};
+
+export type Messages_On_Conflict = {
+  constraint: Messages_Constraint;
+  update_columns: Array<Messages_Update_Column>;
+  where?: Maybe<Messages_Bool_Exp>;
+};
+
+export type Messages_Order_By = {
+  created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  job?: Maybe<Jobs_Order_By>;
+  job_id?: Maybe<Order_By>;
+  message?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+  user?: Maybe<Users_Order_By>;
+  user_id?: Maybe<Order_By>;
+};
+
+export enum Messages_Select_Column {
+  CreatedAt = 'created_at',
+  Id = 'id',
+  JobId = 'job_id',
+  Message = 'message',
+  UpdatedAt = 'updated_at',
+  UserId = 'user_id'
+}
+
+export type Messages_Set_Input = {
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  job_id?: Maybe<Scalars['uuid']>;
+  message?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+  user_id?: Maybe<Scalars['uuid']>;
+};
+
+export enum Messages_Update_Column {
+  CreatedAt = 'created_at',
+  Id = 'id',
+  JobId = 'job_id',
+  Message = 'message',
+  UpdatedAt = 'updated_at',
+  UserId = 'user_id'
+}
+
 export type Mutation_Root = {
    __typename?: 'mutation_root';
   delete_auth_auth_providers?: Maybe<Auth_Auth_Providers_Mutation_Response>;
@@ -1036,6 +1188,7 @@ export type Mutation_Root = {
   delete_auth_user_providers?: Maybe<Auth_User_Providers_Mutation_Response>;
   delete_documents?: Maybe<Documents_Mutation_Response>;
   delete_jobs?: Maybe<Jobs_Mutation_Response>;
+  delete_messages?: Maybe<Messages_Mutation_Response>;
   delete_roles?: Maybe<Roles_Mutation_Response>;
   delete_targets?: Maybe<Targets_Mutation_Response>;
   delete_user_roles?: Maybe<User_Roles_Mutation_Response>;
@@ -1046,6 +1199,7 @@ export type Mutation_Root = {
   insert_auth_user_providers?: Maybe<Auth_User_Providers_Mutation_Response>;
   insert_documents?: Maybe<Documents_Mutation_Response>;
   insert_jobs?: Maybe<Jobs_Mutation_Response>;
+  insert_messages?: Maybe<Messages_Mutation_Response>;
   insert_roles?: Maybe<Roles_Mutation_Response>;
   insert_targets?: Maybe<Targets_Mutation_Response>;
   insert_user_roles?: Maybe<User_Roles_Mutation_Response>;
@@ -1056,6 +1210,7 @@ export type Mutation_Root = {
   update_auth_user_providers?: Maybe<Auth_User_Providers_Mutation_Response>;
   update_documents?: Maybe<Documents_Mutation_Response>;
   update_jobs?: Maybe<Jobs_Mutation_Response>;
+  update_messages?: Maybe<Messages_Mutation_Response>;
   update_roles?: Maybe<Roles_Mutation_Response>;
   update_targets?: Maybe<Targets_Mutation_Response>;
   update_user_roles?: Maybe<User_Roles_Mutation_Response>;
@@ -1090,6 +1245,11 @@ export type Mutation_RootDelete_DocumentsArgs = {
 
 export type Mutation_RootDelete_JobsArgs = {
   where: Jobs_Bool_Exp;
+};
+
+
+export type Mutation_RootDelete_MessagesArgs = {
+  where: Messages_Bool_Exp;
 };
 
 
@@ -1146,6 +1306,12 @@ export type Mutation_RootInsert_DocumentsArgs = {
 export type Mutation_RootInsert_JobsArgs = {
   objects: Array<Jobs_Insert_Input>;
   on_conflict?: Maybe<Jobs_On_Conflict>;
+};
+
+
+export type Mutation_RootInsert_MessagesArgs = {
+  objects: Array<Messages_Insert_Input>;
+  on_conflict?: Maybe<Messages_On_Conflict>;
 };
 
 
@@ -1209,6 +1375,12 @@ export type Mutation_RootUpdate_JobsArgs = {
 };
 
 
+export type Mutation_RootUpdate_MessagesArgs = {
+  _set?: Maybe<Messages_Set_Input>;
+  where: Messages_Bool_Exp;
+};
+
+
 export type Mutation_RootUpdate_RolesArgs = {
   _set?: Maybe<Roles_Set_Input>;
   where: Roles_Bool_Exp;
@@ -1266,6 +1438,9 @@ export type Query_Root = {
   jobs: Array<Jobs>;
   jobs_aggregate: Jobs_Aggregate;
   jobs_by_pk?: Maybe<Jobs>;
+  messages: Array<Messages>;
+  messages_aggregate: Messages_Aggregate;
+  messages_by_pk?: Maybe<Messages>;
   roles: Array<Roles>;
   roles_aggregate: Roles_Aggregate;
   roles_by_pk?: Maybe<Roles>;
@@ -1415,6 +1590,29 @@ export type Query_RootJobs_AggregateArgs = {
 
 
 export type Query_RootJobs_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Query_RootMessagesArgs = {
+  distinct_on?: Maybe<Array<Messages_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Messages_Order_By>>;
+  where?: Maybe<Messages_Bool_Exp>;
+};
+
+
+export type Query_RootMessages_AggregateArgs = {
+  distinct_on?: Maybe<Array<Messages_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Messages_Order_By>>;
+  where?: Maybe<Messages_Bool_Exp>;
+};
+
+
+export type Query_RootMessages_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
@@ -1695,6 +1893,9 @@ export type Subscription_Root = {
   jobs: Array<Jobs>;
   jobs_aggregate: Jobs_Aggregate;
   jobs_by_pk?: Maybe<Jobs>;
+  messages: Array<Messages>;
+  messages_aggregate: Messages_Aggregate;
+  messages_by_pk?: Maybe<Messages>;
   roles: Array<Roles>;
   roles_aggregate: Roles_Aggregate;
   roles_by_pk?: Maybe<Roles>;
@@ -1844,6 +2045,29 @@ export type Subscription_RootJobs_AggregateArgs = {
 
 
 export type Subscription_RootJobs_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Subscription_RootMessagesArgs = {
+  distinct_on?: Maybe<Array<Messages_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Messages_Order_By>>;
+  where?: Maybe<Messages_Bool_Exp>;
+};
+
+
+export type Subscription_RootMessages_AggregateArgs = {
+  distinct_on?: Maybe<Array<Messages_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Messages_Order_By>>;
+  where?: Maybe<Messages_Bool_Exp>;
+};
+
+
+export type Subscription_RootMessages_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
@@ -2656,6 +2880,22 @@ export type Uuid_Comparison_Exp = {
   _nin?: Maybe<Array<Scalars['uuid']>>;
 };
 
+export type ChatJobFragment = (
+  { __typename?: 'jobs' }
+  & Pick<Jobs, 'id'>
+);
+
+export type ChatSubscriptionVariables = {};
+
+
+export type ChatSubscription = (
+  { __typename?: 'subscription_root' }
+  & { messages: Array<(
+    { __typename?: 'messages' }
+    & Pick<Messages, 'id' | 'message' | 'user_id'>
+  )> }
+);
+
 export type JobCardJobFragment = (
   { __typename?: 'jobs' }
   & Pick<Jobs, 'id'>
@@ -2761,6 +3001,20 @@ export type InsertTargetMutation = (
       { __typename?: 'targets' }
       & Pick<Targets, 'id'>
     )> }
+  )> }
+);
+
+export type SendMessageMutationVariables = {
+  jobId: Scalars['uuid'];
+  message: Scalars['String'];
+};
+
+
+export type SendMessageMutation = (
+  { __typename?: 'mutation_root' }
+  & { insert_messages: Maybe<(
+    { __typename?: 'messages_mutation_response' }
+    & Pick<Messages_Mutation_Response, 'affected_rows'>
   )> }
 );
 
@@ -2896,6 +3150,24 @@ export type IndexPageQuery = (
   )> }
 );
 
+export type JobAttemptQueryVariables = {
+  jobId: Scalars['uuid'];
+  userId?: Maybe<Scalars['uuid']>;
+};
+
+
+export type JobAttemptQuery = (
+  { __typename?: 'query_root' }
+  & { users: Array<(
+    { __typename?: 'users' }
+    & Pick<Users, 'id'>
+    & PageUserFragment
+  )>, jobs_by_pk: Maybe<(
+    { __typename?: 'jobs' }
+    & Pick<Jobs, 'id'>
+  )> }
+);
+
 export type JobDetialsQueryVariables = {
   jobId: Scalars['uuid'];
   userId?: Maybe<Scalars['uuid']>;
@@ -2919,6 +3191,7 @@ export type JobDetialsQuery = (
       { __typename?: 'users' }
       & Pick<Users, 'id'>
     )> }
+    & ChatJobFragment
   )> }
 );
 
@@ -2989,6 +3262,11 @@ export type JobsListQuery = (
   )> }
 );
 
+export const ChatJobFragmentDoc = gql`
+    fragment ChatJob on jobs {
+  id
+}
+    `;
 export const JobMapTargetFragmentDoc = gql`
     fragment JobMapTarget on targets {
   id
@@ -3018,6 +3296,36 @@ export const PageUserFragmentDoc = gql`
   firebase_messaging_token
 }
     `;
+export const ChatDocument = gql`
+    subscription Chat {
+  messages {
+    id
+    message
+    user_id
+  }
+}
+    `;
+
+/**
+ * __useChatSubscription__
+ *
+ * To run a query within a React component, call `useChatSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useChatSubscription` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useChatSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useChatSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<ChatSubscription, ChatSubscriptionVariables>) {
+        return ApolloReactHooks.useSubscription<ChatSubscription, ChatSubscriptionVariables>(ChatDocument, baseOptions);
+      }
+export type ChatSubscriptionHookResult = ReturnType<typeof useChatSubscription>;
+export type ChatSubscriptionResult = ApolloReactCommon.SubscriptionResult<ChatSubscription>;
 export const ClaimJobDocument = gql`
     mutation ClaimJob($jobId: uuid!) {
   update_jobs(where: {id: {_eq: $jobId}}) {
@@ -3204,6 +3512,39 @@ export function useInsertTargetMutation(baseOptions?: ApolloReactHooks.MutationH
 export type InsertTargetMutationHookResult = ReturnType<typeof useInsertTargetMutation>;
 export type InsertTargetMutationResult = ApolloReactCommon.MutationResult<InsertTargetMutation>;
 export type InsertTargetMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertTargetMutation, InsertTargetMutationVariables>;
+export const SendMessageDocument = gql`
+    mutation SendMessage($jobId: uuid!, $message: String!) {
+  insert_messages(objects: {job_id: $jobId, message: $message}) {
+    affected_rows
+  }
+}
+    `;
+export type SendMessageMutationFn = ApolloReactCommon.MutationFunction<SendMessageMutation, SendMessageMutationVariables>;
+
+/**
+ * __useSendMessageMutation__
+ *
+ * To run a mutation, you first call `useSendMessageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSendMessageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [sendMessageMutation, { data, loading, error }] = useSendMessageMutation({
+ *   variables: {
+ *      jobId: // value for 'jobId'
+ *      message: // value for 'message'
+ *   },
+ * });
+ */
+export function useSendMessageMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SendMessageMutation, SendMessageMutationVariables>) {
+        return ApolloReactHooks.useMutation<SendMessageMutation, SendMessageMutationVariables>(SendMessageDocument, baseOptions);
+      }
+export type SendMessageMutationHookResult = ReturnType<typeof useSendMessageMutation>;
+export type SendMessageMutationResult = ApolloReactCommon.MutationResult<SendMessageMutation>;
+export type SendMessageMutationOptions = ApolloReactCommon.BaseMutationOptions<SendMessageMutation, SendMessageMutationVariables>;
 export const SetFirebaseMessagingTokenDocument = gql`
     mutation SetFirebaseMessagingToken($userId: uuid!, $token: String!) {
   update_users(_set: {firebase_messaging_token: $token}, where: {id: {_eq: $userId}}) {
@@ -3513,6 +3854,44 @@ export function useIndexPageLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHo
 export type IndexPageQueryHookResult = ReturnType<typeof useIndexPageQuery>;
 export type IndexPageLazyQueryHookResult = ReturnType<typeof useIndexPageLazyQuery>;
 export type IndexPageQueryResult = ApolloReactCommon.QueryResult<IndexPageQuery, IndexPageQueryVariables>;
+export const JobAttemptDocument = gql`
+    query JobAttempt($jobId: uuid!, $userId: uuid) {
+  users(where: {id: {_eq: $userId}}) {
+    id
+    ...PageUser
+  }
+  jobs_by_pk(id: $jobId) {
+    id
+  }
+}
+    ${PageUserFragmentDoc}`;
+
+/**
+ * __useJobAttemptQuery__
+ *
+ * To run a query within a React component, call `useJobAttemptQuery` and pass it any options that fit your needs.
+ * When your component renders, `useJobAttemptQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useJobAttemptQuery({
+ *   variables: {
+ *      jobId: // value for 'jobId'
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useJobAttemptQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<JobAttemptQuery, JobAttemptQueryVariables>) {
+        return ApolloReactHooks.useQuery<JobAttemptQuery, JobAttemptQueryVariables>(JobAttemptDocument, baseOptions);
+      }
+export function useJobAttemptLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<JobAttemptQuery, JobAttemptQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<JobAttemptQuery, JobAttemptQueryVariables>(JobAttemptDocument, baseOptions);
+        }
+export type JobAttemptQueryHookResult = ReturnType<typeof useJobAttemptQuery>;
+export type JobAttemptLazyQueryHookResult = ReturnType<typeof useJobAttemptLazyQuery>;
+export type JobAttemptQueryResult = ApolloReactCommon.QueryResult<JobAttemptQuery, JobAttemptQueryVariables>;
 export const JobDetialsDocument = gql`
     query JobDetials($jobId: uuid!, $userId: uuid) {
   users(where: {id: {_eq: $userId}}) {
@@ -3531,10 +3910,12 @@ export const JobDetialsDocument = gql`
     server {
       id
     }
+    ...ChatJob
   }
 }
     ${PageUserFragmentDoc}
-${JobMapTargetFragmentDoc}`;
+${JobMapTargetFragmentDoc}
+${ChatJobFragmentDoc}`;
 
 /**
  * __useJobDetialsQuery__

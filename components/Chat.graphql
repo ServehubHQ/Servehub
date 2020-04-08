@@ -1,0 +1,11 @@
+fragment ChatJob on jobs {
+  id
+}
+
+subscription Chat {
+  messages {
+    id
+    message
+    user_id
+  }
+}
