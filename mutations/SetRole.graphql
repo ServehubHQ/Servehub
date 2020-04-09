@@ -1,8 +1,0 @@
-mutation SetRole($role: String!, $userId: uuid!) {
-  insert_user_roles(objects: [{ role: $role, user_id: $userId }]) {
-    affected_rows
-  }
-  update_users(where: { id: { _eq: $userId } }, _set: { default_role: $role }) {
-    affected_rows
-  }
-}

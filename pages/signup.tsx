@@ -53,6 +53,7 @@ interface FormData {
   email: string
   password: string
   role: string
+  name: string
 }
 
 export default function SignupPage() {
@@ -64,9 +65,9 @@ export default function SignupPage() {
   >()
 
   const handleFormValid = useCallback(
-    async ({ email, password, role }: FormData) => {
+    async ({ email, password, ...additionData }: FormData) => {
       try {
-        await authClient!.signup(email, email, password, { role })
+        await authClient!.signup(email, email, password, additionData)
       } catch (e) {
         console.error(e)
 
@@ -133,6 +134,17 @@ export default function SignupPage() {
               inputRef={register({ required: true })}
               error={Boolean(errors.password)}
               helperText={errors.password?.message}
+            />
+            <TextField
+              variant='filled'
+              margin='normal'
+              required
+              fullWidth
+              label='Name'
+              name='name'
+              inputRef={register({ required: true })}
+              error={Boolean(errors.name)}
+              helperText={errors.name?.message}
             />
             <SelectField
               name='role'

@@ -2831,6 +2831,7 @@ export type Users = {
   firebase_messaging_token?: Maybe<Scalars['String']>;
   id: Scalars['uuid'];
   is_anonymous: Scalars['Boolean'];
+  name?: Maybe<Scalars['String']>;
   refresh_tokens: Array<Auth_Refresh_Tokens>;
   refresh_tokens_aggregate: Auth_Refresh_Tokens_Aggregate;
   register_data?: Maybe<Scalars['jsonb']>;
@@ -2971,6 +2972,7 @@ export type Users_Bool_Exp = {
   firebase_messaging_token?: Maybe<String_Comparison_Exp>;
   id?: Maybe<Uuid_Comparison_Exp>;
   is_anonymous?: Maybe<Boolean_Comparison_Exp>;
+  name?: Maybe<String_Comparison_Exp>;
   refresh_tokens?: Maybe<Auth_Refresh_Tokens_Bool_Exp>;
   register_data?: Maybe<Jsonb_Comparison_Exp>;
   role?: Maybe<Roles_Bool_Exp>;
@@ -3011,6 +3013,7 @@ export type Users_Insert_Input = {
   firebase_messaging_token?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   is_anonymous?: Maybe<Scalars['Boolean']>;
+  name?: Maybe<Scalars['String']>;
   refresh_tokens?: Maybe<Auth_Refresh_Tokens_Arr_Rel_Insert_Input>;
   register_data?: Maybe<Scalars['jsonb']>;
   role?: Maybe<Roles_Obj_Rel_Insert_Input>;
@@ -3031,6 +3034,7 @@ export type Users_Max_Fields = {
   display_name?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
   firebase_messaging_token?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
   secret_token_expires_at?: Maybe<Scalars['timestamptz']>;
   stripe_customer_id?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
@@ -3043,6 +3047,7 @@ export type Users_Max_Order_By = {
   display_name?: Maybe<Order_By>;
   email?: Maybe<Order_By>;
   firebase_messaging_token?: Maybe<Order_By>;
+  name?: Maybe<Order_By>;
   secret_token_expires_at?: Maybe<Order_By>;
   stripe_customer_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
@@ -3056,6 +3061,7 @@ export type Users_Min_Fields = {
   display_name?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
   firebase_messaging_token?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
   secret_token_expires_at?: Maybe<Scalars['timestamptz']>;
   stripe_customer_id?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
@@ -3068,6 +3074,7 @@ export type Users_Min_Order_By = {
   display_name?: Maybe<Order_By>;
   email?: Maybe<Order_By>;
   firebase_messaging_token?: Maybe<Order_By>;
+  name?: Maybe<Order_By>;
   secret_token_expires_at?: Maybe<Order_By>;
   stripe_customer_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
@@ -3100,6 +3107,7 @@ export type Users_Order_By = {
   firebase_messaging_token?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   is_anonymous?: Maybe<Order_By>;
+  name?: Maybe<Order_By>;
   refresh_tokens_aggregate?: Maybe<Auth_Refresh_Tokens_Aggregate_Order_By>;
   register_data?: Maybe<Order_By>;
   role?: Maybe<Roles_Order_By>;
@@ -3126,6 +3134,7 @@ export enum Users_Select_Column {
   FirebaseMessagingToken = 'firebase_messaging_token',
   Id = 'id',
   IsAnonymous = 'is_anonymous',
+  Name = 'name',
   RegisterData = 'register_data',
   SecretToken = 'secret_token',
   SecretTokenExpiresAt = 'secret_token_expires_at',
@@ -3143,6 +3152,7 @@ export type Users_Set_Input = {
   firebase_messaging_token?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   is_anonymous?: Maybe<Scalars['Boolean']>;
+  name?: Maybe<Scalars['String']>;
   register_data?: Maybe<Scalars['jsonb']>;
   secret_token?: Maybe<Scalars['uuid']>;
   secret_token_expires_at?: Maybe<Scalars['timestamptz']>;
@@ -3160,6 +3170,7 @@ export enum Users_Update_Column {
   FirebaseMessagingToken = 'firebase_messaging_token',
   Id = 'id',
   IsAnonymous = 'is_anonymous',
+  Name = 'name',
   RegisterData = 'register_data',
   SecretToken = 'secret_token',
   SecretTokenExpiresAt = 'secret_token_expires_at',
@@ -3207,6 +3218,23 @@ export type JobCardJobFragment = (
     { __typename?: 'users' }
     & Pick<Users, 'id'>
   )> }
+);
+
+export type JobDetailsPageJobFragment = (
+  { __typename?: 'jobs' }
+  & Pick<Jobs, 'id'>
+  & { server: Maybe<(
+    { __typename?: 'users' }
+    & Pick<Users, 'id'>
+  )>, target: Maybe<(
+    { __typename?: 'targets' }
+    & Pick<Targets, 'id' | 'name'>
+  )> }
+);
+
+export type JobDetailsPageUserFragment = (
+  { __typename?: 'users' }
+  & PageUserFragment
 );
 
 export type JobMapTargetFragment = (
@@ -3319,6 +3347,24 @@ export type InsertTargetMutation = (
   )> }
 );
 
+export type PostSignupMutationVariables = {
+  role: Scalars['String'];
+  userId: Scalars['uuid'];
+  name?: Maybe<Scalars['String']>;
+};
+
+
+export type PostSignupMutation = (
+  { __typename?: 'mutation_root' }
+  & { insert_user_roles: Maybe<(
+    { __typename?: 'user_roles_mutation_response' }
+    & Pick<User_Roles_Mutation_Response, 'affected_rows'>
+  )>, update_users: Maybe<(
+    { __typename?: 'users_mutation_response' }
+    & Pick<Users_Mutation_Response, 'affected_rows'>
+  )> }
+);
+
 export type SendMessageMutationVariables = {
   jobId: Scalars['uuid'];
   message: Scalars['String'];
@@ -3389,23 +3435,6 @@ export type SetJobTargetMutation = (
       { __typename?: 'jobs' }
       & Pick<Jobs, 'id' | 'target_id'>
     )> }
-  )> }
-);
-
-export type SetRoleMutationVariables = {
-  role: Scalars['String'];
-  userId: Scalars['uuid'];
-};
-
-
-export type SetRoleMutation = (
-  { __typename?: 'mutation_root' }
-  & { insert_user_roles: Maybe<(
-    { __typename?: 'user_roles_mutation_response' }
-    & Pick<User_Roles_Mutation_Response, 'affected_rows'>
-  )>, update_users: Maybe<(
-    { __typename?: 'users_mutation_response' }
-    & Pick<Users_Mutation_Response, 'affected_rows'>
   )> }
 );
 
@@ -3498,7 +3527,7 @@ export type JobDetialsQuery = (
   & { users: Array<(
     { __typename?: 'users' }
     & Pick<Users, 'id'>
-    & PageUserFragment
+    & JobDetailsPageUserFragment
   )>, jobs_by_pk: Maybe<(
     { __typename?: 'jobs' }
     & Pick<Jobs, 'id' | 'description' | 'stripe_payment_intent_succeeded'>
@@ -3513,6 +3542,7 @@ export type JobDetialsQuery = (
       { __typename?: 'attempts' }
       & Pick<Attempts, 'id' | 'attempted_at' | 'success'>
     )> }
+    & JobDetailsPageJobFragment
     & ChatJobFragment
   )> }
 );
@@ -3561,6 +3591,26 @@ export type JobsCreatePaymentQuery = (
   )> }
 );
 
+export type JobsListJobFragment = (
+  { __typename?: 'jobs' }
+  & { target: Maybe<(
+    { __typename?: 'targets' }
+    & Pick<Targets, 'id' | 'name' | 'street' | 'city' | 'province'>
+  )>, successfulAttempts: (
+    { __typename?: 'attempts_aggregate' }
+    & { aggregate: Maybe<(
+      { __typename?: 'attempts_aggregate_fields' }
+      & Pick<Attempts_Aggregate_Fields, 'count'>
+    )> }
+  ), allAttempts: (
+    { __typename?: 'attempts_aggregate' }
+    & { aggregate: Maybe<(
+      { __typename?: 'attempts_aggregate_fields' }
+      & Pick<Attempts_Aggregate_Fields, 'count'>
+    )> }
+  ) }
+);
+
 export type JobsListQueryVariables = {
   userId: Scalars['uuid'];
   isLawyer: Scalars['Boolean'];
@@ -3576,10 +3626,12 @@ export type JobsListQuery = (
   )>, lawyerJobs: Array<(
     { __typename?: 'jobs' }
     & Pick<Jobs, 'id'>
+    & JobsListJobFragment
     & JobCardJobFragment
   )>, serverJobs: Array<(
     { __typename?: 'jobs' }
     & Pick<Jobs, 'id'>
+    & JobsListJobFragment
     & JobCardJobFragment
   )> }
 );
@@ -3612,10 +3664,48 @@ export const JobCardJobFragmentDoc = gql`
   }
 }
     ${JobMapTargetFragmentDoc}`;
+export const JobDetailsPageJobFragmentDoc = gql`
+    fragment JobDetailsPageJob on jobs {
+  id
+  server {
+    id
+  }
+  target {
+    id
+    name
+  }
+}
+    `;
 export const PageUserFragmentDoc = gql`
     fragment PageUser on users {
   id
   firebase_messaging_token
+}
+    `;
+export const JobDetailsPageUserFragmentDoc = gql`
+    fragment JobDetailsPageUser on users {
+  ...PageUser
+}
+    ${PageUserFragmentDoc}`;
+export const JobsListJobFragmentDoc = gql`
+    fragment JobsListJob on jobs {
+  target {
+    id
+    name
+    street
+    city
+    province
+  }
+  successfulAttempts: attempts_aggregate(where: {success: {_eq: true}}) {
+    aggregate {
+      count
+    }
+  }
+  allAttempts: attempts_aggregate {
+    aggregate {
+      count
+    }
+  }
 }
     `;
 export const ChatDocument = gql`
@@ -3868,6 +3958,43 @@ export function useInsertTargetMutation(baseOptions?: ApolloReactHooks.MutationH
 export type InsertTargetMutationHookResult = ReturnType<typeof useInsertTargetMutation>;
 export type InsertTargetMutationResult = ApolloReactCommon.MutationResult<InsertTargetMutation>;
 export type InsertTargetMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertTargetMutation, InsertTargetMutationVariables>;
+export const PostSignupDocument = gql`
+    mutation PostSignup($role: String!, $userId: uuid!, $name: String) {
+  insert_user_roles(objects: [{role: $role, user_id: $userId}]) {
+    affected_rows
+  }
+  update_users(where: {id: {_eq: $userId}}, _set: {default_role: $role, name: $name}) {
+    affected_rows
+  }
+}
+    `;
+export type PostSignupMutationFn = ApolloReactCommon.MutationFunction<PostSignupMutation, PostSignupMutationVariables>;
+
+/**
+ * __usePostSignupMutation__
+ *
+ * To run a mutation, you first call `usePostSignupMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `usePostSignupMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [postSignupMutation, { data, loading, error }] = usePostSignupMutation({
+ *   variables: {
+ *      role: // value for 'role'
+ *      userId: // value for 'userId'
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function usePostSignupMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<PostSignupMutation, PostSignupMutationVariables>) {
+        return ApolloReactHooks.useMutation<PostSignupMutation, PostSignupMutationVariables>(PostSignupDocument, baseOptions);
+      }
+export type PostSignupMutationHookResult = ReturnType<typeof usePostSignupMutation>;
+export type PostSignupMutationResult = ApolloReactCommon.MutationResult<PostSignupMutation>;
+export type PostSignupMutationOptions = ApolloReactCommon.BaseMutationOptions<PostSignupMutation, PostSignupMutationVariables>;
 export const SendMessageDocument = gql`
     mutation SendMessage($jobId: uuid!, $message: String!) {
   insert_messages(objects: {job_id: $jobId, message: $message}) {
@@ -4036,42 +4163,6 @@ export function useSetJobTargetMutation(baseOptions?: ApolloReactHooks.MutationH
 export type SetJobTargetMutationHookResult = ReturnType<typeof useSetJobTargetMutation>;
 export type SetJobTargetMutationResult = ApolloReactCommon.MutationResult<SetJobTargetMutation>;
 export type SetJobTargetMutationOptions = ApolloReactCommon.BaseMutationOptions<SetJobTargetMutation, SetJobTargetMutationVariables>;
-export const SetRoleDocument = gql`
-    mutation SetRole($role: String!, $userId: uuid!) {
-  insert_user_roles(objects: [{role: $role, user_id: $userId}]) {
-    affected_rows
-  }
-  update_users(where: {id: {_eq: $userId}}, _set: {default_role: $role}) {
-    affected_rows
-  }
-}
-    `;
-export type SetRoleMutationFn = ApolloReactCommon.MutationFunction<SetRoleMutation, SetRoleMutationVariables>;
-
-/**
- * __useSetRoleMutation__
- *
- * To run a mutation, you first call `useSetRoleMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useSetRoleMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [setRoleMutation, { data, loading, error }] = useSetRoleMutation({
- *   variables: {
- *      role: // value for 'role'
- *      userId: // value for 'userId'
- *   },
- * });
- */
-export function useSetRoleMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SetRoleMutation, SetRoleMutationVariables>) {
-        return ApolloReactHooks.useMutation<SetRoleMutation, SetRoleMutationVariables>(SetRoleDocument, baseOptions);
-      }
-export type SetRoleMutationHookResult = ReturnType<typeof useSetRoleMutation>;
-export type SetRoleMutationResult = ApolloReactCommon.MutationResult<SetRoleMutation>;
-export type SetRoleMutationOptions = ApolloReactCommon.BaseMutationOptions<SetRoleMutation, SetRoleMutationVariables>;
 export const SetStripeCustomerIdDocument = gql`
     mutation SetStripeCustomerId($userId: uuid!, $stripeCustomerId: String!) {
   update_users(where: {id: {_eq: $userId}}, _set: {stripe_customer_id: $stripeCustomerId}) {
@@ -4256,7 +4347,7 @@ export const JobDetialsDocument = gql`
     query JobDetials($jobId: uuid!, $userId: uuid) {
   users(where: {id: {_eq: $userId}}) {
     id
-    ...PageUser
+    ...JobDetailsPageUser
   }
   jobs_by_pk(id: $jobId) {
     id
@@ -4275,11 +4366,13 @@ export const JobDetialsDocument = gql`
       attempted_at
       success
     }
+    ...JobDetailsPageJob
     ...ChatJob
   }
 }
-    ${PageUserFragmentDoc}
+    ${JobDetailsPageUserFragmentDoc}
 ${JobMapTargetFragmentDoc}
+${JobDetailsPageJobFragmentDoc}
 ${ChatJobFragmentDoc}`;
 
 /**
@@ -4427,14 +4520,17 @@ export const JobsListDocument = gql`
   }
   lawyerJobs: jobs @include(if: $isLawyer) {
     id
+    ...JobsListJob
     ...JobCardJob
   }
   serverJobs: jobs(where: {server_user_id: {_eq: $userId}}) @skip(if: $isLawyer) {
     id
+    ...JobsListJob
     ...JobCardJob
   }
 }
     ${PageUserFragmentDoc}
+${JobsListJobFragmentDoc}
 ${JobCardJobFragmentDoc}`;
 
 /**

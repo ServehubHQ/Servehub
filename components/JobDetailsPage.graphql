@@ -1,0 +1,17 @@
+# import "./Page.graphql"
+fragment JobDetailsPageJob on jobs {
+  id
+
+  server {
+    id
+  }
+
+  target {
+    id
+    name
+  }
+}
+
+fragment JobDetailsPageUser on users {
+  ...PageUser
+}

@@ -24,9 +24,11 @@ interface PageProps {
 }
 
 const useStyles = makeStyles((theme) => ({
-  brand: {
-    textDecoration: 'none',
-    color: theme.palette.primary.contrastText,
+  bar: {
+    boxShadow: 'none',
+  },
+  logo: {
+    height: 32,
   },
   navButton: {
     marginRight: theme.spacing(1),
@@ -69,14 +71,16 @@ export function Page({ children, currentUser }: PageProps) {
 
   return (
     <>
-      <AppBar position='static'>
+      <AppBar position='static' className={styles.bar}>
         <Container fixed>
           <Toolbar>
             <Box flexGrow={1}>
               <Link href='/' passHref>
-                <Typography variant='h6' component='a' className={styles.brand}>
-                  Servehub
-                </Typography>
+                <img
+                  className={styles.logo}
+                  src='/images/brand/logo-light.svg'
+                  alt='Servehub'
+                />
               </Link>
             </Box>
             {isAuthenticated ? (
@@ -89,13 +93,6 @@ export function Page({ children, currentUser }: PageProps) {
                   >
                     Enable Notifications
                   </Button>
-                ) : null}
-                {authClient?.getRole() === 'lawyer' ? (
-                  <Link href='/jobs/create' passHref>
-                    <Button color='inherit' className={styles.navButton}>
-                      New Job
-                    </Button>
-                  </Link>
                 ) : null}
                 <IconButton
                   aria-label='user account'

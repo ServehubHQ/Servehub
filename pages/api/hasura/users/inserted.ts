@@ -1,8 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import {
-  SetRoleDocument,
-  SetRoleMutation,
-  SetRoleMutationVariables,
+  PostSignupDocument,
+  PostSignupMutation,
+  PostSignupMutationVariables,
 } from '../../../../graphql-codegen'
 import { createStripeCustomer } from '../../../../lib/createStripeCustomer'
 import { getApolloClient } from '../../../../lib/getApolloClient'
@@ -29,9 +29,9 @@ export default async function hasuraUserInserted(
 
   const apollo = getApolloClient({ isAdmin: true })
 
-  await apollo.mutate<SetRoleMutation, SetRoleMutationVariables>({
-    variables: { userId: user.id, role },
-    mutation: SetRoleDocument,
+  await apollo.mutate<PostSignupMutation, PostSignupMutationVariables>({
+    variables: { userId: user.id, role, name: user.register_data.name },
+    mutation: PostSignupDocument,
   })
 
   if (role === 'lawyer' && !user.stripe_customer_id) {

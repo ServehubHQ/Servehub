@@ -1,4 +1,26 @@
 #import "../../components/JobCard.graphql"
+
+fragment JobsListJob on jobs {
+  target {
+    id
+    name
+    street
+    city
+    province
+  }
+
+  successfulAttempts: attempts_aggregate(where: { success: { _eq: true } }) {
+    aggregate {
+      count
+    }
+  }
+  allAttempts: attempts_aggregate {
+    aggregate {
+      count
+    }
+  }
+}
+
 query JobsList($userId: uuid!, $isLawyer: Boolean!) {
   users(where: { id: { _eq: $userId } }) {
     id
@@ -8,6 +30,7 @@ query JobsList($userId: uuid!, $isLawyer: Boolean!) {
   lawyerJobs: jobs @include(if: $isLawyer) {
     id
 
+    ...JobsListJob
     ...JobCardJob
   }
 
@@ -15,6 +38,7 @@ query JobsList($userId: uuid!, $isLawyer: Boolean!) {
     @skip(if: $isLawyer) {
     id
 
+    ...JobsListJob
     ...JobCardJob
   }
 }

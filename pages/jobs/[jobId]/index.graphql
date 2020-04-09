@@ -1,7 +1,8 @@
+# import "../../../components/JobDetailsPage.graphql"
 query JobDetials($jobId: uuid!, $userId: uuid) {
   users(where: { id: { _eq: $userId } }) {
     id
-    ...PageUser
+    ...JobDetailsPageUser
   }
   jobs_by_pk(id: $jobId) {
     id
@@ -24,6 +25,7 @@ query JobDetials($jobId: uuid!, $userId: uuid) {
       success
     }
 
+    ...JobDetailsPageJob
     ...ChatJob
   }
 }
