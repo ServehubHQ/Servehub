@@ -1,0 +1,11 @@
+mutation InsertAttempt(
+  $jobId: uuid!
+  $attemptedAt: timestamptz!
+  $success: Boolean!
+) {
+  insert_attempts(
+    objects: { attempted_at: $attemptedAt, job_id: $jobId, success: $success }
+  ) {
+    affected_rows
+  }
+}

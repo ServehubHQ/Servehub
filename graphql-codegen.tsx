@@ -14,6 +14,165 @@ export type Scalars = {
   jsonb: any;
 };
 
+export type Attempts = {
+   __typename?: 'attempts';
+  attempted_at: Scalars['timestamptz'];
+  created_at: Scalars['timestamptz'];
+  id: Scalars['uuid'];
+  image_url?: Maybe<Scalars['String']>;
+  job: Jobs;
+  job_id: Scalars['uuid'];
+  success: Scalars['Boolean'];
+  updated_at: Scalars['timestamptz'];
+};
+
+export type Attempts_Aggregate = {
+   __typename?: 'attempts_aggregate';
+  aggregate?: Maybe<Attempts_Aggregate_Fields>;
+  nodes: Array<Attempts>;
+};
+
+export type Attempts_Aggregate_Fields = {
+   __typename?: 'attempts_aggregate_fields';
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<Attempts_Max_Fields>;
+  min?: Maybe<Attempts_Min_Fields>;
+};
+
+
+export type Attempts_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Attempts_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+export type Attempts_Aggregate_Order_By = {
+  count?: Maybe<Order_By>;
+  max?: Maybe<Attempts_Max_Order_By>;
+  min?: Maybe<Attempts_Min_Order_By>;
+};
+
+export type Attempts_Arr_Rel_Insert_Input = {
+  data: Array<Attempts_Insert_Input>;
+  on_conflict?: Maybe<Attempts_On_Conflict>;
+};
+
+export type Attempts_Bool_Exp = {
+  _and?: Maybe<Array<Maybe<Attempts_Bool_Exp>>>;
+  _not?: Maybe<Attempts_Bool_Exp>;
+  _or?: Maybe<Array<Maybe<Attempts_Bool_Exp>>>;
+  attempted_at?: Maybe<Timestamptz_Comparison_Exp>;
+  created_at?: Maybe<Timestamptz_Comparison_Exp>;
+  id?: Maybe<Uuid_Comparison_Exp>;
+  image_url?: Maybe<String_Comparison_Exp>;
+  job?: Maybe<Jobs_Bool_Exp>;
+  job_id?: Maybe<Uuid_Comparison_Exp>;
+  success?: Maybe<Boolean_Comparison_Exp>;
+  updated_at?: Maybe<Timestamptz_Comparison_Exp>;
+};
+
+export enum Attempts_Constraint {
+  AttemptsPkey = 'attempts_pkey'
+}
+
+export type Attempts_Insert_Input = {
+  attempted_at?: Maybe<Scalars['timestamptz']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  image_url?: Maybe<Scalars['String']>;
+  job?: Maybe<Jobs_Obj_Rel_Insert_Input>;
+  job_id?: Maybe<Scalars['uuid']>;
+  success?: Maybe<Scalars['Boolean']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+export type Attempts_Max_Fields = {
+   __typename?: 'attempts_max_fields';
+  attempted_at?: Maybe<Scalars['timestamptz']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  image_url?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+export type Attempts_Max_Order_By = {
+  attempted_at?: Maybe<Order_By>;
+  created_at?: Maybe<Order_By>;
+  image_url?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+};
+
+export type Attempts_Min_Fields = {
+   __typename?: 'attempts_min_fields';
+  attempted_at?: Maybe<Scalars['timestamptz']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  image_url?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+export type Attempts_Min_Order_By = {
+  attempted_at?: Maybe<Order_By>;
+  created_at?: Maybe<Order_By>;
+  image_url?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+};
+
+export type Attempts_Mutation_Response = {
+   __typename?: 'attempts_mutation_response';
+  affected_rows: Scalars['Int'];
+  returning: Array<Attempts>;
+};
+
+export type Attempts_Obj_Rel_Insert_Input = {
+  data: Attempts_Insert_Input;
+  on_conflict?: Maybe<Attempts_On_Conflict>;
+};
+
+export type Attempts_On_Conflict = {
+  constraint: Attempts_Constraint;
+  update_columns: Array<Attempts_Update_Column>;
+  where?: Maybe<Attempts_Bool_Exp>;
+};
+
+export type Attempts_Order_By = {
+  attempted_at?: Maybe<Order_By>;
+  created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  image_url?: Maybe<Order_By>;
+  job?: Maybe<Jobs_Order_By>;
+  job_id?: Maybe<Order_By>;
+  success?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+};
+
+export enum Attempts_Select_Column {
+  AttemptedAt = 'attempted_at',
+  CreatedAt = 'created_at',
+  Id = 'id',
+  ImageUrl = 'image_url',
+  JobId = 'job_id',
+  Success = 'success',
+  UpdatedAt = 'updated_at'
+}
+
+export type Attempts_Set_Input = {
+  attempted_at?: Maybe<Scalars['timestamptz']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  image_url?: Maybe<Scalars['String']>;
+  job_id?: Maybe<Scalars['uuid']>;
+  success?: Maybe<Scalars['Boolean']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+export enum Attempts_Update_Column {
+  AttemptedAt = 'attempted_at',
+  CreatedAt = 'created_at',
+  Id = 'id',
+  ImageUrl = 'image_url',
+  JobId = 'job_id',
+  Success = 'success',
+  UpdatedAt = 'updated_at'
+}
+
 export type Auth_Auth_Providers = {
    __typename?: 'auth_auth_providers';
   provider: Scalars['String'];
@@ -819,11 +978,17 @@ export enum Documents_Update_Column {
 
 export type Jobs = {
    __typename?: 'jobs';
+  attempts: Array<Attempts>;
+  attempts_aggregate: Attempts_Aggregate;
   created_at: Scalars['timestamptz'];
   description?: Maybe<Scalars['String']>;
+  documents: Array<Documents>;
+  documents_aggregate: Documents_Aggregate;
   id: Scalars['uuid'];
   lawyer: Users;
   lawyer_user_id: Scalars['uuid'];
+  messages: Array<Messages>;
+  messages_aggregate: Messages_Aggregate;
   server?: Maybe<Users>;
   server_user_id?: Maybe<Scalars['uuid']>;
   stripe_payment_intent_client_secret?: Maybe<Scalars['String']>;
@@ -832,6 +997,60 @@ export type Jobs = {
   target?: Maybe<Targets>;
   target_id?: Maybe<Scalars['uuid']>;
   updated_at: Scalars['timestamptz'];
+};
+
+
+export type JobsAttemptsArgs = {
+  distinct_on?: Maybe<Array<Attempts_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Attempts_Order_By>>;
+  where?: Maybe<Attempts_Bool_Exp>;
+};
+
+
+export type JobsAttempts_AggregateArgs = {
+  distinct_on?: Maybe<Array<Attempts_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Attempts_Order_By>>;
+  where?: Maybe<Attempts_Bool_Exp>;
+};
+
+
+export type JobsDocumentsArgs = {
+  distinct_on?: Maybe<Array<Documents_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Documents_Order_By>>;
+  where?: Maybe<Documents_Bool_Exp>;
+};
+
+
+export type JobsDocuments_AggregateArgs = {
+  distinct_on?: Maybe<Array<Documents_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Documents_Order_By>>;
+  where?: Maybe<Documents_Bool_Exp>;
+};
+
+
+export type JobsMessagesArgs = {
+  distinct_on?: Maybe<Array<Messages_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Messages_Order_By>>;
+  where?: Maybe<Messages_Bool_Exp>;
+};
+
+
+export type JobsMessages_AggregateArgs = {
+  distinct_on?: Maybe<Array<Messages_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Messages_Order_By>>;
+  where?: Maybe<Messages_Bool_Exp>;
 };
 
 export type Jobs_Aggregate = {
@@ -868,11 +1087,14 @@ export type Jobs_Bool_Exp = {
   _and?: Maybe<Array<Maybe<Jobs_Bool_Exp>>>;
   _not?: Maybe<Jobs_Bool_Exp>;
   _or?: Maybe<Array<Maybe<Jobs_Bool_Exp>>>;
+  attempts?: Maybe<Attempts_Bool_Exp>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
   description?: Maybe<String_Comparison_Exp>;
+  documents?: Maybe<Documents_Bool_Exp>;
   id?: Maybe<Uuid_Comparison_Exp>;
   lawyer?: Maybe<Users_Bool_Exp>;
   lawyer_user_id?: Maybe<Uuid_Comparison_Exp>;
+  messages?: Maybe<Messages_Bool_Exp>;
   server?: Maybe<Users_Bool_Exp>;
   server_user_id?: Maybe<Uuid_Comparison_Exp>;
   stripe_payment_intent_client_secret?: Maybe<String_Comparison_Exp>;
@@ -889,11 +1111,14 @@ export enum Jobs_Constraint {
 }
 
 export type Jobs_Insert_Input = {
+  attempts?: Maybe<Attempts_Arr_Rel_Insert_Input>;
   created_at?: Maybe<Scalars['timestamptz']>;
   description?: Maybe<Scalars['String']>;
+  documents?: Maybe<Documents_Arr_Rel_Insert_Input>;
   id?: Maybe<Scalars['uuid']>;
   lawyer?: Maybe<Users_Obj_Rel_Insert_Input>;
   lawyer_user_id?: Maybe<Scalars['uuid']>;
+  messages?: Maybe<Messages_Arr_Rel_Insert_Input>;
   server?: Maybe<Users_Obj_Rel_Insert_Input>;
   server_user_id?: Maybe<Scalars['uuid']>;
   stripe_payment_intent_client_secret?: Maybe<Scalars['String']>;
@@ -956,11 +1181,14 @@ export type Jobs_On_Conflict = {
 };
 
 export type Jobs_Order_By = {
+  attempts_aggregate?: Maybe<Attempts_Aggregate_Order_By>;
   created_at?: Maybe<Order_By>;
   description?: Maybe<Order_By>;
+  documents_aggregate?: Maybe<Documents_Aggregate_Order_By>;
   id?: Maybe<Order_By>;
   lawyer?: Maybe<Users_Order_By>;
   lawyer_user_id?: Maybe<Order_By>;
+  messages_aggregate?: Maybe<Messages_Aggregate_Order_By>;
   server?: Maybe<Users_Order_By>;
   server_user_id?: Maybe<Order_By>;
   stripe_payment_intent_client_secret?: Maybe<Order_By>;
@@ -1182,6 +1410,7 @@ export enum Messages_Update_Column {
 
 export type Mutation_Root = {
    __typename?: 'mutation_root';
+  delete_attempts?: Maybe<Attempts_Mutation_Response>;
   delete_auth_auth_providers?: Maybe<Auth_Auth_Providers_Mutation_Response>;
   delete_auth_refresh_tokens?: Maybe<Auth_Refresh_Tokens_Mutation_Response>;
   delete_auth_user_accounts?: Maybe<Auth_User_Accounts_Mutation_Response>;
@@ -1193,6 +1422,7 @@ export type Mutation_Root = {
   delete_targets?: Maybe<Targets_Mutation_Response>;
   delete_user_roles?: Maybe<User_Roles_Mutation_Response>;
   delete_users?: Maybe<Users_Mutation_Response>;
+  insert_attempts?: Maybe<Attempts_Mutation_Response>;
   insert_auth_auth_providers?: Maybe<Auth_Auth_Providers_Mutation_Response>;
   insert_auth_refresh_tokens?: Maybe<Auth_Refresh_Tokens_Mutation_Response>;
   insert_auth_user_accounts?: Maybe<Auth_User_Accounts_Mutation_Response>;
@@ -1204,6 +1434,7 @@ export type Mutation_Root = {
   insert_targets?: Maybe<Targets_Mutation_Response>;
   insert_user_roles?: Maybe<User_Roles_Mutation_Response>;
   insert_users?: Maybe<Users_Mutation_Response>;
+  update_attempts?: Maybe<Attempts_Mutation_Response>;
   update_auth_auth_providers?: Maybe<Auth_Auth_Providers_Mutation_Response>;
   update_auth_refresh_tokens?: Maybe<Auth_Refresh_Tokens_Mutation_Response>;
   update_auth_user_accounts?: Maybe<Auth_User_Accounts_Mutation_Response>;
@@ -1215,6 +1446,11 @@ export type Mutation_Root = {
   update_targets?: Maybe<Targets_Mutation_Response>;
   update_user_roles?: Maybe<User_Roles_Mutation_Response>;
   update_users?: Maybe<Users_Mutation_Response>;
+};
+
+
+export type Mutation_RootDelete_AttemptsArgs = {
+  where: Attempts_Bool_Exp;
 };
 
 
@@ -1270,6 +1506,12 @@ export type Mutation_RootDelete_User_RolesArgs = {
 
 export type Mutation_RootDelete_UsersArgs = {
   where: Users_Bool_Exp;
+};
+
+
+export type Mutation_RootInsert_AttemptsArgs = {
+  objects: Array<Attempts_Insert_Input>;
+  on_conflict?: Maybe<Attempts_On_Conflict>;
 };
 
 
@@ -1336,6 +1578,12 @@ export type Mutation_RootInsert_User_RolesArgs = {
 export type Mutation_RootInsert_UsersArgs = {
   objects: Array<Users_Insert_Input>;
   on_conflict?: Maybe<Users_On_Conflict>;
+};
+
+
+export type Mutation_RootUpdate_AttemptsArgs = {
+  _set?: Maybe<Attempts_Set_Input>;
+  where: Attempts_Bool_Exp;
 };
 
 
@@ -1420,6 +1668,9 @@ export enum Order_By {
 
 export type Query_Root = {
    __typename?: 'query_root';
+  attempts: Array<Attempts>;
+  attempts_aggregate: Attempts_Aggregate;
+  attempts_by_pk?: Maybe<Attempts>;
   auth_auth_providers: Array<Auth_Auth_Providers>;
   auth_auth_providers_aggregate: Auth_Auth_Providers_Aggregate;
   auth_auth_providers_by_pk?: Maybe<Auth_Auth_Providers>;
@@ -1453,6 +1704,29 @@ export type Query_Root = {
   users: Array<Users>;
   users_aggregate: Users_Aggregate;
   users_by_pk?: Maybe<Users>;
+};
+
+
+export type Query_RootAttemptsArgs = {
+  distinct_on?: Maybe<Array<Attempts_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Attempts_Order_By>>;
+  where?: Maybe<Attempts_Bool_Exp>;
+};
+
+
+export type Query_RootAttempts_AggregateArgs = {
+  distinct_on?: Maybe<Array<Attempts_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Attempts_Order_By>>;
+  where?: Maybe<Attempts_Bool_Exp>;
+};
+
+
+export type Query_RootAttempts_By_PkArgs = {
+  id: Scalars['uuid'];
 };
 
 
@@ -1875,6 +2149,9 @@ export type String_Comparison_Exp = {
 
 export type Subscription_Root = {
    __typename?: 'subscription_root';
+  attempts: Array<Attempts>;
+  attempts_aggregate: Attempts_Aggregate;
+  attempts_by_pk?: Maybe<Attempts>;
   auth_auth_providers: Array<Auth_Auth_Providers>;
   auth_auth_providers_aggregate: Auth_Auth_Providers_Aggregate;
   auth_auth_providers_by_pk?: Maybe<Auth_Auth_Providers>;
@@ -1908,6 +2185,29 @@ export type Subscription_Root = {
   users: Array<Users>;
   users_aggregate: Users_Aggregate;
   users_by_pk?: Maybe<Users>;
+};
+
+
+export type Subscription_RootAttemptsArgs = {
+  distinct_on?: Maybe<Array<Attempts_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Attempts_Order_By>>;
+  where?: Maybe<Attempts_Bool_Exp>;
+};
+
+
+export type Subscription_RootAttempts_AggregateArgs = {
+  distinct_on?: Maybe<Array<Attempts_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Attempts_Order_By>>;
+  where?: Maybe<Attempts_Bool_Exp>;
+};
+
+
+export type Subscription_RootAttempts_By_PkArgs = {
+  id: Scalars['uuid'];
 };
 
 
@@ -2919,6 +3219,21 @@ export type PageUserFragment = (
   & Pick<Users, 'id' | 'firebase_messaging_token'>
 );
 
+export type InsertAttemptMutationVariables = {
+  jobId: Scalars['uuid'];
+  attemptedAt: Scalars['timestamptz'];
+  success: Scalars['Boolean'];
+};
+
+
+export type InsertAttemptMutation = (
+  { __typename?: 'mutation_root' }
+  & { insert_attempts: Maybe<(
+    { __typename?: 'attempts_mutation_response' }
+    & Pick<Attempts_Mutation_Response, 'affected_rows'>
+  )> }
+);
+
 export type ClaimJobMutationVariables = {
   jobId: Scalars['uuid'];
 };
@@ -3165,6 +3480,10 @@ export type JobAttemptQuery = (
   )>, jobs_by_pk: Maybe<(
     { __typename?: 'jobs' }
     & Pick<Jobs, 'id'>
+    & { target: Maybe<(
+      { __typename?: 'targets' }
+      & Pick<Targets, 'id' | 'name'>
+    )> }
   )> }
 );
 
@@ -3190,6 +3509,9 @@ export type JobDetialsQuery = (
     )>, server: Maybe<(
       { __typename?: 'users' }
       & Pick<Users, 'id'>
+    )>, attempts: Array<(
+      { __typename?: 'attempts' }
+      & Pick<Attempts, 'id' | 'attempted_at' | 'success'>
     )> }
     & ChatJobFragment
   )> }
@@ -3326,6 +3648,40 @@ export function useChatSubscription(baseOptions?: ApolloReactHooks.SubscriptionH
       }
 export type ChatSubscriptionHookResult = ReturnType<typeof useChatSubscription>;
 export type ChatSubscriptionResult = ApolloReactCommon.SubscriptionResult<ChatSubscription>;
+export const InsertAttemptDocument = gql`
+    mutation InsertAttempt($jobId: uuid!, $attemptedAt: timestamptz!, $success: Boolean!) {
+  insert_attempts(objects: {attempted_at: $attemptedAt, job_id: $jobId, success: $success}) {
+    affected_rows
+  }
+}
+    `;
+export type InsertAttemptMutationFn = ApolloReactCommon.MutationFunction<InsertAttemptMutation, InsertAttemptMutationVariables>;
+
+/**
+ * __useInsertAttemptMutation__
+ *
+ * To run a mutation, you first call `useInsertAttemptMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertAttemptMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertAttemptMutation, { data, loading, error }] = useInsertAttemptMutation({
+ *   variables: {
+ *      jobId: // value for 'jobId'
+ *      attemptedAt: // value for 'attemptedAt'
+ *      success: // value for 'success'
+ *   },
+ * });
+ */
+export function useInsertAttemptMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<InsertAttemptMutation, InsertAttemptMutationVariables>) {
+        return ApolloReactHooks.useMutation<InsertAttemptMutation, InsertAttemptMutationVariables>(InsertAttemptDocument, baseOptions);
+      }
+export type InsertAttemptMutationHookResult = ReturnType<typeof useInsertAttemptMutation>;
+export type InsertAttemptMutationResult = ApolloReactCommon.MutationResult<InsertAttemptMutation>;
+export type InsertAttemptMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertAttemptMutation, InsertAttemptMutationVariables>;
 export const ClaimJobDocument = gql`
     mutation ClaimJob($jobId: uuid!) {
   update_jobs(where: {id: {_eq: $jobId}}) {
@@ -3862,6 +4218,10 @@ export const JobAttemptDocument = gql`
   }
   jobs_by_pk(id: $jobId) {
     id
+    target {
+      id
+      name
+    }
   }
 }
     ${PageUserFragmentDoc}`;
@@ -3909,6 +4269,11 @@ export const JobDetialsDocument = gql`
     }
     server {
       id
+    }
+    attempts {
+      id
+      attempted_at
+      success
     }
     ...ChatJob
   }

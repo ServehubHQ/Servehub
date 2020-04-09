@@ -1,18 +1,12 @@
-import {
-  Box,
-  Breadcrumbs,
-  Paper,
-  Typography,
-  Grid,
-  Button,
-} from '@material-ui/core'
+import { Box, Button } from '@material-ui/core'
+import Link from 'next/link'
+import { useMemo } from 'react'
+import { Heading } from '../../components/Heading'
 import JobCard from '../../components/JobCard'
 import { Page } from '../../components/Page'
 import { useJobsListQuery } from '../../graphql-codegen'
 import { useAuth } from '../../lib/useAuth'
 import { useAuthRequired } from '../../lib/useAuthRequired'
-import { useMemo } from 'react'
-import Link from 'next/link'
 
 export default function JobListPage() {
   useAuthRequired()
@@ -29,26 +23,18 @@ export default function JobListPage() {
   return (
     <Page currentUser={data?.users[0]}>
       <Box mb={4}>
-        <Paper elevation={2}>
-          <Box p={2}>
-            <Grid container justify='space-between'>
-              <Grid item>
-                <Breadcrumbs aria-label='breadcrumb'>
-                  <Typography color='textPrimary'>Jobs</Typography>
-                </Breadcrumbs>
-              </Grid>
-              <Grid item>
-                {role === 'server' ? (
-                  <Link href='/jobs/available' passHref>
-                    <Button variant='contained' color='primary'>
-                      Available Jobs
-                    </Button>
-                  </Link>
-                ) : null}
-              </Grid>
-            </Grid>
-          </Box>
-        </Paper>
+        <Heading
+          title='Jobs'
+          action={
+            role === 'server' ? (
+              <Link href='/jobs/available' passHref>
+                <Button variant='contained' color='primary'>
+                  Available Jobs
+                </Button>
+              </Link>
+            ) : null
+          }
+        />
       </Box>
 
       {jobs?.map((job) => (

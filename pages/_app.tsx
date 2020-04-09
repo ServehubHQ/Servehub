@@ -3,8 +3,10 @@ import {
   ApolloProvider,
   NormalizedCacheObject,
 } from '@apollo/client'
+import MomentUtils from '@date-io/moment'
 import { ThemeProvider } from '@material-ui/core'
 import CssBaseline from '@material-ui/core/CssBaseline'
+import { MuiPickersUtilsProvider } from '@material-ui/pickers'
 import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 import firebase from 'firebase/app'
@@ -16,8 +18,8 @@ import { config } from '../lib/config'
 import { getAndSaveMessagingToken, initFirebase } from '../lib/firebase'
 import { getApolloClient } from '../lib/getApolloClient'
 import { getAuthClient } from '../lib/getAuthClient'
-import { theme } from '../lib/theme'
 import { AuthProvider } from '../lib/useAuth'
+import { theme } from '../theme'
 
 interface ServeHubAppProps extends AppProps {
   apolloClient?: ApolloClient<NormalizedCacheObject>
@@ -48,10 +50,12 @@ export default function ServeHubApp({
     <AuthProvider client={authClient}>
       <ApolloProvider client={apolloClient}>
         <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Elements stripe={stripe}>
-            <Component {...pageProps} />
-          </Elements>
+          <MuiPickersUtilsProvider utils={MomentUtils}>
+            <CssBaseline />
+            <Elements stripe={stripe}>
+              <Component {...pageProps} />
+            </Elements>
+          </MuiPickersUtilsProvider>
         </ThemeProvider>
       </ApolloProvider>
     </AuthProvider>

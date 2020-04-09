@@ -1,18 +1,34 @@
 import {
-  Box,
-  Breadcrumbs,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Checkbox,
+  Divider,
+  FormControlLabel,
   Grid,
   Link as MuiLink,
-  Paper,
-  Typography,
 } from '@material-ui/core'
+import { DateTimePicker } from '@material-ui/pickers'
+import { Moment } from 'moment'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
+import { useForm } from 'react-hook-form'
+import { Heading } from '../../../../components/Heading'
 import { Page } from '../../../../components/Page'
-import { useJobAttemptQuery } from '../../../../graphql-codegen'
+import {
+  useJobAttemptQuery,
+  useInsertAttemptMutation,
+} from '../../../../graphql-codegen'
 import { useAuth } from '../../../../lib/useAuth'
 import { useAuthRequired } from '../../../../lib/useAuthRequired'
+
+interface FormData {
+  attemptedAt: Date
+  success: boolean
+  imageUrl?: string
+}
 
 export default function JobDetailsPage() {
   useAuthRequired()
@@ -20,31 +36,88 @@ export default function JobDetailsPage() {
   const { jobId } = router.query
   const { userId } = useAuth()
   const { data } = useJobAttemptQuery({ variables: { jobId, userId } })
-
   const job = useMemo(() => data?.jobs_by_pk, [data])
+  const [insertAttempt] = useInsertAttemptMutation()
+  const { register, handleSubmit, watch, setValue } = useForm<FormData>({
+    defaultValues: { attemptedAt: new Date() },
+  })
+  const attemptedAt = watch('attemptedAt')
+
+  useEffect(() => {
+    register({ name: 'attemptedAt' })
+  }, [register])
+
+  const handleAttemptedAtChange = useCallback(
+    (value: Moment | null) => {
+      setValue('attemptedAt', value?.toDate())
+    },
+    [setValue],
+  )
+
+  const handleFormValid = useCallback(
+    async (formData: FormData) => {
+      if (!job) {
+        throw new Error('missing job when inserting attempt')
+      }
+      await insertAttempt({ variables: { ...formData, jobId: job.id } })
+      router.push(`/jobs/${job.id}`)
+    },
+    [job, insertAttempt, router],
+  )
 
   return (
     <Page>
-      <Box mb={4}>
-        <Paper>
-          <Box p={2}>
-            <Grid container justify='space-between'>
-              <Grid item>
-                <Breadcrumbs aria-label='breadcrumb'>
-                  <Link href='/jobs' passHref>
-                    <MuiLink color='inherit'>Jobs</MuiLink>
-                  </Link>
-                  <Link href={`/jobs/${job?.id}`} passHref>
-                    <MuiLink color='inherit'>{job?.id}</MuiLink>
-                  </Link>
-                  <Typography color='textPrimary'>Record Attempt</Typography>
-                </Breadcrumbs>
-              </Grid>
-              <Grid item></Grid>
-            </Grid>
-          </Box>
-        </Paper>
-      </Box>
+      <Grid container direction='column' spacing={4}>
+        <Grid item>
+          <Heading
+            title='Record Attempt'
+            breadcrumbs={[
+              <Link href='/jobs' passHref key='jobs'>
+                <MuiLink color='inherit'>Jobs</MuiLink>
+              </Link>,
+              <Link href={`/jobs/${job?.id}`} passHref key='job'>
+                <MuiLink color='inherit'>{job?.target?.name}</MuiLink>
+              </Link>,
+            ]}
+          />
+        </Grid>
+        <Grid item>
+          <form noValidate onSubmit={handleSubmit(handleFormValid)}>
+            <Card>
+              <CardContent>
+                <Grid container direction='column' spacing={1}>
+                  <Grid item>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          inputRef={register}
+                          name='success'
+                          color='primary'
+                        />
+                      }
+                      label='Successful'
+                    />
+                  </Grid>
+                  <Grid item>
+                    <DateTimePicker
+                      label='Time'
+                      variant='dialog'
+                      value={attemptedAt}
+                      onChange={handleAttemptedAtChange}
+                    />
+                  </Grid>
+                </Grid>
+              </CardContent>
+              <Divider />
+              <CardActions>
+                <Button type='submit' variant='contained' color='primary'>
+                  Submit
+                </Button>
+              </CardActions>
+            </Card>
+          </form>
+        </Grid>
+      </Grid>
     </Page>
   )
 }

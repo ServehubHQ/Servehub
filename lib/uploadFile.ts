@@ -37,7 +37,7 @@ export async function uploadFile(
       .toLocaleLowerCase() || 'document'
 
   const { key, token } = await getStorage().put(
-    `${path}/${rando}-${filename}.${extension}`,
+    `${path.replace(/\/$/, '')}/${rando}-${filename}.${extension}`,
     file,
     {},
   )

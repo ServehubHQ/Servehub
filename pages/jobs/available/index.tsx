@@ -1,11 +1,6 @@
-import {
-  Box,
-  Breadcrumbs,
-  Link as MuiLink,
-  Paper,
-  Typography,
-} from '@material-ui/core'
+import { Box, Link as MuiLink } from '@material-ui/core'
 import Link from 'next/link'
+import { Heading } from '../../../components/Heading'
 import JobCard from '../../../components/JobCard'
 import { Page } from '../../../components/Page'
 import { useJobsAvailableQuery } from '../../../graphql-codegen'
@@ -22,16 +17,14 @@ export default function JobsAvailablePage() {
   return (
     <Page currentUser={data?.users[0]}>
       <Box mb={4}>
-        <Paper elevation={2}>
-          <Box p={2}>
-            <Breadcrumbs aria-label='breadcrumb'>
-              <Link href='/jobs' passHref>
-                <MuiLink color='inherit'>Jobs</MuiLink>
-              </Link>
-              <Typography color='textPrimary'>Available</Typography>
-            </Breadcrumbs>
-          </Box>
-        </Paper>
+        <Heading
+          title='Available Jobs'
+          breadcrumbs={[
+            <Link href='/jobs' passHref key='jobs'>
+              <MuiLink color='inherit'>Jobs</MuiLink>
+            </Link>,
+          ]}
+        />
       </Box>
 
       {data?.jobs.map((job) => (

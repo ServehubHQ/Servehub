@@ -9,7 +9,7 @@ import {
   Typography,
   Box,
 } from '@material-ui/core'
-import classnames from 'classnames'
+import clsx from 'clsx'
 import { ChangeEvent, useCallback, useState } from 'react'
 import {
   ChatJobFragment,
@@ -67,7 +67,7 @@ export function Chat({ job }: ChatProps) {
           <Box
             p={2}
             mb={2}
-            className={classnames(
+            className={clsx(
               styles.message,
               userId === message.user_id
                 ? styles.myMessage

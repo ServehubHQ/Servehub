@@ -8,5 +8,10 @@ query JobAttempt($jobId: uuid!, $userId: uuid) {
   }
   jobs_by_pk(id: $jobId) {
     id
+
+    target {
+      id
+      name
+    }
   }
 }
