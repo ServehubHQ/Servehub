@@ -3247,21 +3247,6 @@ export type PageUserFragment = (
   & Pick<Users, 'id' | 'firebase_messaging_token'>
 );
 
-export type InsertAttemptMutationVariables = {
-  jobId: Scalars['uuid'];
-  attemptedAt: Scalars['timestamptz'];
-  success: Scalars['Boolean'];
-};
-
-
-export type InsertAttemptMutation = (
-  { __typename?: 'mutation_root' }
-  & { insert_attempts: Maybe<(
-    { __typename?: 'attempts_mutation_response' }
-    & Pick<Attempts_Mutation_Response, 'affected_rows'>
-  )> }
-);
-
 export type ClaimJobMutationVariables = {
   jobId: Scalars['uuid'];
 };
@@ -3285,6 +3270,21 @@ export type DeleteDocumentMutation = (
   & { delete_documents: Maybe<(
     { __typename?: 'documents_mutation_response' }
     & Pick<Documents_Mutation_Response, 'affected_rows'>
+  )> }
+);
+
+export type InsertAttemptMutationVariables = {
+  jobId: Scalars['uuid'];
+  attemptedAt: Scalars['timestamptz'];
+  success: Scalars['Boolean'];
+};
+
+
+export type InsertAttemptMutation = (
+  { __typename?: 'mutation_root' }
+  & { insert_attempts: Maybe<(
+    { __typename?: 'attempts_mutation_response' }
+    & Pick<Attempts_Mutation_Response, 'affected_rows'>
   )> }
 );
 
@@ -3738,40 +3738,6 @@ export function useChatSubscription(baseOptions?: ApolloReactHooks.SubscriptionH
       }
 export type ChatSubscriptionHookResult = ReturnType<typeof useChatSubscription>;
 export type ChatSubscriptionResult = ApolloReactCommon.SubscriptionResult<ChatSubscription>;
-export const InsertAttemptDocument = gql`
-    mutation InsertAttempt($jobId: uuid!, $attemptedAt: timestamptz!, $success: Boolean!) {
-  insert_attempts(objects: {attempted_at: $attemptedAt, job_id: $jobId, success: $success}) {
-    affected_rows
-  }
-}
-    `;
-export type InsertAttemptMutationFn = ApolloReactCommon.MutationFunction<InsertAttemptMutation, InsertAttemptMutationVariables>;
-
-/**
- * __useInsertAttemptMutation__
- *
- * To run a mutation, you first call `useInsertAttemptMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useInsertAttemptMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [insertAttemptMutation, { data, loading, error }] = useInsertAttemptMutation({
- *   variables: {
- *      jobId: // value for 'jobId'
- *      attemptedAt: // value for 'attemptedAt'
- *      success: // value for 'success'
- *   },
- * });
- */
-export function useInsertAttemptMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<InsertAttemptMutation, InsertAttemptMutationVariables>) {
-        return ApolloReactHooks.useMutation<InsertAttemptMutation, InsertAttemptMutationVariables>(InsertAttemptDocument, baseOptions);
-      }
-export type InsertAttemptMutationHookResult = ReturnType<typeof useInsertAttemptMutation>;
-export type InsertAttemptMutationResult = ApolloReactCommon.MutationResult<InsertAttemptMutation>;
-export type InsertAttemptMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertAttemptMutation, InsertAttemptMutationVariables>;
 export const ClaimJobDocument = gql`
     mutation ClaimJob($jobId: uuid!) {
   update_jobs(where: {id: {_eq: $jobId}}) {
@@ -3836,6 +3802,40 @@ export function useDeleteDocumentMutation(baseOptions?: ApolloReactHooks.Mutatio
 export type DeleteDocumentMutationHookResult = ReturnType<typeof useDeleteDocumentMutation>;
 export type DeleteDocumentMutationResult = ApolloReactCommon.MutationResult<DeleteDocumentMutation>;
 export type DeleteDocumentMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteDocumentMutation, DeleteDocumentMutationVariables>;
+export const InsertAttemptDocument = gql`
+    mutation InsertAttempt($jobId: uuid!, $attemptedAt: timestamptz!, $success: Boolean!) {
+  insert_attempts(objects: {attempted_at: $attemptedAt, job_id: $jobId, success: $success}) {
+    affected_rows
+  }
+}
+    `;
+export type InsertAttemptMutationFn = ApolloReactCommon.MutationFunction<InsertAttemptMutation, InsertAttemptMutationVariables>;
+
+/**
+ * __useInsertAttemptMutation__
+ *
+ * To run a mutation, you first call `useInsertAttemptMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertAttemptMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertAttemptMutation, { data, loading, error }] = useInsertAttemptMutation({
+ *   variables: {
+ *      jobId: // value for 'jobId'
+ *      attemptedAt: // value for 'attemptedAt'
+ *      success: // value for 'success'
+ *   },
+ * });
+ */
+export function useInsertAttemptMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<InsertAttemptMutation, InsertAttemptMutationVariables>) {
+        return ApolloReactHooks.useMutation<InsertAttemptMutation, InsertAttemptMutationVariables>(InsertAttemptDocument, baseOptions);
+      }
+export type InsertAttemptMutationHookResult = ReturnType<typeof useInsertAttemptMutation>;
+export type InsertAttemptMutationResult = ApolloReactCommon.MutationResult<InsertAttemptMutation>;
+export type InsertAttemptMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertAttemptMutation, InsertAttemptMutationVariables>;
 export const InsertDocumentDocument = gql`
     mutation InsertDocument($jobId: uuid!, $title: String!, $pickup: Boolean!, $url: String, $city: String, $postalCode: String, $province: String, $street: String, $unit: String) {
   __typename

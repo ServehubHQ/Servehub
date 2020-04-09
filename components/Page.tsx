@@ -17,6 +17,7 @@ import { useAuth } from '../lib/useAuth'
 import { AccountCircle } from '@material-ui/icons'
 import { PageUserFragment } from '../graphql-codegen'
 import { getAndSaveMessagingToken } from '../lib/firebase'
+import Head from 'next/head'
 
 interface PageProps {
   children: ReactNode
@@ -71,6 +72,51 @@ export function Page({ children, currentUser }: PageProps) {
 
   return (
     <>
+      <Head>
+        <title>Servehub</title>
+
+        <link
+          rel='apple-touch-icon-precomposed'
+          href='/images/brand/icon-192x192.png'
+        />
+        <meta
+          name='msapplication-TileImage'
+          content='/images/brand/icon-144x144.png'
+        />
+        <link rel='icon' href='/images/brand/icon-48x48.png' sizes='48x48' />
+        <link rel='icon' href='/images/brand/icon-72x72.png' sizes='72x72' />
+        <link rel='icon' href='/images/brand/icon-96x96.png' sizes='96x96' />
+        <link
+          rel='icon'
+          href='/images/brand/icon-144x144.png'
+          sizes='144x144'
+        />
+        <link
+          rel='icon'
+          href='/images/brand/icon-192x192.png'
+          sizes='192x192'
+        />
+        <link
+          rel='shortcut icon'
+          href='/images/brand/icon-192x192.png'
+          sizes='192x192'
+        />
+        <link
+          rel='icon'
+          href='/images/brand/icon-256x256.png'
+          sizes='256x256'
+        />
+        <link
+          rel='icon'
+          href='/images/brand/icon-384x384.png'
+          sizes='384x384'
+        />
+        <link
+          rel='icon'
+          href='/images/brand/icon-512x512.png'
+          sizes='512x512'
+        />
+      </Head>
       <AppBar position='static' className={styles.bar}>
         <Container fixed>
           <Toolbar>
