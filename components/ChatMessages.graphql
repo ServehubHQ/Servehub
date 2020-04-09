@@ -1,0 +1,7 @@
+# import "./ChatMessage.graphql"
+subscription ChatMessages($jobId: uuid!) {
+  messages(where: { job_id: { _eq: $jobId } }) {
+    id
+    ...ChatMessageMessage
+  }
+}

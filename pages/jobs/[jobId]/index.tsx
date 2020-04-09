@@ -107,10 +107,10 @@ export default function JobDetails() {
                   <Divider />
                   <CardContent>
                     <Typography variant='subtitle1' color='textSecondary'>
-                      ID
+                      Name
                     </Typography>
                     <Typography variant='h6' component='h2'>
-                      {job?.server.id}
+                      {job?.server.name}
                     </Typography>
                   </CardContent>
                 </Card>

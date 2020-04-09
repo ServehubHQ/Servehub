@@ -17,6 +17,7 @@ query JobDetials($jobId: uuid!, $userId: uuid) {
 
     server {
       id
+      name
     }
 
     attempts {

@@ -3196,14 +3196,26 @@ export type ChatJobFragment = (
   & Pick<Jobs, 'id'>
 );
 
-export type ChatSubscriptionVariables = {};
+export type ChatMessageMessageFragment = (
+  { __typename?: 'messages' }
+  & Pick<Messages, 'id' | 'created_at' | 'message'>
+  & { user: (
+    { __typename?: 'users' }
+    & Pick<Users, 'id' | 'name'>
+  ) }
+);
+
+export type ChatMessagesSubscriptionVariables = {
+  jobId: Scalars['uuid'];
+};
 
 
-export type ChatSubscription = (
+export type ChatMessagesSubscription = (
   { __typename?: 'subscription_root' }
   & { messages: Array<(
     { __typename?: 'messages' }
-    & Pick<Messages, 'id' | 'message' | 'user_id'>
+    & Pick<Messages, 'id'>
+    & ChatMessageMessageFragment
   )> }
 );
 
@@ -3537,7 +3549,7 @@ export type JobDetialsQuery = (
       & JobMapTargetFragment
     )>, server: Maybe<(
       { __typename?: 'users' }
-      & Pick<Users, 'id'>
+      & Pick<Users, 'id' | 'name'>
     )>, attempts: Array<(
       { __typename?: 'attempts' }
       & Pick<Attempts, 'id' | 'attempted_at' | 'success'>
@@ -3641,6 +3653,17 @@ export const ChatJobFragmentDoc = gql`
   id
 }
     `;
+export const ChatMessageMessageFragmentDoc = gql`
+    fragment ChatMessageMessage on messages {
+  id
+  created_at
+  message
+  user {
+    id
+    name
+  }
+}
+    `;
 export const JobMapTargetFragmentDoc = gql`
     fragment JobMapTarget on targets {
   id
@@ -3708,36 +3731,36 @@ export const JobsListJobFragmentDoc = gql`
   }
 }
     `;
-export const ChatDocument = gql`
-    subscription Chat {
-  messages {
+export const ChatMessagesDocument = gql`
+    subscription ChatMessages($jobId: uuid!) {
+  messages(where: {job_id: {_eq: $jobId}}) {
     id
-    message
-    user_id
+    ...ChatMessageMessage
   }
 }
-    `;
+    ${ChatMessageMessageFragmentDoc}`;
 
 /**
- * __useChatSubscription__
+ * __useChatMessagesSubscription__
  *
- * To run a query within a React component, call `useChatSubscription` and pass it any options that fit your needs.
- * When your component renders, `useChatSubscription` returns an object from Apollo Client that contains loading, error, and data properties 
+ * To run a query within a React component, call `useChatMessagesSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useChatMessagesSubscription` returns an object from Apollo Client that contains loading, error, and data properties 
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useChatSubscription({
+ * const { data, loading, error } = useChatMessagesSubscription({
  *   variables: {
+ *      jobId: // value for 'jobId'
  *   },
  * });
  */
-export function useChatSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<ChatSubscription, ChatSubscriptionVariables>) {
-        return ApolloReactHooks.useSubscription<ChatSubscription, ChatSubscriptionVariables>(ChatDocument, baseOptions);
+export function useChatMessagesSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<ChatMessagesSubscription, ChatMessagesSubscriptionVariables>) {
+        return ApolloReactHooks.useSubscription<ChatMessagesSubscription, ChatMessagesSubscriptionVariables>(ChatMessagesDocument, baseOptions);
       }
-export type ChatSubscriptionHookResult = ReturnType<typeof useChatSubscription>;
-export type ChatSubscriptionResult = ApolloReactCommon.SubscriptionResult<ChatSubscription>;
+export type ChatMessagesSubscriptionHookResult = ReturnType<typeof useChatMessagesSubscription>;
+export type ChatMessagesSubscriptionResult = ApolloReactCommon.SubscriptionResult<ChatMessagesSubscription>;
 export const ClaimJobDocument = gql`
     mutation ClaimJob($jobId: uuid!) {
   update_jobs(where: {id: {_eq: $jobId}}) {
@@ -4360,6 +4383,7 @@ export const JobDetialsDocument = gql`
     }
     server {
       id
+      name
     }
     attempts {
       id
