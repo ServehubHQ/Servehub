@@ -27,6 +27,5 @@ query JobDetials($jobId: uuid!, $userId: uuid) {
     }
 
     ...JobDetailsPageJob
-    ...ChatJob
   }
 }

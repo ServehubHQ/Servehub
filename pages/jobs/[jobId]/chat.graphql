@@ -1,0 +1,11 @@
+# import "../../../components/JobDetailsPage.graphql"
+query JobDetailsChat($jobId: uuid!, $userId: uuid) {
+  users(where: { id: { _eq: $userId } }) {
+    id
+    ...JobDetailsPageUser
+  }
+  jobs_by_pk(id: $jobId) {
+    id
+    ...JobDetailsPageJob
+  }
+}

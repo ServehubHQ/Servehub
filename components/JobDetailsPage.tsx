@@ -1,4 +1,11 @@
-import { Button, Grid, Link as MuiLink, Tab, Tabs } from '@material-ui/core'
+import {
+  Button,
+  Grid,
+  Link as MuiLink,
+  Tab,
+  Tabs,
+  makeStyles,
+} from '@material-ui/core'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { ChangeEvent, ReactNode, useCallback } from 'react'
@@ -18,6 +25,12 @@ interface JobDetailsPageProps {
   tab?: string
 }
 
+const useStyles = makeStyles((theme) => ({
+  tabContent: {
+    flex: 1,
+  },
+}))
+
 export function JobDetailsPage({
   children,
   tab = 'index',
@@ -25,6 +38,7 @@ export function JobDetailsPage({
   currentUser,
 }: JobDetailsPageProps) {
   const router = useRouter()
+  const className = useStyles()
   const { userId, role } = useAuth()
   const [claimJob] = useClaimJobMutation()
 
@@ -91,7 +105,9 @@ export function JobDetailsPage({
             <Tab label='Chat' value='chat' />
           </Tabs>
         </Grid>
-        <Grid item>{children}</Grid>
+        <Grid item className={className.tabContent}>
+          {children}
+        </Grid>
       </Grid>
     </Page>
   )

@@ -7,14 +7,9 @@ import {
 } from '@material-ui/core'
 import SendIcon from '@material-ui/icons/Send'
 import clsx from 'clsx'
-import React, {
-  useState,
-  ChangeEvent,
-  useCallback,
-  useEffect,
-  useRef,
-} from 'react'
+import React, { ChangeEvent, useCallback, useRef, useState } from 'react'
 import { useSendMessageMutation } from '../graphql-codegen'
+import { useEventListener } from '../lib/useEventListener'
 
 interface ChatFormProps {
   jobId: string
@@ -45,13 +40,22 @@ export function ChatForm({ jobId }: ChatFormProps) {
     variables: { message: value, jobId },
   })
 
-  useEffect(() => {
-    console.log('register', inputRef.current)
-    console.log('TODO: figure out why onkeydown is failing')
-    return inputRef.current?.addEventListener('onkeydown', (event) => {
-      console.log('onkeydown', event) // (event as KeyboardEvent).key
-    })
-  }, [inputRef])
+  const handleSendMessage = useCallback(async () => {
+    await sendMessage()
+    setValue('')
+  }, [sendMessage, setValue])
+
+  useEventListener(
+    'keydown',
+    useCallback(
+      (event: KeyboardEvent) => {
+        if (event.key === 'Enter') {
+          handleSendMessage()
+        }
+      },
+      [handleSendMessage],
+    ),
+  )
 
   const handleChange = useCallback(
     (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
@@ -59,12 +63,6 @@ export function ChatForm({ jobId }: ChatFormProps) {
     },
     [setValue],
   )
-
-  const handleSendMessage = useCallback(async () => {
-    await sendMessage()
-    setValue('')
-    console.log('value set to nothing')
-  }, [sendMessage, setValue])
 
   return (
     <div className={clsx(classes.root)}>

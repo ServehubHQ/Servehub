@@ -3191,11 +3191,6 @@ export type Uuid_Comparison_Exp = {
   _nin?: Maybe<Array<Scalars['uuid']>>;
 };
 
-export type ChatJobFragment = (
-  { __typename?: 'jobs' }
-  & Pick<Jobs, 'id'>
-);
-
 export type ChatMessageMessageFragment = (
   { __typename?: 'messages' }
   & Pick<Messages, 'id' | 'created_at' | 'message'>
@@ -3528,6 +3523,25 @@ export type JobAttemptQuery = (
   )> }
 );
 
+export type JobDetailsChatQueryVariables = {
+  jobId: Scalars['uuid'];
+  userId?: Maybe<Scalars['uuid']>;
+};
+
+
+export type JobDetailsChatQuery = (
+  { __typename?: 'query_root' }
+  & { users: Array<(
+    { __typename?: 'users' }
+    & Pick<Users, 'id'>
+    & JobDetailsPageUserFragment
+  )>, jobs_by_pk: Maybe<(
+    { __typename?: 'jobs' }
+    & Pick<Jobs, 'id'>
+    & JobDetailsPageJobFragment
+  )> }
+);
+
 export type JobDetialsQueryVariables = {
   jobId: Scalars['uuid'];
   userId?: Maybe<Scalars['uuid']>;
@@ -3555,7 +3569,6 @@ export type JobDetialsQuery = (
       & Pick<Attempts, 'id' | 'attempted_at' | 'success'>
     )> }
     & JobDetailsPageJobFragment
-    & ChatJobFragment
   )> }
 );
 
@@ -3648,11 +3661,6 @@ export type JobsListQuery = (
   )> }
 );
 
-export const ChatJobFragmentDoc = gql`
-    fragment ChatJob on jobs {
-  id
-}
-    `;
 export const ChatMessageMessageFragmentDoc = gql`
     fragment ChatMessageMessage on messages {
   id
@@ -4366,6 +4374,46 @@ export function useJobAttemptLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryH
 export type JobAttemptQueryHookResult = ReturnType<typeof useJobAttemptQuery>;
 export type JobAttemptLazyQueryHookResult = ReturnType<typeof useJobAttemptLazyQuery>;
 export type JobAttemptQueryResult = ApolloReactCommon.QueryResult<JobAttemptQuery, JobAttemptQueryVariables>;
+export const JobDetailsChatDocument = gql`
+    query JobDetailsChat($jobId: uuid!, $userId: uuid) {
+  users(where: {id: {_eq: $userId}}) {
+    id
+    ...JobDetailsPageUser
+  }
+  jobs_by_pk(id: $jobId) {
+    id
+    ...JobDetailsPageJob
+  }
+}
+    ${JobDetailsPageUserFragmentDoc}
+${JobDetailsPageJobFragmentDoc}`;
+
+/**
+ * __useJobDetailsChatQuery__
+ *
+ * To run a query within a React component, call `useJobDetailsChatQuery` and pass it any options that fit your needs.
+ * When your component renders, `useJobDetailsChatQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useJobDetailsChatQuery({
+ *   variables: {
+ *      jobId: // value for 'jobId'
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useJobDetailsChatQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<JobDetailsChatQuery, JobDetailsChatQueryVariables>) {
+        return ApolloReactHooks.useQuery<JobDetailsChatQuery, JobDetailsChatQueryVariables>(JobDetailsChatDocument, baseOptions);
+      }
+export function useJobDetailsChatLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<JobDetailsChatQuery, JobDetailsChatQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<JobDetailsChatQuery, JobDetailsChatQueryVariables>(JobDetailsChatDocument, baseOptions);
+        }
+export type JobDetailsChatQueryHookResult = ReturnType<typeof useJobDetailsChatQuery>;
+export type JobDetailsChatLazyQueryHookResult = ReturnType<typeof useJobDetailsChatLazyQuery>;
+export type JobDetailsChatQueryResult = ApolloReactCommon.QueryResult<JobDetailsChatQuery, JobDetailsChatQueryVariables>;
 export const JobDetialsDocument = gql`
     query JobDetials($jobId: uuid!, $userId: uuid) {
   users(where: {id: {_eq: $userId}}) {
@@ -4391,13 +4439,11 @@ export const JobDetialsDocument = gql`
       success
     }
     ...JobDetailsPageJob
-    ...ChatJob
   }
 }
     ${JobDetailsPageUserFragmentDoc}
 ${JobMapTargetFragmentDoc}
-${JobDetailsPageJobFragmentDoc}
-${ChatJobFragmentDoc}`;
+${JobDetailsPageJobFragmentDoc}`;
 
 /**
  * __useJobDetialsQuery__

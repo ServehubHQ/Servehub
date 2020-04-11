@@ -3,21 +3,20 @@ import {
   Box,
   Button,
   Container,
-  Toolbar,
-  Typography,
-  makeStyles,
   IconButton,
+  makeStyles,
   Menu,
   MenuItem,
+  Toolbar,
 } from '@material-ui/core'
+import { AccountCircle } from '@material-ui/icons'
+import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { ReactNode, useCallback, useState, MouseEvent } from 'react'
-import { useAuth } from '../lib/useAuth'
-import { AccountCircle } from '@material-ui/icons'
+import { MouseEvent, ReactNode, useCallback, useState } from 'react'
 import { PageUserFragment } from '../graphql-codegen'
 import { getAndSaveMessagingToken } from '../lib/firebase'
-import Head from 'next/head'
+import { useAuth } from '../lib/useAuth'
 
 interface PageProps {
   children: ReactNode
@@ -25,6 +24,12 @@ interface PageProps {
 }
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+    minHeight: '100vh',
+  },
   bar: {
     boxShadow: 'none',
   },
@@ -38,12 +43,18 @@ const useStyles = makeStyles((theme) => ({
       marginRight: 0,
     },
   },
+  contentContainer: {
+    flex: 1,
+    display: 'flex',
+    alignItems: 'stretch',
+    padding: theme.spacing(3),
+  },
 }))
 
 export function Page({ children, currentUser }: PageProps) {
   const router = useRouter()
   const { isAuthenticated, authClient } = useAuth()
-  const styles = useStyles()
+  const classNames = useStyles()
 
   const [
     accountMenuAnchorEl,
@@ -71,7 +82,7 @@ export function Page({ children, currentUser }: PageProps) {
   }, [])
 
   return (
-    <>
+    <div className={classNames.root}>
       <Head>
         <title>Servehub</title>
 
@@ -117,13 +128,13 @@ export function Page({ children, currentUser }: PageProps) {
           sizes='512x512'
         />
       </Head>
-      <AppBar position='static' className={styles.bar}>
+      <AppBar position='static' className={classNames.bar}>
         <Container fixed>
           <Toolbar>
             <Box flexGrow={1}>
               <Link href='/' passHref>
                 <img
-                  className={styles.logo}
+                  className={classNames.logo}
                   src='/images/brand/logo-light.svg'
                   alt='Servehub'
                 />
@@ -134,7 +145,7 @@ export function Page({ children, currentUser }: PageProps) {
                 {currentUser && !currentUser.firebase_messaging_token ? (
                   <Button
                     color='inherit'
-                    className={styles.navButton}
+                    className={classNames.navButton}
                     onClick={handleEnableNotificationsClick}
                   >
                     Enable Notifications
@@ -175,7 +186,7 @@ export function Page({ children, currentUser }: PageProps) {
             ) : (
               <>
                 <Link href={`/login?next=${router.pathname}`} passHref>
-                  <Button color='inherit' className={styles.navButton}>
+                  <Button color='inherit' className={classNames.navButton}>
                     Login
                   </Button>
                 </Link>
@@ -183,7 +194,7 @@ export function Page({ children, currentUser }: PageProps) {
                   <Button
                     variant='outlined'
                     color='inherit'
-                    className={styles.navButton}
+                    className={classNames.navButton}
                   >
                     Signup
                   </Button>
@@ -193,9 +204,9 @@ export function Page({ children, currentUser }: PageProps) {
           </Toolbar>
         </Container>
       </AppBar>
-      <Container fixed>
-        <Box p={3}>{children}</Box>
+      <Container fixed className={classNames.contentContainer}>
+        {children}
       </Container>
-    </>
+    </div>
   )
 }
