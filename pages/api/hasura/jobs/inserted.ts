@@ -12,6 +12,7 @@ import { getApolloClient } from '../../../../lib/getApolloClient'
 import { getStripeServerClient } from '../../../../lib/getStripeServerClient'
 import hasuraWebhookValid from '../../../../lib/hasuraWebhookValid'
 import { createStripeCustomer } from '../../../../lib/createStripeCustomer'
+import { ApiAuthClient } from '../../../../lib/AuthClient'
 
 export default async function hasurajobInsertedApi(
   req: NextApiRequest,
@@ -30,7 +31,7 @@ export default async function hasurajobInsertedApi(
   } = req.body
   console.log('[hasurajobInsertedApi] job inserted', job)
 
-  const apollo = getApolloClient({ isAdmin: true })
+  const apollo = getApolloClient(new ApiAuthClient())
   const stripe = getStripeServerClient()
 
   const { data } = await apollo.query<

@@ -5,6 +5,7 @@ import { Admin, Resource } from 'react-admin'
 import { getApolloClient } from '../lib/getApolloClient'
 import { getAuthClient } from '../lib/getAuthClient'
 import { JobCreate, JobEdit, JobIcon, JobList } from '../resources/jobs'
+import { theme } from '../theme'
 
 export default function AdminPage() {
   const [dataProvider, setDataProvider] = useState()
@@ -13,7 +14,7 @@ export default function AdminPage() {
   useEffect(() => {
     ;(async () => {
       if (!dataProvider) {
-        const authClient = getAuthClient()
+        const authClient = getAuthClient(undefined, true)
         const apolloClient = getApolloClient(authClient)
 
         if (!authClient.isAuthenticated()) {
@@ -34,7 +35,7 @@ export default function AdminPage() {
   }
 
   return (
-    <Admin dataProvider={dataProvider}>
+    <Admin dataProvider={dataProvider} theme={theme}>
       <Resource
         name='jobs'
         list={JobList}

@@ -38,8 +38,11 @@ export class AuthClient {
   stateChangeCallbacks: (() => void)[] = []
   context?: NextPageContext
 
-  constructor(context?: NextPageContext) {
+  constructor(context?: NextPageContext, isAdmin?: boolean) {
     this.context = context
+    if (typeof isAdmin !== 'undefined') {
+      this.isAdmin = isAdmin
+    }
   }
 
   isAuthenticated(): boolean {
@@ -51,8 +54,12 @@ export class AuthClient {
     return cookies.token
   }
 
-  getRole(): string | null {
-    return this.getTokenClaim('x-hasura-default-role')
+  getRole(): string {
+    return this.getTokenClaim('x-hasura-default-role') || 'anonymous'
+  }
+
+  getAllowedRoles(): string[] {
+    return this.getTokenClaim('x-hasura-allowed-roles') || []
   }
 
   getUserId() {
@@ -261,14 +268,33 @@ export class AuthClient {
     return parsedToken['https://hasura.io/jwt/claims'][key]
   }
 
-  async getRequestHeaders() {
+  async getRequestHeaders(): Promise<{ [key: string]: string }> {
     await this.refreshToken()
-    const jwt = this.getToken()
+    const token = this.getToken()
+    const role = this.isAdmin ? 'admin' : this.getRole()
 
-    return jwt
+    return token
       ? {
-          authorization: `Bearer ${jwt}`,
+          authorization: `Bearer ${token}`,
+          'x-hasura-role': role,
         }
       : {}
+  }
+}
+
+export class ApiAuthClient extends AuthClient {
+  isAdmin = true
+
+  async getRequestHeaders() {
+    if (!config.hasuraAdminSecret) {
+      throw new Error(
+        'Attempt to make admin GraphQL request without hasura admin secret.',
+      )
+    }
+
+    return {
+      'x-hasura-admin-secret': config.hasuraAdminSecret,
+      'x-hasura-role': 'admin',
+    }
   }
 }

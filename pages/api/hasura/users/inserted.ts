@@ -7,6 +7,7 @@ import {
 import { createStripeCustomer } from '../../../../lib/createStripeCustomer'
 import { getApolloClient } from '../../../../lib/getApolloClient'
 import hasuraWebhookValid from '../../../../lib/hasuraWebhookValid'
+import { ApiAuthClient } from '../../../../lib/AuthClient'
 
 export default async function hasuraUserInserted(
   req: NextApiRequest,
@@ -27,7 +28,7 @@ export default async function hasuraUserInserted(
     return res.status(403).end()
   }
 
-  const apollo = getApolloClient({ isAdmin: true })
+  const apollo = getApolloClient(new ApiAuthClient())
 
   await apollo.mutate<PostSignupMutation, PostSignupMutationVariables>({
     variables: { userId: user.id, role, name: user.register_data.name },

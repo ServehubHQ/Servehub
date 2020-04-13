@@ -8,6 +8,7 @@ import {
   Menu,
   MenuItem,
   Toolbar,
+  Link as MuiLink,
 } from '@material-ui/core'
 import { AccountCircle } from '@material-ui/icons'
 import Head from 'next/head'
@@ -177,11 +178,12 @@ export function Page({ children, currentUser }: PageProps) {
                   open={!!accountMenuAnchorEl}
                   onClose={handleMenuClose}
                 >
-                  <MenuItem>
+                  {(authClient?.getAllowedRoles().indexOf('admin') || -1) !==
+                  -1 ? (
                     <Link href={`/admin`}>
-                      <a>Admin</a>
+                      <MenuItem component='a'>Admin</MenuItem>
                     </Link>
-                  </MenuItem>
+                  ) : null}
                   <MenuItem onClick={handleLogoutClick}>Logout</MenuItem>
                 </Menu>
               </>

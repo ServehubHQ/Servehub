@@ -10,44 +10,20 @@ import { setContext } from '@apollo/link-context'
 import { WebSocketLink } from '@apollo/link-ws'
 import fetch from 'cross-fetch'
 import { AuthClient } from './AuthClient'
-import { config } from './config'
 
 let apolloClient: ApolloClient<NormalizedCacheObject>
 
-interface AdminAuth {
-  isAdmin: boolean
-}
-
 export function getApolloClient(
-  auth: AuthClient | AdminAuth,
+  authClient: AuthClient,
   data?: NormalizedCacheObject,
 ) {
   const isBrowser = typeof window !== 'undefined'
-  if (auth.isAdmin && isBrowser) {
-    throw new Error('Attempted admin auth in browser')
-  }
-  const authClient = auth.isAdmin ? null : (auth as AuthClient)
 
   if (isBrowser && apolloClient) {
     return apolloClient
   }
 
   const httpLink = setContext(async (a, { headers }) => {
-    if (auth.isAdmin) {
-      if (!config.hasuraAdminSecret) {
-        throw new Error(
-          'Attempt to make admin GraphQL request without hasura admin secret.',
-        )
-      }
-      return {
-        headers: {
-          ...headers,
-          'x-hasura-admin-secret': config.hasuraAdminSecret,
-          'x-hasura-role': 'admin',
-        },
-      }
-    }
-
     if (!authClient) {
       throw new Error('Attempting GraphQL request without auth')
     }

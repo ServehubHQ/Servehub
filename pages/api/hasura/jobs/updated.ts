@@ -9,6 +9,7 @@ import {
 import { config } from '../../../../lib/config'
 import { getApolloClient } from '../../../../lib/getApolloClient'
 import hasuraWebhookValid from '../../../../lib/hasuraWebhookValid'
+import { ApiAuthClient } from '../../../../lib/AuthClient'
 
 export default async function hasurajobUpdatedApi(
   req: NextApiRequest,
@@ -42,12 +43,8 @@ export default async function hasurajobUpdatedApi(
         ),
       })
     }
-    console.log('[hasurajobUpdatedApi] firebase admin init')
     const messaging = firebaseAdmin.messaging()
-    console.log('[hasurajobUpdatedApi] firebase messaging init')
-
-    const apollo = getApolloClient({ isAdmin: true })
-    console.log('[hasurajobUpdatedApi] apollo init')
+    const apollo = getApolloClient(new ApiAuthClient())
 
     const { data } = await apollo.query<
       JobUpdatedQuery,
@@ -66,14 +63,10 @@ export default async function hasurajobUpdatedApi(
       click_action: `https://defrex.ngrok.io/jobs/${job.id}`,
     }
 
-    console.log('notification', notification)
-
-    console.log(
-      await messaging.sendMulticast({
-        webpush: { notification },
-        tokens: data.users.map((server) => server.firebase_messaging_token!),
-      }),
-    )
+    await messaging.sendMulticast({
+      webpush: { notification },
+      tokens: data.users.map((server) => server.firebase_messaging_token!),
+    })
   }
 
   res.send('✔')
