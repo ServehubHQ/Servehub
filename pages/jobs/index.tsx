@@ -8,6 +8,7 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  Grid,
 } from '@material-ui/core'
 import { CheckCircle, Error } from '@material-ui/icons'
 import Link from 'next/link'
@@ -51,65 +52,74 @@ export default function JobListPage() {
 
   return (
     <Page currentUser={data?.users[0]}>
-      <Box mb={4}>
-        <Heading
-          title='Jobs'
-          action={
-            role === 'server' ? (
-              <Link href='/jobs/available' passHref>
-                <Button variant='contained' color='primary'>
-                  Available Jobs
-                </Button>
-              </Link>
-            ) : (
-              <Link href='/jobs/create' passHref>
-                <Button variant='contained' color='primary'>
-                  New Job
-                </Button>
-              </Link>
-            )
-          }
-        />
-      </Box>
-
-      <Paper>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Target Name</TableCell>
-              <TableCell>Delivered</TableCell>
-              <TableCell>Attempts</TableCell>
-              <TableCell>Location</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {jobs?.map((job) => (
-              <TableRow
-                key={job.id}
-                hover
-                onClick={handleJobClick(job.id)}
-                className={styles.row}
-              >
-                <TableCell>{job.target?.name}</TableCell>
-                <TableCell>
-                  {(job.successfulAttempts.aggregate?.count || 0) > 0 ? (
-                    <CheckCircle className={styles.successIcon} />
-                  ) : (
-                    <Error color='disabled' />
-                  )}
-                </TableCell>
-                <TableCell>{job.allAttempts.aggregate?.count}</TableCell>
-                <TableCell>
-                  {job.target?.street}
-                  {job.target?.unit ? `, ${job.target?.unit}` : null}
-                  <br />
-                  {job.target?.city}, {job.target?.province}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </Paper>
+      <Grid container spacing={2} direction='column'>
+        <Grid item>
+          <Heading
+            title='Jobs'
+            action={
+              role === 'server' ? (
+                <Link href='/jobs/available' passHref>
+                  <Button variant='contained' color='primary'>
+                    Available Jobs
+                  </Button>
+                </Link>
+              ) : (
+                <Link href='/jobs/create' passHref>
+                  <Button variant='contained' color='primary'>
+                    New Job
+                  </Button>
+                </Link>
+              )
+            }
+          />
+        </Grid>
+        <Grid item>
+          <Paper>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Target Name</TableCell>
+                  <TableCell>Delivered</TableCell>
+                  <TableCell>Attempts</TableCell>
+                  <TableCell>Documents</TableCell>
+                  <TableCell>Location</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {jobs?.map((job) => (
+                  <TableRow
+                    key={job.id}
+                    hover
+                    onClick={handleJobClick(job.id)}
+                    className={styles.row}
+                  >
+                    <TableCell>{job.target?.name}</TableCell>
+                    <TableCell>
+                      {(job.successfulAttempts.aggregate?.count || 0) > 0 ? (
+                        <CheckCircle className={styles.successIcon} />
+                      ) : (
+                        <Error color='disabled' />
+                      )}
+                    </TableCell>
+                    <TableCell>{job.allAttempts.aggregate?.count}</TableCell>
+                    <TableCell>
+                      {job.pickup_required
+                        ? 'Pickup'
+                        : job.documents_aggregate.aggregate?.count}
+                    </TableCell>
+                    <TableCell>
+                      {job.target?.street}
+                      {job.target?.unit ? `, ${job.target?.unit}` : null}
+                      <br />
+                      {job.target?.city}, {job.target?.province}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </Paper>
+        </Grid>
+      </Grid>
     </Page>
   )
 }

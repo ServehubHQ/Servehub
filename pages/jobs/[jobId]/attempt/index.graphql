@@ -1,4 +1,3 @@
-#import "../../components/JobMap.graphql"
 #import "../../components/Page.graphql"
 #import "../../components/Chat.graphql"
 query JobAttempt($jobId: uuid!, $userId: uuid) {

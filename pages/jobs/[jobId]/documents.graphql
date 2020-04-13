@@ -1,0 +1,24 @@
+# import "../../../components/JobDetailsPage.graphql"
+query JobDetailsDocuments($jobId: uuid!, $userId: uuid) {
+  users(where: { id: { _eq: $userId } }) {
+    id
+    ...JobDetailsPageUser
+  }
+  jobs_by_pk(id: $jobId) {
+    id
+    pickup_required
+    pickup_street
+    pickup_unit
+    pickup_postal_code
+    pickup_city
+    pickup_province
+
+    documents {
+      id
+      title
+      url
+    }
+
+    ...JobDetailsPageJob
+  }
+}

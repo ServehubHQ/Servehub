@@ -3,18 +3,17 @@ import {
   CardContent,
   CardHeader,
   CardMedia,
+  Divider,
   Grid,
   makeStyles,
   Typography,
-  Divider,
 } from '@material-ui/core'
 import { CheckCircle, Error } from '@material-ui/icons'
 import moment from 'moment'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
-import { Chat } from '../../../components/Chat'
 import { JobDetailsPage } from '../../../components/JobDetailsPage'
-import { JobMap } from '../../../components/JobMap'
+import { Map } from '../../../components/Map'
 import { useJobDetialsQuery } from '../../../graphql-codegen'
 import { useAuth } from '../../../lib/useAuth'
 import { useAuthRequired } from '../../../lib/useAuthRequired'
@@ -56,7 +55,7 @@ export default function JobDetails() {
                   </Typography>
                 </CardContent>
                 <CardMedia>
-                  {job?.target ? <JobMap target={job.target} /> : null}
+                  {job?.target ? <Map {...job.target} /> : null}
                 </CardMedia>
               </Card>
             </Grid>

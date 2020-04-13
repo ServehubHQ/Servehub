@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core'
 import Link from 'next/link'
 import { JobCardJobFragment } from '../graphql-codegen'
-import { JobMap } from './JobMap'
+import { Map } from './Map'
 
 interface JobCardProps {
   job: JobCardJobFragment
@@ -59,7 +59,7 @@ export default function JobCard({ job }: JobCardProps) {
         </Grid>
         <Grid item sm={6} lg={8}>
           <CardMedia className={styles.map}>
-            {job.target ? <JobMap target={job.target} /> : null}
+            {job.target ? <Map {...job.target} /> : null}
           </CardMedia>
         </Grid>
       </Grid>

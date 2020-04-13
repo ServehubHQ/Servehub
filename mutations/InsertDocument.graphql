@@ -1,37 +1,9 @@
-mutation InsertDocument(
-  $jobId: uuid!
-  $title: String!
-  $pickup: Boolean!
-  $url: String
-  $city: String
-  $postalCode: String
-  $province: String
-  $street: String
-  $unit: String
-) {
-  __typename
-  insert_documents(
-    objects: {
-      job_id: $jobId
-      pickup: $pickup
-      url: $url
-      title: $title
-      city: $city
-      postal_code: $postalCode
-      province: $province
-      street: $street
-      unit: $unit
-    }
-  ) {
+mutation InsertDocument($jobId: uuid!, $title: String!, $url: String!) {
+  insert_documents(objects: { job_id: $jobId, url: $url, title: $title }) {
     returning {
-      city
-      created_at
       id
-      pickup
-      postal_code
-      province
-      street
-      unit
+      title
+      url
     }
   }
 }

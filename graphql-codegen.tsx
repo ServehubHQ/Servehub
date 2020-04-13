@@ -764,17 +764,11 @@ export type Boolean_Comparison_Exp = {
 
 export type Documents = {
    __typename?: 'documents';
-  city?: Maybe<Scalars['String']>;
   created_at: Scalars['timestamptz'];
   id: Scalars['uuid'];
   job: Jobs;
   job_id: Scalars['uuid'];
-  pickup: Scalars['Boolean'];
-  postal_code?: Maybe<Scalars['String']>;
-  province?: Maybe<Scalars['String']>;
-  street?: Maybe<Scalars['String']>;
   title: Scalars['String'];
-  unit?: Maybe<Scalars['String']>;
   updated_at: Scalars['timestamptz'];
   url?: Maybe<Scalars['String']>;
 };
@@ -813,17 +807,11 @@ export type Documents_Bool_Exp = {
   _and?: Maybe<Array<Maybe<Documents_Bool_Exp>>>;
   _not?: Maybe<Documents_Bool_Exp>;
   _or?: Maybe<Array<Maybe<Documents_Bool_Exp>>>;
-  city?: Maybe<String_Comparison_Exp>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
   id?: Maybe<Uuid_Comparison_Exp>;
   job?: Maybe<Jobs_Bool_Exp>;
   job_id?: Maybe<Uuid_Comparison_Exp>;
-  pickup?: Maybe<Boolean_Comparison_Exp>;
-  postal_code?: Maybe<String_Comparison_Exp>;
-  province?: Maybe<String_Comparison_Exp>;
-  street?: Maybe<String_Comparison_Exp>;
   title?: Maybe<String_Comparison_Exp>;
-  unit?: Maybe<String_Comparison_Exp>;
   updated_at?: Maybe<Timestamptz_Comparison_Exp>;
   url?: Maybe<String_Comparison_Exp>;
 };
@@ -833,67 +821,41 @@ export enum Documents_Constraint {
 }
 
 export type Documents_Insert_Input = {
-  city?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['uuid']>;
   job?: Maybe<Jobs_Obj_Rel_Insert_Input>;
   job_id?: Maybe<Scalars['uuid']>;
-  pickup?: Maybe<Scalars['Boolean']>;
-  postal_code?: Maybe<Scalars['String']>;
-  province?: Maybe<Scalars['String']>;
-  street?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
-  unit?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
   url?: Maybe<Scalars['String']>;
 };
 
 export type Documents_Max_Fields = {
    __typename?: 'documents_max_fields';
-  city?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
-  postal_code?: Maybe<Scalars['String']>;
-  province?: Maybe<Scalars['String']>;
-  street?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
-  unit?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
   url?: Maybe<Scalars['String']>;
 };
 
 export type Documents_Max_Order_By = {
-  city?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
-  postal_code?: Maybe<Order_By>;
-  province?: Maybe<Order_By>;
-  street?: Maybe<Order_By>;
   title?: Maybe<Order_By>;
-  unit?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
   url?: Maybe<Order_By>;
 };
 
 export type Documents_Min_Fields = {
    __typename?: 'documents_min_fields';
-  city?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
-  postal_code?: Maybe<Scalars['String']>;
-  province?: Maybe<Scalars['String']>;
-  street?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
-  unit?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
   url?: Maybe<Scalars['String']>;
 };
 
 export type Documents_Min_Order_By = {
-  city?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
-  postal_code?: Maybe<Order_By>;
-  province?: Maybe<Order_By>;
-  street?: Maybe<Order_By>;
   title?: Maybe<Order_By>;
-  unit?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
   url?: Maybe<Order_By>;
 };
@@ -916,62 +878,38 @@ export type Documents_On_Conflict = {
 };
 
 export type Documents_Order_By = {
-  city?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   job?: Maybe<Jobs_Order_By>;
   job_id?: Maybe<Order_By>;
-  pickup?: Maybe<Order_By>;
-  postal_code?: Maybe<Order_By>;
-  province?: Maybe<Order_By>;
-  street?: Maybe<Order_By>;
   title?: Maybe<Order_By>;
-  unit?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
   url?: Maybe<Order_By>;
 };
 
 export enum Documents_Select_Column {
-  City = 'city',
   CreatedAt = 'created_at',
   Id = 'id',
   JobId = 'job_id',
-  Pickup = 'pickup',
-  PostalCode = 'postal_code',
-  Province = 'province',
-  Street = 'street',
   Title = 'title',
-  Unit = 'unit',
   UpdatedAt = 'updated_at',
   Url = 'url'
 }
 
 export type Documents_Set_Input = {
-  city?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['uuid']>;
   job_id?: Maybe<Scalars['uuid']>;
-  pickup?: Maybe<Scalars['Boolean']>;
-  postal_code?: Maybe<Scalars['String']>;
-  province?: Maybe<Scalars['String']>;
-  street?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
-  unit?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
   url?: Maybe<Scalars['String']>;
 };
 
 export enum Documents_Update_Column {
-  City = 'city',
   CreatedAt = 'created_at',
   Id = 'id',
   JobId = 'job_id',
-  Pickup = 'pickup',
-  PostalCode = 'postal_code',
-  Province = 'province',
-  Street = 'street',
   Title = 'title',
-  Unit = 'unit',
   UpdatedAt = 'updated_at',
   Url = 'url'
 }
@@ -989,6 +927,12 @@ export type Jobs = {
   lawyer_user_id: Scalars['uuid'];
   messages: Array<Messages>;
   messages_aggregate: Messages_Aggregate;
+  pickup_city?: Maybe<Scalars['String']>;
+  pickup_postal_code?: Maybe<Scalars['String']>;
+  pickup_province?: Maybe<Scalars['String']>;
+  pickup_required: Scalars['Boolean'];
+  pickup_street?: Maybe<Scalars['String']>;
+  pickup_unit?: Maybe<Scalars['String']>;
   server?: Maybe<Users>;
   server_user_id?: Maybe<Scalars['uuid']>;
   stripe_payment_intent_client_secret?: Maybe<Scalars['String']>;
@@ -1095,6 +1039,12 @@ export type Jobs_Bool_Exp = {
   lawyer?: Maybe<Users_Bool_Exp>;
   lawyer_user_id?: Maybe<Uuid_Comparison_Exp>;
   messages?: Maybe<Messages_Bool_Exp>;
+  pickup_city?: Maybe<String_Comparison_Exp>;
+  pickup_postal_code?: Maybe<String_Comparison_Exp>;
+  pickup_province?: Maybe<String_Comparison_Exp>;
+  pickup_required?: Maybe<Boolean_Comparison_Exp>;
+  pickup_street?: Maybe<String_Comparison_Exp>;
+  pickup_unit?: Maybe<String_Comparison_Exp>;
   server?: Maybe<Users_Bool_Exp>;
   server_user_id?: Maybe<Uuid_Comparison_Exp>;
   stripe_payment_intent_client_secret?: Maybe<String_Comparison_Exp>;
@@ -1119,6 +1069,12 @@ export type Jobs_Insert_Input = {
   lawyer?: Maybe<Users_Obj_Rel_Insert_Input>;
   lawyer_user_id?: Maybe<Scalars['uuid']>;
   messages?: Maybe<Messages_Arr_Rel_Insert_Input>;
+  pickup_city?: Maybe<Scalars['String']>;
+  pickup_postal_code?: Maybe<Scalars['String']>;
+  pickup_province?: Maybe<Scalars['String']>;
+  pickup_required?: Maybe<Scalars['Boolean']>;
+  pickup_street?: Maybe<Scalars['String']>;
+  pickup_unit?: Maybe<Scalars['String']>;
   server?: Maybe<Users_Obj_Rel_Insert_Input>;
   server_user_id?: Maybe<Scalars['uuid']>;
   stripe_payment_intent_client_secret?: Maybe<Scalars['String']>;
@@ -1133,6 +1089,11 @@ export type Jobs_Max_Fields = {
    __typename?: 'jobs_max_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
   description?: Maybe<Scalars['String']>;
+  pickup_city?: Maybe<Scalars['String']>;
+  pickup_postal_code?: Maybe<Scalars['String']>;
+  pickup_province?: Maybe<Scalars['String']>;
+  pickup_street?: Maybe<Scalars['String']>;
+  pickup_unit?: Maybe<Scalars['String']>;
   stripe_payment_intent_client_secret?: Maybe<Scalars['String']>;
   stripe_payment_intent_id?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
@@ -1141,6 +1102,11 @@ export type Jobs_Max_Fields = {
 export type Jobs_Max_Order_By = {
   created_at?: Maybe<Order_By>;
   description?: Maybe<Order_By>;
+  pickup_city?: Maybe<Order_By>;
+  pickup_postal_code?: Maybe<Order_By>;
+  pickup_province?: Maybe<Order_By>;
+  pickup_street?: Maybe<Order_By>;
+  pickup_unit?: Maybe<Order_By>;
   stripe_payment_intent_client_secret?: Maybe<Order_By>;
   stripe_payment_intent_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
@@ -1150,6 +1116,11 @@ export type Jobs_Min_Fields = {
    __typename?: 'jobs_min_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
   description?: Maybe<Scalars['String']>;
+  pickup_city?: Maybe<Scalars['String']>;
+  pickup_postal_code?: Maybe<Scalars['String']>;
+  pickup_province?: Maybe<Scalars['String']>;
+  pickup_street?: Maybe<Scalars['String']>;
+  pickup_unit?: Maybe<Scalars['String']>;
   stripe_payment_intent_client_secret?: Maybe<Scalars['String']>;
   stripe_payment_intent_id?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
@@ -1158,6 +1129,11 @@ export type Jobs_Min_Fields = {
 export type Jobs_Min_Order_By = {
   created_at?: Maybe<Order_By>;
   description?: Maybe<Order_By>;
+  pickup_city?: Maybe<Order_By>;
+  pickup_postal_code?: Maybe<Order_By>;
+  pickup_province?: Maybe<Order_By>;
+  pickup_street?: Maybe<Order_By>;
+  pickup_unit?: Maybe<Order_By>;
   stripe_payment_intent_client_secret?: Maybe<Order_By>;
   stripe_payment_intent_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
@@ -1189,6 +1165,12 @@ export type Jobs_Order_By = {
   lawyer?: Maybe<Users_Order_By>;
   lawyer_user_id?: Maybe<Order_By>;
   messages_aggregate?: Maybe<Messages_Aggregate_Order_By>;
+  pickup_city?: Maybe<Order_By>;
+  pickup_postal_code?: Maybe<Order_By>;
+  pickup_province?: Maybe<Order_By>;
+  pickup_required?: Maybe<Order_By>;
+  pickup_street?: Maybe<Order_By>;
+  pickup_unit?: Maybe<Order_By>;
   server?: Maybe<Users_Order_By>;
   server_user_id?: Maybe<Order_By>;
   stripe_payment_intent_client_secret?: Maybe<Order_By>;
@@ -1204,6 +1186,12 @@ export enum Jobs_Select_Column {
   Description = 'description',
   Id = 'id',
   LawyerUserId = 'lawyer_user_id',
+  PickupCity = 'pickup_city',
+  PickupPostalCode = 'pickup_postal_code',
+  PickupProvince = 'pickup_province',
+  PickupRequired = 'pickup_required',
+  PickupStreet = 'pickup_street',
+  PickupUnit = 'pickup_unit',
   ServerUserId = 'server_user_id',
   StripePaymentIntentClientSecret = 'stripe_payment_intent_client_secret',
   StripePaymentIntentId = 'stripe_payment_intent_id',
@@ -1217,6 +1205,12 @@ export type Jobs_Set_Input = {
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   lawyer_user_id?: Maybe<Scalars['uuid']>;
+  pickup_city?: Maybe<Scalars['String']>;
+  pickup_postal_code?: Maybe<Scalars['String']>;
+  pickup_province?: Maybe<Scalars['String']>;
+  pickup_required?: Maybe<Scalars['Boolean']>;
+  pickup_street?: Maybe<Scalars['String']>;
+  pickup_unit?: Maybe<Scalars['String']>;
   server_user_id?: Maybe<Scalars['uuid']>;
   stripe_payment_intent_client_secret?: Maybe<Scalars['String']>;
   stripe_payment_intent_id?: Maybe<Scalars['String']>;
@@ -1230,6 +1224,12 @@ export enum Jobs_Update_Column {
   Description = 'description',
   Id = 'id',
   LawyerUserId = 'lawyer_user_id',
+  PickupCity = 'pickup_city',
+  PickupPostalCode = 'pickup_postal_code',
+  PickupProvince = 'pickup_province',
+  PickupRequired = 'pickup_required',
+  PickupStreet = 'pickup_street',
+  PickupUnit = 'pickup_unit',
   ServerUserId = 'server_user_id',
   StripePaymentIntentClientSecret = 'stripe_payment_intent_client_secret',
   StripePaymentIntentId = 'stripe_payment_intent_id',
@@ -2831,6 +2831,8 @@ export type Users = {
   firebase_messaging_token?: Maybe<Scalars['String']>;
   id: Scalars['uuid'];
   is_anonymous: Scalars['Boolean'];
+  lawyer_jobs: Array<Jobs>;
+  lawyer_jobs_aggregate: Jobs_Aggregate;
   name?: Maybe<Scalars['String']>;
   refresh_tokens: Array<Auth_Refresh_Tokens>;
   refresh_tokens_aggregate: Auth_Refresh_Tokens_Aggregate;
@@ -2838,6 +2840,8 @@ export type Users = {
   role: Roles;
   secret_token: Scalars['uuid'];
   secret_token_expires_at: Scalars['timestamptz'];
+  server_jobs: Array<Jobs>;
+  server_jobs_aggregate: Jobs_Aggregate;
   stripe_customer_id?: Maybe<Scalars['String']>;
   updated_at: Scalars['timestamptz'];
   user_accounts: Array<Auth_User_Accounts>;
@@ -2846,6 +2850,24 @@ export type Users = {
   user_providers_aggregate: Auth_User_Providers_Aggregate;
   user_roles: Array<User_Roles>;
   user_roles_aggregate: User_Roles_Aggregate;
+};
+
+
+export type UsersLawyer_JobsArgs = {
+  distinct_on?: Maybe<Array<Jobs_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Jobs_Order_By>>;
+  where?: Maybe<Jobs_Bool_Exp>;
+};
+
+
+export type UsersLawyer_Jobs_AggregateArgs = {
+  distinct_on?: Maybe<Array<Jobs_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Jobs_Order_By>>;
+  where?: Maybe<Jobs_Bool_Exp>;
 };
 
 
@@ -2869,6 +2891,24 @@ export type UsersRefresh_Tokens_AggregateArgs = {
 
 export type UsersRegister_DataArgs = {
   path?: Maybe<Scalars['String']>;
+};
+
+
+export type UsersServer_JobsArgs = {
+  distinct_on?: Maybe<Array<Jobs_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Jobs_Order_By>>;
+  where?: Maybe<Jobs_Bool_Exp>;
+};
+
+
+export type UsersServer_Jobs_AggregateArgs = {
+  distinct_on?: Maybe<Array<Jobs_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Jobs_Order_By>>;
+  where?: Maybe<Jobs_Bool_Exp>;
 };
 
 
@@ -2972,12 +3012,14 @@ export type Users_Bool_Exp = {
   firebase_messaging_token?: Maybe<String_Comparison_Exp>;
   id?: Maybe<Uuid_Comparison_Exp>;
   is_anonymous?: Maybe<Boolean_Comparison_Exp>;
+  lawyer_jobs?: Maybe<Jobs_Bool_Exp>;
   name?: Maybe<String_Comparison_Exp>;
   refresh_tokens?: Maybe<Auth_Refresh_Tokens_Bool_Exp>;
   register_data?: Maybe<Jsonb_Comparison_Exp>;
   role?: Maybe<Roles_Bool_Exp>;
   secret_token?: Maybe<Uuid_Comparison_Exp>;
   secret_token_expires_at?: Maybe<Timestamptz_Comparison_Exp>;
+  server_jobs?: Maybe<Jobs_Bool_Exp>;
   stripe_customer_id?: Maybe<String_Comparison_Exp>;
   updated_at?: Maybe<Timestamptz_Comparison_Exp>;
   user_accounts?: Maybe<Auth_User_Accounts_Bool_Exp>;
@@ -3013,12 +3055,14 @@ export type Users_Insert_Input = {
   firebase_messaging_token?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   is_anonymous?: Maybe<Scalars['Boolean']>;
+  lawyer_jobs?: Maybe<Jobs_Arr_Rel_Insert_Input>;
   name?: Maybe<Scalars['String']>;
   refresh_tokens?: Maybe<Auth_Refresh_Tokens_Arr_Rel_Insert_Input>;
   register_data?: Maybe<Scalars['jsonb']>;
   role?: Maybe<Roles_Obj_Rel_Insert_Input>;
   secret_token?: Maybe<Scalars['uuid']>;
   secret_token_expires_at?: Maybe<Scalars['timestamptz']>;
+  server_jobs?: Maybe<Jobs_Arr_Rel_Insert_Input>;
   stripe_customer_id?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
   user_accounts?: Maybe<Auth_User_Accounts_Arr_Rel_Insert_Input>;
@@ -3107,12 +3151,14 @@ export type Users_Order_By = {
   firebase_messaging_token?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   is_anonymous?: Maybe<Order_By>;
+  lawyer_jobs_aggregate?: Maybe<Jobs_Aggregate_Order_By>;
   name?: Maybe<Order_By>;
   refresh_tokens_aggregate?: Maybe<Auth_Refresh_Tokens_Aggregate_Order_By>;
   register_data?: Maybe<Order_By>;
   role?: Maybe<Roles_Order_By>;
   secret_token?: Maybe<Order_By>;
   secret_token_expires_at?: Maybe<Order_By>;
+  server_jobs_aggregate?: Maybe<Jobs_Aggregate_Order_By>;
   stripe_customer_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
   user_accounts_aggregate?: Maybe<Auth_User_Accounts_Aggregate_Order_By>;
@@ -3219,8 +3265,8 @@ export type JobCardJobFragment = (
   & Pick<Jobs, 'id'>
   & { target: Maybe<(
     { __typename?: 'targets' }
-    & Pick<Targets, 'id' | 'name'>
-    & JobMapTargetFragment
+    & Pick<Targets, 'id' | 'name' | 'street' | 'unit' | 'city' | 'province'>
+    & { postalCode: Targets['postal_code'] }
   )>, server: Maybe<(
     { __typename?: 'users' }
     & Pick<Users, 'id'>
@@ -3242,11 +3288,6 @@ export type JobDetailsPageJobFragment = (
 export type JobDetailsPageUserFragment = (
   { __typename?: 'users' }
   & PageUserFragment
-);
-
-export type JobMapTargetFragment = (
-  { __typename?: 'targets' }
-  & Pick<Targets, 'id' | 'street' | 'unit' | 'city' | 'postal_code' | 'province'>
 );
 
 export type PageUserFragment = (
@@ -3298,23 +3339,17 @@ export type InsertAttemptMutation = (
 export type InsertDocumentMutationVariables = {
   jobId: Scalars['uuid'];
   title: Scalars['String'];
-  pickup: Scalars['Boolean'];
-  url?: Maybe<Scalars['String']>;
-  city?: Maybe<Scalars['String']>;
-  postalCode?: Maybe<Scalars['String']>;
-  province?: Maybe<Scalars['String']>;
-  street?: Maybe<Scalars['String']>;
-  unit?: Maybe<Scalars['String']>;
+  url: Scalars['String'];
 };
 
 
 export type InsertDocumentMutation = (
-  { __typename: 'mutation_root' }
+  { __typename?: 'mutation_root' }
   & { insert_documents: Maybe<(
     { __typename?: 'documents_mutation_response' }
     & { returning: Array<(
       { __typename?: 'documents' }
-      & Pick<Documents, 'city' | 'created_at' | 'id' | 'pickup' | 'postal_code' | 'province' | 'street' | 'unit'>
+      & Pick<Documents, 'id' | 'title' | 'url'>
     )> }
   )> }
 );
@@ -3397,6 +3432,24 @@ export type SetFirebaseMessagingTokenMutation = (
   & { update_users: Maybe<(
     { __typename?: 'users_mutation_response' }
     & Pick<Users_Mutation_Response, 'affected_rows'>
+  )> }
+);
+
+export type SetJobPickupRequiredMutationVariables = {
+  jobId: Scalars['uuid'];
+  unit?: Maybe<Scalars['String']>;
+  street: Scalars['String'];
+  province: Scalars['String'];
+  postalCode: Scalars['String'];
+  city: Scalars['String'];
+};
+
+
+export type SetJobPickupRequiredMutation = (
+  { __typename?: 'mutation_root' }
+  & { update_jobs: Maybe<(
+    { __typename?: 'jobs_mutation_response' }
+    & Pick<Jobs_Mutation_Response, 'affected_rows'>
   )> }
 );
 
@@ -3542,6 +3595,29 @@ export type JobDetailsChatQuery = (
   )> }
 );
 
+export type JobDetailsDocumentsQueryVariables = {
+  jobId: Scalars['uuid'];
+  userId?: Maybe<Scalars['uuid']>;
+};
+
+
+export type JobDetailsDocumentsQuery = (
+  { __typename?: 'query_root' }
+  & { users: Array<(
+    { __typename?: 'users' }
+    & Pick<Users, 'id'>
+    & JobDetailsPageUserFragment
+  )>, jobs_by_pk: Maybe<(
+    { __typename?: 'jobs' }
+    & Pick<Jobs, 'id' | 'pickup_required' | 'pickup_street' | 'pickup_unit' | 'pickup_postal_code' | 'pickup_city' | 'pickup_province'>
+    & { documents: Array<(
+      { __typename?: 'documents' }
+      & Pick<Documents, 'id' | 'title' | 'url'>
+    )> }
+    & JobDetailsPageJobFragment
+  )> }
+);
+
 export type JobDetialsQueryVariables = {
   jobId: Scalars['uuid'];
   userId?: Maybe<Scalars['uuid']>;
@@ -3559,8 +3635,8 @@ export type JobDetialsQuery = (
     & Pick<Jobs, 'id' | 'description' | 'stripe_payment_intent_succeeded'>
     & { target: Maybe<(
       { __typename?: 'targets' }
-      & Pick<Targets, 'id' | 'name'>
-      & JobMapTargetFragment
+      & Pick<Targets, 'id' | 'name' | 'street' | 'unit' | 'city' | 'province'>
+      & { postalCode: Targets['postal_code'] }
     )>, server: Maybe<(
       { __typename?: 'users' }
       & Pick<Users, 'id' | 'name'>
@@ -3590,19 +3666,6 @@ export type JobsAvailableQuery = (
   )> }
 );
 
-export type JobsCreateDocumentsQueryVariables = {
-  jobId: Scalars['uuid'];
-};
-
-
-export type JobsCreateDocumentsQuery = (
-  { __typename: 'query_root' }
-  & { documents: Array<(
-    { __typename?: 'documents' }
-    & Pick<Documents, 'id' | 'pickup' | 'title' | 'url' | 'street'>
-  )> }
-);
-
 export type JobsCreatePaymentQueryVariables = {
   jobId: Scalars['uuid'];
 };
@@ -3618,6 +3681,7 @@ export type JobsCreatePaymentQuery = (
 
 export type JobsListJobFragment = (
   { __typename?: 'jobs' }
+  & Pick<Jobs, 'id' | 'pickup_required'>
   & { target: Maybe<(
     { __typename?: 'targets' }
     & Pick<Targets, 'id' | 'name' | 'street' | 'city' | 'province'>
@@ -3632,6 +3696,12 @@ export type JobsListJobFragment = (
     & { aggregate: Maybe<(
       { __typename?: 'attempts_aggregate_fields' }
       & Pick<Attempts_Aggregate_Fields, 'count'>
+    )> }
+  ), documents_aggregate: (
+    { __typename?: 'documents_aggregate' }
+    & { aggregate: Maybe<(
+      { __typename?: 'documents_aggregate_fields' }
+      & Pick<Documents_Aggregate_Fields, 'count'>
     )> }
   ) }
 );
@@ -3672,29 +3742,23 @@ export const ChatMessageMessageFragmentDoc = gql`
   }
 }
     `;
-export const JobMapTargetFragmentDoc = gql`
-    fragment JobMapTarget on targets {
-  id
-  street
-  unit
-  city
-  postal_code
-  province
-}
-    `;
 export const JobCardJobFragmentDoc = gql`
     fragment JobCardJob on jobs {
   id
   target {
     id
     name
-    ...JobMapTarget
+    street
+    unit
+    postalCode: postal_code
+    city
+    province
   }
   server {
     id
   }
 }
-    ${JobMapTargetFragmentDoc}`;
+    `;
 export const JobDetailsPageJobFragmentDoc = gql`
     fragment JobDetailsPageJob on jobs {
   id
@@ -3720,6 +3784,8 @@ export const JobDetailsPageUserFragmentDoc = gql`
     ${PageUserFragmentDoc}`;
 export const JobsListJobFragmentDoc = gql`
     fragment JobsListJob on jobs {
+  id
+  pickup_required
   target {
     id
     name
@@ -3733,6 +3799,11 @@ export const JobsListJobFragmentDoc = gql`
     }
   }
   allAttempts: attempts_aggregate {
+    aggregate {
+      count
+    }
+  }
+  documents_aggregate {
     aggregate {
       count
     }
@@ -3868,18 +3939,12 @@ export type InsertAttemptMutationHookResult = ReturnType<typeof useInsertAttempt
 export type InsertAttemptMutationResult = ApolloReactCommon.MutationResult<InsertAttemptMutation>;
 export type InsertAttemptMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertAttemptMutation, InsertAttemptMutationVariables>;
 export const InsertDocumentDocument = gql`
-    mutation InsertDocument($jobId: uuid!, $title: String!, $pickup: Boolean!, $url: String, $city: String, $postalCode: String, $province: String, $street: String, $unit: String) {
-  __typename
-  insert_documents(objects: {job_id: $jobId, pickup: $pickup, url: $url, title: $title, city: $city, postal_code: $postalCode, province: $province, street: $street, unit: $unit}) {
+    mutation InsertDocument($jobId: uuid!, $title: String!, $url: String!) {
+  insert_documents(objects: {job_id: $jobId, url: $url, title: $title}) {
     returning {
-      city
-      created_at
       id
-      pickup
-      postal_code
-      province
-      street
-      unit
+      title
+      url
     }
   }
 }
@@ -3901,13 +3966,7 @@ export type InsertDocumentMutationFn = ApolloReactCommon.MutationFunction<Insert
  *   variables: {
  *      jobId: // value for 'jobId'
  *      title: // value for 'title'
- *      pickup: // value for 'pickup'
  *      url: // value for 'url'
- *      city: // value for 'city'
- *      postalCode: // value for 'postalCode'
- *      province: // value for 'province'
- *      street: // value for 'street'
- *      unit: // value for 'unit'
  *   },
  * });
  */
@@ -4092,6 +4151,43 @@ export function useSetFirebaseMessagingTokenMutation(baseOptions?: ApolloReactHo
 export type SetFirebaseMessagingTokenMutationHookResult = ReturnType<typeof useSetFirebaseMessagingTokenMutation>;
 export type SetFirebaseMessagingTokenMutationResult = ApolloReactCommon.MutationResult<SetFirebaseMessagingTokenMutation>;
 export type SetFirebaseMessagingTokenMutationOptions = ApolloReactCommon.BaseMutationOptions<SetFirebaseMessagingTokenMutation, SetFirebaseMessagingTokenMutationVariables>;
+export const SetJobPickupRequiredDocument = gql`
+    mutation SetJobPickupRequired($jobId: uuid!, $unit: String, $street: String!, $province: String!, $postalCode: String!, $city: String!) {
+  update_jobs(where: {id: {_eq: $jobId}}, _set: {pickup_required: true, pickup_unit: $unit, pickup_street: $street, pickup_province: $province, pickup_postal_code: $postalCode, pickup_city: $city}) {
+    affected_rows
+  }
+}
+    `;
+export type SetJobPickupRequiredMutationFn = ApolloReactCommon.MutationFunction<SetJobPickupRequiredMutation, SetJobPickupRequiredMutationVariables>;
+
+/**
+ * __useSetJobPickupRequiredMutation__
+ *
+ * To run a mutation, you first call `useSetJobPickupRequiredMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetJobPickupRequiredMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setJobPickupRequiredMutation, { data, loading, error }] = useSetJobPickupRequiredMutation({
+ *   variables: {
+ *      jobId: // value for 'jobId'
+ *      unit: // value for 'unit'
+ *      street: // value for 'street'
+ *      province: // value for 'province'
+ *      postalCode: // value for 'postalCode'
+ *      city: // value for 'city'
+ *   },
+ * });
+ */
+export function useSetJobPickupRequiredMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SetJobPickupRequiredMutation, SetJobPickupRequiredMutationVariables>) {
+        return ApolloReactHooks.useMutation<SetJobPickupRequiredMutation, SetJobPickupRequiredMutationVariables>(SetJobPickupRequiredDocument, baseOptions);
+      }
+export type SetJobPickupRequiredMutationHookResult = ReturnType<typeof useSetJobPickupRequiredMutation>;
+export type SetJobPickupRequiredMutationResult = ApolloReactCommon.MutationResult<SetJobPickupRequiredMutation>;
+export type SetJobPickupRequiredMutationOptions = ApolloReactCommon.BaseMutationOptions<SetJobPickupRequiredMutation, SetJobPickupRequiredMutationVariables>;
 export const SetJobStripePaymentIntentDocument = gql`
     mutation SetJobStripePaymentIntent($jobId: uuid!, $stripePaymentIntentId: String!, $stripePaymentIntentClientSecret: String!) {
   update_jobs(where: {id: {_eq: $jobId}}, _set: {stripe_payment_intent_id: $stripePaymentIntentId, stripe_payment_intent_client_secret: $stripePaymentIntentClientSecret}) {
@@ -4414,6 +4510,57 @@ export function useJobDetailsChatLazyQuery(baseOptions?: ApolloReactHooks.LazyQu
 export type JobDetailsChatQueryHookResult = ReturnType<typeof useJobDetailsChatQuery>;
 export type JobDetailsChatLazyQueryHookResult = ReturnType<typeof useJobDetailsChatLazyQuery>;
 export type JobDetailsChatQueryResult = ApolloReactCommon.QueryResult<JobDetailsChatQuery, JobDetailsChatQueryVariables>;
+export const JobDetailsDocumentsDocument = gql`
+    query JobDetailsDocuments($jobId: uuid!, $userId: uuid) {
+  users(where: {id: {_eq: $userId}}) {
+    id
+    ...JobDetailsPageUser
+  }
+  jobs_by_pk(id: $jobId) {
+    id
+    pickup_required
+    pickup_street
+    pickup_unit
+    pickup_postal_code
+    pickup_city
+    pickup_province
+    documents {
+      id
+      title
+      url
+    }
+    ...JobDetailsPageJob
+  }
+}
+    ${JobDetailsPageUserFragmentDoc}
+${JobDetailsPageJobFragmentDoc}`;
+
+/**
+ * __useJobDetailsDocumentsQuery__
+ *
+ * To run a query within a React component, call `useJobDetailsDocumentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useJobDetailsDocumentsQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useJobDetailsDocumentsQuery({
+ *   variables: {
+ *      jobId: // value for 'jobId'
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useJobDetailsDocumentsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<JobDetailsDocumentsQuery, JobDetailsDocumentsQueryVariables>) {
+        return ApolloReactHooks.useQuery<JobDetailsDocumentsQuery, JobDetailsDocumentsQueryVariables>(JobDetailsDocumentsDocument, baseOptions);
+      }
+export function useJobDetailsDocumentsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<JobDetailsDocumentsQuery, JobDetailsDocumentsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<JobDetailsDocumentsQuery, JobDetailsDocumentsQueryVariables>(JobDetailsDocumentsDocument, baseOptions);
+        }
+export type JobDetailsDocumentsQueryHookResult = ReturnType<typeof useJobDetailsDocumentsQuery>;
+export type JobDetailsDocumentsLazyQueryHookResult = ReturnType<typeof useJobDetailsDocumentsLazyQuery>;
+export type JobDetailsDocumentsQueryResult = ApolloReactCommon.QueryResult<JobDetailsDocumentsQuery, JobDetailsDocumentsQueryVariables>;
 export const JobDetialsDocument = gql`
     query JobDetials($jobId: uuid!, $userId: uuid) {
   users(where: {id: {_eq: $userId}}) {
@@ -4427,7 +4574,11 @@ export const JobDetialsDocument = gql`
     target {
       id
       name
-      ...JobMapTarget
+      street
+      unit
+      postalCode: postal_code
+      city
+      province
     }
     server {
       id
@@ -4442,7 +4593,6 @@ export const JobDetialsDocument = gql`
   }
 }
     ${JobDetailsPageUserFragmentDoc}
-${JobMapTargetFragmentDoc}
 ${JobDetailsPageJobFragmentDoc}`;
 
 /**
@@ -4510,44 +4660,6 @@ export function useJobsAvailableLazyQuery(baseOptions?: ApolloReactHooks.LazyQue
 export type JobsAvailableQueryHookResult = ReturnType<typeof useJobsAvailableQuery>;
 export type JobsAvailableLazyQueryHookResult = ReturnType<typeof useJobsAvailableLazyQuery>;
 export type JobsAvailableQueryResult = ApolloReactCommon.QueryResult<JobsAvailableQuery, JobsAvailableQueryVariables>;
-export const JobsCreateDocumentsDocument = gql`
-    query JobsCreateDocuments($jobId: uuid!) {
-  __typename
-  documents(where: {job_id: {_eq: $jobId}}) {
-    id
-    pickup
-    title
-    url
-    street
-  }
-}
-    `;
-
-/**
- * __useJobsCreateDocumentsQuery__
- *
- * To run a query within a React component, call `useJobsCreateDocumentsQuery` and pass it any options that fit your needs.
- * When your component renders, `useJobsCreateDocumentsQuery` returns an object from Apollo Client that contains loading, error, and data properties 
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useJobsCreateDocumentsQuery({
- *   variables: {
- *      jobId: // value for 'jobId'
- *   },
- * });
- */
-export function useJobsCreateDocumentsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<JobsCreateDocumentsQuery, JobsCreateDocumentsQueryVariables>) {
-        return ApolloReactHooks.useQuery<JobsCreateDocumentsQuery, JobsCreateDocumentsQueryVariables>(JobsCreateDocumentsDocument, baseOptions);
-      }
-export function useJobsCreateDocumentsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<JobsCreateDocumentsQuery, JobsCreateDocumentsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<JobsCreateDocumentsQuery, JobsCreateDocumentsQueryVariables>(JobsCreateDocumentsDocument, baseOptions);
-        }
-export type JobsCreateDocumentsQueryHookResult = ReturnType<typeof useJobsCreateDocumentsQuery>;
-export type JobsCreateDocumentsLazyQueryHookResult = ReturnType<typeof useJobsCreateDocumentsLazyQuery>;
-export type JobsCreateDocumentsQueryResult = ApolloReactCommon.QueryResult<JobsCreateDocumentsQuery, JobsCreateDocumentsQueryVariables>;
 export const JobsCreatePaymentDocument = gql`
     query JobsCreatePayment($jobId: uuid!) {
   jobs(where: {id: {_eq: $jobId}}) {

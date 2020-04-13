@@ -18,7 +18,7 @@ import { PageUserFragment } from '../graphql-codegen'
 import { getAndSaveMessagingToken } from '../lib/firebase'
 import { useAuth } from '../lib/useAuth'
 
-interface PageProps {
+export interface PageProps {
   children: ReactNode
   currentUser?: PageUserFragment
 }
@@ -46,6 +46,8 @@ const useStyles = makeStyles((theme) => ({
   contentContainer: {
     flex: 1,
     display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'stretch',
     alignItems: 'stretch',
     padding: theme.spacing(3),
   },

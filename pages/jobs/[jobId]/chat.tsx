@@ -32,9 +32,7 @@ export default function JobDetailsChat() {
     }
     chatCardRef.current.setAttribute(
       'style',
-      `max-height: ${window.innerHeight -
-        chatCardRef.current.offsetTop -
-        32}px`,
+      `height: ${window.innerHeight - chatCardRef.current.offsetTop - 32}px`,
     )
   }, [chatCardRef])
 

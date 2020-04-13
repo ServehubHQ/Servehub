@@ -58,29 +58,33 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-interface FilesDropzoneProps {
-  filePath: string
-  onChange: (urls: string[]) => void
-  className?: string
-}
-
-interface UploadingFile {
+export interface DroppedFile {
   name: string
   size: string
   file: File
   uploading: boolean
-  url?: string
+  url: string
 }
 
-function FilesDropzone({ onChange, className, filePath }: FilesDropzoneProps) {
+interface FilesDropzoneProps {
+  filePath: string
+  onChange: (urls: DroppedFile[]) => void
+  className?: string
+}
+
+export function FilesDropzone({
+  onChange,
+  className,
+  filePath,
+}: FilesDropzoneProps) {
   const classes = useStyles()
-  const [files, setFiles] = useState<UploadingFile[]>([])
+  const [files, setFiles] = useState<DroppedFile[]>([])
 
   useEffect(() => {
-    if (files.some(({ uploading }: UploadingFile) => uploading)) {
+    if (files.some(({ uploading }: DroppedFile) => uploading)) {
       return
     }
-    onChange(files.map(({ url }: UploadingFile) => url!))
+    onChange(files)
   }, [onChange, files])
 
   const handleDrop = useCallback(
@@ -99,7 +103,7 @@ function FilesDropzone({ onChange, className, filePath }: FilesDropzoneProps) {
         acceptedFiles.map(async (file: File) => {
           const url = await uploadFile(file, filePath, file.name)
           setFiles((files) =>
-            files.map((uploadingFile: UploadingFile) => {
+            files.map((uploadingFile: DroppedFile) => {
               if (uploadingFile.file === file) {
                 console.log({
                   ...uploadingFile,
@@ -152,8 +156,7 @@ function FilesDropzone({ onChange, className, filePath }: FilesDropzoneProps) {
             color='textSecondary'
             variant='body1'
           >
-            Drop files here or click <Link underline='always'>browse</Link>{' '}
-            thorough your machine
+            Drop files here or click <Link underline='always'>browse</Link>.
           </Typography>
         </div>
       </div>
@@ -185,9 +188,3 @@ function FilesDropzone({ onChange, className, filePath }: FilesDropzoneProps) {
     </div>
   )
 }
-
-FilesDropzone.propTypes = {
-  className: PropTypes.string,
-}
-
-export default FilesDropzone

@@ -1,12 +1,14 @@
-#import "./JobMap.graphql"
 fragment JobCardJob on jobs {
   id
 
   target {
     id
     name
-
-    ...JobMapTarget
+    street
+    unit
+    postalCode: postal_code
+    city
+    province
   }
 
   server {

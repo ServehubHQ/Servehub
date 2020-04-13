@@ -1,6 +1,9 @@
 #import "../../components/JobCard.graphql"
 
 fragment JobsListJob on jobs {
+  id
+  pickup_required
+
   target {
     id
     name
@@ -15,6 +18,12 @@ fragment JobsListJob on jobs {
     }
   }
   allAttempts: attempts_aggregate {
+    aggregate {
+      count
+    }
+  }
+
+  documents_aggregate {
     aggregate {
       count
     }

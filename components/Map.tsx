@@ -1,25 +1,28 @@
 import { useMemo } from 'react'
-import { JobMapTargetFragment } from '../graphql-codegen'
 import { config } from '../lib/config'
 
-interface CreateJobSteps {
-  target: JobMapTargetFragment
+interface MapProps {
+  street: string
+  unit?: string
+  city: string
+  postalCode: string
+  province: string
 }
 
-export function JobMap({ target }: CreateJobSteps) {
+export function Map({ street, city, postalCode, province }: MapProps) {
   const query = useMemo(
     () =>
       encodeURIComponent(
         [
-          target.street,
-          // target.unit,
-          target.city,
-          target.postal_code,
-          target.province,
+          street,
+          // unit,
+          city,
+          postalCode,
+          province,
           'CA',
         ].join(','),
       ),
-    [target],
+    [street, city, postalCode, province],
   )
   return (
     <iframe

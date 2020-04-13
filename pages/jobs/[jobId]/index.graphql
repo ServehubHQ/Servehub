@@ -12,7 +12,11 @@ query JobDetials($jobId: uuid!, $userId: uuid) {
     target {
       id
       name
-      ...JobMapTarget
+      street
+      unit
+      postalCode: postal_code
+      city
+      province
     }
 
     server {
