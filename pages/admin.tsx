@@ -1,10 +1,11 @@
 import { useRouter } from 'next/router'
-import buildHasuraProvider from 'ra-data-hasura-graphql'
 import { useEffect, useState } from 'react'
-import { Admin, Resource } from 'react-admin'
+import { Admin, Resource, ShowGuesser } from 'react-admin'
+import { JobIcon, JobList } from '../admin/resources/jobs'
+import { TargetShow } from '../admin/resources/targets'
+import { UserIcon, UserList, UserShow } from '../admin/resources/users'
 import { getApolloClient } from '../lib/getApolloClient'
 import { getAuthClient } from '../lib/getAuthClient'
-import { JobCreate, JobEdit, JobIcon, JobList } from '../resources/jobs'
 import { theme } from '../theme'
 
 export default function AdminPage() {
@@ -14,6 +15,9 @@ export default function AdminPage() {
   useEffect(() => {
     ;(async () => {
       if (!dataProvider) {
+        const { default: buildHasuraProvider } = await import(
+          'ra-data-hasura-graphql'
+        )
         const authClient = getAuthClient(undefined, true)
         const apolloClient = getApolloClient(authClient)
 
@@ -36,13 +40,9 @@ export default function AdminPage() {
 
   return (
     <Admin dataProvider={dataProvider} theme={theme}>
-      <Resource
-        name='jobs'
-        list={JobList}
-        edit={JobEdit}
-        create={JobCreate}
-        icon={JobIcon}
-      />
+      <Resource name='targets' show={TargetShow} />
+      <Resource name='users' list={UserList} icon={UserIcon} show={UserShow} />
+      <Resource name='jobs' list={JobList} icon={JobIcon} show={ShowGuesser} />
     </Admin>
   )
 }

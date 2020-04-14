@@ -2823,6 +2823,7 @@ export enum User_Roles_Update_Column {
 export type Users = {
    __typename?: 'users';
   active: Scalars['Boolean'];
+  approved: Scalars['Boolean'];
   avatar_url?: Maybe<Scalars['String']>;
   created_at: Scalars['timestamptz'];
   default_role: Scalars['String'];
@@ -3004,6 +3005,7 @@ export type Users_Bool_Exp = {
   _not?: Maybe<Users_Bool_Exp>;
   _or?: Maybe<Array<Maybe<Users_Bool_Exp>>>;
   active?: Maybe<Boolean_Comparison_Exp>;
+  approved?: Maybe<Boolean_Comparison_Exp>;
   avatar_url?: Maybe<String_Comparison_Exp>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
   default_role?: Maybe<String_Comparison_Exp>;
@@ -3047,6 +3049,7 @@ export type Users_Delete_Key_Input = {
 
 export type Users_Insert_Input = {
   active?: Maybe<Scalars['Boolean']>;
+  approved?: Maybe<Scalars['Boolean']>;
   avatar_url?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   default_role?: Maybe<Scalars['String']>;
@@ -3143,6 +3146,7 @@ export type Users_On_Conflict = {
 
 export type Users_Order_By = {
   active?: Maybe<Order_By>;
+  approved?: Maybe<Order_By>;
   avatar_url?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   default_role?: Maybe<Order_By>;
@@ -3172,6 +3176,7 @@ export type Users_Prepend_Input = {
 
 export enum Users_Select_Column {
   Active = 'active',
+  Approved = 'approved',
   AvatarUrl = 'avatar_url',
   CreatedAt = 'created_at',
   DefaultRole = 'default_role',
@@ -3190,6 +3195,7 @@ export enum Users_Select_Column {
 
 export type Users_Set_Input = {
   active?: Maybe<Scalars['Boolean']>;
+  approved?: Maybe<Scalars['Boolean']>;
   avatar_url?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   default_role?: Maybe<Scalars['String']>;
@@ -3208,6 +3214,7 @@ export type Users_Set_Input = {
 
 export enum Users_Update_Column {
   Active = 'active',
+  Approved = 'approved',
   AvatarUrl = 'avatar_url',
   CreatedAt = 'created_at',
   DefaultRole = 'default_role',
