@@ -1,16 +1,15 @@
 import WorkIcon from '@material-ui/icons/Work'
 import React from 'react'
 import {
-  BooleanInput,
+  BooleanField,
+  ChipField,
   Datagrid,
   DateField,
-  Edit,
-  BooleanField,
   List,
-  SimpleForm,
-  TextField,
-  TextInput,
   ReferenceField,
+  ReferenceManyField,
+  SingleFieldList,
+  TextField,
 } from 'react-admin'
 
 export const JobIcon = WorkIcon
@@ -38,18 +37,16 @@ export const JobList = (props: any) => (
         <TextField source='name' />
       </ReferenceField>
       <BooleanField source='pickup_required' />
+      <ReferenceManyField
+        reference='documents'
+        target='job_id'
+        label='Documents'
+      >
+        <SingleFieldList linkType='show'>
+          <ChipField source='title' />
+        </SingleFieldList>
+      </ReferenceManyField>
       <DateField source='created_at' />
-      <TextField source='id' />
     </Datagrid>
   </List>
-)
-
-export const JobEdit = (props: any) => (
-  <Edit title='Edit Togo' {...props}>
-    <SimpleForm>
-      <TextInput disabled source='id' />
-      <TextInput source='name' />
-      <BooleanInput source='done' />
-    </SimpleForm>
-  </Edit>
 )

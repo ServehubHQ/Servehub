@@ -5,16 +5,13 @@ import {
   BooleanInput,
   Datagrid,
   DateField,
-  Edit,
   EmailField,
   Filter,
   List,
   SelectInput,
   Show,
-  SimpleForm,
   SimpleShowLayout,
   TextField,
-  TextInput,
 } from 'react-admin'
 import { ApproveBulkAction } from './ApproveBulkAction'
 import { StripeCustomerField } from './StripeCustomerField'
@@ -43,14 +40,13 @@ export const UserList = (props: any) => (
     bulkActionButtons={<ApproveBulkAction />}
     filters={<UserListFilter />}
   >
-    <Datagrid rowClick='show'>
+    <Datagrid rowClick='toggleSelection'>
+      <EmailField source='email' />
       <TextField source='name' />
       <TextField source='default_role' label='Role' />
       <BooleanField source='approved' />
-      <EmailField source='email' />
       <StripeCustomerField source='stripe_customer_id' />
       <DateField source='created_at' />
-      <TextField source='id' />
     </Datagrid>
   </List>
 )
@@ -67,14 +63,4 @@ export const UserShow = (props: any) => (
       <TextField source='id' />
     </SimpleShowLayout>
   </Show>
-)
-
-export const UserEdit = (props: any) => (
-  <Edit title='Edit Togo' {...props}>
-    <SimpleForm>
-      <TextInput disabled source='id' />
-      <TextInput source='name' />
-      <TextInput source='email' />
-    </SimpleForm>
-  </Edit>
 )

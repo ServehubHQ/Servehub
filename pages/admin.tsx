@@ -7,6 +7,7 @@ import { UserIcon, UserList, UserShow } from '../admin/resources/users'
 import { getApolloClient } from '../lib/getApolloClient'
 import { getAuthClient } from '../lib/getAuthClient'
 import { theme } from '../theme'
+import { DocumentShow } from '../admin/resources/documents'
 
 export default function AdminPage() {
   const [dataProvider, setDataProvider] = useState()
@@ -40,9 +41,10 @@ export default function AdminPage() {
 
   return (
     <Admin dataProvider={dataProvider} theme={theme}>
-      <Resource name='targets' show={TargetShow} />
       <Resource name='users' list={UserList} icon={UserIcon} show={UserShow} />
-      <Resource name='jobs' list={JobList} icon={JobIcon} show={ShowGuesser} />
+      <Resource name='jobs' list={JobList} icon={JobIcon} />
+      <Resource name='targets' show={TargetShow} />
+      <Resource name='documents' show={DocumentShow} />
     </Admin>
   )
 }
