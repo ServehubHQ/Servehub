@@ -30,3 +30,4 @@ yarn-error.log*
 # nhost
 config.yaml
 .nhost
+db_data
