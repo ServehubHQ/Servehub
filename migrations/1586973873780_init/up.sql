@@ -1,3 +1,4 @@
+CREATE SCHEMA auth;
 CREATE FUNCTION public.set_current_timestamp_updated_at() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
@@ -9,6 +10,32 @@ BEGIN
   RETURN _new;
 END;
 $$;
+CREATE TABLE auth.auth_providers (
+    provider text NOT NULL
+);
+CREATE TABLE auth.refresh_tokens (
+    refresh_token uuid NOT NULL,
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    expires_at timestamp with time zone NOT NULL,
+    user_id uuid NOT NULL
+);
+CREATE TABLE auth.user_accounts (
+    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    user_id uuid NOT NULL,
+    username text NOT NULL,
+    email text,
+    password text NOT NULL
+);
+CREATE TABLE auth.user_providers (
+    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    user_id uuid NOT NULL,
+    auth_provider text NOT NULL,
+    auth_provider_unique_id text NOT NULL
+);
 CREATE TABLE public.attempts (
     id uuid DEFAULT public.gen_random_uuid() NOT NULL,
     created_at timestamp with time zone DEFAULT now() NOT NULL,
@@ -90,6 +117,22 @@ CREATE TABLE public.users (
     name text,
     approved boolean DEFAULT false NOT NULL
 );
+ALTER TABLE ONLY auth.auth_providers
+    ADD CONSTRAINT auth_providers_pkey PRIMARY KEY (provider);
+ALTER TABLE ONLY auth.refresh_tokens
+    ADD CONSTRAINT refresh_tokens_pkey PRIMARY KEY (refresh_token);
+ALTER TABLE ONLY auth.user_accounts
+    ADD CONSTRAINT user_accounts_email_key UNIQUE (email);
+ALTER TABLE ONLY auth.user_accounts
+    ADD CONSTRAINT user_accounts_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY auth.user_accounts
+    ADD CONSTRAINT user_accounts_username_key UNIQUE (username);
+ALTER TABLE ONLY auth.user_providers
+    ADD CONSTRAINT user_providers_auth_provider_auth_provider_unique_id_key UNIQUE (auth_provider, auth_provider_unique_id);
+ALTER TABLE ONLY auth.user_providers
+    ADD CONSTRAINT user_providers_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY auth.user_providers
+    ADD CONSTRAINT user_providers_user_id_auth_provider_key UNIQUE (user_id, auth_provider);
 ALTER TABLE ONLY public.attempts
     ADD CONSTRAINT attempts_pkey PRIMARY KEY (id);
 ALTER TABLE ONLY public.documents
@@ -116,6 +159,8 @@ ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_secret_token_key UNIQUE (secret_token);
+CREATE TRIGGER set_public_user_accounts_updated_at BEFORE UPDATE ON auth.user_accounts FOR EACH ROW EXECUTE FUNCTION public.set_current_timestamp_updated_at();
+CREATE TRIGGER set_public_user_providers_updated_at BEFORE UPDATE ON auth.user_providers FOR EACH ROW EXECUTE FUNCTION public.set_current_timestamp_updated_at();
 CREATE TRIGGER set_public_attempts_updated_at BEFORE UPDATE ON public.attempts FOR EACH ROW EXECUTE FUNCTION public.set_current_timestamp_updated_at();
 COMMENT ON TRIGGER set_public_attempts_updated_at ON public.attempts IS 'trigger to set value of column "updated_at" to current timestamp on row update';
 CREATE TRIGGER set_public_documents_updated_at BEFORE UPDATE ON public.documents FOR EACH ROW EXECUTE FUNCTION public.set_current_timestamp_updated_at();
@@ -127,6 +172,14 @@ COMMENT ON TRIGGER set_public_messages_updated_at ON public.messages IS 'trigger
 CREATE TRIGGER set_public_target_updated_at BEFORE UPDATE ON public.targets FOR EACH ROW EXECUTE FUNCTION public.set_current_timestamp_updated_at();
 COMMENT ON TRIGGER set_public_target_updated_at ON public.targets IS 'trigger to set value of column "updated_at" to current timestamp on row update';
 CREATE TRIGGER set_public_users_updated_at BEFORE UPDATE ON public.users FOR EACH ROW EXECUTE FUNCTION public.set_current_timestamp_updated_at();
+ALTER TABLE ONLY auth.refresh_tokens
+    ADD CONSTRAINT refresh_tokens_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON UPDATE RESTRICT ON DELETE CASCADE;
+ALTER TABLE ONLY auth.user_accounts
+    ADD CONSTRAINT user_accounts_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON UPDATE RESTRICT ON DELETE CASCADE;
+ALTER TABLE ONLY auth.user_providers
+    ADD CONSTRAINT user_providers_auth_providers_fk FOREIGN KEY (auth_provider) REFERENCES auth.auth_providers(provider) ON UPDATE RESTRICT ON DELETE RESTRICT;
+ALTER TABLE ONLY auth.user_providers
+    ADD CONSTRAINT user_providers_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON UPDATE RESTRICT ON DELETE CASCADE;
 ALTER TABLE ONLY public.attempts
     ADD CONSTRAINT attempts_job_id_fkey FOREIGN KEY (job_id) REFERENCES public.jobs(id) ON UPDATE CASCADE ON DELETE CASCADE;
 ALTER TABLE ONLY public.documents

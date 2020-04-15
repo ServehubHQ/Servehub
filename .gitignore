@@ -31,3 +31,7 @@ yarn-error.log*
 config.yaml
 .nhost
 db_data
+
+config.yaml
+.nhost
+db_data

@@ -1,0 +1,607 @@
+- args:
+    tables:
+      - array_relationships:
+          - name: user_providers
+            using:
+              foreign_key_constraint_on:
+                column: auth_provider
+                table:
+                  name: user_providers
+                  schema: auth
+        table:
+          name: auth_providers
+          schema: auth
+      - object_relationships:
+          - name: user
+            using:
+              foreign_key_constraint_on: user_id
+        table:
+          name: refresh_tokens
+          schema: auth
+      - object_relationships:
+          - name: user
+            using:
+              foreign_key_constraint_on: user_id
+        table:
+          name: user_accounts
+          schema: auth
+      - object_relationships:
+          - name: authProviderByAuthProvider
+            using:
+              foreign_key_constraint_on: auth_provider
+          - name: user
+            using:
+              foreign_key_constraint_on: user_id
+        table:
+          name: user_providers
+          schema: auth
+      - insert_permissions:
+          - permission:
+              check:
+                job:
+                  server_user_id:
+                    _eq: X-Hasura-User-Id
+              columns:
+                - attempted_at
+                - image_url
+                - job_id
+                - success
+            role: server
+        object_relationships:
+          - name: job
+            using:
+              foreign_key_constraint_on: job_id
+        select_permissions:
+          - permission:
+              allow_aggregations: true
+              columns:
+                - attempted_at
+                - created_at
+                - id
+                - image_url
+                - job_id
+                - success
+              filter:
+                job:
+                  lawyer_user_id:
+                    _eq: X-Hasura-User-Id
+            role: lawyer
+          - permission:
+              allow_aggregations: true
+              columns:
+                - attempted_at
+                - created_at
+                - id
+                - image_url
+                - job_id
+                - success
+              filter:
+                job:
+                  server_user_id:
+                    _eq: X-Hasura-User-Id
+            role: server
+        table:
+          name: attempts
+          schema: public
+      - delete_permissions:
+          - permission:
+              filter:
+                job:
+                  lawyer_user_id:
+                    _eq: X-Hasura-User-Id
+            role: lawyer
+        insert_permissions:
+          - permission:
+              check: {}
+              columns:
+                - job_id
+                - title
+                - url
+            role: lawyer
+        object_relationships:
+          - name: job
+            using:
+              foreign_key_constraint_on: job_id
+        select_permissions:
+          - permission:
+              allow_aggregations: true
+              columns:
+                - created_at
+                - id
+                - job_id
+                - title
+                - updated_at
+                - url
+              filter:
+                job:
+                  lawyer_user_id:
+                    _eq: X-Hasura-User-Id
+            role: lawyer
+          - permission:
+              allow_aggregations: true
+              columns:
+                - created_at
+                - id
+                - job_id
+                - title
+                - updated_at
+                - url
+              filter:
+                job:
+                  server_user_id:
+                    _eq: X-Hasura-User-Id
+            role: server
+        table:
+          name: documents
+          schema: public
+        update_permissions:
+          - permission:
+              columns:
+                - title
+                - url
+              filter:
+                job:
+                  lawyer_user_id:
+                    _eq: X-Hasura-User-Id
+            role: lawyer
+      - array_relationships:
+          - name: attempts
+            using:
+              foreign_key_constraint_on:
+                column: job_id
+                table:
+                  name: attempts
+                  schema: public
+          - name: documents
+            using:
+              foreign_key_constraint_on:
+                column: job_id
+                table:
+                  name: documents
+                  schema: public
+          - name: messages
+            using:
+              foreign_key_constraint_on:
+                column: job_id
+                table:
+                  name: messages
+                  schema: public
+        event_triggers:
+          - definition:
+              enable_manual: false
+              insert:
+                columns: '*'
+            headers:
+              - name: x-hasura-webhook-secret
+                value_from_env: SECRET_WEBHOOK_HEADER
+            name: job-inserted
+            retry_conf:
+              interval_sec: 10
+              num_retries: 0
+              timeout_sec: 60
+            webhook: https://localhost:3000/api/hasura/jobs/inserted
+          - definition:
+              enable_manual: false
+              update:
+                columns:
+                  - stripe_payment_intent_succeeded
+                  - description
+                  - stripe_payment_intent_client_secret
+                  - stripe_payment_intent_id
+                  - created_at
+                  - updated_at
+                  - id
+                  - lawyer_user_id
+                  - server_user_id
+                  - target_id
+            headers:
+              - name: x-hasura-webhook-secret
+                value_from_env: SECRET_WEBHOOK_HEADER
+            name: job-updated
+            retry_conf:
+              interval_sec: 10
+              num_retries: 0
+              timeout_sec: 60
+            webhook: https://localhost:3000/api/hasura/jobs/updated
+        insert_permissions:
+          - permission:
+              check: {}
+              columns:
+                - description
+              set:
+                lawyer_user_id: x-hasura-User-Id
+            role: lawyer
+        object_relationships:
+          - name: lawyer
+            using:
+              foreign_key_constraint_on: lawyer_user_id
+          - name: server
+            using:
+              foreign_key_constraint_on: server_user_id
+          - name: target
+            using:
+              foreign_key_constraint_on: target_id
+        select_permissions:
+          - permission:
+              allow_aggregations: true
+              columns:
+                - created_at
+                - description
+                - id
+                - pickup_city
+                - pickup_postal_code
+                - pickup_province
+                - pickup_required
+                - pickup_street
+                - pickup_unit
+                - server_user_id
+                - stripe_payment_intent_client_secret
+                - stripe_payment_intent_succeeded
+                - target_id
+              filter:
+                lawyer_user_id:
+                  _eq: X-Hasura-User-Id
+            role: lawyer
+          - permission:
+              allow_aggregations: true
+              columns:
+                - created_at
+                - description
+                - id
+                - pickup_city
+                - pickup_postal_code
+                - pickup_province
+                - pickup_required
+                - pickup_street
+                - pickup_unit
+                - server_user_id
+                - stripe_payment_intent_succeeded
+                - target_id
+              filter:
+                _or:
+                  - server_user_id:
+                      _eq: X-Hasura-User-Id
+                  - _and:
+                      - server_user_id:
+                          _is_null: true
+                      - stripe_payment_intent_succeeded:
+                          _eq: true
+            role: server
+        table:
+          name: jobs
+          schema: public
+        update_permissions:
+          - permission:
+              columns:
+                - description
+                - pickup_city
+                - pickup_postal_code
+                - pickup_province
+                - pickup_required
+                - pickup_street
+                - pickup_unit
+                - target_id
+              filter:
+                lawyer_user_id:
+                  _eq: X-Hasura-User-Id
+            role: lawyer
+          - permission:
+              columns:
+                - server_user_id
+              filter:
+                _or:
+                  - server_user_id:
+                      _eq: X-Hasura-User-Id
+                  - _and:
+                      - server_user_id:
+                          _is_null: true
+                      - stripe_payment_intent_succeeded:
+                          _eq: true
+              set:
+                server_user_id: x-hasura-User-Id
+            role: server
+      - insert_permissions:
+          - permission:
+              check:
+                job:
+                  lawyer_user_id:
+                    _eq: X-Hasura-User-Id
+              columns:
+                - job_id
+                - message
+              set:
+                user_id: x-hasura-User-Id
+            role: lawyer
+          - permission:
+              check:
+                job:
+                  server_user_id:
+                    _eq: X-Hasura-User-Id
+              columns:
+                - job_id
+                - message
+              set:
+                user_id: x-hasura-User-Id
+            role: server
+        object_relationships:
+          - name: job
+            using:
+              foreign_key_constraint_on: job_id
+          - name: user
+            using:
+              foreign_key_constraint_on: user_id
+        select_permissions:
+          - permission:
+              allow_aggregations: true
+              columns:
+                - created_at
+                - id
+                - job_id
+                - message
+                - user_id
+              filter:
+                _or:
+                  - user_id:
+                      _eq: X-Hasura-User-Id
+                  - job:
+                      lawyer_user_id:
+                        _eq: X-Hasura-User-Id
+            role: lawyer
+          - permission:
+              allow_aggregations: true
+              columns:
+                - created_at
+                - id
+                - job_id
+                - message
+                - user_id
+              filter:
+                _or:
+                  - user_id:
+                      _eq: X-Hasura-User-Id
+                  - job:
+                      server_user_id:
+                        _eq: X-Hasura-User-Id
+            role: server
+        table:
+          name: messages
+          schema: public
+      - array_relationships:
+          - name: user_roles
+            using:
+              foreign_key_constraint_on:
+                column: role
+                table:
+                  name: user_roles
+                  schema: public
+          - name: users
+            using:
+              foreign_key_constraint_on:
+                column: default_role
+                table:
+                  name: users
+                  schema: public
+        table:
+          name: roles
+          schema: public
+      - array_relationships:
+          - name: jobs
+            using:
+              foreign_key_constraint_on:
+                column: target_id
+                table:
+                  name: jobs
+                  schema: public
+        delete_permissions:
+          - permission:
+              filter:
+                jobs:
+                  lawyer_user_id:
+                    _eq: X-Hasura-User-Id
+            role: lawyer
+        insert_permissions:
+          - permission:
+              check: {}
+              columns:
+                - city
+                - name
+                - postal_code
+                - province
+                - street
+                - unit
+            role: lawyer
+        select_permissions:
+          - permission:
+              allow_aggregations: true
+              columns:
+                - city
+                - created_at
+                - id
+                - name
+                - postal_code
+                - province
+                - street
+                - unit
+              filter:
+                jobs:
+                  lawyer_user_id:
+                    _eq: X-Hasura-User-Id
+            role: lawyer
+          - permission:
+              columns:
+                - city
+                - created_at
+                - id
+                - name
+                - postal_code
+                - province
+                - street
+                - unit
+              filter:
+                jobs:
+                  _or:
+                    - server_user_id:
+                        _eq: X-Hasura-User-Id
+                    - _and:
+                        - server_user_id:
+                            _is_null: true
+                        - stripe_payment_intent_succeeded:
+                            _eq: true
+            role: server
+        table:
+          name: targets
+          schema: public
+        update_permissions:
+          - permission:
+              columns:
+                - city
+                - name
+                - province
+                - street
+                - unit
+              filter:
+                jobs:
+                  lawyer_user_id:
+                    _eq: X-Hasura-User-Id
+            role: lawyer
+      - insert_permissions:
+          - permission:
+              check:
+                role:
+                  _in:
+                    - lawyer
+                    - server
+              columns:
+                - role
+              set:
+                user_id: x-hasura-User-Id
+            role: user
+        object_relationships:
+          - name: roleByRole
+            using:
+              foreign_key_constraint_on: role
+          - name: user
+            using:
+              foreign_key_constraint_on: user_id
+        select_permissions:
+          - permission:
+              allow_aggregations: true
+              columns:
+                - role
+              filter:
+                user_id:
+                  _eq: X-Hasura-User-Id
+            role: user
+        table:
+          name: user_roles
+          schema: public
+      - array_relationships:
+          - name: lawyer_jobs
+            using:
+              foreign_key_constraint_on:
+                column: lawyer_user_id
+                table:
+                  name: jobs
+                  schema: public
+          - name: refresh_tokens
+            using:
+              foreign_key_constraint_on:
+                column: user_id
+                table:
+                  name: refresh_tokens
+                  schema: auth
+          - name: server_jobs
+            using:
+              foreign_key_constraint_on:
+                column: server_user_id
+                table:
+                  name: jobs
+                  schema: public
+          - name: user_accounts
+            using:
+              foreign_key_constraint_on:
+                column: user_id
+                table:
+                  name: user_accounts
+                  schema: auth
+          - name: user_providers
+            using:
+              foreign_key_constraint_on:
+                column: user_id
+                table:
+                  name: user_providers
+                  schema: auth
+          - name: user_roles
+            using:
+              foreign_key_constraint_on:
+                column: user_id
+                table:
+                  name: user_roles
+                  schema: public
+        event_triggers:
+          - definition:
+              enable_manual: false
+              insert:
+                columns: '*'
+            headers:
+              - name: x-hasura-webhook-secret
+                value_from_env: SECRET_WEBHOOK_HEADER
+            name: user-inserted
+            retry_conf:
+              interval_sec: 10
+              num_retries: 0
+              timeout_sec: 60
+            webhook: https://localhost:3000/api/hasura/users/inserted
+        object_relationships:
+          - name: role
+            using:
+              foreign_key_constraint_on: default_role
+        select_permissions:
+          - permission:
+              columns:
+                - created_at
+                - firebase_messaging_token
+                - id
+                - name
+              filter:
+                _or:
+                  - id:
+                      _eq: X-Hasura-User-Id
+                  - server_jobs:
+                      lawyer_user_id:
+                        _eq: X-Hasura-User-Id
+            role: lawyer
+          - permission:
+              columns:
+                - created_at
+                - firebase_messaging_token
+                - id
+                - name
+              filter:
+                _or:
+                  - id:
+                      _eq: X-Hasura-User-Id
+                  - lawyer_jobs:
+                      server_user_id:
+                        _eq: X-Hasura-User-Id
+            role: server
+        table:
+          name: users
+          schema: public
+        update_permissions:
+          - permission:
+              columns:
+                - firebase_messaging_token
+              filter:
+                id:
+                  _eq: X-Hasura-User-Id
+            role: lawyer
+          - permission:
+              columns:
+                - firebase_messaging_token
+              filter:
+                id:
+                  _eq: X-Hasura-User-Id
+            role: server
+    version: 2
+  type: replace_metadata

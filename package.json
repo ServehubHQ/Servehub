@@ -34,7 +34,7 @@
     "moment": "^2.24.0",
     "next": "^9.3.2",
     "next-offline": "^5.0.0",
-    "nhost": "0.0.5",
+    "nhost": "0.0.6",
     "nhost-js-sdk": "^1.2.0",
     "nookies": "^2.0.8",
     "ra-data-hasura-graphql": "github:ServehubHQ/ra-data-hasura-graphql#master",
