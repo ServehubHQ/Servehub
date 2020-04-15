@@ -5,6 +5,7 @@ import { Page } from '../components/Page'
 import { usePendingApprovalQuery } from '../graphql-codegen'
 import { useAuth } from '../lib/useAuth'
 import { useAuthRequired } from '../lib/useAuthRequired'
+import { Card, CardContent, Typography, Grid } from '@material-ui/core'
 
 export default function PendingApprovalPage() {
   useAuthRequired()
@@ -22,7 +23,21 @@ export default function PendingApprovalPage() {
 
   return (
     <Page currentUser={data?.users[0]}>
-      <Heading title='Pending Approval' />
+      <Grid container spacing={2} direction='column'>
+        <Grid item>
+          <Heading title='Pending Approval' />
+        </Grid>
+        <Grid item>
+          <Card>
+            <CardContent>
+              <Typography>
+                Please check your email for instructions on completing a
+                background check.
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
     </Page>
   )
 }

@@ -10,6 +10,7 @@ import {
 import { config as appConfig } from '../../lib/config'
 import { getApolloClient } from '../../lib/getApolloClient'
 import { getStripeServerClient } from '../../lib/getStripeServerClient'
+import { ApiAuthClient } from '../../lib/AuthClient'
 
 export const config = {
   api: {
@@ -55,7 +56,7 @@ export default cors(async function stripeWebhook(
       const paymentIntent = event.data.object as Stripe.PaymentIntent
       console.log('PaymentIntent was successful!', paymentIntent)
 
-      const apollo = getApolloClient({ isAdmin: true })
+      const apollo = getApolloClient(new ApiAuthClient())
 
       await apollo.mutate<
         SetJobStripePaymentIntentSucceededMutation,
