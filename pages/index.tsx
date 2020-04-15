@@ -1,25 +1,30 @@
-import { Button, Typography } from '@material-ui/core'
+import { Button } from '@material-ui/core'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { Heading } from '../components/Heading'
 import { Page } from '../components/Page'
-import { useAuth } from '../lib/useAuth'
 import { useIndexPageQuery } from '../graphql-codegen'
+import { useAuth } from '../lib/useAuth'
 
 export default function HomePage() {
-  const { isAuthenticated, authClient } = useAuth()
+  const { isAuthenticated, userId, role } = useAuth()
   const router = useRouter()
   const { data } = useIndexPageQuery({
-    variables: { userId: authClient?.getUserId() },
+    variables: { userId },
   })
 
   if (isAuthenticated && typeof window !== 'undefined') {
-    router.push('/jobs')
+    if (role === 'lawyer' || data?.users[0].approved) {
+      router.push('/jobs')
+    } else {
+      router.push('/pending-approval')
+    }
     return <div />
   }
 
   return (
     <Page currentUser={data?.users[0]}>
-      <Typography variant='h1'>Welcome</Typography>
+      <Heading title='Servehub' />
       <Link href='/signup' passHref>
         <Button>Get Started</Button>
       </Link>

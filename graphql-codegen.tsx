@@ -3556,7 +3556,7 @@ export type IndexPageQuery = (
   { __typename?: 'query_root' }
   & { users: Array<(
     { __typename?: 'users' }
-    & Pick<Users, 'id'>
+    & Pick<Users, 'id' | 'approved'>
     & PageUserFragment
   )> }
 );
@@ -3735,6 +3735,20 @@ export type JobsListQuery = (
     & Pick<Jobs, 'id'>
     & JobsListJobFragment
     & JobCardJobFragment
+  )> }
+);
+
+export type PendingApprovalQueryVariables = {
+  userId?: Maybe<Scalars['uuid']>;
+};
+
+
+export type PendingApprovalQuery = (
+  { __typename?: 'query_root' }
+  & { users: Array<(
+    { __typename?: 'users' }
+    & Pick<Users, 'id'>
+    & PageUserFragment
   )> }
 );
 
@@ -4370,7 +4384,7 @@ export type JobInsertedLazyQueryHookResult = ReturnType<typeof useJobInsertedLaz
 export type JobInsertedQueryResult = ApolloReactCommon.QueryResult<JobInsertedQuery, JobInsertedQueryVariables>;
 export const JobUpdatedDocument = gql`
     query JobUpdated {
-  users(where: {role: {role: {_eq: "server"}}, firebase_messaging_token: {_is_null: false}}) {
+  users(where: {role: {role: {_eq: "server"}}, firebase_messaging_token: {_is_null: false}, approved: {_eq: true}}) {
     firebase_messaging_token
     id
   }
@@ -4405,6 +4419,7 @@ export const IndexPageDocument = gql`
     query IndexPage($userId: uuid) {
   users(where: {id: {_eq: $userId}}) {
     id
+    approved
     ...PageUser
   }
 }
@@ -4748,3 +4763,37 @@ export function useJobsListLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHoo
 export type JobsListQueryHookResult = ReturnType<typeof useJobsListQuery>;
 export type JobsListLazyQueryHookResult = ReturnType<typeof useJobsListLazyQuery>;
 export type JobsListQueryResult = ApolloReactCommon.QueryResult<JobsListQuery, JobsListQueryVariables>;
+export const PendingApprovalDocument = gql`
+    query PendingApproval($userId: uuid) {
+  users(where: {id: {_eq: $userId}}) {
+    id
+    ...PageUser
+  }
+}
+    ${PageUserFragmentDoc}`;
+
+/**
+ * __usePendingApprovalQuery__
+ *
+ * To run a query within a React component, call `usePendingApprovalQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePendingApprovalQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePendingApprovalQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function usePendingApprovalQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<PendingApprovalQuery, PendingApprovalQueryVariables>) {
+        return ApolloReactHooks.useQuery<PendingApprovalQuery, PendingApprovalQueryVariables>(PendingApprovalDocument, baseOptions);
+      }
+export function usePendingApprovalLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<PendingApprovalQuery, PendingApprovalQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<PendingApprovalQuery, PendingApprovalQueryVariables>(PendingApprovalDocument, baseOptions);
+        }
+export type PendingApprovalQueryHookResult = ReturnType<typeof usePendingApprovalQuery>;
+export type PendingApprovalLazyQueryHookResult = ReturnType<typeof usePendingApprovalLazyQuery>;
+export type PendingApprovalQueryResult = ApolloReactCommon.QueryResult<PendingApprovalQuery, PendingApprovalQueryVariables>;
