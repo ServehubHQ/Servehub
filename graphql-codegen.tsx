@@ -3747,7 +3747,7 @@ export type PendingApprovalQuery = (
   { __typename?: 'query_root' }
   & { users: Array<(
     { __typename?: 'users' }
-    & Pick<Users, 'id'>
+    & Pick<Users, 'id' | 'approved'>
     & PageUserFragment
   )> }
 );
@@ -4767,6 +4767,7 @@ export const PendingApprovalDocument = gql`
     query PendingApproval($userId: uuid) {
   users(where: {id: {_eq: $userId}}) {
     id
+    approved
     ...PageUser
   }
 }
