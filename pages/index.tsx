@@ -14,7 +14,7 @@ export default function HomePage() {
   })
 
   if (isAuthenticated && typeof window !== 'undefined') {
-    if (role === 'lawyer' || data?.users[0].approved) {
+    if (role !== 'server' || data?.users[0].approved) {
       router.push('/jobs')
     } else {
       router.push('/pending-approval')

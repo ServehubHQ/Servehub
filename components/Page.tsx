@@ -56,9 +56,8 @@ const useStyles = makeStyles((theme) => ({
 
 export function Page({ children, currentUser }: PageProps) {
   const router = useRouter()
-  const { isAuthenticated, authClient } = useAuth()
+  const { isAuthenticated, authClient, isAdmin } = useAuth()
   const classNames = useStyles()
-
   const [
     accountMenuAnchorEl,
     setAccountMenuAnchorEl,
@@ -178,8 +177,7 @@ export function Page({ children, currentUser }: PageProps) {
                   open={!!accountMenuAnchorEl}
                   onClose={handleMenuClose}
                 >
-                  {(authClient?.getAllowedRoles().indexOf('admin') || -1) !==
-                  -1 ? (
+                  {isAdmin ? (
                     <Link href={`/admin`}>
                       <MenuItem component='a'>Admin</MenuItem>
                     </Link>

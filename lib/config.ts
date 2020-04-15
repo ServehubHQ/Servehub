@@ -1,7 +1,9 @@
 export const config = {
-  nhostBackendUrl: 'https://backend-rf2zfg3c.nhost.app',
+  nhostBackendUrl: process.env.NHOST_BACKEND_URL,
   hasuraWebhookSecret: process.env.HASURA_WEBHOOK_SECRET,
   hasuraAdminSecret: process.env.HASURA_ADMIN_SECRET,
+  hasuraHttpEndpoint: process.env.HASURA_HTTP_ENDPOINT,
+  hasuraWsEndpoint: process.env.HASURA_WS_ENDPOINT,
   stripePublishableKey: 'pk_test_Lkg8hgz6A0PYHin7ogg9uvlY00zEY7djQM',
   stripeSecretKey: process.env.STRIPE_SECRET_KEY,
   stripeApiVersion: '2020-03-02' as '2020-03-02',
@@ -19,4 +21,5 @@ export const config = {
   firebaseMessagingPublicKey:
     'BIJWEPpHzfSfHSXJD_nWY4Vvv57S_z-Te7vULz-swTKwzjT6SiWYbIoR01KSGPd6zzHoflx9n3LNBdL7DhwnKbM',
   firebaseAdminCredentials: process.env.GOOGLE_APPLICATION_CREDENTIALS,
+  postmarkSecretKey: process.env.POSTMARK_SECRET_KEY,
 }

@@ -1,13 +1,16 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+import { ServerClient } from 'postmark'
 import {
   PostSignupDocument,
   PostSignupMutation,
   PostSignupMutationVariables,
+  Users,
 } from '../../../../graphql-codegen'
+import { ApiAuthClient } from '../../../../lib/AuthClient'
+import { config } from '../../../../lib/config'
 import { createStripeCustomer } from '../../../../lib/createStripeCustomer'
 import { getApolloClient } from '../../../../lib/getApolloClient'
 import hasuraWebhookValid from '../../../../lib/hasuraWebhookValid'
-import { ApiAuthClient } from '../../../../lib/AuthClient'
 
 export default async function hasuraUserInserted(
   req: NextApiRequest,
@@ -15,12 +18,21 @@ export default async function hasuraUserInserted(
 ) {
   console.log('hasuraUserInserted')
   if (!hasuraWebhookValid(req, res)) return
+  if (!config.postmarkSecretKey) {
+    throw new Error('missing POSTMARK_SECRET_KEY env var')
+  }
 
   const {
     event: {
       data: { new: user },
     },
-  } = req.body
+  } = req.body as {
+    event: {
+      data: {
+        new: Users
+      }
+    }
+  }
   console.log('user inserted', user)
 
   const role = user.register_data.role
@@ -37,6 +49,17 @@ export default async function hasuraUserInserted(
 
   if (role === 'lawyer' && !user.stripe_customer_id) {
     await createStripeCustomer(apollo, user.id)
+  }
+
+  if (role === 'server') {
+    const postmark = new ServerClient(config.postmarkSecretKey)
+
+    postmark.sendEmail({
+      From: 'Servehub <hello@servehub.com>',
+      To: user.email!,
+      Subject: '📑 Complete background check to get started on Servehub',
+      TextBody: 'TODO: email content',
+    })
   }
 
   res.send('✔')

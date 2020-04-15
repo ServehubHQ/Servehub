@@ -10,6 +10,7 @@ import { setContext } from '@apollo/link-context'
 import { WebSocketLink } from '@apollo/link-ws'
 import fetch from 'cross-fetch'
 import { AuthClient } from './AuthClient'
+import { config } from './config'
 
 let apolloClient: ApolloClient<NormalizedCacheObject>
 
@@ -17,6 +18,9 @@ export function getApolloClient(
   authClient: AuthClient,
   data?: NormalizedCacheObject,
 ) {
+  if (!config.hasuraHttpEndpoint || !config.hasuraWsEndpoint) {
+    throw new Error('Hasura endpoint config values not set')
+  }
   const isBrowser = typeof window !== 'undefined'
 
   if (isBrowser && apolloClient) {
@@ -36,7 +40,7 @@ export function getApolloClient(
     }
   }).concat(
     new HttpLink({
-      uri: 'https://hasura-rf2zfg3c.nhost.app/v1/graphql',
+      uri: config.hasuraHttpEndpoint,
       fetch,
     }),
   )
@@ -44,7 +48,7 @@ export function getApolloClient(
   const webSocketLink =
     isBrowser &&
     new WebSocketLink({
-      uri: 'wss://hasura-rf2zfg3c.nhost.app/v1/graphql',
+      uri: config.hasuraWsEndpoint,
       options: {
         lazy: true,
         reconnect: true,

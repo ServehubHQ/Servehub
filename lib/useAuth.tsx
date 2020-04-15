@@ -13,14 +13,17 @@ interface AuthContextValue {
   authClient?: AuthClient
   role: Maybe<string>
   userId: Maybe<string>
+  isAdmin: boolean
 }
 
 function getAuthContextValue(authClient?: AuthClient): AuthContextValue {
+  const roles = authClient?.getAllowedRoles()
   return {
     isAuthenticated: authClient?.isAuthenticated() || false,
     role: authClient?.getRole(),
     userId: authClient?.getUserId(),
     authClient,
+    isAdmin: !!roles && roles.indexOf('admin') > -1,
   }
 }
 
