@@ -37,7 +37,6 @@
     "nhost": "0.0.5",
     "nhost-js-sdk": "^1.2.0",
     "nookies": "^2.0.8",
-    "now": "^17.1.1",
     "ra-data-hasura-graphql": "github:ServehubHQ/ra-data-hasura-graphql#master",
     "react": "^16.13.1",
     "react-admin": "^3.2.3",
@@ -74,6 +73,7 @@
     "eslint-plugin-react-hooks": "^2.5.0",
     "eslint-plugin-standard": "^4.0.1",
     "hasura-cli": "^1.1.1",
+    "now": "^18.0.0",
     "prettier": "^1.19.1",
     "standard": "^14.3.1",
     "typescript": "^3.8.3"
