@@ -68,11 +68,26 @@ export function JobDetailsPage({
       <Grid container spacing={2} direction='column'>
         <Grid item>
           <Heading
-            title={job?.target?.name || 'Job'}
+            title={
+              tab === 'index'
+                ? job?.target?.name || 'Job'
+                : tab === 'documents'
+                ? 'Documents'
+                : tab === 'chat'
+                ? 'Chat'
+                : ''
+            }
             breadcrumbs={[
               <Link href='/jobs' passHref key='jobs'>
                 <MuiLink color='inherit'>Jobs</MuiLink>
               </Link>,
+              tab !== 'index' ? (
+                <Link href={`/jobs/${job?.id}`} passHref key='jobs'>
+                  <MuiLink color='inherit'>
+                    {job?.target?.name || 'Job'}
+                  </MuiLink>
+                </Link>
+              ) : null,
             ]}
             action={
               role === 'server' && !job?.server ? (
