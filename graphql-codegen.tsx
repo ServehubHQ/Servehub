@@ -3691,7 +3691,7 @@ export type JobsCreatePaymentQuery = (
   { __typename?: 'query_root' }
   & { users: Array<(
     { __typename?: 'users' }
-    & Pick<Users, 'id' | 'approved'>
+    & Pick<Users, 'id'>
     & PageUserFragment
   )>, jobs: Array<(
     { __typename?: 'jobs' }
@@ -4701,7 +4701,6 @@ export const JobsCreatePaymentDocument = gql`
     query JobsCreatePayment($jobId: uuid!, $userId: uuid) {
   users(where: {id: {_eq: $userId}}) {
     id
-    approved
     ...PageUser
   }
   jobs(where: {id: {_eq: $jobId}}) {

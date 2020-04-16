@@ -33,8 +33,18 @@ export default function JobsCreateDocumentsPage() {
   const jobId = useMemo(() => router.query.id, [router])
   const [pickup, setPickup] = useState(false)
   const [files, setFiles] = useState<DroppedFile[]>([])
-  const [insertDocument] = useInsertDocumentMutation()
-  const [setPickupRequired] = useSetJobPickupRequiredMutation()
+  const [
+    insertDocument,
+    { loading: insertDocumentLoading },
+  ] = useInsertDocumentMutation()
+  const [
+    setPickupRequired,
+    { loading: setPickupRequiredLoading },
+  ] = useSetJobPickupRequiredMutation()
+  const loading = useMemo(
+    () => insertDocumentLoading || setPickupRequiredLoading,
+    [insertDocumentLoading, setPickupRequiredLoading],
+  )
   const { register, handleSubmit, errors } = useForm<FormData>()
 
   const handlePickupChange = useCallback(
@@ -69,6 +79,7 @@ export default function JobsCreateDocumentsPage() {
       activeStep={2}
       onSubmit={handleSubmit(handleFormValid)}
       title='Documents'
+      loading={loading}
     >
       <Grid container spacing={2} direction='column'>
         <Grid item>

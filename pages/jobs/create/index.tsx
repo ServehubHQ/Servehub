@@ -6,7 +6,7 @@ import { CircularProgress } from '@material-ui/core'
 
 export default function JobsCreateTargetPage() {
   const router = useRouter()
-  const [insertJob] = useInsertJobMutation()
+  const [insertJob, { loading }] = useInsertJobMutation()
 
   useEffect(() => {
     ;(async () => {
@@ -18,7 +18,7 @@ export default function JobsCreateTargetPage() {
   }, [insertJob, router])
 
   return (
-    <CreateJobPage activeStep={0} title='Initializing'>
+    <CreateJobPage activeStep={0} title='Initializing' loading={loading}>
       <CircularProgress />
     </CreateJobPage>
   )

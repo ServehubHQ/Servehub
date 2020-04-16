@@ -1,7 +1,6 @@
 query JobsCreatePayment($jobId: uuid!, $userId: uuid) {
   users(where: { id: { _eq: $userId } }) {
     id
-    approved
     ...PageUser
   }
   jobs(where: { id: { _eq: $jobId } }) {

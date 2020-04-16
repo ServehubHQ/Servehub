@@ -40,7 +40,7 @@ export function JobDetailsPage({
   const router = useRouter()
   const className = useStyles()
   const { userId, role } = useAuth()
-  const [claimJob] = useClaimJobMutation()
+  const [claimJob, { loading }] = useClaimJobMutation()
 
   const handleClaimClick = useCallback(async () => {
     if (!job) {
@@ -80,6 +80,7 @@ export function JobDetailsPage({
                   variant='contained'
                   color='primary'
                   onClick={handleClaimClick}
+                  disabled={loading}
                 >
                   Claim Job
                 </Button>

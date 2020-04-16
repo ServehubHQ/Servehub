@@ -36,7 +36,7 @@ export function ChatForm({ jobId }: ChatFormProps) {
   const classes = useStyles()
   const inputRef = useRef<HTMLInputElement>()
   const [value, setValue] = useState('')
-  const [sendMessage] = useSendMessageMutation({
+  const [sendMessage, { loading }] = useSendMessageMutation({
     variables: { message: value, jobId },
   })
 
@@ -80,6 +80,7 @@ export function ChatForm({ jobId }: ChatFormProps) {
         <IconButton
           color={value.length > 0 ? 'primary' : 'default'}
           onClick={handleSendMessage}
+          disabled={loading}
         >
           <SendIcon />
         </IconButton>

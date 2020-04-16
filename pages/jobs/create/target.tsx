@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { AddressForm } from '../../../components/AddressForm'
 import { CreateJobPage } from '../../../components/CreateJobPage'
@@ -22,8 +22,19 @@ interface FormData {
 export default function JobsCreateTargetPage() {
   useAuthRequired()
   const router = useRouter()
-  const [insertTarget] = useInsertTargetMutation()
-  const [setJobTarget] = useSetJobTargetMutation()
+  const [
+    insertTarget,
+    { loading: insertTargetLoading },
+  ] = useInsertTargetMutation()
+  const [
+    setJobTarget,
+    { loading: setJobTargetLoading },
+  ] = useSetJobTargetMutation()
+
+  const loading = useMemo(() => insertTargetLoading || setJobTargetLoading, [
+    insertTargetLoading,
+    setJobTargetLoading,
+  ])
 
   const { register, handleSubmit, errors, setError } = useForm<FormData>()
 
@@ -55,6 +66,7 @@ export default function JobsCreateTargetPage() {
       onSubmit={handleSubmit(handleFormValid)}
       activeStep={0}
       title='Target'
+      loading={loading}
     >
       <TextField
         variant='filled'

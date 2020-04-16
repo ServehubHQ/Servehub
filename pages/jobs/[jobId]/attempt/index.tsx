@@ -37,7 +37,7 @@ export default function JobDetailsPage() {
   const { userId } = useAuth()
   const { data } = useJobAttemptQuery({ variables: { jobId, userId } })
   const job = useMemo(() => data?.jobs_by_pk, [data])
-  const [insertAttempt] = useInsertAttemptMutation()
+  const [insertAttempt, { loading }] = useInsertAttemptMutation()
   const { register, handleSubmit, watch, setValue } = useForm<FormData>({
     defaultValues: { attemptedAt: new Date() },
   })
@@ -113,7 +113,12 @@ export default function JobDetailsPage() {
               </CardContent>
               <Divider />
               <CardActions>
-                <Button type='submit' variant='contained' color='primary'>
+                <Button
+                  type='submit'
+                  variant='contained'
+                  color='primary'
+                  disabled={loading}
+                >
                   Submit
                 </Button>
               </CardActions>

@@ -37,6 +37,7 @@ export default function JobsCreatePaymentPage() {
   const stripe = useStripe()
   const elements = useElements()
   const [error, setError] = useState<string | undefined>()
+  const [loading, setLoading] = useState(false)
   const jobId = useMemo(() => router.query.id, [router])
   const { data } = useJobsCreatePaymentQuery({ variables: { jobId, userId } })
   const stripeClientSecret = useMemo(
@@ -49,8 +50,9 @@ export default function JobsCreatePaymentPage() {
       event.preventDefault()
       if (!stripe || !elements) return
 
-      const card = elements.getElement(CardNumberElement)
+      setLoading(true)
 
+      const card = elements.getElement(CardNumberElement)
       if (!card) {
         throw new Error('Unable to locate Stripe CardNumberElement')
       }
@@ -62,6 +64,7 @@ export default function JobsCreatePaymentPage() {
 
       if (error) {
         setError(error.message)
+        setLoading(false)
         return
       }
 
@@ -69,7 +72,6 @@ export default function JobsCreatePaymentPage() {
     },
     [stripe, elements, setError, stripeClientSecret, router, jobId],
   )
-
   return (
     <Page currentUser={data?.users[0]} title='Payment - Create Job'>
       <Paper>
@@ -110,7 +112,9 @@ export default function JobsCreatePaymentPage() {
                 type='submit'
                 variant='contained'
                 color='primary'
-                disabled={!stripe || !elements || !stripeClientSecret}
+                disabled={
+                  !stripe || !elements || !stripeClientSecret || loading
+                }
               >
                 Next
               </Button>
