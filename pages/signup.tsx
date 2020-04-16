@@ -37,7 +37,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   logo: {
     marginBottom: theme.spacing(3),
-    width: '50%',
+    maxHeight: 42,
   },
   form: {
     width: '100%', // Fix IE 11 issue.

@@ -36,7 +36,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   logo: {
     marginBottom: theme.spacing(3),
-    width: '50%',
+    maxHeight: 42,
   },
   form: {
     width: '100%', // Fix IE 11 issue.
@@ -52,7 +52,6 @@ interface FormData {
   password: string
 }
 
-// export default withData({ ssr: false, authenticationRequired: false })(
 export default function LoginPage() {
   const { isAuthenticated, authClient } = useAuth()
   const router = useRouter()
