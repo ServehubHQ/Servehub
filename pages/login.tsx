@@ -1,43 +1,12 @@
-import {
-  Button,
-  Grid,
-  Link,
-  makeStyles,
-  Paper,
-  TextField,
-  Typography,
-} from '@material-ui/core'
+import { Button, Grid, Link, makeStyles, TextField } from '@material-ui/core'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
+import { AuthPage } from '../components/AuthPage'
 import { encodeQuerystring } from '../lib/encodeQuerystring'
 import { useAuth } from '../lib/useAuth'
-import Head from 'next/head'
 
 export const useStyles = makeStyles((theme) => ({
-  root: {
-    height: '100vh',
-  },
-  image: {
-    backgroundImage: 'url(https://source.unsplash.com/random)',
-    backgroundRepeat: 'no-repeat',
-    backgroundColor:
-      theme.palette.type === 'dark'
-        ? theme.palette.grey[900]
-        : theme.palette.grey[50],
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-  },
-  paper: {
-    margin: theme.spacing(8, 4),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  logo: {
-    marginBottom: theme.spacing(3),
-    maxHeight: 42,
-  },
   form: {
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
@@ -82,73 +51,57 @@ export default function LoginPage() {
   }, [isAuthenticated, router])
 
   return (
-    <Grid container component='main' className={classNames.root}>
-      <Head>
-        <title>Login - Servehub</title>
-      </Head>
-      <Grid item xs={false} sm={4} md={7} className={classNames.image} />
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-        <div className={classNames.paper}>
-          <img
-            src='/images/brand/logo-dark.svg'
-            alt='Servehub'
-            className={classNames.logo}
-          />
-          <Typography component='h1' variant='h5'>
-            Login
-          </Typography>
-          <form
-            className={classNames.form}
-            noValidate
-            onSubmit={handleSubmit(handleFormValid)}
-          >
-            <TextField
-              variant='outlined'
-              margin='normal'
-              required
-              fullWidth
-              id='email'
-              label='Email Address'
-              name='email'
-              autoComplete='email'
-              autoFocus
-              inputRef={register({ required: true })}
-              error={Boolean(errors.email)}
-              helperText={errors.email?.message}
-            />
-            <TextField
-              variant='outlined'
-              margin='normal'
-              required
-              fullWidth
-              name='password'
-              label='Password'
-              type='password'
-              id='password'
-              autoComplete='current-password'
-              inputRef={register({ required: true })}
-              error={Boolean(errors.password)}
-              helperText={errors.password?.message}
-            />
-            <Button
-              type='submit'
-              variant='contained'
-              color='primary'
-              className={classNames.submit}
-              fullWidth
-            >
-              Login
-            </Button>
-            <Grid container>
-              <Grid item>
-                <Link href='/signup' variant='body2'>
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
-          </form>
-        </div>
-      </Grid>
-    </Grid>
+    <AuthPage title='Login'>
+      <form
+        className={classNames.form}
+        noValidate
+        onSubmit={handleSubmit(handleFormValid)}
+      >
+        <TextField
+          variant='outlined'
+          margin='normal'
+          required
+          fullWidth
+          id='email'
+          label='Email Address'
+          name='email'
+          autoComplete='email'
+          autoFocus
+          inputRef={register({ required: true })}
+          error={Boolean(errors.email)}
+          helperText={errors.email?.message}
+        />
+        <TextField
+          variant='outlined'
+          margin='normal'
+          required
+          fullWidth
+          name='password'
+          label='Password'
+          type='password'
+          id='password'
+          autoComplete='current-password'
+          inputRef={register({ required: true })}
+          error={Boolean(errors.password)}
+          helperText={errors.password?.message}
+        />
+        <Button
+          type='submit'
+          variant='contained'
+          color='primary'
+          className={classNames.submit}
+          fullWidth
+        >
+          Login
+        </Button>
+        <Grid container>
+          <Grid item>
+            <Link href='/signup' variant='body2'>
+              {"Don't have an account? Sign Up"}
+            </Link>
+          </Grid>
+        </Grid>
+      </form>
+    </AuthPage>
   )
 }

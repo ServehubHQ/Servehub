@@ -92,7 +92,8 @@ export function Page({ title, children, currentUser }: PageProps) {
   const handleLogoutClick = useCallback(() => {
     authClient!.logout()
     setAccountMenuAnchorEl(null)
-  }, [authClient])
+    router.push('/login')
+  }, [authClient, router])
 
   const handleMenuClick = useCallback(
     (event: MouseEvent<HTMLButtonElement>) => {
