@@ -51,7 +51,7 @@ export default function JobListPage() {
   )
 
   return (
-    <Page currentUser={data?.users[0]}>
+    <Page currentUser={data?.users[0]} title='Jobs'>
       <Grid container spacing={2} direction='column'>
         <Grid item>
           <Heading

@@ -64,7 +64,7 @@ export function JobDetailsPage({
   )
 
   return (
-    <Page currentUser={currentUser}>
+    <Page currentUser={currentUser} title={job?.target?.name || 'Job'}>
       <Grid container spacing={2} direction='column'>
         <Grid item>
           <Heading

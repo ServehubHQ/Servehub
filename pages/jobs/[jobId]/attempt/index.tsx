@@ -66,7 +66,10 @@ export default function JobDetailsPage() {
   )
 
   return (
-    <Page>
+    <Page
+      currentUser={data?.users[0]}
+      title={`Record Attempt - ${job?.target?.name || 'Job'}`}
+    >
       <Grid container direction='column' spacing={4}>
         <Grid item>
           <Heading

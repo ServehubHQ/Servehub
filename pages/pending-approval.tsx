@@ -29,7 +29,7 @@ export default function PendingApprovalPage() {
   }, [router, data])
 
   return (
-    <Page currentUser={data?.users[0]}>
+    <Page currentUser={data?.users[0]} title='Pending Approval'>
       <Grid container spacing={2} direction='column'>
         <Grid item>
           <Heading title='Pending Approval' />

@@ -19,6 +19,7 @@ import { StripeField } from '../../../components/StripeField'
 import { useAuthRequired } from '../../../lib/useAuthRequired'
 import { useJobsCreatePaymentQuery } from '../../../graphql-codegen'
 import { useRouter } from 'next/router'
+import { useAuth } from '../../../lib/useAuth'
 
 interface FormData {
   name: string
@@ -32,11 +33,12 @@ interface FormData {
 export default function JobsCreatePaymentPage() {
   useAuthRequired()
   const router = useRouter()
+  const { userId } = useAuth()
   const stripe = useStripe()
   const elements = useElements()
   const [error, setError] = useState<string | undefined>()
   const jobId = useMemo(() => router.query.id, [router])
-  const { data } = useJobsCreatePaymentQuery({ variables: { jobId } })
+  const { data } = useJobsCreatePaymentQuery({ variables: { jobId, userId } })
   const stripeClientSecret = useMemo(
     () => data?.jobs[0].stripe_payment_intent_client_secret,
     [data],
@@ -69,7 +71,7 @@ export default function JobsCreatePaymentPage() {
   )
 
   return (
-    <Page>
+    <Page currentUser={data?.users[0]} title='Payment - Create Job'>
       <Paper>
         <Box p={2}>
           <Typography component='h1' variant='h5'>

@@ -14,6 +14,7 @@ import { Page, PageProps } from './Page'
 
 interface CreateJobPageProps extends Partial<PageProps> {
   activeStep: number
+  title: string
   onSubmit?: (event: FormEvent<HTMLFormElement>) => void
   children?: ReactNode
 }
@@ -28,13 +29,14 @@ export function CreateJobPage({
   activeStep,
   onSubmit,
   children,
+  title,
   ...pageProps
 }: CreateJobPageProps) {
   useAuthRequired()
   const classNames = useStyles()
 
   return (
-    <Page {...pageProps}>
+    <Page {...pageProps} title={`${title} - Create Job`}>
       <form noValidate onSubmit={onSubmit}>
         <Card>
           <CardHeader

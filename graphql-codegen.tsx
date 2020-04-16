@@ -3683,12 +3683,17 @@ export type JobsAvailableQuery = (
 
 export type JobsCreatePaymentQueryVariables = {
   jobId: Scalars['uuid'];
+  userId?: Maybe<Scalars['uuid']>;
 };
 
 
 export type JobsCreatePaymentQuery = (
   { __typename?: 'query_root' }
-  & { jobs: Array<(
+  & { users: Array<(
+    { __typename?: 'users' }
+    & Pick<Users, 'id' | 'approved'>
+    & PageUserFragment
+  )>, jobs: Array<(
     { __typename?: 'jobs' }
     & Pick<Jobs, 'stripe_payment_intent_client_secret' | 'id'>
   )> }
@@ -4693,13 +4698,18 @@ export type JobsAvailableQueryHookResult = ReturnType<typeof useJobsAvailableQue
 export type JobsAvailableLazyQueryHookResult = ReturnType<typeof useJobsAvailableLazyQuery>;
 export type JobsAvailableQueryResult = ApolloReactCommon.QueryResult<JobsAvailableQuery, JobsAvailableQueryVariables>;
 export const JobsCreatePaymentDocument = gql`
-    query JobsCreatePayment($jobId: uuid!) {
+    query JobsCreatePayment($jobId: uuid!, $userId: uuid) {
+  users(where: {id: {_eq: $userId}}) {
+    id
+    approved
+    ...PageUser
+  }
   jobs(where: {id: {_eq: $jobId}}) {
     stripe_payment_intent_client_secret
     id
   }
 }
-    `;
+    ${PageUserFragmentDoc}`;
 
 /**
  * __useJobsCreatePaymentQuery__
@@ -4714,6 +4724,7 @@ export const JobsCreatePaymentDocument = gql`
  * const { data, loading, error } = useJobsCreatePaymentQuery({
  *   variables: {
  *      jobId: // value for 'jobId'
+ *      userId: // value for 'userId'
  *   },
  * });
  */

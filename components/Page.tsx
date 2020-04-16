@@ -3,34 +3,34 @@ import {
   Box,
   Button,
   Container,
+  FormControlLabel,
   IconButton,
   makeStyles,
   Menu,
   MenuItem,
-  Toolbar,
-  Link as MuiLink,
-  FormControlLabel,
   Switch,
+  Toolbar,
 } from '@material-ui/core'
 import { AccountCircle } from '@material-ui/icons'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import {
+  ChangeEvent,
   MouseEvent,
   ReactNode,
   useCallback,
-  useState,
-  ChangeEvent,
   useMemo,
+  useState,
 } from 'react'
 import { PageUserFragment } from '../graphql-codegen'
 import { getAndSaveMessagingToken } from '../lib/firebase'
-import { useAuth } from '../lib/useAuth'
 import { useApolloClient } from '../lib/getApolloClient'
+import { useAuth } from '../lib/useAuth'
 
 export interface PageProps {
   children: ReactNode
+  title: string
   currentUser?: PageUserFragment
 }
 
@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export function Page({ children, currentUser }: PageProps) {
+export function Page({ title, children, currentUser }: PageProps) {
   const router = useRouter()
   const { isAuthenticated, authClient, isAdmin } = useAuth()
   const apolloClient = useApolloClient()
@@ -118,7 +118,7 @@ export function Page({ children, currentUser }: PageProps) {
   return (
     <div className={classNames.root}>
       <Head>
-        <title>Servehub</title>
+        <title>{`${title} - Servehub`}</title>
 
         <link
           rel='apple-touch-icon-precomposed'

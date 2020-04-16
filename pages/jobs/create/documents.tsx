@@ -65,7 +65,11 @@ export default function JobsCreateDocumentsPage() {
   )
 
   return (
-    <CreateJobPage activeStep={2} onSubmit={handleSubmit(handleFormValid)}>
+    <CreateJobPage
+      activeStep={2}
+      onSubmit={handleSubmit(handleFormValid)}
+      title='Documents'
+    >
       <Grid container spacing={2} direction='column'>
         <Grid item>
           <FormControlLabel

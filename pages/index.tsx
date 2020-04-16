@@ -23,7 +23,7 @@ export default function HomePage() {
   }
 
   return (
-    <Page currentUser={data?.users[0]}>
+    <Page currentUser={data?.users[0]} title='Welcome'>
       <Heading title='Servehub' />
       <Link href='/signup' passHref>
         <Button>Get Started</Button>

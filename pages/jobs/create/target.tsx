@@ -51,7 +51,11 @@ export default function JobsCreateTargetPage() {
   )
 
   return (
-    <CreateJobPage onSubmit={handleSubmit(handleFormValid)} activeStep={0}>
+    <CreateJobPage
+      onSubmit={handleSubmit(handleFormValid)}
+      activeStep={0}
+      title='Target'
+    >
       <TextField
         variant='filled'
         margin='normal'

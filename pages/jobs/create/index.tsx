@@ -18,7 +18,7 @@ export default function JobsCreateTargetPage() {
   }, [insertJob, router])
 
   return (
-    <CreateJobPage activeStep={0}>
+    <CreateJobPage activeStep={0} title='Initializing'>
       <CircularProgress />
     </CreateJobPage>
   )

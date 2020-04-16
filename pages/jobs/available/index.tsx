@@ -15,7 +15,7 @@ export default function JobsAvailablePage() {
   })
 
   return (
-    <Page currentUser={data?.users[0]}>
+    <Page currentUser={data?.users[0]} title='Available Jobs'>
       <Box mb={4}>
         <Heading
           title='Available Jobs'
