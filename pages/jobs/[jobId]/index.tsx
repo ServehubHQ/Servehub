@@ -17,6 +17,8 @@ import { Map } from '../../../components/Map'
 import { useJobDetialsQuery } from '../../../graphql-codegen'
 import { useAuth } from '../../../lib/useAuth'
 import { useAuthRequired } from '../../../lib/useAuthRequired'
+import { Address } from '../../../components/Address'
+import { Stack } from '../../../components/Stack'
 
 const useStyles = makeStyles((theme) => ({
   successIcon: {
@@ -41,25 +43,33 @@ export default function JobDetails() {
     >
       <Grid container spacing={2}>
         <Grid item sm={12} md={6}>
-          <Grid container spacing={2} direction='column'>
-            <Grid item>
-              <Card>
-                <CardHeader title='Target' />
-                <Divider />
-                <CardContent>
+          <Card>
+            <CardHeader title='Target' />
+            <Divider />
+            <CardContent>
+              <Stack>
+                <div>
                   <Typography variant='subtitle1' color='textSecondary'>
                     Name
                   </Typography>
                   <Typography variant='h6' component='h2'>
                     {job?.target?.name}
                   </Typography>
-                </CardContent>
-                <CardMedia>
-                  {job?.target ? <Map {...job.target} /> : null}
-                </CardMedia>
-              </Card>
-            </Grid>
-          </Grid>
+                </div>
+                <div>
+                  <Typography variant='subtitle1' color='textSecondary'>
+                    Address
+                  </Typography>
+                  <Typography variant='h6' component='h2'>
+                    {job?.target ? <Address address={job.target} /> : null}
+                  </Typography>
+                </div>
+              </Stack>
+            </CardContent>
+            <CardMedia>
+              {job?.target ? <Map {...job.target} /> : null}
+            </CardMedia>
+          </Card>
         </Grid>
         <Grid item sm={12} md={6}>
           <Grid container spacing={2} direction='column'>

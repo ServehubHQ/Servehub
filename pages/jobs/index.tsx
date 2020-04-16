@@ -19,6 +19,7 @@ import { useJobsListQuery } from '../../graphql-codegen'
 import { useAuth } from '../../lib/useAuth'
 import { useAuthRequired } from '../../lib/useAuthRequired'
 import { useRouter } from 'next/router'
+import { Address } from '../../components/Address'
 
 const useStyles = makeStyles((theme) => ({
   successIcon: {
@@ -108,10 +109,7 @@ export default function JobListPage() {
                         : job.documents_aggregate.aggregate?.count}
                     </TableCell>
                     <TableCell>
-                      {job.target?.street}
-                      {job.target?.unit ? `, ${job.target?.unit}` : null}
-                      <br />
-                      {job.target?.city}, {job.target?.province}
+                      {job.target ? <Address address={job.target} /> : null}
                     </TableCell>
                   </TableRow>
                 ))}
