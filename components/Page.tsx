@@ -166,12 +166,14 @@ export function Page({ title, children, currentUser }: PageProps) {
         <Container fixed>
           <Toolbar disableGutters>
             <Box flexGrow={1}>
-              <Link href='/' passHref>
-                <img
-                  className={classNames.logo}
-                  src='/images/brand/logo-light.svg'
-                  alt='Servehub'
-                />
+              <Link href='/'>
+                <a>
+                  <img
+                    className={classNames.logo}
+                    src='/images/brand/logo-light.svg'
+                    alt='Servehub'
+                  />
+                </a>
               </Link>
             </Box>
             {isAuthenticated ? (
