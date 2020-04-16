@@ -1,26 +1,23 @@
-import React, { useState, useCallback, useEffect } from 'react'
-import PropTypes from 'prop-types'
-import clsx from 'clsx'
-import { useDropzone } from 'react-dropzone'
 import {
-  Button,
+  CircularProgress,
+  colors,
   IconButton,
   Link,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
-  Typography,
-  Tooltip,
-  colors,
   makeStyles,
-  CircularProgress,
+  Tooltip,
+  Typography,
 } from '@material-ui/core'
+import { Delete } from '@material-ui/icons'
 import FileCopyIcon from '@material-ui/icons/FileCopy'
-import MoreIcon from '@material-ui/icons/MoreVert'
+import clsx from 'clsx'
+import React, { useCallback, useEffect, useState } from 'react'
+import { useDropzone } from 'react-dropzone'
 import { bytesToSize } from '../lib/bytesToSize'
 import { uploadFile } from '../lib/uploadFile'
-import { Delete } from '@material-ui/icons'
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -156,7 +153,7 @@ export function FilesDropzone({
             color='textSecondary'
             variant='body1'
           >
-            Drop files here or click <Link underline='always'>browse</Link>.
+            Drop files here or click to browse.
           </Typography>
         </div>
       </div>
