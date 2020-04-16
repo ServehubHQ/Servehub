@@ -11,6 +11,8 @@ import { WebSocketLink } from '@apollo/link-ws'
 import fetch from 'cross-fetch'
 import { AuthClient } from './AuthClient'
 import { config } from './config'
+import { useMemo } from 'react'
+import { useAuth } from './useAuth'
 
 let apolloClient: ApolloClient<NormalizedCacheObject>
 
@@ -83,5 +85,11 @@ export function getApolloClient(
       : httpLink,
   })
 
+  return apolloClient
+}
+
+export function useApolloClient() {
+  const { authClient } = useAuth()
+  const apolloClient = useMemo(() => getApolloClient(authClient!), [authClient])
   return apolloClient
 }

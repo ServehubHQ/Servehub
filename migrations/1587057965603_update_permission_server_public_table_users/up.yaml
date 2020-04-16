@@ -1,0 +1,29 @@
+- args:
+    role: server
+    table:
+      name: users
+      schema: public
+  type: drop_select_permission
+- args:
+    permission:
+      allow_aggregations: false
+      columns:
+      - approved
+      - created_at
+      - firebase_messaging_token
+      - id
+      - name
+      - notifications_enabled
+      computed_fields: []
+      filter:
+        _or:
+        - id:
+            _eq: X-Hasura-User-Id
+        - lawyer_jobs:
+            server_user_id:
+              _eq: X-Hasura-User-Id
+    role: server
+    table:
+      name: users
+      schema: public
+  type: create_select_permission

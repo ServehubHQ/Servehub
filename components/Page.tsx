@@ -27,6 +27,7 @@ import {
 import { PageUserFragment } from '../graphql-codegen'
 import { getAndSaveMessagingToken } from '../lib/firebase'
 import { useAuth } from '../lib/useAuth'
+import { useApolloClient } from '../lib/getApolloClient'
 
 export interface PageProps {
   children: ReactNode
@@ -66,20 +67,26 @@ const useStyles = makeStyles((theme) => ({
 export function Page({ children, currentUser }: PageProps) {
   const router = useRouter()
   const { isAuthenticated, authClient, isAdmin } = useAuth()
+  const apolloClient = useApolloClient()
   const classNames = useStyles()
   const [
     accountMenuAnchorEl,
     setAccountMenuAnchorEl,
-  ] = useState<null | HTMLElement>(null)
-
+  ] = useState<HTMLElement | null>(null)
+  const [
+    optimisticNotificationsEnabled,
+    setOptimisticNotificationsEnabled,
+  ] = useState<boolean | null>(null)
   const notificationsEnabled = useMemo(
     () =>
-      Boolean(
-        currentUser &&
-          currentUser.firebase_messaging_token &&
-          currentUser.notifications_enabled,
-      ),
-    [currentUser],
+      typeof optimisticNotificationsEnabled === 'boolean'
+        ? optimisticNotificationsEnabled
+        : Boolean(
+            currentUser &&
+              currentUser.firebase_messaging_token &&
+              currentUser.notifications_enabled,
+          ),
+    [currentUser, optimisticNotificationsEnabled],
   )
 
   const handleLogoutClick = useCallback(() => {
@@ -99,10 +106,13 @@ export function Page({ children, currentUser }: PageProps) {
   }, [setAccountMenuAnchorEl])
 
   const handleNotificationsSwitch = useCallback(
-    (event: ChangeEvent<HTMLInputElement>, value: boolean) => {
-      getAndSaveMessagingToken(value)
+    async (event: ChangeEvent<HTMLInputElement>, value: boolean) => {
+      setOptimisticNotificationsEnabled(value)
+      await getAndSaveMessagingToken(value)
+      await apolloClient.resetStore()
+      setOptimisticNotificationsEnabled(null)
     },
-    [],
+    [apolloClient, setOptimisticNotificationsEnabled],
   )
 
   return (
