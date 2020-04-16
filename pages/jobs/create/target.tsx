@@ -40,7 +40,6 @@ export default function JobsCreateTargetPage() {
 
   const handleFormValid = useCallback(
     async (formData: FormData) => {
-      console.log('[handleFormValid]', formData)
       const { data: targetData } = await insertTarget({ variables: formData })
 
       const targetId = targetData?.insert_targets?.returning[0]?.id

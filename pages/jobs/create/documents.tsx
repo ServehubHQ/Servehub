@@ -1,15 +1,8 @@
-import {
-  FormControl,
-  FormControlLabel,
-  Grid,
-  InputLabel,
-  Select,
-  Switch,
-  TextField,
-} from '@material-ui/core'
+import { FormControlLabel, Grid, Switch } from '@material-ui/core'
 import { useRouter } from 'next/router'
 import { useCallback, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { AddressForm } from '../../../components/AddressForm'
 import { CreateJobPage } from '../../../components/CreateJobPage'
 import { DroppedFile, FilesDropzone } from '../../../components/FileDropzone'
 import {
@@ -17,7 +10,6 @@ import {
   useSetJobPickupRequiredMutation,
 } from '../../../graphql-codegen'
 import { useAuthRequired } from '../../../lib/useAuthRequired'
-import { AddressForm } from '../../../components/AddressForm'
 
 interface FormData {
   street: string

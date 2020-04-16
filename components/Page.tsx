@@ -164,7 +164,7 @@ export function Page({ title, children, currentUser }: PageProps) {
       </Head>
       <AppBar position='static' className={classNames.bar}>
         <Container fixed>
-          <Toolbar>
+          <Toolbar disableGutters>
             <Box flexGrow={1}>
               <Link href='/' passHref>
                 <img
