@@ -7,16 +7,5 @@
       "source": "/service-worker.js",
       "destination": "/_next/static/service-worker.js"
     }
-  ],
-  "env": {
-    "HASURA_WEBHOOK_SECRET": "@hasura-webhook-secret",
-    "HASURA_ADMIN_SECRET": "@hasura-admin-secret",
-    "STRIPE_SECRET_KEY": "@stripe-secret-key",
-    "STRIPE_WEBHOOK_SECRET": "@stripe-webhook-secret",
-    "GOOGLE_APPLICATION_CREDENTIALS": "@google-application-credentials",
-    "POSTMARK_SECRET_KEY": "@postmark-secret-key",
-    "NHOST_BACKEND_URL": "https://backend-rf2zfg3c.nhost.app",
-    "HASURA_HTTP_ENDPOINT": "https://hasura-rf2zfg3c.nhost.app/v1/graphql",
-    "HASURA_WS_ENDPOINT": "wss://hasura-rf2zfg3c.nhost.app/v1/graphql"
-  }
+  ]
 }
