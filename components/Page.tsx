@@ -66,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
 
 export function Page({ title, children, currentUser }: PageProps) {
   const router = useRouter()
-  const { isAuthenticated, authClient, isAdmin } = useAuth()
+  const { isAuthenticated, authClient, isAdmin, role } = useAuth()
   const apolloClient = useApolloClient()
   const classNames = useStyles()
   const [
@@ -176,6 +176,15 @@ export function Page({ title, children, currentUser }: PageProps) {
             </Box>
             {isAuthenticated ? (
               <>
+                {role === 'server' ? (
+                  <Link href='/jobs/available' passHref>
+                    <Button color='inherit'>Available Jobs</Button>
+                  </Link>
+                ) : (
+                  <Link href='/jobs/create' passHref>
+                    <Button color='inherit'>New Job</Button>
+                  </Link>
+                )}
                 <IconButton
                   aria-label='user account'
                   aria-controls='menu-appbar'

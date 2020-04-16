@@ -1,6 +1,5 @@
 import {
-  Box,
-  Button,
+  Grid,
   makeStyles,
   Paper,
   Table,
@@ -8,18 +7,16 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  Grid,
 } from '@material-ui/core'
 import { CheckCircle, Error } from '@material-ui/icons'
-import Link from 'next/link'
-import { useMemo, useCallback } from 'react'
+import { useRouter } from 'next/router'
+import { useCallback, useMemo } from 'react'
+import { Address } from '../../components/Address'
 import { Heading } from '../../components/Heading'
 import { Page } from '../../components/Page'
 import { useJobsListQuery } from '../../graphql-codegen'
 import { useAuth } from '../../lib/useAuth'
 import { useAuthRequired } from '../../lib/useAuthRequired'
-import { useRouter } from 'next/router'
-import { Address } from '../../components/Address'
 
 const useStyles = makeStyles((theme) => ({
   successIcon: {
@@ -55,24 +52,7 @@ export default function JobListPage() {
     <Page currentUser={data?.users[0]} title='Jobs'>
       <Grid container spacing={2} direction='column'>
         <Grid item>
-          <Heading
-            title='Jobs'
-            action={
-              role === 'server' ? (
-                <Link href='/jobs/available' passHref>
-                  <Button variant='contained' color='primary'>
-                    Available Jobs
-                  </Button>
-                </Link>
-              ) : (
-                <Link href='/jobs/create' passHref>
-                  <Button variant='contained' color='primary'>
-                    New Job
-                  </Button>
-                </Link>
-              )
-            }
-          />
+          <Heading title='Jobs' />
         </Grid>
         <Grid item>
           <Paper>
