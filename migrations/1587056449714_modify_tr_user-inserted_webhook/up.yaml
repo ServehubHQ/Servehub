@@ -1,0 +1,18 @@
+- args:
+    enable_manual: false
+    headers:
+    - name: x-hasura-webhook-secret
+      value_from_env: SECRET_WEBHOOK_HEADER
+    insert:
+      columns: '*'
+    name: user-inserted
+    replace: true
+    retry_conf:
+      interval_sec: 10
+      num_retries: 0
+      timeout_sec: 60
+    table:
+      name: users
+      schema: public
+    webhook: HASURA_WEBHOOK_URL_USER_INSERTED
+  type: create_event_trigger

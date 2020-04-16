@@ -9,12 +9,21 @@ import {
   MenuItem,
   Toolbar,
   Link as MuiLink,
+  FormControlLabel,
+  Switch,
 } from '@material-ui/core'
 import { AccountCircle } from '@material-ui/icons'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { MouseEvent, ReactNode, useCallback, useState } from 'react'
+import {
+  MouseEvent,
+  ReactNode,
+  useCallback,
+  useState,
+  ChangeEvent,
+  useMemo,
+} from 'react'
 import { PageUserFragment } from '../graphql-codegen'
 import { getAndSaveMessagingToken } from '../lib/firebase'
 import { useAuth } from '../lib/useAuth'
@@ -63,6 +72,16 @@ export function Page({ children, currentUser }: PageProps) {
     setAccountMenuAnchorEl,
   ] = useState<null | HTMLElement>(null)
 
+  const notificationsEnabled = useMemo(
+    () =>
+      Boolean(
+        currentUser &&
+          currentUser.firebase_messaging_token &&
+          currentUser.notifications_enabled,
+      ),
+    [currentUser],
+  )
+
   const handleLogoutClick = useCallback(() => {
     authClient!.logout()
     setAccountMenuAnchorEl(null)
@@ -79,9 +98,12 @@ export function Page({ children, currentUser }: PageProps) {
     setAccountMenuAnchorEl(null)
   }, [setAccountMenuAnchorEl])
 
-  const handleEnableNotificationsClick = useCallback(() => {
-    getAndSaveMessagingToken()
-  }, [])
+  const handleNotificationsSwitch = useCallback(
+    (event: ChangeEvent<HTMLInputElement>, value: boolean) => {
+      getAndSaveMessagingToken(value)
+    },
+    [],
+  )
 
   return (
     <div className={classNames.root}>
@@ -144,15 +166,6 @@ export function Page({ children, currentUser }: PageProps) {
             </Box>
             {isAuthenticated ? (
               <>
-                {currentUser && !currentUser.firebase_messaging_token ? (
-                  <Button
-                    color='inherit'
-                    className={classNames.navButton}
-                    onClick={handleEnableNotificationsClick}
-                  >
-                    Enable Notifications
-                  </Button>
-                ) : null}
                 <IconButton
                   aria-label='user account'
                   aria-controls='menu-appbar'
@@ -182,6 +195,18 @@ export function Page({ children, currentUser }: PageProps) {
                       <MenuItem component='a'>Admin</MenuItem>
                     </Link>
                   ) : null}
+                  <MenuItem>
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={notificationsEnabled}
+                          onChange={handleNotificationsSwitch}
+                          name='Notifications'
+                        />
+                      }
+                      label='Notifications'
+                    />
+                  </MenuItem>
                   <MenuItem onClick={handleLogoutClick}>Logout</MenuItem>
                 </Menu>
               </>

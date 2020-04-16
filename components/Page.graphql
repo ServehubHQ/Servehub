@@ -1,4 +1,5 @@
 fragment PageUser on users {
   id
   firebase_messaging_token
+  notifications_enabled
 }

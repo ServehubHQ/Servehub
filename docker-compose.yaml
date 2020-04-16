@@ -27,6 +27,9 @@ services:
       HASURA_GRAPHQL_MIGRATIONS_SERVER_TIMEOUT: 5
       HASURA_GRAPHQL_NO_OF_RETRIES: 5
       SECRET_WEBHOOK_HEADER: ea2a05a734558d988fab5d6a435788982e7ebbe3017331753a6239f2a6e11da4
+      HASURA_WEBHOOK_URL_JOB_INSERTED: http://host.docker.internal:3000/api/hasura/jobs/inserted
+      HASURA_WEBHOOK_URL_JOB_UPDATED: http://host.docker.internal:3000/api/hasura/jobs/updated
+      HASURA_WEBHOOK_URL_USER_INSERTED: http://host.docker.internal:3000/api/hasura/user/inserted
     command:
       - graphql-engine
       - serve

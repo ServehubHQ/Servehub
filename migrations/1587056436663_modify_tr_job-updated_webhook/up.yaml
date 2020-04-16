@@ -1,0 +1,28 @@
+- args:
+    enable_manual: false
+    headers:
+    - name: x-hasura-webhook-secret
+      value_from_env: SECRET_WEBHOOK_HEADER
+    name: job-updated
+    replace: true
+    retry_conf:
+      interval_sec: 10
+      num_retries: 0
+      timeout_sec: 60
+    table:
+      name: jobs
+      schema: public
+    update:
+      columns:
+      - stripe_payment_intent_succeeded
+      - description
+      - stripe_payment_intent_client_secret
+      - stripe_payment_intent_id
+      - created_at
+      - updated_at
+      - id
+      - lawyer_user_id
+      - server_user_id
+      - target_id
+    webhook_from_env: HASURA_WEBHOOK_URL_JOB_UPDATED
+  type: create_event_trigger

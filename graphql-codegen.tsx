@@ -2835,6 +2835,7 @@ export type Users = {
   lawyer_jobs: Array<Jobs>;
   lawyer_jobs_aggregate: Jobs_Aggregate;
   name?: Maybe<Scalars['String']>;
+  notifications_enabled: Scalars['Boolean'];
   refresh_tokens: Array<Auth_Refresh_Tokens>;
   refresh_tokens_aggregate: Auth_Refresh_Tokens_Aggregate;
   register_data?: Maybe<Scalars['jsonb']>;
@@ -3016,6 +3017,7 @@ export type Users_Bool_Exp = {
   is_anonymous?: Maybe<Boolean_Comparison_Exp>;
   lawyer_jobs?: Maybe<Jobs_Bool_Exp>;
   name?: Maybe<String_Comparison_Exp>;
+  notifications_enabled?: Maybe<Boolean_Comparison_Exp>;
   refresh_tokens?: Maybe<Auth_Refresh_Tokens_Bool_Exp>;
   register_data?: Maybe<Jsonb_Comparison_Exp>;
   role?: Maybe<Roles_Bool_Exp>;
@@ -3060,6 +3062,7 @@ export type Users_Insert_Input = {
   is_anonymous?: Maybe<Scalars['Boolean']>;
   lawyer_jobs?: Maybe<Jobs_Arr_Rel_Insert_Input>;
   name?: Maybe<Scalars['String']>;
+  notifications_enabled?: Maybe<Scalars['Boolean']>;
   refresh_tokens?: Maybe<Auth_Refresh_Tokens_Arr_Rel_Insert_Input>;
   register_data?: Maybe<Scalars['jsonb']>;
   role?: Maybe<Roles_Obj_Rel_Insert_Input>;
@@ -3157,6 +3160,7 @@ export type Users_Order_By = {
   is_anonymous?: Maybe<Order_By>;
   lawyer_jobs_aggregate?: Maybe<Jobs_Aggregate_Order_By>;
   name?: Maybe<Order_By>;
+  notifications_enabled?: Maybe<Order_By>;
   refresh_tokens_aggregate?: Maybe<Auth_Refresh_Tokens_Aggregate_Order_By>;
   register_data?: Maybe<Order_By>;
   role?: Maybe<Roles_Order_By>;
@@ -3186,6 +3190,7 @@ export enum Users_Select_Column {
   Id = 'id',
   IsAnonymous = 'is_anonymous',
   Name = 'name',
+  NotificationsEnabled = 'notifications_enabled',
   RegisterData = 'register_data',
   SecretToken = 'secret_token',
   SecretTokenExpiresAt = 'secret_token_expires_at',
@@ -3205,6 +3210,7 @@ export type Users_Set_Input = {
   id?: Maybe<Scalars['uuid']>;
   is_anonymous?: Maybe<Scalars['Boolean']>;
   name?: Maybe<Scalars['String']>;
+  notifications_enabled?: Maybe<Scalars['Boolean']>;
   register_data?: Maybe<Scalars['jsonb']>;
   secret_token?: Maybe<Scalars['uuid']>;
   secret_token_expires_at?: Maybe<Scalars['timestamptz']>;
@@ -3224,6 +3230,7 @@ export enum Users_Update_Column {
   Id = 'id',
   IsAnonymous = 'is_anonymous',
   Name = 'name',
+  NotificationsEnabled = 'notifications_enabled',
   RegisterData = 'register_data',
   SecretToken = 'secret_token',
   SecretTokenExpiresAt = 'secret_token_expires_at',
@@ -3299,7 +3306,7 @@ export type JobDetailsPageUserFragment = (
 
 export type PageUserFragment = (
   { __typename?: 'users' }
-  & Pick<Users, 'id' | 'firebase_messaging_token'>
+  & Pick<Users, 'id' | 'firebase_messaging_token' | 'notifications_enabled'>
 );
 
 export type ClaimJobMutationVariables = {
@@ -3431,6 +3438,7 @@ export type SendMessageMutation = (
 export type SetFirebaseMessagingTokenMutationVariables = {
   userId: Scalars['uuid'];
   token: Scalars['String'];
+  notificationsEnabled: Scalars['Boolean'];
 };
 
 
@@ -3796,6 +3804,7 @@ export const PageUserFragmentDoc = gql`
     fragment PageUser on users {
   id
   firebase_messaging_token
+  notifications_enabled
 }
     `;
 export const JobDetailsPageUserFragmentDoc = gql`
@@ -4140,8 +4149,8 @@ export type SendMessageMutationHookResult = ReturnType<typeof useSendMessageMuta
 export type SendMessageMutationResult = ApolloReactCommon.MutationResult<SendMessageMutation>;
 export type SendMessageMutationOptions = ApolloReactCommon.BaseMutationOptions<SendMessageMutation, SendMessageMutationVariables>;
 export const SetFirebaseMessagingTokenDocument = gql`
-    mutation SetFirebaseMessagingToken($userId: uuid!, $token: String!) {
-  update_users(_set: {firebase_messaging_token: $token}, where: {id: {_eq: $userId}}) {
+    mutation SetFirebaseMessagingToken($userId: uuid!, $token: String!, $notificationsEnabled: Boolean!) {
+  update_users(_set: {firebase_messaging_token: $token, notifications_enabled: $notificationsEnabled}, where: {id: {_eq: $userId}}) {
     affected_rows
   }
 }
@@ -4163,6 +4172,7 @@ export type SetFirebaseMessagingTokenMutationFn = ApolloReactCommon.MutationFunc
  *   variables: {
  *      userId: // value for 'userId'
  *      token: // value for 'token'
+ *      notificationsEnabled: // value for 'notificationsEnabled'
  *   },
  * });
  */

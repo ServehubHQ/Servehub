@@ -26,7 +26,7 @@ export async function initFirebase() {
   console.info('[firebase init] complete')
 }
 
-export async function getAndSaveMessagingToken() {
+export async function getAndSaveMessagingToken(notificationsEnabled = true) {
   const auth = getAuthClient()
   const userId = auth.getUserId()
   if (!userId) return
@@ -43,6 +43,7 @@ export async function getAndSaveMessagingToken() {
     variables: {
       token,
       userId,
+      notificationsEnabled,
     },
   })
 }
