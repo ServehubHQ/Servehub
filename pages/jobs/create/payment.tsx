@@ -1,10 +1,4 @@
-import {
-  Box,
-  Button,
-  Paper,
-  Typography,
-  FormHelperText,
-} from '@material-ui/core'
+import { Box, Button, FormHelperText } from '@material-ui/core'
 import {
   CardCvcElement,
   CardExpiryElement,
@@ -12,14 +6,13 @@ import {
   useElements,
   useStripe,
 } from '@stripe/react-stripe-js'
-import { useCallback, useState, useMemo } from 'react'
-import { CreateJobSteps } from '../../../components/CreateJobSteps'
-import { Page } from '../../../components/Page'
-import { StripeField } from '../../../components/StripeField'
-import { useAuthRequired } from '../../../lib/useAuthRequired'
-import { useJobsCreatePaymentQuery } from '../../../graphql-codegen'
 import { useRouter } from 'next/router'
+import { useCallback, useMemo, useState } from 'react'
+import { CreateJobPage } from '../../../components/CreateJobPage'
+import { StripeField } from '../../../components/StripeField'
+import { useJobsCreatePaymentQuery } from '../../../graphql-codegen'
 import { useAuth } from '../../../lib/useAuth'
+import { useAuthRequired } from '../../../lib/useAuthRequired'
 
 interface FormData {
   name: string
@@ -73,55 +66,46 @@ export default function JobsCreatePaymentPage() {
     [stripe, elements, setError, stripeClientSecret, router, jobId],
   )
   return (
-    <Page currentUser={data?.users[0]} title='Payment - Create Job'>
-      <Paper>
-        <Box p={2}>
-          <Typography component='h1' variant='h5'>
-            Create Job
-          </Typography>
+    <CreateJobPage
+      onSubmit={handleSubmit}
+      activeStep={2}
+      title='Payment'
+      loading={loading}
+    >
+      <FormHelperText error>{error}</FormHelperText>
 
-          <CreateJobSteps activeStep={3} />
+      <StripeField
+        Element={CardNumberElement}
+        label='Card Number'
+        margin='normal'
+        required
+        fullWidth
+      />
+      <StripeField
+        Element={CardExpiryElement}
+        label='Expiry'
+        margin='normal'
+        required
+        fullWidth
+      />
+      <StripeField
+        Element={CardCvcElement}
+        label='CVC'
+        margin='normal'
+        required
+        fullWidth
+      />
 
-          <form onSubmit={handleSubmit}>
-            <FormHelperText error>{error}</FormHelperText>
-
-            <StripeField
-              Element={CardNumberElement}
-              label='Card Number'
-              margin='normal'
-              required
-              fullWidth
-            />
-            <StripeField
-              Element={CardExpiryElement}
-              label='Expiry'
-              margin='normal'
-              required
-              fullWidth
-            />
-            <StripeField
-              Element={CardCvcElement}
-              label='CVC'
-              margin='normal'
-              required
-              fullWidth
-            />
-
-            <Box mt={2} display='flex' justifyContent='flex-end'>
-              <Button
-                type='submit'
-                variant='contained'
-                color='primary'
-                disabled={
-                  !stripe || !elements || !stripeClientSecret || loading
-                }
-              >
-                Next
-              </Button>
-            </Box>
-          </form>
-        </Box>
-      </Paper>
-    </Page>
+      <Box mt={2} display='flex' justifyContent='flex-end'>
+        <Button
+          type='submit'
+          variant='contained'
+          color='primary'
+          disabled={!stripe || !elements || !stripeClientSecret || loading}
+        >
+          Next
+        </Button>
+      </Box>
+    </CreateJobPage>
   )
 }

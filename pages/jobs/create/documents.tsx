@@ -68,7 +68,7 @@ export default function JobsCreateDocumentsPage() {
 
   return (
     <CreateJobPage
-      activeStep={2}
+      activeStep={1}
       onSubmit={handleSubmit(handleFormValid)}
       title='Documents'
       loading={loading}
