@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Button,
   Grid,
   Link,
@@ -9,7 +8,6 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core'
-import { LockOutlined } from '@material-ui/icons'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
@@ -36,9 +34,9 @@ export const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
   },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+  logo: {
+    marginBottom: theme.spacing(3),
+    width: '50%',
   },
   form: {
     width: '100%', // Fix IE 11 issue.
@@ -59,7 +57,7 @@ interface FormData {
 export default function SignupPage() {
   const { isAuthenticated, authClient } = useAuth()
   const router = useRouter()
-  const styles = useStyles()
+  const classNames = useStyles()
   const { register, handleSubmit, errors, setError, control } = useForm<
     FormData
   >()
@@ -94,18 +92,20 @@ export default function SignupPage() {
   }, [isAuthenticated, router])
 
   return (
-    <Grid container component='main' className={styles.root}>
-      <Grid item xs={false} sm={4} md={7} className={styles.image} />
+    <Grid container component='main' className={classNames.root}>
+      <Grid item xs={false} sm={4} md={7} className={classNames.image} />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-        <div className={styles.paper}>
-          <Avatar className={styles.avatar}>
-            <LockOutlined />
-          </Avatar>
+        <div className={classNames.paper}>
+          <img
+            src='/images/brand/logo-dark.svg'
+            alt='Servehub'
+            className={classNames.logo}
+          />
           <Typography component='h1' variant='h5'>
             Signup
           </Typography>
           <form
-            className={styles.form}
+            className={classNames.form}
             noValidate
             onSubmit={handleSubmit(handleFormValid)}
           >
@@ -163,7 +163,7 @@ export default function SignupPage() {
               type='submit'
               variant='contained'
               color='primary'
-              className={styles.submit}
+              className={classNames.submit}
               fullWidth
             >
               Signup
