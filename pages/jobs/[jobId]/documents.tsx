@@ -70,7 +70,9 @@ export default function JobDetailsDocuments() {
                 <CardHeader title={document.title} />
                 <Divider />
                 <CardActions>
-                  <Button startIcon={<CloudDownload />}>Download</Button>
+                  <Button startIcon={<CloudDownload color='primary' />}>
+                    Download
+                  </Button>
                 </CardActions>
               </Card>
             </Grid>

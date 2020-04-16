@@ -12,6 +12,7 @@ import { useCallback, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { encodeQuerystring } from '../lib/encodeQuerystring'
 import { useAuth } from '../lib/useAuth'
+import Head from 'next/head'
 
 export const useStyles = makeStyles((theme) => ({
   root: {
@@ -83,6 +84,9 @@ export default function LoginPage() {
 
   return (
     <Grid container component='main' className={classNames.root}>
+      <Head>
+        <title>Login - Servehub</title>
+      </Head>
       <Grid item xs={false} sm={4} md={7} className={classNames.image} />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classNames.paper}>
