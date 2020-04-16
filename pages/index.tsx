@@ -9,11 +9,11 @@ import { useAuth } from '../lib/useAuth'
 export default function HomePage() {
   const { isAuthenticated, userId, role } = useAuth()
   const router = useRouter()
-  const { data } = useIndexPageQuery({
+  const { data, loading } = useIndexPageQuery({
     variables: { userId },
   })
 
-  if (isAuthenticated && typeof window !== 'undefined') {
+  if (!loading && isAuthenticated && typeof window !== 'undefined') {
     if (role !== 'server' || data?.users[0].approved) {
       router.push('/jobs')
     } else {
