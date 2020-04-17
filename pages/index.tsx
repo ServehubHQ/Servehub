@@ -1,7 +1,5 @@
-import { Button } from '@material-ui/core'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { Heading } from '../components/Heading'
+import { useEffect } from 'react'
 import { Page } from '../components/Page'
 import { useIndexPageQuery } from '../graphql-codegen'
 import { useAuth } from '../lib/useAuth'
@@ -13,21 +11,23 @@ export default function HomePage() {
     variables: { userId },
   })
 
-  if (!loading && isAuthenticated && typeof window !== 'undefined') {
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return
+    }
+    if (!isAuthenticated) {
+      router.push('/signup')
+    }
+    if (loading) {
+      return
+    }
+
     if (role !== 'server' || data?.users[0].approved) {
       router.push('/jobs')
     } else {
       router.push('/pending-approval')
     }
-    return <div />
-  }
+  }, [loading, isAuthenticated, data, router, role])
 
-  return (
-    <Page currentUser={data?.users[0]} title='Welcome'>
-      <Heading title='Servehub' />
-      <Link href='/signup' passHref>
-        <Button>Get Started</Button>
-      </Link>
-    </Page>
-  )
+  return <Page currentUser={data?.users[0]} title='Welcome' />
 }

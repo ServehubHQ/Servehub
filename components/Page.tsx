@@ -29,8 +29,8 @@ import { useApolloClient } from '../lib/getApolloClient'
 import { useAuth } from '../lib/useAuth'
 
 export interface PageProps {
-  children: ReactNode
   title: string
+  children?: ReactNode
   currentUser?: PageUserFragment
 }
 
