@@ -8,10 +8,13 @@ import {
   Grid,
   makeStyles,
   Typography,
+  Divider,
 } from '@material-ui/core'
 import Link from 'next/link'
 import { JobCardJobFragment } from '../graphql-codegen'
 import { Map } from './Map'
+import { Stack } from './Stack'
+import { Address } from './Address'
 
 interface JobCardProps {
   job: JobCardJobFragment
@@ -37,20 +40,36 @@ export default function JobCard({ job }: JobCardProps) {
       <Grid container>
         <Grid item sm={6} lg={4}>
           <CardHeader title='Job' />
+          <Divider />
           <CardContent>
-            <Typography variant='h6' component='h2'>
-              {job.target?.name}
-            </Typography>
-            <Typography variant='subtitle1' color='textSecondary'>
-              Target
-            </Typography>
-            <Typography variant='h6' component='h2'>
-              {job.server?.id ? 'True' : 'False'}
-            </Typography>
-            <Typography variant='subtitle1' color='textSecondary'>
-              Assigned
-            </Typography>
+            <Stack>
+              <div>
+                <Typography variant='subtitle1' color='textSecondary'>
+                  Target
+                </Typography>
+                <Typography variant='h6' component='h2'>
+                  {job.target?.name}
+                </Typography>
+              </div>
+              <div>
+                <Typography variant='subtitle1' color='textSecondary'>
+                  Status
+                </Typography>
+                <Typography variant='h6' component='h2'>
+                  {job.server?.id ? 'Assigned' : 'Available'}
+                </Typography>
+              </div>
+              <div>
+                <Typography variant='subtitle1' color='textSecondary'>
+                  Address
+                </Typography>
+                <Typography variant='h6' component='h2'>
+                  {job?.target ? <Address address={job.target} /> : null}
+                </Typography>
+              </div>
+            </Stack>
           </CardContent>
+          <Divider />
           <CardActions>
             <Link href={`/jobs/${job.id}`} passHref>
               <Button>View Details</Button>
