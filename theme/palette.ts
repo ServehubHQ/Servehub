@@ -6,14 +6,14 @@ export default {
   primary: {
     contrastText: white,
     dark: colors.indigo[900],
-    main: colors.indigo[500],
-    light: colors.indigo[100],
+    main: colors.blue[900],
+    light: colors.blue[100],
   },
   secondary: {
     contrastText: white,
-    dark: colors.blue[900],
-    main: colors.blue.A700,
-    light: colors.blue.A400,
+    dark: colors.lightBlue[900],
+    main: colors.lightBlue.[500],
+    light: colors.lightBlue.A100,
   },
   error: {
     contrastText: white,
@@ -24,12 +24,12 @@ export default {
   text: {
     primary: colors.blueGrey[900],
     secondary: colors.blueGrey[600],
-    link: colors.blue[600],
+    link: colors.lightBlue[500],
   },
   link: colors.blue[800],
   icon: colors.blueGrey[600],
   background: {
-    default: '#F4F6F8',
+    default: '#F5F5F5',
     paper: white,
   },
   divider: colors.grey[200],
