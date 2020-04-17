@@ -12,7 +12,7 @@ export default {
   secondary: {
     contrastText: white,
     dark: colors.lightBlue[900],
-    main: colors.lightBlue.[500],
+    main: colors.lightBlue[500],
     light: colors.lightBlue.A100,
   },
   error: {
