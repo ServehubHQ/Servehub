@@ -95,17 +95,6 @@ export default function JobsCreatePaymentPage() {
         required
         fullWidth
       />
-
-      <Box mt={2} display='flex' justifyContent='flex-end'>
-        <Button
-          type='submit'
-          variant='contained'
-          color='primary'
-          disabled={!stripe || !elements || !stripeClientSecret || loading}
-        >
-          Next
-        </Button>
-      </Box>
     </CreateJobPage>
   )
 }
