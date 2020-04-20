@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { ChangeEvent, ReactNode, useCallback } from 'react'
+import { ChangeEvent, ReactNode, useCallback, useMemo } from 'react'
 import {
   JobDetailsPageJobFragment,
   JobDetailsPageQueryFragment,
@@ -43,6 +43,11 @@ export function JobDetailsPage({
   const className = useStyles()
   const { userId, role } = useAuth()
   const [claimJob, { loading }] = useClaimJobMutation()
+
+  const complete = useMemo(
+    () => job?.attempts.some((attempt) => attempt.success),
+    [job],
+  )
 
   const handleClaimClick = useCallback(async () => {
     if (!job) {
@@ -100,7 +105,7 @@ export function JobDetailsPage({
                 >
                   Claim Job
                 </Button>
-              ) : job?.server?.id === userId ? (
+              ) : !complete && job?.server?.id === userId ? (
                 <Link href={`/jobs/${job?.id}/attempt`} passHref>
                   <Button variant='contained' color='primary'>
                     Record Attempt

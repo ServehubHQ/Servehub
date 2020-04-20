@@ -5,6 +5,11 @@ fragment JobDetailsPageJob on jobs {
   server {
     id
   }
+
+  attempts {
+    id
+    success
+  }
 }
 
 fragment JobDetailsPageQuery on query_root {

@@ -4030,6 +4030,9 @@ export type JobDetailsPageJobFragment = (
   & { server: Maybe<(
     { __typename?: 'users' }
     & Pick<Users, 'id'>
+  )>, attempts: Array<(
+    { __typename?: 'attempts' }
+    & Pick<Attempts, 'id' | 'success'>
   )> }
 );
 
@@ -4549,6 +4552,10 @@ export const JobDetailsPageJobFragmentDoc = gql`
   target_name
   server {
     id
+  }
+  attempts {
+    id
+    success
   }
 }
     `;
