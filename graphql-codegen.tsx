@@ -4056,6 +4056,14 @@ export type ClaimJobMutation = (
   & { update_jobs: Maybe<(
     { __typename?: 'jobs_mutation_response' }
     & Pick<Jobs_Mutation_Response, 'affected_rows'>
+    & { returning: Array<(
+      { __typename?: 'jobs' }
+      & Pick<Jobs, 'id' | 'server_user_id'>
+      & { server: Maybe<(
+        { __typename?: 'users' }
+        & Pick<Users, 'id'>
+      )> }
+    )> }
   )> }
 );
 
@@ -4621,6 +4629,13 @@ export const ClaimJobDocument = gql`
     mutation ClaimJob($jobId: uuid!) {
   update_jobs(where: {id: {_eq: $jobId}}) {
     affected_rows
+    returning {
+      id
+      server_user_id
+      server {
+        id
+      }
+    }
   }
 }
     `;

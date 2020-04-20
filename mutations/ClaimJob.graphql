@@ -1,5 +1,12 @@
 mutation ClaimJob($jobId: uuid!) {
   update_jobs(where: { id: { _eq: $jobId } }) {
     affected_rows
+    returning {
+      id
+      server_user_id
+      server {
+        id
+      }
+    }
   }
 }

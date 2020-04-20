@@ -23,11 +23,18 @@ export default function JobDetailsDocuments() {
   const router = useRouter()
   const { jobId } = router.query
   const { userId } = useAuth()
-  const { data } = useJobDetailsDocumentsQuery({ variables: { jobId, userId } })
+  const { data, refetch } = useJobDetailsDocumentsQuery({
+    variables: { jobId, userId },
+  })
   const job = useMemo(() => data?.jobs_by_pk, [data])
 
   return (
-    <JobDetailsPage job={data?.jobs_by_pk} query={data} tab='documents'>
+    <JobDetailsPage
+      job={data?.jobs_by_pk}
+      query={data}
+      tab='documents'
+      refetch={refetch}
+    >
       {job?.pickup_required ? (
         <Card>
           <CardHeader title='Pickup Required' />

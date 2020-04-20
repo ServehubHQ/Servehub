@@ -20,6 +20,7 @@ import { Page } from './Page'
 
 interface JobDetailsPageProps {
   children: ReactNode
+  refetch: () => Promise<any>
   query?: JobDetailsPageQueryFragment
   job?: JobDetailsPageJobFragment | null
   tab?: string
@@ -34,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
 export function JobDetailsPage({
   children,
   tab = 'index',
+  refetch,
   job,
   query,
 }: JobDetailsPageProps) {
@@ -47,7 +49,8 @@ export function JobDetailsPage({
       throw new Error('Job undefined when claiming')
     }
     await claimJob({ variables: { jobId: job.id } })
-  }, [claimJob, job])
+    await refetch()
+  }, [claimJob, job, refetch])
 
   const handleTabsChange = useCallback(
     (event: ChangeEvent<{}>, newTab: string) => {

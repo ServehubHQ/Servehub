@@ -37,8 +37,10 @@ export default function JobsCreateTargetPage() {
   const { register, handleSubmit, errors, setError } = useForm<FormData>()
 
   const handleFormValid = useCallback(
-    async (formData: FormData) => {
-      const { data: addressData } = await insertAddress({ variables: formData })
+    async ({ name: targetName, ...targetAddress }: FormData) => {
+      const { data: addressData } = await insertAddress({
+        variables: targetAddress,
+      })
 
       const addressId = addressData?.insert_addresses?.returning[0]?.id
       if (!addressId) {
@@ -49,7 +51,7 @@ export default function JobsCreateTargetPage() {
       await setJobTarget({
         variables: {
           jobId: router.query.id,
-          targetName: formData.name,
+          targetName,
           addressId,
         },
       })

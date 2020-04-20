@@ -22,7 +22,9 @@ export default function JobDetailsChat() {
   const router = useRouter()
   const { jobId } = router.query
   const { userId } = useAuth()
-  const { data } = useJobDetailsChatQuery({ variables: { jobId, userId } })
+  const { data, refetch } = useJobDetailsChatQuery({
+    variables: { jobId, userId },
+  })
   const job = useMemo(() => data?.jobs_by_pk, [data])
   const chatCardRef = useRef<HTMLDivElement>()
 
@@ -37,7 +39,12 @@ export default function JobDetailsChat() {
   }, [chatCardRef])
 
   return (
-    <JobDetailsPage job={data?.jobs_by_pk} query={data} tab='chat'>
+    <JobDetailsPage
+      job={data?.jobs_by_pk}
+      query={data}
+      tab='chat'
+      refetch={refetch}
+    >
       {job ? (
         <Paper className={classNames.chatCard} ref={chatCardRef}>
           <ChatMessages jobId={job.id} />

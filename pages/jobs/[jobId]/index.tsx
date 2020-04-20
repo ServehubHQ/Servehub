@@ -32,12 +32,12 @@ export default function JobDetails() {
   const { jobId } = router.query
   const styles = useStyles()
   const { userId } = useAuth()
-  const { data } = useJobDetialsQuery({ variables: { jobId, userId } })
+  const { data, refetch } = useJobDetialsQuery({ variables: { jobId, userId } })
 
   const job = useMemo(() => data?.jobs_by_pk, [data])
 
   return (
-    <JobDetailsPage job={data?.jobs_by_pk} query={data}>
+    <JobDetailsPage job={data?.jobs_by_pk} query={data} refetch={refetch}>
       <Grid container spacing={2}>
         <Grid item sm={12} md={6}>
           <Card>

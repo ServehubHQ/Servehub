@@ -19,7 +19,6 @@ const useStyles = makeStyles((theme) => ({
 
 function StepIcon({ active, ...props }: StepIconProps) {
   const classNames = useStyles()
-  console.log({ active, ...props })
   return (
     <MuiStepIcon
       {...props}
