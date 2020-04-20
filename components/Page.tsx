@@ -24,7 +24,7 @@ import {
   useMemo,
   useState,
 } from 'react'
-import { PageUserFragment } from '../graphql-codegen'
+import { PageQueryFragment } from '../graphql-codegen'
 import { getAndSaveMessagingToken } from '../lib/firebase'
 import { useApolloClient } from '../lib/getApolloClient'
 import { useAuth } from '../lib/useAuth'
@@ -33,7 +33,7 @@ import { useGlobalLoading } from '../lib/useGlobalLoading'
 export interface PageProps {
   title: string
   children?: ReactNode
-  currentUser?: PageUserFragment
+  query?: PageQueryFragment
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -70,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export function Page({ title, children, currentUser }: PageProps) {
+export function Page({ title, children, query }: PageProps) {
   const router = useRouter()
   const globalLoading = useGlobalLoading()
   const { isAuthenticated, authClient, isAdmin, role } = useAuth()
@@ -89,11 +89,12 @@ export function Page({ title, children, currentUser }: PageProps) {
       typeof optimisticNotificationsEnabled === 'boolean'
         ? optimisticNotificationsEnabled
         : Boolean(
-            currentUser &&
-              currentUser.firebase_messaging_token &&
-              currentUser.notifications_enabled,
+            query?.current_user &&
+              query?.current_user[0] &&
+              query?.current_user[0].firebase_messaging_token &&
+              query?.current_user[0].notifications_enabled,
           ),
-    [currentUser, optimisticNotificationsEnabled],
+    [query, optimisticNotificationsEnabled],
   )
 
   const handleLogoutClick = useCallback(() => {

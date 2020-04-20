@@ -1,8 +1,13 @@
-mutation SetJobTarget($id: uuid!, $targetId: uuid!) {
-  update_jobs(where: { id: { _eq: $id } }, _set: { target_id: $targetId }) {
+mutation SetJobTarget($jobId: uuid!, $targetName: String!, $addressId: uuid!) {
+  update_jobs(
+    where: { id: { _eq: $jobId } }
+    _set: { target_name: $targetName, target_address_id: $addressId }
+  ) {
+    affected_rows
     returning {
       id
-      target_id
+      target_name
+      target_address_id
     }
   }
 }

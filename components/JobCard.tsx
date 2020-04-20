@@ -48,7 +48,7 @@ export default function JobCard({ job }: JobCardProps) {
                   Target
                 </Typography>
                 <Typography variant='h6' component='h2'>
-                  {job.target?.name}
+                  {job.target_name}
                 </Typography>
               </div>
               <div>
@@ -64,7 +64,9 @@ export default function JobCard({ job }: JobCardProps) {
                   Address
                 </Typography>
                 <Typography variant='h6' component='h2'>
-                  {job?.target ? <Address address={job.target} /> : null}
+                  {job?.target_address ? (
+                    <Address {...job.target_address} />
+                  ) : null}
                 </Typography>
               </div>
             </Stack>
@@ -78,7 +80,7 @@ export default function JobCard({ job }: JobCardProps) {
         </Grid>
         <Grid item sm={6} lg={8}>
           <CardMedia className={styles.map}>
-            {job.target ? <Map {...job.target} /> : null}
+            {job.target_address ? <Map {...job.target_address} /> : null}
           </CardMedia>
         </Grid>
       </Grid>

@@ -14,6 +14,260 @@ export type Scalars = {
   jsonb: any;
 };
 
+export type Addresses = {
+   __typename?: 'addresses';
+  city: Scalars['String'];
+  country: Countries_Enum;
+  countryByCountry: Countries;
+  created_at: Scalars['timestamptz'];
+  id: Scalars['uuid'];
+  pickup_jobs: Array<Jobs>;
+  pickup_jobs_aggregate: Jobs_Aggregate;
+  postal_code: Scalars['String'];
+  province: Provinces_Enum;
+  provinceByProvince: Provinces;
+  street: Scalars['String'];
+  target_jobs: Array<Jobs>;
+  target_jobs_aggregate: Jobs_Aggregate;
+  unit?: Maybe<Scalars['String']>;
+  updated_at: Scalars['timestamptz'];
+  users: Array<Users>;
+  users_aggregate: Users_Aggregate;
+};
+
+
+export type AddressesPickup_JobsArgs = {
+  distinct_on?: Maybe<Array<Jobs_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Jobs_Order_By>>;
+  where?: Maybe<Jobs_Bool_Exp>;
+};
+
+
+export type AddressesPickup_Jobs_AggregateArgs = {
+  distinct_on?: Maybe<Array<Jobs_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Jobs_Order_By>>;
+  where?: Maybe<Jobs_Bool_Exp>;
+};
+
+
+export type AddressesTarget_JobsArgs = {
+  distinct_on?: Maybe<Array<Jobs_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Jobs_Order_By>>;
+  where?: Maybe<Jobs_Bool_Exp>;
+};
+
+
+export type AddressesTarget_Jobs_AggregateArgs = {
+  distinct_on?: Maybe<Array<Jobs_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Jobs_Order_By>>;
+  where?: Maybe<Jobs_Bool_Exp>;
+};
+
+
+export type AddressesUsersArgs = {
+  distinct_on?: Maybe<Array<Users_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Users_Order_By>>;
+  where?: Maybe<Users_Bool_Exp>;
+};
+
+
+export type AddressesUsers_AggregateArgs = {
+  distinct_on?: Maybe<Array<Users_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Users_Order_By>>;
+  where?: Maybe<Users_Bool_Exp>;
+};
+
+export type Addresses_Aggregate = {
+   __typename?: 'addresses_aggregate';
+  aggregate?: Maybe<Addresses_Aggregate_Fields>;
+  nodes: Array<Addresses>;
+};
+
+export type Addresses_Aggregate_Fields = {
+   __typename?: 'addresses_aggregate_fields';
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<Addresses_Max_Fields>;
+  min?: Maybe<Addresses_Min_Fields>;
+};
+
+
+export type Addresses_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Addresses_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+export type Addresses_Aggregate_Order_By = {
+  count?: Maybe<Order_By>;
+  max?: Maybe<Addresses_Max_Order_By>;
+  min?: Maybe<Addresses_Min_Order_By>;
+};
+
+export type Addresses_Arr_Rel_Insert_Input = {
+  data: Array<Addresses_Insert_Input>;
+  on_conflict?: Maybe<Addresses_On_Conflict>;
+};
+
+export type Addresses_Bool_Exp = {
+  _and?: Maybe<Array<Maybe<Addresses_Bool_Exp>>>;
+  _not?: Maybe<Addresses_Bool_Exp>;
+  _or?: Maybe<Array<Maybe<Addresses_Bool_Exp>>>;
+  city?: Maybe<String_Comparison_Exp>;
+  country?: Maybe<Countries_Enum_Comparison_Exp>;
+  countryByCountry?: Maybe<Countries_Bool_Exp>;
+  created_at?: Maybe<Timestamptz_Comparison_Exp>;
+  id?: Maybe<Uuid_Comparison_Exp>;
+  pickup_jobs?: Maybe<Jobs_Bool_Exp>;
+  postal_code?: Maybe<String_Comparison_Exp>;
+  province?: Maybe<Provinces_Enum_Comparison_Exp>;
+  provinceByProvince?: Maybe<Provinces_Bool_Exp>;
+  street?: Maybe<String_Comparison_Exp>;
+  target_jobs?: Maybe<Jobs_Bool_Exp>;
+  unit?: Maybe<String_Comparison_Exp>;
+  updated_at?: Maybe<Timestamptz_Comparison_Exp>;
+  users?: Maybe<Users_Bool_Exp>;
+};
+
+export enum Addresses_Constraint {
+  AddressesPkey = 'addresses_pkey'
+}
+
+export type Addresses_Insert_Input = {
+  city?: Maybe<Scalars['String']>;
+  country?: Maybe<Countries_Enum>;
+  countryByCountry?: Maybe<Countries_Obj_Rel_Insert_Input>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  pickup_jobs?: Maybe<Jobs_Arr_Rel_Insert_Input>;
+  postal_code?: Maybe<Scalars['String']>;
+  province?: Maybe<Provinces_Enum>;
+  provinceByProvince?: Maybe<Provinces_Obj_Rel_Insert_Input>;
+  street?: Maybe<Scalars['String']>;
+  target_jobs?: Maybe<Jobs_Arr_Rel_Insert_Input>;
+  unit?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+  users?: Maybe<Users_Arr_Rel_Insert_Input>;
+};
+
+export type Addresses_Max_Fields = {
+   __typename?: 'addresses_max_fields';
+  city?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  postal_code?: Maybe<Scalars['String']>;
+  street?: Maybe<Scalars['String']>;
+  unit?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+export type Addresses_Max_Order_By = {
+  city?: Maybe<Order_By>;
+  created_at?: Maybe<Order_By>;
+  postal_code?: Maybe<Order_By>;
+  street?: Maybe<Order_By>;
+  unit?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+};
+
+export type Addresses_Min_Fields = {
+   __typename?: 'addresses_min_fields';
+  city?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  postal_code?: Maybe<Scalars['String']>;
+  street?: Maybe<Scalars['String']>;
+  unit?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+export type Addresses_Min_Order_By = {
+  city?: Maybe<Order_By>;
+  created_at?: Maybe<Order_By>;
+  postal_code?: Maybe<Order_By>;
+  street?: Maybe<Order_By>;
+  unit?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+};
+
+export type Addresses_Mutation_Response = {
+   __typename?: 'addresses_mutation_response';
+  affected_rows: Scalars['Int'];
+  returning: Array<Addresses>;
+};
+
+export type Addresses_Obj_Rel_Insert_Input = {
+  data: Addresses_Insert_Input;
+  on_conflict?: Maybe<Addresses_On_Conflict>;
+};
+
+export type Addresses_On_Conflict = {
+  constraint: Addresses_Constraint;
+  update_columns: Array<Addresses_Update_Column>;
+  where?: Maybe<Addresses_Bool_Exp>;
+};
+
+export type Addresses_Order_By = {
+  city?: Maybe<Order_By>;
+  country?: Maybe<Order_By>;
+  countryByCountry?: Maybe<Countries_Order_By>;
+  created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  pickup_jobs_aggregate?: Maybe<Jobs_Aggregate_Order_By>;
+  postal_code?: Maybe<Order_By>;
+  province?: Maybe<Order_By>;
+  provinceByProvince?: Maybe<Provinces_Order_By>;
+  street?: Maybe<Order_By>;
+  target_jobs_aggregate?: Maybe<Jobs_Aggregate_Order_By>;
+  unit?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+  users_aggregate?: Maybe<Users_Aggregate_Order_By>;
+};
+
+export enum Addresses_Select_Column {
+  City = 'city',
+  Country = 'country',
+  CreatedAt = 'created_at',
+  Id = 'id',
+  PostalCode = 'postal_code',
+  Province = 'province',
+  Street = 'street',
+  Unit = 'unit',
+  UpdatedAt = 'updated_at'
+}
+
+export type Addresses_Set_Input = {
+  city?: Maybe<Scalars['String']>;
+  country?: Maybe<Countries_Enum>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  postal_code?: Maybe<Scalars['String']>;
+  province?: Maybe<Provinces_Enum>;
+  street?: Maybe<Scalars['String']>;
+  unit?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+export enum Addresses_Update_Column {
+  City = 'city',
+  Country = 'country',
+  CreatedAt = 'created_at',
+  Id = 'id',
+  PostalCode = 'postal_code',
+  Province = 'province',
+  Street = 'street',
+  Unit = 'unit',
+  UpdatedAt = 'updated_at'
+}
+
 export type Attempts = {
    __typename?: 'attempts';
   attempted_at: Scalars['timestamptz'];
@@ -762,6 +1016,378 @@ export type Boolean_Comparison_Exp = {
   _nin?: Maybe<Array<Scalars['Boolean']>>;
 };
 
+export type Countries = {
+   __typename?: 'countries';
+  id: Scalars['String'];
+  name: Scalars['String'];
+};
+
+export type Countries_Aggregate = {
+   __typename?: 'countries_aggregate';
+  aggregate?: Maybe<Countries_Aggregate_Fields>;
+  nodes: Array<Countries>;
+};
+
+export type Countries_Aggregate_Fields = {
+   __typename?: 'countries_aggregate_fields';
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<Countries_Max_Fields>;
+  min?: Maybe<Countries_Min_Fields>;
+};
+
+
+export type Countries_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Countries_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+export type Countries_Aggregate_Order_By = {
+  count?: Maybe<Order_By>;
+  max?: Maybe<Countries_Max_Order_By>;
+  min?: Maybe<Countries_Min_Order_By>;
+};
+
+export type Countries_Arr_Rel_Insert_Input = {
+  data: Array<Countries_Insert_Input>;
+  on_conflict?: Maybe<Countries_On_Conflict>;
+};
+
+export type Countries_Bool_Exp = {
+  _and?: Maybe<Array<Maybe<Countries_Bool_Exp>>>;
+  _not?: Maybe<Countries_Bool_Exp>;
+  _or?: Maybe<Array<Maybe<Countries_Bool_Exp>>>;
+  id?: Maybe<String_Comparison_Exp>;
+  name?: Maybe<String_Comparison_Exp>;
+};
+
+export enum Countries_Constraint {
+  CountriesPkey = 'countries_pkey'
+}
+
+export enum Countries_Enum {
+  Ca = 'CA'
+}
+
+export type Countries_Enum_Comparison_Exp = {
+  _eq?: Maybe<Countries_Enum>;
+  _in?: Maybe<Array<Countries_Enum>>;
+  _is_null?: Maybe<Scalars['Boolean']>;
+  _neq?: Maybe<Countries_Enum>;
+  _nin?: Maybe<Array<Countries_Enum>>;
+};
+
+export type Countries_Insert_Input = {
+  id?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+};
+
+export type Countries_Max_Fields = {
+   __typename?: 'countries_max_fields';
+  id?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+};
+
+export type Countries_Max_Order_By = {
+  id?: Maybe<Order_By>;
+  name?: Maybe<Order_By>;
+};
+
+export type Countries_Min_Fields = {
+   __typename?: 'countries_min_fields';
+  id?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+};
+
+export type Countries_Min_Order_By = {
+  id?: Maybe<Order_By>;
+  name?: Maybe<Order_By>;
+};
+
+export type Countries_Mutation_Response = {
+   __typename?: 'countries_mutation_response';
+  affected_rows: Scalars['Int'];
+  returning: Array<Countries>;
+};
+
+export type Countries_Obj_Rel_Insert_Input = {
+  data: Countries_Insert_Input;
+  on_conflict?: Maybe<Countries_On_Conflict>;
+};
+
+export type Countries_On_Conflict = {
+  constraint: Countries_Constraint;
+  update_columns: Array<Countries_Update_Column>;
+  where?: Maybe<Countries_Bool_Exp>;
+};
+
+export type Countries_Order_By = {
+  id?: Maybe<Order_By>;
+  name?: Maybe<Order_By>;
+};
+
+export enum Countries_Select_Column {
+  Id = 'id',
+  Name = 'name'
+}
+
+export type Countries_Set_Input = {
+  id?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+};
+
+export enum Countries_Update_Column {
+  Id = 'id',
+  Name = 'name'
+}
+
+export type Current_User = {
+   __typename?: 'current_user';
+  active?: Maybe<Scalars['Boolean']>;
+  address_id?: Maybe<Scalars['uuid']>;
+  approved?: Maybe<Scalars['Boolean']>;
+  avatar_url?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  default_role?: Maybe<Scalars['String']>;
+  display_name?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+  firebase_messaging_token?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
+  is_anonymous?: Maybe<Scalars['Boolean']>;
+  name?: Maybe<Scalars['String']>;
+  notifications_enabled?: Maybe<Scalars['Boolean']>;
+  register_data?: Maybe<Scalars['jsonb']>;
+  secret_token?: Maybe<Scalars['uuid']>;
+  secret_token_expires_at?: Maybe<Scalars['timestamptz']>;
+  stripe_customer_id?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+
+export type Current_UserRegister_DataArgs = {
+  path?: Maybe<Scalars['String']>;
+};
+
+export type Current_User_Aggregate = {
+   __typename?: 'current_user_aggregate';
+  aggregate?: Maybe<Current_User_Aggregate_Fields>;
+  nodes: Array<Current_User>;
+};
+
+export type Current_User_Aggregate_Fields = {
+   __typename?: 'current_user_aggregate_fields';
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<Current_User_Max_Fields>;
+  min?: Maybe<Current_User_Min_Fields>;
+};
+
+
+export type Current_User_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Current_User_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+export type Current_User_Aggregate_Order_By = {
+  count?: Maybe<Order_By>;
+  max?: Maybe<Current_User_Max_Order_By>;
+  min?: Maybe<Current_User_Min_Order_By>;
+};
+
+export type Current_User_Append_Input = {
+  register_data?: Maybe<Scalars['jsonb']>;
+};
+
+export type Current_User_Arr_Rel_Insert_Input = {
+  data: Array<Current_User_Insert_Input>;
+};
+
+export type Current_User_Bool_Exp = {
+  _and?: Maybe<Array<Maybe<Current_User_Bool_Exp>>>;
+  _not?: Maybe<Current_User_Bool_Exp>;
+  _or?: Maybe<Array<Maybe<Current_User_Bool_Exp>>>;
+  active?: Maybe<Boolean_Comparison_Exp>;
+  address_id?: Maybe<Uuid_Comparison_Exp>;
+  approved?: Maybe<Boolean_Comparison_Exp>;
+  avatar_url?: Maybe<String_Comparison_Exp>;
+  created_at?: Maybe<Timestamptz_Comparison_Exp>;
+  default_role?: Maybe<String_Comparison_Exp>;
+  display_name?: Maybe<String_Comparison_Exp>;
+  email?: Maybe<String_Comparison_Exp>;
+  firebase_messaging_token?: Maybe<String_Comparison_Exp>;
+  id?: Maybe<Uuid_Comparison_Exp>;
+  is_anonymous?: Maybe<Boolean_Comparison_Exp>;
+  name?: Maybe<String_Comparison_Exp>;
+  notifications_enabled?: Maybe<Boolean_Comparison_Exp>;
+  register_data?: Maybe<Jsonb_Comparison_Exp>;
+  secret_token?: Maybe<Uuid_Comparison_Exp>;
+  secret_token_expires_at?: Maybe<Timestamptz_Comparison_Exp>;
+  stripe_customer_id?: Maybe<String_Comparison_Exp>;
+  updated_at?: Maybe<Timestamptz_Comparison_Exp>;
+};
+
+export type Current_User_Delete_At_Path_Input = {
+  register_data?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
+export type Current_User_Delete_Elem_Input = {
+  register_data?: Maybe<Scalars['Int']>;
+};
+
+export type Current_User_Delete_Key_Input = {
+  register_data?: Maybe<Scalars['String']>;
+};
+
+export type Current_User_Insert_Input = {
+  active?: Maybe<Scalars['Boolean']>;
+  address_id?: Maybe<Scalars['uuid']>;
+  approved?: Maybe<Scalars['Boolean']>;
+  avatar_url?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  default_role?: Maybe<Scalars['String']>;
+  display_name?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+  firebase_messaging_token?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
+  is_anonymous?: Maybe<Scalars['Boolean']>;
+  name?: Maybe<Scalars['String']>;
+  notifications_enabled?: Maybe<Scalars['Boolean']>;
+  register_data?: Maybe<Scalars['jsonb']>;
+  secret_token?: Maybe<Scalars['uuid']>;
+  secret_token_expires_at?: Maybe<Scalars['timestamptz']>;
+  stripe_customer_id?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+export type Current_User_Max_Fields = {
+   __typename?: 'current_user_max_fields';
+  avatar_url?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  default_role?: Maybe<Scalars['String']>;
+  display_name?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+  firebase_messaging_token?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  secret_token_expires_at?: Maybe<Scalars['timestamptz']>;
+  stripe_customer_id?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+export type Current_User_Max_Order_By = {
+  avatar_url?: Maybe<Order_By>;
+  created_at?: Maybe<Order_By>;
+  default_role?: Maybe<Order_By>;
+  display_name?: Maybe<Order_By>;
+  email?: Maybe<Order_By>;
+  firebase_messaging_token?: Maybe<Order_By>;
+  name?: Maybe<Order_By>;
+  secret_token_expires_at?: Maybe<Order_By>;
+  stripe_customer_id?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+};
+
+export type Current_User_Min_Fields = {
+   __typename?: 'current_user_min_fields';
+  avatar_url?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  default_role?: Maybe<Scalars['String']>;
+  display_name?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+  firebase_messaging_token?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  secret_token_expires_at?: Maybe<Scalars['timestamptz']>;
+  stripe_customer_id?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+export type Current_User_Min_Order_By = {
+  avatar_url?: Maybe<Order_By>;
+  created_at?: Maybe<Order_By>;
+  default_role?: Maybe<Order_By>;
+  display_name?: Maybe<Order_By>;
+  email?: Maybe<Order_By>;
+  firebase_messaging_token?: Maybe<Order_By>;
+  name?: Maybe<Order_By>;
+  secret_token_expires_at?: Maybe<Order_By>;
+  stripe_customer_id?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+};
+
+export type Current_User_Mutation_Response = {
+   __typename?: 'current_user_mutation_response';
+  affected_rows: Scalars['Int'];
+  returning: Array<Current_User>;
+};
+
+export type Current_User_Obj_Rel_Insert_Input = {
+  data: Current_User_Insert_Input;
+};
+
+export type Current_User_Order_By = {
+  active?: Maybe<Order_By>;
+  address_id?: Maybe<Order_By>;
+  approved?: Maybe<Order_By>;
+  avatar_url?: Maybe<Order_By>;
+  created_at?: Maybe<Order_By>;
+  default_role?: Maybe<Order_By>;
+  display_name?: Maybe<Order_By>;
+  email?: Maybe<Order_By>;
+  firebase_messaging_token?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  is_anonymous?: Maybe<Order_By>;
+  name?: Maybe<Order_By>;
+  notifications_enabled?: Maybe<Order_By>;
+  register_data?: Maybe<Order_By>;
+  secret_token?: Maybe<Order_By>;
+  secret_token_expires_at?: Maybe<Order_By>;
+  stripe_customer_id?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+};
+
+export type Current_User_Prepend_Input = {
+  register_data?: Maybe<Scalars['jsonb']>;
+};
+
+export enum Current_User_Select_Column {
+  Active = 'active',
+  AddressId = 'address_id',
+  Approved = 'approved',
+  AvatarUrl = 'avatar_url',
+  CreatedAt = 'created_at',
+  DefaultRole = 'default_role',
+  DisplayName = 'display_name',
+  Email = 'email',
+  FirebaseMessagingToken = 'firebase_messaging_token',
+  Id = 'id',
+  IsAnonymous = 'is_anonymous',
+  Name = 'name',
+  NotificationsEnabled = 'notifications_enabled',
+  RegisterData = 'register_data',
+  SecretToken = 'secret_token',
+  SecretTokenExpiresAt = 'secret_token_expires_at',
+  StripeCustomerId = 'stripe_customer_id',
+  UpdatedAt = 'updated_at'
+}
+
+export type Current_User_Set_Input = {
+  active?: Maybe<Scalars['Boolean']>;
+  address_id?: Maybe<Scalars['uuid']>;
+  approved?: Maybe<Scalars['Boolean']>;
+  avatar_url?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  default_role?: Maybe<Scalars['String']>;
+  display_name?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+  firebase_messaging_token?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
+  is_anonymous?: Maybe<Scalars['Boolean']>;
+  name?: Maybe<Scalars['String']>;
+  notifications_enabled?: Maybe<Scalars['Boolean']>;
+  register_data?: Maybe<Scalars['jsonb']>;
+  secret_token?: Maybe<Scalars['uuid']>;
+  secret_token_expires_at?: Maybe<Scalars['timestamptz']>;
+  stripe_customer_id?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
 export type Documents = {
    __typename?: 'documents';
   created_at: Scalars['timestamptz'];
@@ -927,19 +1553,17 @@ export type Jobs = {
   lawyer_user_id: Scalars['uuid'];
   messages: Array<Messages>;
   messages_aggregate: Messages_Aggregate;
-  pickup_city?: Maybe<Scalars['String']>;
-  pickup_postal_code?: Maybe<Scalars['String']>;
-  pickup_province?: Maybe<Scalars['String']>;
+  pickup_address?: Maybe<Addresses>;
+  pickup_address_id?: Maybe<Scalars['uuid']>;
   pickup_required: Scalars['Boolean'];
-  pickup_street?: Maybe<Scalars['String']>;
-  pickup_unit?: Maybe<Scalars['String']>;
   server?: Maybe<Users>;
   server_user_id?: Maybe<Scalars['uuid']>;
   stripe_payment_intent_client_secret?: Maybe<Scalars['String']>;
   stripe_payment_intent_id?: Maybe<Scalars['String']>;
   stripe_payment_intent_succeeded: Scalars['Boolean'];
-  target?: Maybe<Targets>;
-  target_id?: Maybe<Scalars['uuid']>;
+  target_address?: Maybe<Addresses>;
+  target_address_id?: Maybe<Scalars['uuid']>;
+  target_name?: Maybe<Scalars['String']>;
   updated_at: Scalars['timestamptz'];
 };
 
@@ -1039,25 +1663,22 @@ export type Jobs_Bool_Exp = {
   lawyer?: Maybe<Users_Bool_Exp>;
   lawyer_user_id?: Maybe<Uuid_Comparison_Exp>;
   messages?: Maybe<Messages_Bool_Exp>;
-  pickup_city?: Maybe<String_Comparison_Exp>;
-  pickup_postal_code?: Maybe<String_Comparison_Exp>;
-  pickup_province?: Maybe<String_Comparison_Exp>;
+  pickup_address?: Maybe<Addresses_Bool_Exp>;
+  pickup_address_id?: Maybe<Uuid_Comparison_Exp>;
   pickup_required?: Maybe<Boolean_Comparison_Exp>;
-  pickup_street?: Maybe<String_Comparison_Exp>;
-  pickup_unit?: Maybe<String_Comparison_Exp>;
   server?: Maybe<Users_Bool_Exp>;
   server_user_id?: Maybe<Uuid_Comparison_Exp>;
   stripe_payment_intent_client_secret?: Maybe<String_Comparison_Exp>;
   stripe_payment_intent_id?: Maybe<String_Comparison_Exp>;
   stripe_payment_intent_succeeded?: Maybe<Boolean_Comparison_Exp>;
-  target?: Maybe<Targets_Bool_Exp>;
-  target_id?: Maybe<Uuid_Comparison_Exp>;
+  target_address?: Maybe<Addresses_Bool_Exp>;
+  target_address_id?: Maybe<Uuid_Comparison_Exp>;
+  target_name?: Maybe<String_Comparison_Exp>;
   updated_at?: Maybe<Timestamptz_Comparison_Exp>;
 };
 
 export enum Jobs_Constraint {
-  JobsPkey = 'jobs_pkey',
-  JobsTargetIdKey = 'jobs_target_id_key'
+  JobsPkey = 'jobs_pkey'
 }
 
 export type Jobs_Insert_Input = {
@@ -1069,19 +1690,17 @@ export type Jobs_Insert_Input = {
   lawyer?: Maybe<Users_Obj_Rel_Insert_Input>;
   lawyer_user_id?: Maybe<Scalars['uuid']>;
   messages?: Maybe<Messages_Arr_Rel_Insert_Input>;
-  pickup_city?: Maybe<Scalars['String']>;
-  pickup_postal_code?: Maybe<Scalars['String']>;
-  pickup_province?: Maybe<Scalars['String']>;
+  pickup_address?: Maybe<Addresses_Obj_Rel_Insert_Input>;
+  pickup_address_id?: Maybe<Scalars['uuid']>;
   pickup_required?: Maybe<Scalars['Boolean']>;
-  pickup_street?: Maybe<Scalars['String']>;
-  pickup_unit?: Maybe<Scalars['String']>;
   server?: Maybe<Users_Obj_Rel_Insert_Input>;
   server_user_id?: Maybe<Scalars['uuid']>;
   stripe_payment_intent_client_secret?: Maybe<Scalars['String']>;
   stripe_payment_intent_id?: Maybe<Scalars['String']>;
   stripe_payment_intent_succeeded?: Maybe<Scalars['Boolean']>;
-  target?: Maybe<Targets_Obj_Rel_Insert_Input>;
-  target_id?: Maybe<Scalars['uuid']>;
+  target_address?: Maybe<Addresses_Obj_Rel_Insert_Input>;
+  target_address_id?: Maybe<Scalars['uuid']>;
+  target_name?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
@@ -1089,26 +1708,18 @@ export type Jobs_Max_Fields = {
    __typename?: 'jobs_max_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
   description?: Maybe<Scalars['String']>;
-  pickup_city?: Maybe<Scalars['String']>;
-  pickup_postal_code?: Maybe<Scalars['String']>;
-  pickup_province?: Maybe<Scalars['String']>;
-  pickup_street?: Maybe<Scalars['String']>;
-  pickup_unit?: Maybe<Scalars['String']>;
   stripe_payment_intent_client_secret?: Maybe<Scalars['String']>;
   stripe_payment_intent_id?: Maybe<Scalars['String']>;
+  target_name?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 export type Jobs_Max_Order_By = {
   created_at?: Maybe<Order_By>;
   description?: Maybe<Order_By>;
-  pickup_city?: Maybe<Order_By>;
-  pickup_postal_code?: Maybe<Order_By>;
-  pickup_province?: Maybe<Order_By>;
-  pickup_street?: Maybe<Order_By>;
-  pickup_unit?: Maybe<Order_By>;
   stripe_payment_intent_client_secret?: Maybe<Order_By>;
   stripe_payment_intent_id?: Maybe<Order_By>;
+  target_name?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
 
@@ -1116,26 +1727,18 @@ export type Jobs_Min_Fields = {
    __typename?: 'jobs_min_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
   description?: Maybe<Scalars['String']>;
-  pickup_city?: Maybe<Scalars['String']>;
-  pickup_postal_code?: Maybe<Scalars['String']>;
-  pickup_province?: Maybe<Scalars['String']>;
-  pickup_street?: Maybe<Scalars['String']>;
-  pickup_unit?: Maybe<Scalars['String']>;
   stripe_payment_intent_client_secret?: Maybe<Scalars['String']>;
   stripe_payment_intent_id?: Maybe<Scalars['String']>;
+  target_name?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 export type Jobs_Min_Order_By = {
   created_at?: Maybe<Order_By>;
   description?: Maybe<Order_By>;
-  pickup_city?: Maybe<Order_By>;
-  pickup_postal_code?: Maybe<Order_By>;
-  pickup_province?: Maybe<Order_By>;
-  pickup_street?: Maybe<Order_By>;
-  pickup_unit?: Maybe<Order_By>;
   stripe_payment_intent_client_secret?: Maybe<Order_By>;
   stripe_payment_intent_id?: Maybe<Order_By>;
+  target_name?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
 
@@ -1165,19 +1768,17 @@ export type Jobs_Order_By = {
   lawyer?: Maybe<Users_Order_By>;
   lawyer_user_id?: Maybe<Order_By>;
   messages_aggregate?: Maybe<Messages_Aggregate_Order_By>;
-  pickup_city?: Maybe<Order_By>;
-  pickup_postal_code?: Maybe<Order_By>;
-  pickup_province?: Maybe<Order_By>;
+  pickup_address?: Maybe<Addresses_Order_By>;
+  pickup_address_id?: Maybe<Order_By>;
   pickup_required?: Maybe<Order_By>;
-  pickup_street?: Maybe<Order_By>;
-  pickup_unit?: Maybe<Order_By>;
   server?: Maybe<Users_Order_By>;
   server_user_id?: Maybe<Order_By>;
   stripe_payment_intent_client_secret?: Maybe<Order_By>;
   stripe_payment_intent_id?: Maybe<Order_By>;
   stripe_payment_intent_succeeded?: Maybe<Order_By>;
-  target?: Maybe<Targets_Order_By>;
-  target_id?: Maybe<Order_By>;
+  target_address?: Maybe<Addresses_Order_By>;
+  target_address_id?: Maybe<Order_By>;
+  target_name?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
 
@@ -1186,17 +1787,14 @@ export enum Jobs_Select_Column {
   Description = 'description',
   Id = 'id',
   LawyerUserId = 'lawyer_user_id',
-  PickupCity = 'pickup_city',
-  PickupPostalCode = 'pickup_postal_code',
-  PickupProvince = 'pickup_province',
+  PickupAddressId = 'pickup_address_id',
   PickupRequired = 'pickup_required',
-  PickupStreet = 'pickup_street',
-  PickupUnit = 'pickup_unit',
   ServerUserId = 'server_user_id',
   StripePaymentIntentClientSecret = 'stripe_payment_intent_client_secret',
   StripePaymentIntentId = 'stripe_payment_intent_id',
   StripePaymentIntentSucceeded = 'stripe_payment_intent_succeeded',
-  TargetId = 'target_id',
+  TargetAddressId = 'target_address_id',
+  TargetName = 'target_name',
   UpdatedAt = 'updated_at'
 }
 
@@ -1205,17 +1803,14 @@ export type Jobs_Set_Input = {
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   lawyer_user_id?: Maybe<Scalars['uuid']>;
-  pickup_city?: Maybe<Scalars['String']>;
-  pickup_postal_code?: Maybe<Scalars['String']>;
-  pickup_province?: Maybe<Scalars['String']>;
+  pickup_address_id?: Maybe<Scalars['uuid']>;
   pickup_required?: Maybe<Scalars['Boolean']>;
-  pickup_street?: Maybe<Scalars['String']>;
-  pickup_unit?: Maybe<Scalars['String']>;
   server_user_id?: Maybe<Scalars['uuid']>;
   stripe_payment_intent_client_secret?: Maybe<Scalars['String']>;
   stripe_payment_intent_id?: Maybe<Scalars['String']>;
   stripe_payment_intent_succeeded?: Maybe<Scalars['Boolean']>;
-  target_id?: Maybe<Scalars['uuid']>;
+  target_address_id?: Maybe<Scalars['uuid']>;
+  target_name?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
@@ -1224,17 +1819,14 @@ export enum Jobs_Update_Column {
   Description = 'description',
   Id = 'id',
   LawyerUserId = 'lawyer_user_id',
-  PickupCity = 'pickup_city',
-  PickupPostalCode = 'pickup_postal_code',
-  PickupProvince = 'pickup_province',
+  PickupAddressId = 'pickup_address_id',
   PickupRequired = 'pickup_required',
-  PickupStreet = 'pickup_street',
-  PickupUnit = 'pickup_unit',
   ServerUserId = 'server_user_id',
   StripePaymentIntentClientSecret = 'stripe_payment_intent_client_secret',
   StripePaymentIntentId = 'stripe_payment_intent_id',
   StripePaymentIntentSucceeded = 'stripe_payment_intent_succeeded',
-  TargetId = 'target_id',
+  TargetAddressId = 'target_address_id',
+  TargetName = 'target_name',
   UpdatedAt = 'updated_at'
 }
 
@@ -1410,42 +2002,56 @@ export enum Messages_Update_Column {
 
 export type Mutation_Root = {
    __typename?: 'mutation_root';
+  delete_addresses?: Maybe<Addresses_Mutation_Response>;
   delete_attempts?: Maybe<Attempts_Mutation_Response>;
   delete_auth_auth_providers?: Maybe<Auth_Auth_Providers_Mutation_Response>;
   delete_auth_refresh_tokens?: Maybe<Auth_Refresh_Tokens_Mutation_Response>;
   delete_auth_user_accounts?: Maybe<Auth_User_Accounts_Mutation_Response>;
   delete_auth_user_providers?: Maybe<Auth_User_Providers_Mutation_Response>;
+  delete_countries?: Maybe<Countries_Mutation_Response>;
+  delete_current_user?: Maybe<Current_User_Mutation_Response>;
   delete_documents?: Maybe<Documents_Mutation_Response>;
   delete_jobs?: Maybe<Jobs_Mutation_Response>;
   delete_messages?: Maybe<Messages_Mutation_Response>;
+  delete_provinces?: Maybe<Provinces_Mutation_Response>;
   delete_roles?: Maybe<Roles_Mutation_Response>;
-  delete_targets?: Maybe<Targets_Mutation_Response>;
   delete_user_roles?: Maybe<User_Roles_Mutation_Response>;
   delete_users?: Maybe<Users_Mutation_Response>;
+  insert_addresses?: Maybe<Addresses_Mutation_Response>;
   insert_attempts?: Maybe<Attempts_Mutation_Response>;
   insert_auth_auth_providers?: Maybe<Auth_Auth_Providers_Mutation_Response>;
   insert_auth_refresh_tokens?: Maybe<Auth_Refresh_Tokens_Mutation_Response>;
   insert_auth_user_accounts?: Maybe<Auth_User_Accounts_Mutation_Response>;
   insert_auth_user_providers?: Maybe<Auth_User_Providers_Mutation_Response>;
+  insert_countries?: Maybe<Countries_Mutation_Response>;
+  insert_current_user?: Maybe<Current_User_Mutation_Response>;
   insert_documents?: Maybe<Documents_Mutation_Response>;
   insert_jobs?: Maybe<Jobs_Mutation_Response>;
   insert_messages?: Maybe<Messages_Mutation_Response>;
+  insert_provinces?: Maybe<Provinces_Mutation_Response>;
   insert_roles?: Maybe<Roles_Mutation_Response>;
-  insert_targets?: Maybe<Targets_Mutation_Response>;
   insert_user_roles?: Maybe<User_Roles_Mutation_Response>;
   insert_users?: Maybe<Users_Mutation_Response>;
+  update_addresses?: Maybe<Addresses_Mutation_Response>;
   update_attempts?: Maybe<Attempts_Mutation_Response>;
   update_auth_auth_providers?: Maybe<Auth_Auth_Providers_Mutation_Response>;
   update_auth_refresh_tokens?: Maybe<Auth_Refresh_Tokens_Mutation_Response>;
   update_auth_user_accounts?: Maybe<Auth_User_Accounts_Mutation_Response>;
   update_auth_user_providers?: Maybe<Auth_User_Providers_Mutation_Response>;
+  update_countries?: Maybe<Countries_Mutation_Response>;
+  update_current_user?: Maybe<Current_User_Mutation_Response>;
   update_documents?: Maybe<Documents_Mutation_Response>;
   update_jobs?: Maybe<Jobs_Mutation_Response>;
   update_messages?: Maybe<Messages_Mutation_Response>;
+  update_provinces?: Maybe<Provinces_Mutation_Response>;
   update_roles?: Maybe<Roles_Mutation_Response>;
-  update_targets?: Maybe<Targets_Mutation_Response>;
   update_user_roles?: Maybe<User_Roles_Mutation_Response>;
   update_users?: Maybe<Users_Mutation_Response>;
+};
+
+
+export type Mutation_RootDelete_AddressesArgs = {
+  where: Addresses_Bool_Exp;
 };
 
 
@@ -1474,6 +2080,16 @@ export type Mutation_RootDelete_Auth_User_ProvidersArgs = {
 };
 
 
+export type Mutation_RootDelete_CountriesArgs = {
+  where: Countries_Bool_Exp;
+};
+
+
+export type Mutation_RootDelete_Current_UserArgs = {
+  where: Current_User_Bool_Exp;
+};
+
+
 export type Mutation_RootDelete_DocumentsArgs = {
   where: Documents_Bool_Exp;
 };
@@ -1489,13 +2105,13 @@ export type Mutation_RootDelete_MessagesArgs = {
 };
 
 
-export type Mutation_RootDelete_RolesArgs = {
-  where: Roles_Bool_Exp;
+export type Mutation_RootDelete_ProvincesArgs = {
+  where: Provinces_Bool_Exp;
 };
 
 
-export type Mutation_RootDelete_TargetsArgs = {
-  where: Targets_Bool_Exp;
+export type Mutation_RootDelete_RolesArgs = {
+  where: Roles_Bool_Exp;
 };
 
 
@@ -1506,6 +2122,12 @@ export type Mutation_RootDelete_User_RolesArgs = {
 
 export type Mutation_RootDelete_UsersArgs = {
   where: Users_Bool_Exp;
+};
+
+
+export type Mutation_RootInsert_AddressesArgs = {
+  objects: Array<Addresses_Insert_Input>;
+  on_conflict?: Maybe<Addresses_On_Conflict>;
 };
 
 
@@ -1539,6 +2161,17 @@ export type Mutation_RootInsert_Auth_User_ProvidersArgs = {
 };
 
 
+export type Mutation_RootInsert_CountriesArgs = {
+  objects: Array<Countries_Insert_Input>;
+  on_conflict?: Maybe<Countries_On_Conflict>;
+};
+
+
+export type Mutation_RootInsert_Current_UserArgs = {
+  objects: Array<Current_User_Insert_Input>;
+};
+
+
 export type Mutation_RootInsert_DocumentsArgs = {
   objects: Array<Documents_Insert_Input>;
   on_conflict?: Maybe<Documents_On_Conflict>;
@@ -1557,15 +2190,15 @@ export type Mutation_RootInsert_MessagesArgs = {
 };
 
 
-export type Mutation_RootInsert_RolesArgs = {
-  objects: Array<Roles_Insert_Input>;
-  on_conflict?: Maybe<Roles_On_Conflict>;
+export type Mutation_RootInsert_ProvincesArgs = {
+  objects: Array<Provinces_Insert_Input>;
+  on_conflict?: Maybe<Provinces_On_Conflict>;
 };
 
 
-export type Mutation_RootInsert_TargetsArgs = {
-  objects: Array<Targets_Insert_Input>;
-  on_conflict?: Maybe<Targets_On_Conflict>;
+export type Mutation_RootInsert_RolesArgs = {
+  objects: Array<Roles_Insert_Input>;
+  on_conflict?: Maybe<Roles_On_Conflict>;
 };
 
 
@@ -1578,6 +2211,12 @@ export type Mutation_RootInsert_User_RolesArgs = {
 export type Mutation_RootInsert_UsersArgs = {
   objects: Array<Users_Insert_Input>;
   on_conflict?: Maybe<Users_On_Conflict>;
+};
+
+
+export type Mutation_RootUpdate_AddressesArgs = {
+  _set?: Maybe<Addresses_Set_Input>;
+  where: Addresses_Bool_Exp;
 };
 
 
@@ -1611,6 +2250,23 @@ export type Mutation_RootUpdate_Auth_User_ProvidersArgs = {
 };
 
 
+export type Mutation_RootUpdate_CountriesArgs = {
+  _set?: Maybe<Countries_Set_Input>;
+  where: Countries_Bool_Exp;
+};
+
+
+export type Mutation_RootUpdate_Current_UserArgs = {
+  _append?: Maybe<Current_User_Append_Input>;
+  _delete_at_path?: Maybe<Current_User_Delete_At_Path_Input>;
+  _delete_elem?: Maybe<Current_User_Delete_Elem_Input>;
+  _delete_key?: Maybe<Current_User_Delete_Key_Input>;
+  _prepend?: Maybe<Current_User_Prepend_Input>;
+  _set?: Maybe<Current_User_Set_Input>;
+  where: Current_User_Bool_Exp;
+};
+
+
 export type Mutation_RootUpdate_DocumentsArgs = {
   _set?: Maybe<Documents_Set_Input>;
   where: Documents_Bool_Exp;
@@ -1629,15 +2285,15 @@ export type Mutation_RootUpdate_MessagesArgs = {
 };
 
 
-export type Mutation_RootUpdate_RolesArgs = {
-  _set?: Maybe<Roles_Set_Input>;
-  where: Roles_Bool_Exp;
+export type Mutation_RootUpdate_ProvincesArgs = {
+  _set?: Maybe<Provinces_Set_Input>;
+  where: Provinces_Bool_Exp;
 };
 
 
-export type Mutation_RootUpdate_TargetsArgs = {
-  _set?: Maybe<Targets_Set_Input>;
-  where: Targets_Bool_Exp;
+export type Mutation_RootUpdate_RolesArgs = {
+  _set?: Maybe<Roles_Set_Input>;
+  where: Roles_Bool_Exp;
 };
 
 
@@ -1666,8 +2322,147 @@ export enum Order_By {
   DescNullsLast = 'desc_nulls_last'
 }
 
+export type Provinces = {
+   __typename?: 'provinces';
+  id: Scalars['String'];
+  name: Scalars['String'];
+};
+
+export type Provinces_Aggregate = {
+   __typename?: 'provinces_aggregate';
+  aggregate?: Maybe<Provinces_Aggregate_Fields>;
+  nodes: Array<Provinces>;
+};
+
+export type Provinces_Aggregate_Fields = {
+   __typename?: 'provinces_aggregate_fields';
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<Provinces_Max_Fields>;
+  min?: Maybe<Provinces_Min_Fields>;
+};
+
+
+export type Provinces_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Provinces_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+export type Provinces_Aggregate_Order_By = {
+  count?: Maybe<Order_By>;
+  max?: Maybe<Provinces_Max_Order_By>;
+  min?: Maybe<Provinces_Min_Order_By>;
+};
+
+export type Provinces_Arr_Rel_Insert_Input = {
+  data: Array<Provinces_Insert_Input>;
+  on_conflict?: Maybe<Provinces_On_Conflict>;
+};
+
+export type Provinces_Bool_Exp = {
+  _and?: Maybe<Array<Maybe<Provinces_Bool_Exp>>>;
+  _not?: Maybe<Provinces_Bool_Exp>;
+  _or?: Maybe<Array<Maybe<Provinces_Bool_Exp>>>;
+  id?: Maybe<String_Comparison_Exp>;
+  name?: Maybe<String_Comparison_Exp>;
+};
+
+export enum Provinces_Constraint {
+  ProvincesPkey = 'provinces_pkey'
+}
+
+export enum Provinces_Enum {
+  Ab = 'AB',
+  Bc = 'BC',
+  Mb = 'MB',
+  Nb = 'NB',
+  Nl = 'NL',
+  Ns = 'NS',
+  Nt = 'NT',
+  Nu = 'NU',
+  On = 'ON',
+  Pe = 'PE',
+  Qc = 'QC',
+  Sk = 'SK',
+  Yt = 'YT'
+}
+
+export type Provinces_Enum_Comparison_Exp = {
+  _eq?: Maybe<Provinces_Enum>;
+  _in?: Maybe<Array<Provinces_Enum>>;
+  _is_null?: Maybe<Scalars['Boolean']>;
+  _neq?: Maybe<Provinces_Enum>;
+  _nin?: Maybe<Array<Provinces_Enum>>;
+};
+
+export type Provinces_Insert_Input = {
+  id?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+};
+
+export type Provinces_Max_Fields = {
+   __typename?: 'provinces_max_fields';
+  id?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+};
+
+export type Provinces_Max_Order_By = {
+  id?: Maybe<Order_By>;
+  name?: Maybe<Order_By>;
+};
+
+export type Provinces_Min_Fields = {
+   __typename?: 'provinces_min_fields';
+  id?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+};
+
+export type Provinces_Min_Order_By = {
+  id?: Maybe<Order_By>;
+  name?: Maybe<Order_By>;
+};
+
+export type Provinces_Mutation_Response = {
+   __typename?: 'provinces_mutation_response';
+  affected_rows: Scalars['Int'];
+  returning: Array<Provinces>;
+};
+
+export type Provinces_Obj_Rel_Insert_Input = {
+  data: Provinces_Insert_Input;
+  on_conflict?: Maybe<Provinces_On_Conflict>;
+};
+
+export type Provinces_On_Conflict = {
+  constraint: Provinces_Constraint;
+  update_columns: Array<Provinces_Update_Column>;
+  where?: Maybe<Provinces_Bool_Exp>;
+};
+
+export type Provinces_Order_By = {
+  id?: Maybe<Order_By>;
+  name?: Maybe<Order_By>;
+};
+
+export enum Provinces_Select_Column {
+  Id = 'id',
+  Name = 'name'
+}
+
+export type Provinces_Set_Input = {
+  id?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+};
+
+export enum Provinces_Update_Column {
+  Id = 'id',
+  Name = 'name'
+}
+
 export type Query_Root = {
    __typename?: 'query_root';
+  addresses: Array<Addresses>;
+  addresses_aggregate: Addresses_Aggregate;
+  addresses_by_pk?: Maybe<Addresses>;
   attempts: Array<Attempts>;
   attempts_aggregate: Attempts_Aggregate;
   attempts_by_pk?: Maybe<Attempts>;
@@ -1683,6 +2478,11 @@ export type Query_Root = {
   auth_user_providers: Array<Auth_User_Providers>;
   auth_user_providers_aggregate: Auth_User_Providers_Aggregate;
   auth_user_providers_by_pk?: Maybe<Auth_User_Providers>;
+  countries: Array<Countries>;
+  countries_aggregate: Countries_Aggregate;
+  countries_by_pk?: Maybe<Countries>;
+  current_user: Array<Current_User>;
+  current_user_aggregate: Current_User_Aggregate;
   documents: Array<Documents>;
   documents_aggregate: Documents_Aggregate;
   documents_by_pk?: Maybe<Documents>;
@@ -1692,18 +2492,41 @@ export type Query_Root = {
   messages: Array<Messages>;
   messages_aggregate: Messages_Aggregate;
   messages_by_pk?: Maybe<Messages>;
+  provinces: Array<Provinces>;
+  provinces_aggregate: Provinces_Aggregate;
+  provinces_by_pk?: Maybe<Provinces>;
   roles: Array<Roles>;
   roles_aggregate: Roles_Aggregate;
   roles_by_pk?: Maybe<Roles>;
-  targets: Array<Targets>;
-  targets_aggregate: Targets_Aggregate;
-  targets_by_pk?: Maybe<Targets>;
   user_roles: Array<User_Roles>;
   user_roles_aggregate: User_Roles_Aggregate;
   user_roles_by_pk?: Maybe<User_Roles>;
   users: Array<Users>;
   users_aggregate: Users_Aggregate;
   users_by_pk?: Maybe<Users>;
+};
+
+
+export type Query_RootAddressesArgs = {
+  distinct_on?: Maybe<Array<Addresses_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Addresses_Order_By>>;
+  where?: Maybe<Addresses_Bool_Exp>;
+};
+
+
+export type Query_RootAddresses_AggregateArgs = {
+  distinct_on?: Maybe<Array<Addresses_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Addresses_Order_By>>;
+  where?: Maybe<Addresses_Bool_Exp>;
+};
+
+
+export type Query_RootAddresses_By_PkArgs = {
+  id: Scalars['uuid'];
 };
 
 
@@ -1822,6 +2645,47 @@ export type Query_RootAuth_User_Providers_By_PkArgs = {
 };
 
 
+export type Query_RootCountriesArgs = {
+  distinct_on?: Maybe<Array<Countries_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Countries_Order_By>>;
+  where?: Maybe<Countries_Bool_Exp>;
+};
+
+
+export type Query_RootCountries_AggregateArgs = {
+  distinct_on?: Maybe<Array<Countries_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Countries_Order_By>>;
+  where?: Maybe<Countries_Bool_Exp>;
+};
+
+
+export type Query_RootCountries_By_PkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type Query_RootCurrent_UserArgs = {
+  distinct_on?: Maybe<Array<Current_User_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Current_User_Order_By>>;
+  where?: Maybe<Current_User_Bool_Exp>;
+};
+
+
+export type Query_RootCurrent_User_AggregateArgs = {
+  distinct_on?: Maybe<Array<Current_User_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Current_User_Order_By>>;
+  where?: Maybe<Current_User_Bool_Exp>;
+};
+
+
 export type Query_RootDocumentsArgs = {
   distinct_on?: Maybe<Array<Documents_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -1891,6 +2755,29 @@ export type Query_RootMessages_By_PkArgs = {
 };
 
 
+export type Query_RootProvincesArgs = {
+  distinct_on?: Maybe<Array<Provinces_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Provinces_Order_By>>;
+  where?: Maybe<Provinces_Bool_Exp>;
+};
+
+
+export type Query_RootProvinces_AggregateArgs = {
+  distinct_on?: Maybe<Array<Provinces_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Provinces_Order_By>>;
+  where?: Maybe<Provinces_Bool_Exp>;
+};
+
+
+export type Query_RootProvinces_By_PkArgs = {
+  id: Scalars['String'];
+};
+
+
 export type Query_RootRolesArgs = {
   distinct_on?: Maybe<Array<Roles_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -1911,29 +2798,6 @@ export type Query_RootRoles_AggregateArgs = {
 
 export type Query_RootRoles_By_PkArgs = {
   role: Scalars['String'];
-};
-
-
-export type Query_RootTargetsArgs = {
-  distinct_on?: Maybe<Array<Targets_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Targets_Order_By>>;
-  where?: Maybe<Targets_Bool_Exp>;
-};
-
-
-export type Query_RootTargets_AggregateArgs = {
-  distinct_on?: Maybe<Array<Targets_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Targets_Order_By>>;
-  where?: Maybe<Targets_Bool_Exp>;
-};
-
-
-export type Query_RootTargets_By_PkArgs = {
-  id: Scalars['uuid'];
 };
 
 
@@ -2149,6 +3013,9 @@ export type String_Comparison_Exp = {
 
 export type Subscription_Root = {
    __typename?: 'subscription_root';
+  addresses: Array<Addresses>;
+  addresses_aggregate: Addresses_Aggregate;
+  addresses_by_pk?: Maybe<Addresses>;
   attempts: Array<Attempts>;
   attempts_aggregate: Attempts_Aggregate;
   attempts_by_pk?: Maybe<Attempts>;
@@ -2164,6 +3031,11 @@ export type Subscription_Root = {
   auth_user_providers: Array<Auth_User_Providers>;
   auth_user_providers_aggregate: Auth_User_Providers_Aggregate;
   auth_user_providers_by_pk?: Maybe<Auth_User_Providers>;
+  countries: Array<Countries>;
+  countries_aggregate: Countries_Aggregate;
+  countries_by_pk?: Maybe<Countries>;
+  current_user: Array<Current_User>;
+  current_user_aggregate: Current_User_Aggregate;
   documents: Array<Documents>;
   documents_aggregate: Documents_Aggregate;
   documents_by_pk?: Maybe<Documents>;
@@ -2173,18 +3045,41 @@ export type Subscription_Root = {
   messages: Array<Messages>;
   messages_aggregate: Messages_Aggregate;
   messages_by_pk?: Maybe<Messages>;
+  provinces: Array<Provinces>;
+  provinces_aggregate: Provinces_Aggregate;
+  provinces_by_pk?: Maybe<Provinces>;
   roles: Array<Roles>;
   roles_aggregate: Roles_Aggregate;
   roles_by_pk?: Maybe<Roles>;
-  targets: Array<Targets>;
-  targets_aggregate: Targets_Aggregate;
-  targets_by_pk?: Maybe<Targets>;
   user_roles: Array<User_Roles>;
   user_roles_aggregate: User_Roles_Aggregate;
   user_roles_by_pk?: Maybe<User_Roles>;
   users: Array<Users>;
   users_aggregate: Users_Aggregate;
   users_by_pk?: Maybe<Users>;
+};
+
+
+export type Subscription_RootAddressesArgs = {
+  distinct_on?: Maybe<Array<Addresses_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Addresses_Order_By>>;
+  where?: Maybe<Addresses_Bool_Exp>;
+};
+
+
+export type Subscription_RootAddresses_AggregateArgs = {
+  distinct_on?: Maybe<Array<Addresses_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Addresses_Order_By>>;
+  where?: Maybe<Addresses_Bool_Exp>;
+};
+
+
+export type Subscription_RootAddresses_By_PkArgs = {
+  id: Scalars['uuid'];
 };
 
 
@@ -2303,6 +3198,47 @@ export type Subscription_RootAuth_User_Providers_By_PkArgs = {
 };
 
 
+export type Subscription_RootCountriesArgs = {
+  distinct_on?: Maybe<Array<Countries_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Countries_Order_By>>;
+  where?: Maybe<Countries_Bool_Exp>;
+};
+
+
+export type Subscription_RootCountries_AggregateArgs = {
+  distinct_on?: Maybe<Array<Countries_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Countries_Order_By>>;
+  where?: Maybe<Countries_Bool_Exp>;
+};
+
+
+export type Subscription_RootCountries_By_PkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type Subscription_RootCurrent_UserArgs = {
+  distinct_on?: Maybe<Array<Current_User_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Current_User_Order_By>>;
+  where?: Maybe<Current_User_Bool_Exp>;
+};
+
+
+export type Subscription_RootCurrent_User_AggregateArgs = {
+  distinct_on?: Maybe<Array<Current_User_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Current_User_Order_By>>;
+  where?: Maybe<Current_User_Bool_Exp>;
+};
+
+
 export type Subscription_RootDocumentsArgs = {
   distinct_on?: Maybe<Array<Documents_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2372,6 +3308,29 @@ export type Subscription_RootMessages_By_PkArgs = {
 };
 
 
+export type Subscription_RootProvincesArgs = {
+  distinct_on?: Maybe<Array<Provinces_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Provinces_Order_By>>;
+  where?: Maybe<Provinces_Bool_Exp>;
+};
+
+
+export type Subscription_RootProvinces_AggregateArgs = {
+  distinct_on?: Maybe<Array<Provinces_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Provinces_Order_By>>;
+  where?: Maybe<Provinces_Bool_Exp>;
+};
+
+
+export type Subscription_RootProvinces_By_PkArgs = {
+  id: Scalars['String'];
+};
+
+
 export type Subscription_RootRolesArgs = {
   distinct_on?: Maybe<Array<Roles_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2392,29 +3351,6 @@ export type Subscription_RootRoles_AggregateArgs = {
 
 export type Subscription_RootRoles_By_PkArgs = {
   role: Scalars['String'];
-};
-
-
-export type Subscription_RootTargetsArgs = {
-  distinct_on?: Maybe<Array<Targets_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Targets_Order_By>>;
-  where?: Maybe<Targets_Bool_Exp>;
-};
-
-
-export type Subscription_RootTargets_AggregateArgs = {
-  distinct_on?: Maybe<Array<Targets_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Targets_Order_By>>;
-  where?: Maybe<Targets_Bool_Exp>;
-};
-
-
-export type Subscription_RootTargets_By_PkArgs = {
-  id: Scalars['uuid'];
 };
 
 
@@ -2462,215 +3398,6 @@ export type Subscription_RootUsers_AggregateArgs = {
 export type Subscription_RootUsers_By_PkArgs = {
   id: Scalars['uuid'];
 };
-
-export type Targets = {
-   __typename?: 'targets';
-  city: Scalars['String'];
-  created_at: Scalars['timestamptz'];
-  id: Scalars['uuid'];
-  jobs: Array<Jobs>;
-  jobs_aggregate: Jobs_Aggregate;
-  name: Scalars['String'];
-  postal_code: Scalars['String'];
-  province: Scalars['String'];
-  street: Scalars['String'];
-  unit: Scalars['String'];
-  updated_at: Scalars['timestamptz'];
-};
-
-
-export type TargetsJobsArgs = {
-  distinct_on?: Maybe<Array<Jobs_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Jobs_Order_By>>;
-  where?: Maybe<Jobs_Bool_Exp>;
-};
-
-
-export type TargetsJobs_AggregateArgs = {
-  distinct_on?: Maybe<Array<Jobs_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Jobs_Order_By>>;
-  where?: Maybe<Jobs_Bool_Exp>;
-};
-
-export type Targets_Aggregate = {
-   __typename?: 'targets_aggregate';
-  aggregate?: Maybe<Targets_Aggregate_Fields>;
-  nodes: Array<Targets>;
-};
-
-export type Targets_Aggregate_Fields = {
-   __typename?: 'targets_aggregate_fields';
-  count?: Maybe<Scalars['Int']>;
-  max?: Maybe<Targets_Max_Fields>;
-  min?: Maybe<Targets_Min_Fields>;
-};
-
-
-export type Targets_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<Targets_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
-};
-
-export type Targets_Aggregate_Order_By = {
-  count?: Maybe<Order_By>;
-  max?: Maybe<Targets_Max_Order_By>;
-  min?: Maybe<Targets_Min_Order_By>;
-};
-
-export type Targets_Arr_Rel_Insert_Input = {
-  data: Array<Targets_Insert_Input>;
-  on_conflict?: Maybe<Targets_On_Conflict>;
-};
-
-export type Targets_Bool_Exp = {
-  _and?: Maybe<Array<Maybe<Targets_Bool_Exp>>>;
-  _not?: Maybe<Targets_Bool_Exp>;
-  _or?: Maybe<Array<Maybe<Targets_Bool_Exp>>>;
-  city?: Maybe<String_Comparison_Exp>;
-  created_at?: Maybe<Timestamptz_Comparison_Exp>;
-  id?: Maybe<Uuid_Comparison_Exp>;
-  jobs?: Maybe<Jobs_Bool_Exp>;
-  name?: Maybe<String_Comparison_Exp>;
-  postal_code?: Maybe<String_Comparison_Exp>;
-  province?: Maybe<String_Comparison_Exp>;
-  street?: Maybe<String_Comparison_Exp>;
-  unit?: Maybe<String_Comparison_Exp>;
-  updated_at?: Maybe<Timestamptz_Comparison_Exp>;
-};
-
-export enum Targets_Constraint {
-  TargetPkey = 'target_pkey',
-  TargetsIdKey = 'targets_id_key'
-}
-
-export type Targets_Insert_Input = {
-  city?: Maybe<Scalars['String']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
-  id?: Maybe<Scalars['uuid']>;
-  jobs?: Maybe<Jobs_Arr_Rel_Insert_Input>;
-  name?: Maybe<Scalars['String']>;
-  postal_code?: Maybe<Scalars['String']>;
-  province?: Maybe<Scalars['String']>;
-  street?: Maybe<Scalars['String']>;
-  unit?: Maybe<Scalars['String']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
-};
-
-export type Targets_Max_Fields = {
-   __typename?: 'targets_max_fields';
-  city?: Maybe<Scalars['String']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
-  name?: Maybe<Scalars['String']>;
-  postal_code?: Maybe<Scalars['String']>;
-  province?: Maybe<Scalars['String']>;
-  street?: Maybe<Scalars['String']>;
-  unit?: Maybe<Scalars['String']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
-};
-
-export type Targets_Max_Order_By = {
-  city?: Maybe<Order_By>;
-  created_at?: Maybe<Order_By>;
-  name?: Maybe<Order_By>;
-  postal_code?: Maybe<Order_By>;
-  province?: Maybe<Order_By>;
-  street?: Maybe<Order_By>;
-  unit?: Maybe<Order_By>;
-  updated_at?: Maybe<Order_By>;
-};
-
-export type Targets_Min_Fields = {
-   __typename?: 'targets_min_fields';
-  city?: Maybe<Scalars['String']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
-  name?: Maybe<Scalars['String']>;
-  postal_code?: Maybe<Scalars['String']>;
-  province?: Maybe<Scalars['String']>;
-  street?: Maybe<Scalars['String']>;
-  unit?: Maybe<Scalars['String']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
-};
-
-export type Targets_Min_Order_By = {
-  city?: Maybe<Order_By>;
-  created_at?: Maybe<Order_By>;
-  name?: Maybe<Order_By>;
-  postal_code?: Maybe<Order_By>;
-  province?: Maybe<Order_By>;
-  street?: Maybe<Order_By>;
-  unit?: Maybe<Order_By>;
-  updated_at?: Maybe<Order_By>;
-};
-
-export type Targets_Mutation_Response = {
-   __typename?: 'targets_mutation_response';
-  affected_rows: Scalars['Int'];
-  returning: Array<Targets>;
-};
-
-export type Targets_Obj_Rel_Insert_Input = {
-  data: Targets_Insert_Input;
-  on_conflict?: Maybe<Targets_On_Conflict>;
-};
-
-export type Targets_On_Conflict = {
-  constraint: Targets_Constraint;
-  update_columns: Array<Targets_Update_Column>;
-  where?: Maybe<Targets_Bool_Exp>;
-};
-
-export type Targets_Order_By = {
-  city?: Maybe<Order_By>;
-  created_at?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  jobs_aggregate?: Maybe<Jobs_Aggregate_Order_By>;
-  name?: Maybe<Order_By>;
-  postal_code?: Maybe<Order_By>;
-  province?: Maybe<Order_By>;
-  street?: Maybe<Order_By>;
-  unit?: Maybe<Order_By>;
-  updated_at?: Maybe<Order_By>;
-};
-
-export enum Targets_Select_Column {
-  City = 'city',
-  CreatedAt = 'created_at',
-  Id = 'id',
-  Name = 'name',
-  PostalCode = 'postal_code',
-  Province = 'province',
-  Street = 'street',
-  Unit = 'unit',
-  UpdatedAt = 'updated_at'
-}
-
-export type Targets_Set_Input = {
-  city?: Maybe<Scalars['String']>;
-  created_at?: Maybe<Scalars['timestamptz']>;
-  id?: Maybe<Scalars['uuid']>;
-  name?: Maybe<Scalars['String']>;
-  postal_code?: Maybe<Scalars['String']>;
-  province?: Maybe<Scalars['String']>;
-  street?: Maybe<Scalars['String']>;
-  unit?: Maybe<Scalars['String']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
-};
-
-export enum Targets_Update_Column {
-  City = 'city',
-  CreatedAt = 'created_at',
-  Id = 'id',
-  Name = 'name',
-  PostalCode = 'postal_code',
-  Province = 'province',
-  Street = 'street',
-  Unit = 'unit',
-  UpdatedAt = 'updated_at'
-}
 
 
 export type Timestamptz_Comparison_Exp = {
@@ -2823,6 +3550,8 @@ export enum User_Roles_Update_Column {
 export type Users = {
    __typename?: 'users';
   active: Scalars['Boolean'];
+  address?: Maybe<Addresses>;
+  address_id?: Maybe<Scalars['uuid']>;
   approved: Scalars['Boolean'];
   avatar_url?: Maybe<Scalars['String']>;
   created_at: Scalars['timestamptz'];
@@ -3006,6 +3735,8 @@ export type Users_Bool_Exp = {
   _not?: Maybe<Users_Bool_Exp>;
   _or?: Maybe<Array<Maybe<Users_Bool_Exp>>>;
   active?: Maybe<Boolean_Comparison_Exp>;
+  address?: Maybe<Addresses_Bool_Exp>;
+  address_id?: Maybe<Uuid_Comparison_Exp>;
   approved?: Maybe<Boolean_Comparison_Exp>;
   avatar_url?: Maybe<String_Comparison_Exp>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
@@ -3051,6 +3782,8 @@ export type Users_Delete_Key_Input = {
 
 export type Users_Insert_Input = {
   active?: Maybe<Scalars['Boolean']>;
+  address?: Maybe<Addresses_Obj_Rel_Insert_Input>;
+  address_id?: Maybe<Scalars['uuid']>;
   approved?: Maybe<Scalars['Boolean']>;
   avatar_url?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
@@ -3149,6 +3882,8 @@ export type Users_On_Conflict = {
 
 export type Users_Order_By = {
   active?: Maybe<Order_By>;
+  address?: Maybe<Addresses_Order_By>;
+  address_id?: Maybe<Order_By>;
   approved?: Maybe<Order_By>;
   avatar_url?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
@@ -3180,6 +3915,7 @@ export type Users_Prepend_Input = {
 
 export enum Users_Select_Column {
   Active = 'active',
+  AddressId = 'address_id',
   Approved = 'approved',
   AvatarUrl = 'avatar_url',
   CreatedAt = 'created_at',
@@ -3200,6 +3936,7 @@ export enum Users_Select_Column {
 
 export type Users_Set_Input = {
   active?: Maybe<Scalars['Boolean']>;
+  address_id?: Maybe<Scalars['uuid']>;
   approved?: Maybe<Scalars['Boolean']>;
   avatar_url?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
@@ -3220,6 +3957,7 @@ export type Users_Set_Input = {
 
 export enum Users_Update_Column {
   Active = 'active',
+  AddressId = 'address_id',
   Approved = 'approved',
   AvatarUrl = 'avatar_url',
   CreatedAt = 'created_at',
@@ -3276,11 +4014,10 @@ export type ChatMessagesSubscription = (
 
 export type JobCardJobFragment = (
   { __typename?: 'jobs' }
-  & Pick<Jobs, 'id'>
-  & { target: Maybe<(
-    { __typename?: 'targets' }
-    & Pick<Targets, 'id' | 'name' | 'street' | 'unit' | 'city' | 'province'>
-    & { postalCode: Targets['postal_code'] }
+  & Pick<Jobs, 'id' | 'target_name'>
+  & { target_address: Maybe<(
+    { __typename?: 'addresses' }
+    & Pick<Addresses, 'id' | 'street' | 'unit' | 'postal_code' | 'city' | 'province'>
   )>, server: Maybe<(
     { __typename?: 'users' }
     & Pick<Users, 'id'>
@@ -3289,24 +4026,24 @@ export type JobCardJobFragment = (
 
 export type JobDetailsPageJobFragment = (
   { __typename?: 'jobs' }
-  & Pick<Jobs, 'id'>
+  & Pick<Jobs, 'id' | 'target_name'>
   & { server: Maybe<(
     { __typename?: 'users' }
     & Pick<Users, 'id'>
-  )>, target: Maybe<(
-    { __typename?: 'targets' }
-    & Pick<Targets, 'id' | 'name'>
   )> }
 );
 
-export type JobDetailsPageUserFragment = (
-  { __typename?: 'users' }
-  & PageUserFragment
+export type JobDetailsPageQueryFragment = (
+  { __typename?: 'query_root' }
+  & PageQueryFragment
 );
 
-export type PageUserFragment = (
-  { __typename?: 'users' }
-  & Pick<Users, 'id' | 'firebase_messaging_token' | 'notifications_enabled'>
+export type PageQueryFragment = (
+  { __typename?: 'query_root' }
+  & { current_user: Array<(
+    { __typename?: 'current_user' }
+    & Pick<Current_User, 'id' | 'firebase_messaging_token' | 'notifications_enabled'>
+  )> }
 );
 
 export type ClaimJobMutationVariables = {
@@ -3332,6 +4069,27 @@ export type DeleteDocumentMutation = (
   & { delete_documents: Maybe<(
     { __typename?: 'documents_mutation_response' }
     & Pick<Documents_Mutation_Response, 'affected_rows'>
+  )> }
+);
+
+export type InsertAddressMutationVariables = {
+  street: Scalars['String'];
+  unit?: Maybe<Scalars['String']>;
+  postalCode: Scalars['String'];
+  city: Scalars['String'];
+  province: Provinces_Enum;
+};
+
+
+export type InsertAddressMutation = (
+  { __typename?: 'mutation_root' }
+  & { insert_addresses: Maybe<(
+    { __typename?: 'addresses_mutation_response' }
+    & Pick<Addresses_Mutation_Response, 'affected_rows'>
+    & { returning: Array<(
+      { __typename?: 'addresses' }
+      & Pick<Addresses, 'id'>
+    )> }
   )> }
 );
 
@@ -3378,27 +4136,6 @@ export type InsertJobMutation = (
     & { returning: Array<(
       { __typename?: 'jobs' }
       & Pick<Jobs, 'id'>
-    )> }
-  )> }
-);
-
-export type InsertTargetMutationVariables = {
-  name: Scalars['String'];
-  street: Scalars['String'];
-  unit?: Maybe<Scalars['String']>;
-  postalCode: Scalars['String'];
-  city: Scalars['String'];
-  province: Scalars['String'];
-};
-
-
-export type InsertTargetMutation = (
-  { __typename?: 'mutation_root' }
-  & { insert_targets: Maybe<(
-    { __typename?: 'targets_mutation_response' }
-    & { returning: Array<(
-      { __typename?: 'targets' }
-      & Pick<Targets, 'id'>
     )> }
   )> }
 );
@@ -3452,11 +4189,7 @@ export type SetFirebaseMessagingTokenMutation = (
 
 export type SetJobPickupRequiredMutationVariables = {
   jobId: Scalars['uuid'];
-  unit?: Maybe<Scalars['String']>;
-  street: Scalars['String'];
-  province: Scalars['String'];
-  postalCode: Scalars['String'];
-  city: Scalars['String'];
+  addressId: Scalars['uuid'];
 };
 
 
@@ -3497,8 +4230,9 @@ export type SetJobStripePaymentIntentSucceededMutation = (
 );
 
 export type SetJobTargetMutationVariables = {
-  id: Scalars['uuid'];
-  targetId: Scalars['uuid'];
+  jobId: Scalars['uuid'];
+  targetName: Scalars['String'];
+  addressId: Scalars['uuid'];
 };
 
 
@@ -3506,10 +4240,25 @@ export type SetJobTargetMutation = (
   { __typename?: 'mutation_root' }
   & { update_jobs: Maybe<(
     { __typename?: 'jobs_mutation_response' }
+    & Pick<Jobs_Mutation_Response, 'affected_rows'>
     & { returning: Array<(
       { __typename?: 'jobs' }
-      & Pick<Jobs, 'id' | 'target_id'>
+      & Pick<Jobs, 'id' | 'target_name' | 'target_address_id'>
     )> }
+  )> }
+);
+
+export type SetUserAddressMutationVariables = {
+  userId: Scalars['uuid'];
+  addressId: Scalars['uuid'];
+};
+
+
+export type SetUserAddressMutation = (
+  { __typename?: 'mutation_root' }
+  & { update_users: Maybe<(
+    { __typename?: 'users_mutation_response' }
+    & Pick<Users_Mutation_Response, 'affected_rows'>
   )> }
 );
 
@@ -3562,11 +4311,11 @@ export type IndexPageQueryVariables = {
 
 export type IndexPageQuery = (
   { __typename?: 'query_root' }
-  & { users: Array<(
-    { __typename?: 'users' }
-    & Pick<Users, 'id' | 'approved'>
-    & PageUserFragment
+  & { current_user: Array<(
+    { __typename?: 'current_user' }
+    & Pick<Current_User, 'id' | 'approved' | 'address_id'>
   )> }
+  & PageQueryFragment
 );
 
 export type JobAttemptQueryVariables = {
@@ -3577,18 +4326,11 @@ export type JobAttemptQueryVariables = {
 
 export type JobAttemptQuery = (
   { __typename?: 'query_root' }
-  & { users: Array<(
-    { __typename?: 'users' }
-    & Pick<Users, 'id'>
-    & PageUserFragment
-  )>, jobs_by_pk: Maybe<(
+  & { jobs_by_pk: Maybe<(
     { __typename?: 'jobs' }
-    & Pick<Jobs, 'id'>
-    & { target: Maybe<(
-      { __typename?: 'targets' }
-      & Pick<Targets, 'id' | 'name'>
-    )> }
+    & Pick<Jobs, 'id' | 'target_name'>
   )> }
+  & PageQueryFragment
 );
 
 export type JobDetailsChatQueryVariables = {
@@ -3599,15 +4341,12 @@ export type JobDetailsChatQueryVariables = {
 
 export type JobDetailsChatQuery = (
   { __typename?: 'query_root' }
-  & { users: Array<(
-    { __typename?: 'users' }
-    & Pick<Users, 'id'>
-    & JobDetailsPageUserFragment
-  )>, jobs_by_pk: Maybe<(
+  & { jobs_by_pk: Maybe<(
     { __typename?: 'jobs' }
     & Pick<Jobs, 'id'>
     & JobDetailsPageJobFragment
   )> }
+  & JobDetailsPageQueryFragment
 );
 
 export type JobDetailsDocumentsQueryVariables = {
@@ -3618,19 +4357,19 @@ export type JobDetailsDocumentsQueryVariables = {
 
 export type JobDetailsDocumentsQuery = (
   { __typename?: 'query_root' }
-  & { users: Array<(
-    { __typename?: 'users' }
-    & Pick<Users, 'id'>
-    & JobDetailsPageUserFragment
-  )>, jobs_by_pk: Maybe<(
+  & { jobs_by_pk: Maybe<(
     { __typename?: 'jobs' }
-    & Pick<Jobs, 'id' | 'pickup_required' | 'pickup_street' | 'pickup_unit' | 'pickup_postal_code' | 'pickup_city' | 'pickup_province'>
-    & { documents: Array<(
+    & Pick<Jobs, 'id' | 'pickup_required'>
+    & { pickup_address: Maybe<(
+      { __typename?: 'addresses' }
+      & Pick<Addresses, 'id' | 'street' | 'unit' | 'postal_code' | 'city' | 'province'>
+    )>, documents: Array<(
       { __typename?: 'documents' }
       & Pick<Documents, 'id' | 'title' | 'url'>
     )> }
     & JobDetailsPageJobFragment
   )> }
+  & JobDetailsPageQueryFragment
 );
 
 export type JobDetialsQueryVariables = {
@@ -3641,17 +4380,12 @@ export type JobDetialsQueryVariables = {
 
 export type JobDetialsQuery = (
   { __typename?: 'query_root' }
-  & { users: Array<(
-    { __typename?: 'users' }
-    & Pick<Users, 'id'>
-    & JobDetailsPageUserFragment
-  )>, jobs_by_pk: Maybe<(
+  & { jobs_by_pk: Maybe<(
     { __typename?: 'jobs' }
-    & Pick<Jobs, 'id' | 'description' | 'stripe_payment_intent_succeeded'>
-    & { target: Maybe<(
-      { __typename?: 'targets' }
-      & Pick<Targets, 'id' | 'name' | 'street' | 'unit' | 'city' | 'province'>
-      & { postalCode: Targets['postal_code'] }
+    & Pick<Jobs, 'id' | 'description' | 'stripe_payment_intent_succeeded' | 'target_name'>
+    & { target_address: Maybe<(
+      { __typename?: 'addresses' }
+      & Pick<Addresses, 'id' | 'street' | 'unit' | 'postal_code' | 'city' | 'province'>
     )>, server: Maybe<(
       { __typename?: 'users' }
       & Pick<Users, 'id' | 'name'>
@@ -3661,6 +4395,7 @@ export type JobDetialsQuery = (
     )> }
     & JobDetailsPageJobFragment
   )> }
+  & JobDetailsPageQueryFragment
 );
 
 export type JobsAvailableQueryVariables = {
@@ -3670,15 +4405,12 @@ export type JobsAvailableQueryVariables = {
 
 export type JobsAvailableQuery = (
   { __typename?: 'query_root' }
-  & { users: Array<(
-    { __typename?: 'users' }
-    & Pick<Users, 'id'>
-    & PageUserFragment
-  )>, jobs: Array<(
+  & { jobs: Array<(
     { __typename?: 'jobs' }
     & Pick<Jobs, 'id'>
     & JobCardJobFragment
   )> }
+  & PageQueryFragment
 );
 
 export type JobsCreatePaymentQueryVariables = {
@@ -3689,22 +4421,27 @@ export type JobsCreatePaymentQueryVariables = {
 
 export type JobsCreatePaymentQuery = (
   { __typename?: 'query_root' }
-  & { users: Array<(
-    { __typename?: 'users' }
-    & Pick<Users, 'id'>
-    & PageUserFragment
-  )>, jobs: Array<(
+  & { jobs: Array<(
     { __typename?: 'jobs' }
     & Pick<Jobs, 'stripe_payment_intent_client_secret' | 'id'>
   )> }
+  & PageQueryFragment
+);
+
+export type JobsCreateTargetPageQueryVariables = {};
+
+
+export type JobsCreateTargetPageQuery = (
+  { __typename?: 'query_root' }
+  & PageQueryFragment
 );
 
 export type JobsListJobFragment = (
   { __typename?: 'jobs' }
-  & Pick<Jobs, 'id' | 'pickup_required'>
-  & { target: Maybe<(
-    { __typename?: 'targets' }
-    & Pick<Targets, 'id' | 'name' | 'street' | 'city' | 'province'>
+  & Pick<Jobs, 'id' | 'pickup_required' | 'target_name'>
+  & { target_address: Maybe<(
+    { __typename?: 'addresses' }
+    & Pick<Addresses, 'id' | 'street' | 'city' | 'postal_code' | 'province'>
   )>, successfulAttempts: (
     { __typename?: 'attempts_aggregate' }
     & { aggregate: Maybe<(
@@ -3734,11 +4471,7 @@ export type JobsListQueryVariables = {
 
 export type JobsListQuery = (
   { __typename?: 'query_root' }
-  & { users: Array<(
-    { __typename?: 'users' }
-    & Pick<Users, 'id'>
-    & PageUserFragment
-  )>, lawyerJobs: Array<(
+  & { lawyerJobs: Array<(
     { __typename?: 'jobs' }
     & Pick<Jobs, 'id'>
     & JobsListJobFragment
@@ -3749,6 +4482,15 @@ export type JobsListQuery = (
     & JobsListJobFragment
     & JobCardJobFragment
   )> }
+  & PageQueryFragment
+);
+
+export type OnboardingPageQueryVariables = {};
+
+
+export type OnboardingPageQuery = (
+  { __typename?: 'query_root' }
+  & PageQueryFragment
 );
 
 export type PendingApprovalQueryVariables = {
@@ -3758,11 +4500,11 @@ export type PendingApprovalQueryVariables = {
 
 export type PendingApprovalQuery = (
   { __typename?: 'query_root' }
-  & { users: Array<(
-    { __typename?: 'users' }
-    & Pick<Users, 'id' | 'approved'>
-    & PageUserFragment
+  & { current_user: Array<(
+    { __typename?: 'current_user' }
+    & Pick<Current_User, 'id' | 'approved'>
   )> }
+  & PageQueryFragment
 );
 
 export const ChatMessageMessageFragmentDoc = gql`
@@ -3779,12 +4521,12 @@ export const ChatMessageMessageFragmentDoc = gql`
 export const JobCardJobFragmentDoc = gql`
     fragment JobCardJob on jobs {
   id
-  target {
+  target_name
+  target_address {
     id
-    name
     street
     unit
-    postalCode: postal_code
+    postal_code
     city
     province
   }
@@ -3796,36 +4538,36 @@ export const JobCardJobFragmentDoc = gql`
 export const JobDetailsPageJobFragmentDoc = gql`
     fragment JobDetailsPageJob on jobs {
   id
+  target_name
   server {
     id
   }
-  target {
+}
+    `;
+export const PageQueryFragmentDoc = gql`
+    fragment PageQuery on query_root {
+  current_user {
     id
-    name
+    firebase_messaging_token
+    notifications_enabled
   }
 }
     `;
-export const PageUserFragmentDoc = gql`
-    fragment PageUser on users {
-  id
-  firebase_messaging_token
-  notifications_enabled
+export const JobDetailsPageQueryFragmentDoc = gql`
+    fragment JobDetailsPageQuery on query_root {
+  ...PageQuery
 }
-    `;
-export const JobDetailsPageUserFragmentDoc = gql`
-    fragment JobDetailsPageUser on users {
-  ...PageUser
-}
-    ${PageUserFragmentDoc}`;
+    ${PageQueryFragmentDoc}`;
 export const JobsListJobFragmentDoc = gql`
     fragment JobsListJob on jobs {
   id
   pickup_required
-  target {
+  target_name
+  target_address {
     id
-    name
     street
     city
+    postal_code
     province
   }
   successfulAttempts: attempts_aggregate(where: {success: {_eq: true}}) {
@@ -3939,6 +4681,45 @@ export function useDeleteDocumentMutation(baseOptions?: ApolloReactHooks.Mutatio
 export type DeleteDocumentMutationHookResult = ReturnType<typeof useDeleteDocumentMutation>;
 export type DeleteDocumentMutationResult = ApolloReactCommon.MutationResult<DeleteDocumentMutation>;
 export type DeleteDocumentMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteDocumentMutation, DeleteDocumentMutationVariables>;
+export const InsertAddressDocument = gql`
+    mutation InsertAddress($street: String!, $unit: String, $postalCode: String!, $city: String!, $province: provinces_enum!) {
+  insert_addresses(objects: {city: $city, street: $street, unit: $unit, postal_code: $postalCode, province: $province}) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+    `;
+export type InsertAddressMutationFn = ApolloReactCommon.MutationFunction<InsertAddressMutation, InsertAddressMutationVariables>;
+
+/**
+ * __useInsertAddressMutation__
+ *
+ * To run a mutation, you first call `useInsertAddressMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertAddressMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertAddressMutation, { data, loading, error }] = useInsertAddressMutation({
+ *   variables: {
+ *      street: // value for 'street'
+ *      unit: // value for 'unit'
+ *      postalCode: // value for 'postalCode'
+ *      city: // value for 'city'
+ *      province: // value for 'province'
+ *   },
+ * });
+ */
+export function useInsertAddressMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<InsertAddressMutation, InsertAddressMutationVariables>) {
+        return ApolloReactHooks.useMutation<InsertAddressMutation, InsertAddressMutationVariables>(InsertAddressDocument, baseOptions);
+      }
+export type InsertAddressMutationHookResult = ReturnType<typeof useInsertAddressMutation>;
+export type InsertAddressMutationResult = ApolloReactCommon.MutationResult<InsertAddressMutation>;
+export type InsertAddressMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertAddressMutation, InsertAddressMutationVariables>;
 export const InsertAttemptDocument = gql`
     mutation InsertAttempt($jobId: uuid!, $attemptedAt: timestamptz!, $success: Boolean!) {
   insert_attempts(objects: {attempted_at: $attemptedAt, job_id: $jobId, success: $success}) {
@@ -4044,45 +4825,6 @@ export function useInsertJobMutation(baseOptions?: ApolloReactHooks.MutationHook
 export type InsertJobMutationHookResult = ReturnType<typeof useInsertJobMutation>;
 export type InsertJobMutationResult = ApolloReactCommon.MutationResult<InsertJobMutation>;
 export type InsertJobMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertJobMutation, InsertJobMutationVariables>;
-export const InsertTargetDocument = gql`
-    mutation InsertTarget($name: String!, $street: String!, $unit: String, $postalCode: String!, $city: String!, $province: String!) {
-  insert_targets(objects: {city: $city, name: $name, street: $street, unit: $unit, postal_code: $postalCode, province: $province}) {
-    returning {
-      id
-    }
-  }
-}
-    `;
-export type InsertTargetMutationFn = ApolloReactCommon.MutationFunction<InsertTargetMutation, InsertTargetMutationVariables>;
-
-/**
- * __useInsertTargetMutation__
- *
- * To run a mutation, you first call `useInsertTargetMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useInsertTargetMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [insertTargetMutation, { data, loading, error }] = useInsertTargetMutation({
- *   variables: {
- *      name: // value for 'name'
- *      street: // value for 'street'
- *      unit: // value for 'unit'
- *      postalCode: // value for 'postalCode'
- *      city: // value for 'city'
- *      province: // value for 'province'
- *   },
- * });
- */
-export function useInsertTargetMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<InsertTargetMutation, InsertTargetMutationVariables>) {
-        return ApolloReactHooks.useMutation<InsertTargetMutation, InsertTargetMutationVariables>(InsertTargetDocument, baseOptions);
-      }
-export type InsertTargetMutationHookResult = ReturnType<typeof useInsertTargetMutation>;
-export type InsertTargetMutationResult = ApolloReactCommon.MutationResult<InsertTargetMutation>;
-export type InsertTargetMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertTargetMutation, InsertTargetMutationVariables>;
 export const PostSignupDocument = gql`
     mutation PostSignup($role: String!, $userId: uuid!, $name: String) {
   insert_user_roles(objects: [{role: $role, user_id: $userId}]) {
@@ -4188,8 +4930,8 @@ export type SetFirebaseMessagingTokenMutationHookResult = ReturnType<typeof useS
 export type SetFirebaseMessagingTokenMutationResult = ApolloReactCommon.MutationResult<SetFirebaseMessagingTokenMutation>;
 export type SetFirebaseMessagingTokenMutationOptions = ApolloReactCommon.BaseMutationOptions<SetFirebaseMessagingTokenMutation, SetFirebaseMessagingTokenMutationVariables>;
 export const SetJobPickupRequiredDocument = gql`
-    mutation SetJobPickupRequired($jobId: uuid!, $unit: String, $street: String!, $province: String!, $postalCode: String!, $city: String!) {
-  update_jobs(where: {id: {_eq: $jobId}}, _set: {pickup_required: true, pickup_unit: $unit, pickup_street: $street, pickup_province: $province, pickup_postal_code: $postalCode, pickup_city: $city}) {
+    mutation SetJobPickupRequired($jobId: uuid!, $addressId: uuid!) {
+  update_jobs(where: {id: {_eq: $jobId}}, _set: {pickup_required: true, pickup_address_id: $addressId}) {
     affected_rows
   }
 }
@@ -4210,11 +4952,7 @@ export type SetJobPickupRequiredMutationFn = ApolloReactCommon.MutationFunction<
  * const [setJobPickupRequiredMutation, { data, loading, error }] = useSetJobPickupRequiredMutation({
  *   variables: {
  *      jobId: // value for 'jobId'
- *      unit: // value for 'unit'
- *      street: // value for 'street'
- *      province: // value for 'province'
- *      postalCode: // value for 'postalCode'
- *      city: // value for 'city'
+ *      addressId: // value for 'addressId'
  *   },
  * });
  */
@@ -4291,11 +5029,13 @@ export type SetJobStripePaymentIntentSucceededMutationHookResult = ReturnType<ty
 export type SetJobStripePaymentIntentSucceededMutationResult = ApolloReactCommon.MutationResult<SetJobStripePaymentIntentSucceededMutation>;
 export type SetJobStripePaymentIntentSucceededMutationOptions = ApolloReactCommon.BaseMutationOptions<SetJobStripePaymentIntentSucceededMutation, SetJobStripePaymentIntentSucceededMutationVariables>;
 export const SetJobTargetDocument = gql`
-    mutation SetJobTarget($id: uuid!, $targetId: uuid!) {
-  update_jobs(where: {id: {_eq: $id}}, _set: {target_id: $targetId}) {
+    mutation SetJobTarget($jobId: uuid!, $targetName: String!, $addressId: uuid!) {
+  update_jobs(where: {id: {_eq: $jobId}}, _set: {target_name: $targetName, target_address_id: $addressId}) {
+    affected_rows
     returning {
       id
-      target_id
+      target_name
+      target_address_id
     }
   }
 }
@@ -4315,8 +5055,9 @@ export type SetJobTargetMutationFn = ApolloReactCommon.MutationFunction<SetJobTa
  * @example
  * const [setJobTargetMutation, { data, loading, error }] = useSetJobTargetMutation({
  *   variables: {
- *      id: // value for 'id'
- *      targetId: // value for 'targetId'
+ *      jobId: // value for 'jobId'
+ *      targetName: // value for 'targetName'
+ *      addressId: // value for 'addressId'
  *   },
  * });
  */
@@ -4326,6 +5067,39 @@ export function useSetJobTargetMutation(baseOptions?: ApolloReactHooks.MutationH
 export type SetJobTargetMutationHookResult = ReturnType<typeof useSetJobTargetMutation>;
 export type SetJobTargetMutationResult = ApolloReactCommon.MutationResult<SetJobTargetMutation>;
 export type SetJobTargetMutationOptions = ApolloReactCommon.BaseMutationOptions<SetJobTargetMutation, SetJobTargetMutationVariables>;
+export const SetUserAddressDocument = gql`
+    mutation SetUserAddress($userId: uuid!, $addressId: uuid!) {
+  update_users(where: {id: {_eq: $userId}}, _set: {address_id: $addressId}) {
+    affected_rows
+  }
+}
+    `;
+export type SetUserAddressMutationFn = ApolloReactCommon.MutationFunction<SetUserAddressMutation, SetUserAddressMutationVariables>;
+
+/**
+ * __useSetUserAddressMutation__
+ *
+ * To run a mutation, you first call `useSetUserAddressMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetUserAddressMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setUserAddressMutation, { data, loading, error }] = useSetUserAddressMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *      addressId: // value for 'addressId'
+ *   },
+ * });
+ */
+export function useSetUserAddressMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SetUserAddressMutation, SetUserAddressMutationVariables>) {
+        return ApolloReactHooks.useMutation<SetUserAddressMutation, SetUserAddressMutationVariables>(SetUserAddressDocument, baseOptions);
+      }
+export type SetUserAddressMutationHookResult = ReturnType<typeof useSetUserAddressMutation>;
+export type SetUserAddressMutationResult = ApolloReactCommon.MutationResult<SetUserAddressMutation>;
+export type SetUserAddressMutationOptions = ApolloReactCommon.BaseMutationOptions<SetUserAddressMutation, SetUserAddressMutationVariables>;
 export const SetStripeCustomerIdDocument = gql`
     mutation SetStripeCustomerId($userId: uuid!, $stripeCustomerId: String!) {
   update_users(where: {id: {_eq: $userId}}, _set: {stripe_customer_id: $stripeCustomerId}) {
@@ -4432,13 +5206,14 @@ export type JobUpdatedLazyQueryHookResult = ReturnType<typeof useJobUpdatedLazyQ
 export type JobUpdatedQueryResult = ApolloReactCommon.QueryResult<JobUpdatedQuery, JobUpdatedQueryVariables>;
 export const IndexPageDocument = gql`
     query IndexPage($userId: uuid) {
-  users(where: {id: {_eq: $userId}}) {
+  current_user {
     id
     approved
-    ...PageUser
+    address_id
   }
+  ...PageQuery
 }
-    ${PageUserFragmentDoc}`;
+    ${PageQueryFragmentDoc}`;
 
 /**
  * __useIndexPageQuery__
@@ -4467,19 +5242,13 @@ export type IndexPageLazyQueryHookResult = ReturnType<typeof useIndexPageLazyQue
 export type IndexPageQueryResult = ApolloReactCommon.QueryResult<IndexPageQuery, IndexPageQueryVariables>;
 export const JobAttemptDocument = gql`
     query JobAttempt($jobId: uuid!, $userId: uuid) {
-  users(where: {id: {_eq: $userId}}) {
-    id
-    ...PageUser
-  }
   jobs_by_pk(id: $jobId) {
     id
-    target {
-      id
-      name
-    }
+    target_name
   }
+  ...PageQuery
 }
-    ${PageUserFragmentDoc}`;
+    ${PageQueryFragmentDoc}`;
 
 /**
  * __useJobAttemptQuery__
@@ -4509,17 +5278,14 @@ export type JobAttemptLazyQueryHookResult = ReturnType<typeof useJobAttemptLazyQ
 export type JobAttemptQueryResult = ApolloReactCommon.QueryResult<JobAttemptQuery, JobAttemptQueryVariables>;
 export const JobDetailsChatDocument = gql`
     query JobDetailsChat($jobId: uuid!, $userId: uuid) {
-  users(where: {id: {_eq: $userId}}) {
-    id
-    ...JobDetailsPageUser
-  }
   jobs_by_pk(id: $jobId) {
     id
     ...JobDetailsPageJob
   }
+  ...JobDetailsPageQuery
 }
-    ${JobDetailsPageUserFragmentDoc}
-${JobDetailsPageJobFragmentDoc}`;
+    ${JobDetailsPageJobFragmentDoc}
+${JobDetailsPageQueryFragmentDoc}`;
 
 /**
  * __useJobDetailsChatQuery__
@@ -4549,18 +5315,17 @@ export type JobDetailsChatLazyQueryHookResult = ReturnType<typeof useJobDetailsC
 export type JobDetailsChatQueryResult = ApolloReactCommon.QueryResult<JobDetailsChatQuery, JobDetailsChatQueryVariables>;
 export const JobDetailsDocumentsDocument = gql`
     query JobDetailsDocuments($jobId: uuid!, $userId: uuid) {
-  users(where: {id: {_eq: $userId}}) {
-    id
-    ...JobDetailsPageUser
-  }
   jobs_by_pk(id: $jobId) {
     id
     pickup_required
-    pickup_street
-    pickup_unit
-    pickup_postal_code
-    pickup_city
-    pickup_province
+    pickup_address {
+      id
+      street
+      unit
+      postal_code
+      city
+      province
+    }
     documents {
       id
       title
@@ -4568,9 +5333,10 @@ export const JobDetailsDocumentsDocument = gql`
     }
     ...JobDetailsPageJob
   }
+  ...JobDetailsPageQuery
 }
-    ${JobDetailsPageUserFragmentDoc}
-${JobDetailsPageJobFragmentDoc}`;
+    ${JobDetailsPageJobFragmentDoc}
+${JobDetailsPageQueryFragmentDoc}`;
 
 /**
  * __useJobDetailsDocumentsQuery__
@@ -4600,20 +5366,16 @@ export type JobDetailsDocumentsLazyQueryHookResult = ReturnType<typeof useJobDet
 export type JobDetailsDocumentsQueryResult = ApolloReactCommon.QueryResult<JobDetailsDocumentsQuery, JobDetailsDocumentsQueryVariables>;
 export const JobDetialsDocument = gql`
     query JobDetials($jobId: uuid!, $userId: uuid) {
-  users(where: {id: {_eq: $userId}}) {
-    id
-    ...JobDetailsPageUser
-  }
   jobs_by_pk(id: $jobId) {
     id
     description
     stripe_payment_intent_succeeded
-    target {
+    target_name
+    target_address {
       id
-      name
       street
       unit
-      postalCode: postal_code
+      postal_code
       city
       province
     }
@@ -4628,9 +5390,10 @@ export const JobDetialsDocument = gql`
     }
     ...JobDetailsPageJob
   }
+  ...JobDetailsPageQuery
 }
-    ${JobDetailsPageUserFragmentDoc}
-${JobDetailsPageJobFragmentDoc}`;
+    ${JobDetailsPageJobFragmentDoc}
+${JobDetailsPageQueryFragmentDoc}`;
 
 /**
  * __useJobDetialsQuery__
@@ -4660,17 +5423,14 @@ export type JobDetialsLazyQueryHookResult = ReturnType<typeof useJobDetialsLazyQ
 export type JobDetialsQueryResult = ApolloReactCommon.QueryResult<JobDetialsQuery, JobDetialsQueryVariables>;
 export const JobsAvailableDocument = gql`
     query JobsAvailable($userId: uuid) {
-  users(where: {id: {_eq: $userId}}) {
-    id
-    ...PageUser
-  }
   jobs(where: {server_user_id: {_is_null: true}, stripe_payment_intent_succeeded: {_eq: true}}, order_by: {created_at: asc}) {
     id
     ...JobCardJob
   }
+  ...PageQuery
 }
-    ${PageUserFragmentDoc}
-${JobCardJobFragmentDoc}`;
+    ${JobCardJobFragmentDoc}
+${PageQueryFragmentDoc}`;
 
 /**
  * __useJobsAvailableQuery__
@@ -4699,16 +5459,13 @@ export type JobsAvailableLazyQueryHookResult = ReturnType<typeof useJobsAvailabl
 export type JobsAvailableQueryResult = ApolloReactCommon.QueryResult<JobsAvailableQuery, JobsAvailableQueryVariables>;
 export const JobsCreatePaymentDocument = gql`
     query JobsCreatePayment($jobId: uuid!, $userId: uuid) {
-  users(where: {id: {_eq: $userId}}) {
-    id
-    ...PageUser
-  }
   jobs(where: {id: {_eq: $jobId}}) {
     stripe_payment_intent_client_secret
     id
   }
+  ...PageQuery
 }
-    ${PageUserFragmentDoc}`;
+    ${PageQueryFragmentDoc}`;
 
 /**
  * __useJobsCreatePaymentQuery__
@@ -4736,12 +5493,38 @@ export function useJobsCreatePaymentLazyQuery(baseOptions?: ApolloReactHooks.Laz
 export type JobsCreatePaymentQueryHookResult = ReturnType<typeof useJobsCreatePaymentQuery>;
 export type JobsCreatePaymentLazyQueryHookResult = ReturnType<typeof useJobsCreatePaymentLazyQuery>;
 export type JobsCreatePaymentQueryResult = ApolloReactCommon.QueryResult<JobsCreatePaymentQuery, JobsCreatePaymentQueryVariables>;
+export const JobsCreateTargetPageDocument = gql`
+    query JobsCreateTargetPage {
+  ...PageQuery
+}
+    ${PageQueryFragmentDoc}`;
+
+/**
+ * __useJobsCreateTargetPageQuery__
+ *
+ * To run a query within a React component, call `useJobsCreateTargetPageQuery` and pass it any options that fit your needs.
+ * When your component renders, `useJobsCreateTargetPageQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useJobsCreateTargetPageQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useJobsCreateTargetPageQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<JobsCreateTargetPageQuery, JobsCreateTargetPageQueryVariables>) {
+        return ApolloReactHooks.useQuery<JobsCreateTargetPageQuery, JobsCreateTargetPageQueryVariables>(JobsCreateTargetPageDocument, baseOptions);
+      }
+export function useJobsCreateTargetPageLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<JobsCreateTargetPageQuery, JobsCreateTargetPageQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<JobsCreateTargetPageQuery, JobsCreateTargetPageQueryVariables>(JobsCreateTargetPageDocument, baseOptions);
+        }
+export type JobsCreateTargetPageQueryHookResult = ReturnType<typeof useJobsCreateTargetPageQuery>;
+export type JobsCreateTargetPageLazyQueryHookResult = ReturnType<typeof useJobsCreateTargetPageLazyQuery>;
+export type JobsCreateTargetPageQueryResult = ApolloReactCommon.QueryResult<JobsCreateTargetPageQuery, JobsCreateTargetPageQueryVariables>;
 export const JobsListDocument = gql`
     query JobsList($userId: uuid!, $isLawyer: Boolean!) {
-  users(where: {id: {_eq: $userId}}) {
-    id
-    ...PageUser
-  }
   lawyerJobs: jobs @include(if: $isLawyer) {
     id
     ...JobsListJob
@@ -4752,10 +5535,11 @@ export const JobsListDocument = gql`
     ...JobsListJob
     ...JobCardJob
   }
+  ...PageQuery
 }
-    ${PageUserFragmentDoc}
-${JobsListJobFragmentDoc}
-${JobCardJobFragmentDoc}`;
+    ${JobsListJobFragmentDoc}
+${JobCardJobFragmentDoc}
+${PageQueryFragmentDoc}`;
 
 /**
  * __useJobsListQuery__
@@ -4783,15 +5567,45 @@ export function useJobsListLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHoo
 export type JobsListQueryHookResult = ReturnType<typeof useJobsListQuery>;
 export type JobsListLazyQueryHookResult = ReturnType<typeof useJobsListLazyQuery>;
 export type JobsListQueryResult = ApolloReactCommon.QueryResult<JobsListQuery, JobsListQueryVariables>;
+export const OnboardingPageDocument = gql`
+    query OnboardingPage {
+  ...PageQuery
+}
+    ${PageQueryFragmentDoc}`;
+
+/**
+ * __useOnboardingPageQuery__
+ *
+ * To run a query within a React component, call `useOnboardingPageQuery` and pass it any options that fit your needs.
+ * When your component renders, `useOnboardingPageQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useOnboardingPageQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useOnboardingPageQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<OnboardingPageQuery, OnboardingPageQueryVariables>) {
+        return ApolloReactHooks.useQuery<OnboardingPageQuery, OnboardingPageQueryVariables>(OnboardingPageDocument, baseOptions);
+      }
+export function useOnboardingPageLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<OnboardingPageQuery, OnboardingPageQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<OnboardingPageQuery, OnboardingPageQueryVariables>(OnboardingPageDocument, baseOptions);
+        }
+export type OnboardingPageQueryHookResult = ReturnType<typeof useOnboardingPageQuery>;
+export type OnboardingPageLazyQueryHookResult = ReturnType<typeof useOnboardingPageLazyQuery>;
+export type OnboardingPageQueryResult = ApolloReactCommon.QueryResult<OnboardingPageQuery, OnboardingPageQueryVariables>;
 export const PendingApprovalDocument = gql`
     query PendingApproval($userId: uuid) {
-  users(where: {id: {_eq: $userId}}) {
+  current_user {
     id
     approved
-    ...PageUser
   }
+  ...PageQuery
 }
-    ${PageUserFragmentDoc}`;
+    ${PageQueryFragmentDoc}`;
 
 /**
  * __usePendingApprovalQuery__

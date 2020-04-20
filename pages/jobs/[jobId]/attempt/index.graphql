@@ -1,16 +1,8 @@
-#import "../../components/Page.graphql"
-#import "../../components/Chat.graphql"
 query JobAttempt($jobId: uuid!, $userId: uuid) {
-  users(where: { id: { _eq: $userId } }) {
-    id
-    ...PageUser
-  }
   jobs_by_pk(id: $jobId) {
     id
 
-    target {
-      id
-      name
-    }
+    target_name
   }
+  ...PageQuery
 }

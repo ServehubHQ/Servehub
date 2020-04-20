@@ -4,11 +4,12 @@ fragment JobsListJob on jobs {
   id
   pickup_required
 
-  target {
+  target_name
+  target_address {
     id
-    name
     street
     city
+    postal_code
     province
   }
 
@@ -31,11 +32,6 @@ fragment JobsListJob on jobs {
 }
 
 query JobsList($userId: uuid!, $isLawyer: Boolean!) {
-  users(where: { id: { _eq: $userId } }) {
-    id
-    ...PageUser
-  }
-
   lawyerJobs: jobs @include(if: $isLawyer) {
     id
 
@@ -50,4 +46,6 @@ query JobsList($userId: uuid!, $isLawyer: Boolean!) {
     ...JobsListJob
     ...JobCardJob
   }
+
+  ...PageQuery
 }

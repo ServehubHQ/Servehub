@@ -1,0 +1,8 @@
+mutation SetUserAddress($userId: uuid!, $addressId: uuid!) {
+  update_users(
+    where: { id: { _eq: $userId } }
+    _set: { address_id: $addressId }
+  ) {
+    affected_rows
+  }
+}

@@ -1,5 +1,7 @@
-fragment PageUser on users {
-  id
-  firebase_messaging_token
-  notifications_enabled
+fragment PageQuery on query_root {
+  current_user {
+    id
+    firebase_messaging_token
+    notifications_enabled
+  }
 }

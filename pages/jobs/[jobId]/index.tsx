@@ -37,10 +37,7 @@ export default function JobDetails() {
   const job = useMemo(() => data?.jobs_by_pk, [data])
 
   return (
-    <JobDetailsPage
-      job={data?.jobs_by_pk || undefined}
-      currentUser={data?.users[0] || undefined}
-    >
+    <JobDetailsPage job={data?.jobs_by_pk} query={data}>
       <Grid container spacing={2}>
         <Grid item sm={12} md={6}>
           <Card>
@@ -53,7 +50,7 @@ export default function JobDetails() {
                     Name
                   </Typography>
                   <Typography variant='h6' component='h2'>
-                    {job?.target?.name}
+                    {job?.target_name}
                   </Typography>
                 </div>
                 <div>
@@ -61,13 +58,15 @@ export default function JobDetails() {
                     Address
                   </Typography>
                   <Typography variant='h6' component='h2'>
-                    {job?.target ? <Address address={job.target} /> : null}
+                    {job?.target_address ? (
+                      <Address {...job.target_address} />
+                    ) : null}
                   </Typography>
                 </div>
               </Stack>
             </CardContent>
             <CardMedia>
-              {job?.target ? <Map {...job.target} /> : null}
+              {job?.target_address ? <Map {...job.target_address} /> : null}
             </CardMedia>
           </Card>
         </Grid>

@@ -1,12 +1,12 @@
 fragment JobCardJob on jobs {
   id
 
-  target {
+  target_name
+  target_address {
     id
-    name
     street
     unit
-    postalCode: postal_code
+    postal_code
     city
     province
   }

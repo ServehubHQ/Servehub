@@ -6,13 +6,14 @@ import {
   TextField,
 } from '@material-ui/core'
 import { FormContextValues } from 'react-hook-form'
+import { Provinces_Enum } from '../graphql-codegen'
 
 interface AddressFormData {
   street: string
   unit?: string
   postalCode: string
   city: string
-  province: string
+  province: Provinces_Enum
 }
 
 interface AddressFormProps {
@@ -90,19 +91,21 @@ export function AddressForm({ register, errors }: AddressFormProps) {
               required
               defaultValue='ON'
             >
-              <option value='NL'>Newfoundland and Labrador</option>
-              <option value='PE'>Prince Edward Island</option>
-              <option value='NS'>Nova Scotia</option>
-              <option value='NB'>New Brunswick</option>
-              <option value='QC'>Quebec</option>
-              <option value='ON'>Ontario</option>
-              <option value='MB'>Manitoba</option>
-              <option value='SK'>Saskatchewan</option>
-              <option value='AB'>Alberta</option>
-              <option value='BC'>British Columbia</option>
-              <option value='YT'>Yukon</option>
-              <option value='NT'>Northwest Territories</option>
-              <option value='NU'>Nunavut</option>
+              <option value={Provinces_Enum.Nl}>
+                Newfoundland and Labrador
+              </option>
+              <option value={Provinces_Enum.Pe}>Prince Edward Island</option>
+              <option value={Provinces_Enum.Ns}>Nova Scotia</option>
+              <option value={Provinces_Enum.Nb}>New Brunswick</option>
+              <option value={Provinces_Enum.Qc}>Quebec</option>
+              <option value={Provinces_Enum.On}>Ontario</option>
+              <option value={Provinces_Enum.Mb}>Manitoba</option>
+              <option value={Provinces_Enum.Sk}>Saskatchewan</option>
+              <option value={Provinces_Enum.Ab}>Alberta</option>
+              <option value={Provinces_Enum.Bc}>British Columbia</option>
+              <option value={Provinces_Enum.Yt}>Yukon</option>
+              <option value={Provinces_Enum.Nt}>Northwest Territories</option>
+              <option value={Provinces_Enum.Nu}>Nunavut</option>
             </Select>
           </FormControl>
         </Grid>

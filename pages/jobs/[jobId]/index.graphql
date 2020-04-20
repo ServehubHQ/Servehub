@@ -1,20 +1,15 @@
-# import "../../../components/JobDetailsPage.graphql"
 query JobDetials($jobId: uuid!, $userId: uuid) {
-  users(where: { id: { _eq: $userId } }) {
-    id
-    ...JobDetailsPageUser
-  }
   jobs_by_pk(id: $jobId) {
     id
     description
     stripe_payment_intent_succeeded
 
-    target {
+    target_name
+    target_address {
       id
-      name
       street
       unit
-      postalCode: postal_code
+      postal_code
       city
       province
     }
@@ -32,4 +27,6 @@ query JobDetials($jobId: uuid!, $userId: uuid) {
 
     ...JobDetailsPageJob
   }
+
+  ...JobDetailsPageQuery
 }

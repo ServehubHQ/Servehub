@@ -23,13 +23,13 @@ export default function PendingApprovalPage() {
   })
 
   useEffect(() => {
-    if (data?.users[0].approved) {
+    if (data?.current_user[0].approved) {
       router.push('/jobs')
     }
   }, [router, data])
 
   return (
-    <Page currentUser={data?.users[0]} title='Pending Approval'>
+    <Page query={data} title='Pending Approval'>
       <Grid container spacing={2} direction='column'>
         <Grid item>
           <Heading title='Pending Approval' />

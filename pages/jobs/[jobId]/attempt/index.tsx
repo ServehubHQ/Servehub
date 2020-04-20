@@ -66,10 +66,7 @@ export default function JobDetailsPage() {
   )
 
   return (
-    <Page
-      currentUser={data?.users[0]}
-      title={`Record Attempt - ${job?.target?.name || 'Job'}`}
-    >
+    <Page query={data} title={`Record Attempt - ${job?.target_name || 'Job'}`}>
       <Grid container direction='column' spacing={4}>
         <Grid item>
           <Heading
@@ -79,7 +76,7 @@ export default function JobDetailsPage() {
                 <MuiLink color='inherit'>Jobs</MuiLink>
               </Link>,
               <Link href={`/jobs/${job?.id}`} passHref key='job'>
-                <MuiLink color='inherit'>{job?.target?.name}</MuiLink>
+                <MuiLink color='inherit'>{job?.target_name}</MuiLink>
               </Link>,
             ]}
           />

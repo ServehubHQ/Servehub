@@ -1,38 +1,36 @@
+import { TextField } from '@material-ui/core'
 import { useRouter } from 'next/router'
 import { useCallback, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { AddressForm } from '../../../components/AddressForm'
 import { CreateJobPage } from '../../../components/CreateJobPage'
 import {
-  useInsertTargetMutation,
+  useInsertAddressMutation,
   useSetJobTargetMutation,
+  InsertAddressMutationVariables,
+  useJobsCreateTargetPageQuery,
 } from '../../../graphql-codegen'
 import { useAuthRequired } from '../../../lib/useAuthRequired'
-import { TextField } from '@material-ui/core'
 
-interface FormData {
+interface FormData extends InsertAddressMutationVariables {
   name: string
-  street: string
-  unit?: string
-  postalCode: string
-  city: string
-  province: string
 }
 
 export default function JobsCreateTargetPage() {
   useAuthRequired()
   const router = useRouter()
+  const { data } = useJobsCreateTargetPageQuery()
   const [
-    insertTarget,
-    { loading: insertTargetLoading },
-  ] = useInsertTargetMutation()
+    insertAddress,
+    { loading: insertAddressLoading },
+  ] = useInsertAddressMutation()
   const [
     setJobTarget,
     { loading: setJobTargetLoading },
   ] = useSetJobTargetMutation()
 
-  const loading = useMemo(() => insertTargetLoading || setJobTargetLoading, [
-    insertTargetLoading,
+  const loading = useMemo(() => insertAddressLoading || setJobTargetLoading, [
+    insertAddressLoading,
     setJobTargetLoading,
   ])
 
@@ -40,24 +38,25 @@ export default function JobsCreateTargetPage() {
 
   const handleFormValid = useCallback(
     async (formData: FormData) => {
-      const { data: targetData } = await insertTarget({ variables: formData })
+      const { data: addressData } = await insertAddress({ variables: formData })
 
-      const targetId = targetData?.insert_targets?.returning[0]?.id
-      if (!targetId) {
+      const addressId = addressData?.insert_addresses?.returning[0]?.id
+      if (!addressId) {
         setError('name', 'An unknown error has accured')
         return
       }
 
       await setJobTarget({
         variables: {
-          id: router.query.id,
-          targetId,
+          jobId: router.query.id,
+          targetName: formData.name,
+          addressId,
         },
       })
 
       router.push(`/jobs/create/documents?id=${router.query.id}`)
     },
-    [insertTarget, router, setError, setJobTarget],
+    [insertAddress, router, setError, setJobTarget],
   )
 
   return (
@@ -66,6 +65,7 @@ export default function JobsCreateTargetPage() {
       activeStep={0}
       title='Target'
       loading={loading}
+      query={data}
     >
       <TextField
         variant='filled'

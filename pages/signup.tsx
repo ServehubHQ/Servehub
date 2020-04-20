@@ -63,7 +63,7 @@ export default function SignupPage() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      router.push(router.query.next ? router.query.next.toString() : '/')
+      router.push('/onboarding')
     }
   }, [isAuthenticated, router])
 

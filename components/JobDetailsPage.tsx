@@ -2,16 +2,16 @@ import {
   Button,
   Grid,
   Link as MuiLink,
+  makeStyles,
   Tab,
   Tabs,
-  makeStyles,
 } from '@material-ui/core'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { ChangeEvent, ReactNode, useCallback } from 'react'
 import {
   JobDetailsPageJobFragment,
-  JobDetailsPageUserFragment,
+  JobDetailsPageQueryFragment,
   useClaimJobMutation,
 } from '../graphql-codegen'
 import { useAuth } from '../lib/useAuth'
@@ -20,8 +20,8 @@ import { Page } from './Page'
 
 interface JobDetailsPageProps {
   children: ReactNode
-  job?: JobDetailsPageJobFragment
-  currentUser?: JobDetailsPageUserFragment
+  query?: JobDetailsPageQueryFragment
+  job?: JobDetailsPageJobFragment | null
   tab?: string
 }
 
@@ -35,7 +35,7 @@ export function JobDetailsPage({
   children,
   tab = 'index',
   job,
-  currentUser,
+  query,
 }: JobDetailsPageProps) {
   const router = useRouter()
   const className = useStyles()
@@ -64,13 +64,13 @@ export function JobDetailsPage({
   )
 
   return (
-    <Page currentUser={currentUser} title={job?.target?.name || 'Job'}>
+    <Page query={query} title={job?.target_name || 'Job'}>
       <Grid container spacing={2} direction='column'>
         <Grid item>
           <Heading
             title={
               tab === 'index'
-                ? job?.target?.name || 'Job'
+                ? job?.target_name || 'Job'
                 : tab === 'documents'
                 ? 'Documents'
                 : tab === 'chat'
@@ -83,9 +83,7 @@ export function JobDetailsPage({
               </Link>,
               tab !== 'index' ? (
                 <Link href={`/jobs/${job?.id}`} passHref key='jobs'>
-                  <MuiLink color='inherit'>
-                    {job?.target?.name || 'Job'}
-                  </MuiLink>
+                  <MuiLink color='inherit'>{job?.target_name || 'Job'}</MuiLink>
                 </Link>
               ) : null,
             ]}

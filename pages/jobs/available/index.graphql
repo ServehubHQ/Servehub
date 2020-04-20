@@ -1,9 +1,4 @@
-#import "../../../components/JobCard.graphql"
 query JobsAvailable($userId: uuid) {
-  users(where: { id: { _eq: $userId } }) {
-    id
-    ...PageUser
-  }
   jobs(
     where: {
       server_user_id: { _is_null: true }
@@ -15,4 +10,6 @@ query JobsAvailable($userId: uuid) {
 
     ...JobCardJob
   }
+
+  ...PageQuery
 }

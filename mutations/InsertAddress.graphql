@@ -1,21 +1,20 @@
-mutation InsertTarget(
-  $name: String!
+mutation InsertAddress(
   $street: String!
   $unit: String
   $postalCode: String!
   $city: String!
-  $province: String!
+  $province: provinces_enum!
 ) {
-  insert_targets(
+  insert_addresses(
     objects: {
       city: $city
-      name: $name
       street: $street
       unit: $unit
       postal_code: $postalCode
       province: $province
     }
   ) {
+    affected_rows
     returning {
       id
     }

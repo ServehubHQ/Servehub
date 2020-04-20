@@ -1,21 +1,7 @@
-mutation SetJobPickupRequired(
-  $jobId: uuid!
-  $unit: String
-  $street: String!
-  $province: String!
-  $postalCode: String!
-  $city: String!
-) {
+mutation SetJobPickupRequired($jobId: uuid!, $addressId: uuid!) {
   update_jobs(
     where: { id: { _eq: $jobId } }
-    _set: {
-      pickup_required: true
-      pickup_unit: $unit
-      pickup_street: $street
-      pickup_province: $province
-      pickup_postal_code: $postalCode
-      pickup_city: $city
-    }
+    _set: { pickup_required: true, pickup_address_id: $addressId }
   ) {
     affected_rows
   }

@@ -12,7 +12,7 @@ import { useAuthRequired } from '../lib/useAuthRequired'
 import { CreateJobSteps } from './CreateJobSteps'
 import { Page, PageProps } from './Page'
 
-interface CreateJobPageProps extends Partial<PageProps> {
+interface CreateJobPageProps extends PageProps {
   activeStep: number
   title: string
   loading: boolean

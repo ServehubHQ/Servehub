@@ -37,11 +37,7 @@ export default function JobDetailsChat() {
   }, [chatCardRef])
 
   return (
-    <JobDetailsPage
-      job={data?.jobs_by_pk || undefined}
-      currentUser={data?.users[0] || undefined}
-      tab='chat'
-    >
+    <JobDetailsPage job={data?.jobs_by_pk} query={data} tab='chat'>
       {job ? (
         <Paper className={classNames.chatCard} ref={chatCardRef}>
           <ChatMessages jobId={job.id} />

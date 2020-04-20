@@ -6,18 +6,12 @@ import { AddressForm } from '../../../components/AddressForm'
 import { CreateJobPage } from '../../../components/CreateJobPage'
 import { DroppedFile, FilesDropzone } from '../../../components/FileDropzone'
 import {
-  useInsertDocumentMutation,
+  InsertAddressMutationVariables,
+  useInsertAddressMutation,
   useSetJobPickupRequiredMutation,
+  useInsertDocumentMutation,
 } from '../../../graphql-codegen'
 import { useAuthRequired } from '../../../lib/useAuthRequired'
-
-interface FormData {
-  street: string
-  unit?: string
-  postalCode: string
-  city: string
-  province: string
-}
 
 export default function JobsCreateDocumentsPage() {
   useAuthRequired()
@@ -25,6 +19,10 @@ export default function JobsCreateDocumentsPage() {
   const jobId = useMemo(() => router.query.id, [router])
   const [pickup, setPickup] = useState(false)
   const [files, setFiles] = useState<DroppedFile[]>([])
+  const [
+    insertAddress,
+    { loading: insertAddressLoading },
+  ] = useInsertAddressMutation()
   const [
     insertDocument,
     { loading: insertDocumentLoading },
@@ -34,10 +32,13 @@ export default function JobsCreateDocumentsPage() {
     { loading: setPickupRequiredLoading },
   ] = useSetJobPickupRequiredMutation()
   const loading = useMemo(
-    () => insertDocumentLoading || setPickupRequiredLoading,
-    [insertDocumentLoading, setPickupRequiredLoading],
+    () =>
+      insertAddressLoading || setPickupRequiredLoading || insertDocumentLoading,
+    [insertAddressLoading, setPickupRequiredLoading, insertDocumentLoading],
   )
-  const { register, handleSubmit, errors } = useForm<FormData>()
+  const { register, handleSubmit, errors, setError } = useForm<
+    InsertAddressMutationVariables
+  >()
 
   const handlePickupChange = useCallback(
     (event, pickup: boolean) => {
@@ -47,10 +48,19 @@ export default function JobsCreateDocumentsPage() {
   )
 
   const handleFormValid = useCallback(
-    async (formData: FormData) => {
+    async (formData: InsertAddressMutationVariables) => {
       if (pickup) {
+        const { data: addressData } = await insertAddress({
+          variables: formData,
+        })
+
+        const addressId = addressData?.insert_addresses?.returning[0]?.id
+        if (!addressId) {
+          setError('street', 'An unknown error has accured')
+          return
+        }
         await setPickupRequired({
-          variables: { ...formData, jobId },
+          variables: { jobId, addressId },
         })
       } else {
         await Promise.all(
@@ -63,7 +73,16 @@ export default function JobsCreateDocumentsPage() {
       }
       router.push(`/jobs/create/payment?id=${jobId}`)
     },
-    [router, jobId, pickup, setPickupRequired, files, insertDocument],
+    [
+      router,
+      jobId,
+      pickup,
+      setPickupRequired,
+      files,
+      insertAddress,
+      insertDocument,
+      setError,
+    ],
   )
 
   return (

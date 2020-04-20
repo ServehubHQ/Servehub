@@ -22,12 +22,18 @@ export default function HomePage() {
       return
     }
 
-    if (role !== 'server' || data?.users[0].approved) {
+    if (!data?.current_user[0].address_id) {
+      router.push('/onboarding')
+    } else if (role !== 'server' || data?.current_user[0].approved) {
       router.push('/jobs')
     } else {
       router.push('/pending-approval')
     }
   }, [loading, isAuthenticated, data, router, role])
 
-  return <Page currentUser={data?.users[0]} title='Welcome' />
+  if (!data) {
+    return ''
+  }
+
+  return <Page query={data} title='Welcome' />
 }

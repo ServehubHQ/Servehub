@@ -1,10 +1,8 @@
 query JobsCreatePayment($jobId: uuid!, $userId: uuid) {
-  users(where: { id: { _eq: $userId } }) {
-    id
-    ...PageUser
-  }
   jobs(where: { id: { _eq: $jobId } }) {
     stripe_payment_intent_client_secret
     id
   }
+
+  ...PageQuery
 }

@@ -49,7 +49,7 @@ export default function JobListPage() {
   )
 
   return (
-    <Page currentUser={data?.users[0]} title='Jobs'>
+    <Page query={data} title='Jobs'>
       <Grid container spacing={2} direction='column'>
         <Grid item>
           <Heading title='Jobs' />
@@ -74,7 +74,7 @@ export default function JobListPage() {
                     onClick={handleJobClick(job.id)}
                     className={styles.row}
                   >
-                    <TableCell>{job.target?.name}</TableCell>
+                    <TableCell>{job.target_name}</TableCell>
                     <TableCell>
                       {(job.successfulAttempts.aggregate?.count || 0) > 0 ? (
                         <CheckCircle className={styles.successIcon} />
@@ -89,7 +89,9 @@ export default function JobListPage() {
                         : job.documents_aggregate.aggregate?.count}
                     </TableCell>
                     <TableCell>
-                      {job.target ? <Address address={job.target} /> : null}
+                      {job.target_address ? (
+                        <Address {...job.target_address} />
+                      ) : null}
                     </TableCell>
                   </TableRow>
                 ))}

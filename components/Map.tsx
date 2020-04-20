@@ -3,13 +3,13 @@ import { config } from '../lib/config'
 
 interface MapProps {
   street: string
-  unit?: string
+  unit?: string | null
   city: string
-  postalCode: string
+  postal_code: string
   province: string
 }
 
-export function Map({ street, city, postalCode, province }: MapProps) {
+export function Map({ street, city, postal_code, province }: MapProps) {
   const query = useMemo(
     () =>
       encodeURIComponent(
@@ -17,12 +17,12 @@ export function Map({ street, city, postalCode, province }: MapProps) {
           street,
           // unit,
           city,
-          postalCode,
+          postal_code,
           province,
           'CA',
         ].join(','),
       ),
-    [street, city, postalCode, province],
+    [street, city, postal_code, province],
   )
   return (
     <iframe

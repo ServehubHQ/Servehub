@@ -1,17 +1,12 @@
-# import "./Page.graphql"
 fragment JobDetailsPageJob on jobs {
   id
+  target_name
 
   server {
     id
   }
-
-  target {
-    id
-    name
-  }
 }
 
-fragment JobDetailsPageUser on users {
-  ...PageUser
+fragment JobDetailsPageQuery on query_root {
+  ...PageQuery
 }
