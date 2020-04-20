@@ -41,6 +41,7 @@
     "ra-data-hasura-graphql": "github:ServehubHQ/ra-data-hasura-graphql#master",
     "react": "^16.13.1",
     "react-admin": "^3.2.3",
+    "react-apollo-network-status": "^5.0.0-alpha.1",
     "react-dom": "^16.13.0",
     "react-dropzone": "^10.2.1",
     "react-hook-form": "^5.0.3",

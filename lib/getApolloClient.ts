@@ -4,17 +4,27 @@ import {
   InMemoryCache,
   NormalizedCacheObject,
   split,
+  ApolloLink,
 } from '@apollo/client'
 import { getMainDefinition } from '@apollo/client/utilities'
 import { setContext } from '@apollo/link-context'
 import { WebSocketLink } from '@apollo/link-ws'
+
+import { createNetworkStatusNotifier } from 'react-apollo-network-status'
 import fetch from 'cross-fetch'
 import { AuthClient } from './AuthClient'
 import { config } from './config'
 import { useMemo } from 'react'
 import { useAuth } from './useAuth'
 
+const {
+  link: networkStatusLink,
+  useApolloNetworkStatus,
+} = createNetworkStatusNotifier()
+
 let apolloClient: ApolloClient<NormalizedCacheObject>
+
+export { useApolloNetworkStatus }
 
 export function getApolloClient(
   authClient: AuthClient,
@@ -40,12 +50,14 @@ export function getApolloClient(
         ...(await authClient.getRequestHeaders()),
       },
     }
-  }).concat(
-    new HttpLink({
-      uri: config.hasuraHttpEndpoint,
-      fetch,
-    }),
-  )
+  })
+    .concat((networkStatusLink as unknown) as ApolloLink)
+    .concat(
+      new HttpLink({
+        uri: config.hasuraHttpEndpoint,
+        fetch,
+      }),
+    )
 
   const webSocketLink =
     isBrowser &&

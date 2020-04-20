@@ -5,6 +5,7 @@ import {
   Container,
   FormControlLabel,
   IconButton,
+  LinearProgress,
   makeStyles,
   Menu,
   MenuItem,
@@ -27,6 +28,7 @@ import { PageUserFragment } from '../graphql-codegen'
 import { getAndSaveMessagingToken } from '../lib/firebase'
 import { useApolloClient } from '../lib/getApolloClient'
 import { useAuth } from '../lib/useAuth'
+import { useGlobalLoading } from '../lib/useGlobalLoading'
 
 export interface PageProps {
   title: string
@@ -40,6 +42,10 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     height: '100%',
     minHeight: '100vh',
+  },
+  loadingBar: {
+    position: 'absolute',
+    width: '100%',
   },
   bar: {
     boxShadow: 'none',
@@ -66,6 +72,7 @@ const useStyles = makeStyles((theme) => ({
 
 export function Page({ title, children, currentUser }: PageProps) {
   const router = useRouter()
+  const globalLoading = useGlobalLoading()
   const { isAuthenticated, authClient, isAdmin, role } = useAuth()
   const apolloClient = useApolloClient()
   const classNames = useStyles()
@@ -164,6 +171,9 @@ export function Page({ title, children, currentUser }: PageProps) {
         />
       </Head>
       <AppBar position='static' className={classNames.bar}>
+        {globalLoading ? (
+          <LinearProgress className={classNames.loadingBar} />
+        ) : null}
         <Container fixed>
           <Toolbar disableGutters>
             <Box flexGrow={1}>
