@@ -2,9 +2,17 @@ mutation InsertAttempt(
   $jobId: uuid!
   $attemptedAt: timestamptz!
   $success: Boolean!
+  $notes: String
+  $imageUrl: String
 ) {
   insert_attempts(
-    objects: { attempted_at: $attemptedAt, job_id: $jobId, success: $success }
+    objects: {
+      attempted_at: $attemptedAt
+      job_id: $jobId
+      success: $success
+      notes: $notes
+      image_url: $imageUrl
+    }
   ) {
     affected_rows
   }

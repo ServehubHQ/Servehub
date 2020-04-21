@@ -111,7 +111,7 @@ export default function JobsCreateDocumentsPage() {
             <AddressForm register={register} errors={errors} />
           ) : (
             <FilesDropzone
-              filePath={`/documents/${jobId}`}
+              filePath={`/jobs/${jobId}/documents`}
               onChange={setFiles}
             />
           )}

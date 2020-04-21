@@ -276,6 +276,7 @@ export type Attempts = {
   image_url?: Maybe<Scalars['String']>;
   job: Jobs;
   job_id: Scalars['uuid'];
+  notes?: Maybe<Scalars['String']>;
   success: Scalars['Boolean'];
   updated_at: Scalars['timestamptz'];
 };
@@ -320,6 +321,7 @@ export type Attempts_Bool_Exp = {
   image_url?: Maybe<String_Comparison_Exp>;
   job?: Maybe<Jobs_Bool_Exp>;
   job_id?: Maybe<Uuid_Comparison_Exp>;
+  notes?: Maybe<String_Comparison_Exp>;
   success?: Maybe<Boolean_Comparison_Exp>;
   updated_at?: Maybe<Timestamptz_Comparison_Exp>;
 };
@@ -335,6 +337,7 @@ export type Attempts_Insert_Input = {
   image_url?: Maybe<Scalars['String']>;
   job?: Maybe<Jobs_Obj_Rel_Insert_Input>;
   job_id?: Maybe<Scalars['uuid']>;
+  notes?: Maybe<Scalars['String']>;
   success?: Maybe<Scalars['Boolean']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
@@ -344,6 +347,7 @@ export type Attempts_Max_Fields = {
   attempted_at?: Maybe<Scalars['timestamptz']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   image_url?: Maybe<Scalars['String']>;
+  notes?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
@@ -351,6 +355,7 @@ export type Attempts_Max_Order_By = {
   attempted_at?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   image_url?: Maybe<Order_By>;
+  notes?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
 
@@ -359,6 +364,7 @@ export type Attempts_Min_Fields = {
   attempted_at?: Maybe<Scalars['timestamptz']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   image_url?: Maybe<Scalars['String']>;
+  notes?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
@@ -366,6 +372,7 @@ export type Attempts_Min_Order_By = {
   attempted_at?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   image_url?: Maybe<Order_By>;
+  notes?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
 
@@ -393,6 +400,7 @@ export type Attempts_Order_By = {
   image_url?: Maybe<Order_By>;
   job?: Maybe<Jobs_Order_By>;
   job_id?: Maybe<Order_By>;
+  notes?: Maybe<Order_By>;
   success?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
@@ -403,6 +411,7 @@ export enum Attempts_Select_Column {
   Id = 'id',
   ImageUrl = 'image_url',
   JobId = 'job_id',
+  Notes = 'notes',
   Success = 'success',
   UpdatedAt = 'updated_at'
 }
@@ -413,6 +422,7 @@ export type Attempts_Set_Input = {
   id?: Maybe<Scalars['uuid']>;
   image_url?: Maybe<Scalars['String']>;
   job_id?: Maybe<Scalars['uuid']>;
+  notes?: Maybe<Scalars['String']>;
   success?: Maybe<Scalars['Boolean']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
@@ -423,6 +433,7 @@ export enum Attempts_Update_Column {
   Id = 'id',
   ImageUrl = 'image_url',
   JobId = 'job_id',
+  Notes = 'notes',
   Success = 'success',
   UpdatedAt = 'updated_at'
 }
@@ -4119,6 +4130,8 @@ export type InsertAttemptMutationVariables = {
   jobId: Scalars['uuid'];
   attemptedAt: Scalars['timestamptz'];
   success: Scalars['Boolean'];
+  notes?: Maybe<Scalars['String']>;
+  imageUrl?: Maybe<Scalars['String']>;
 };
 
 
@@ -4756,8 +4769,8 @@ export type InsertAddressMutationHookResult = ReturnType<typeof useInsertAddress
 export type InsertAddressMutationResult = ApolloReactCommon.MutationResult<InsertAddressMutation>;
 export type InsertAddressMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertAddressMutation, InsertAddressMutationVariables>;
 export const InsertAttemptDocument = gql`
-    mutation InsertAttempt($jobId: uuid!, $attemptedAt: timestamptz!, $success: Boolean!) {
-  insert_attempts(objects: {attempted_at: $attemptedAt, job_id: $jobId, success: $success}) {
+    mutation InsertAttempt($jobId: uuid!, $attemptedAt: timestamptz!, $success: Boolean!, $notes: String, $imageUrl: String) {
+  insert_attempts(objects: {attempted_at: $attemptedAt, job_id: $jobId, success: $success, notes: $notes, image_url: $imageUrl}) {
     affected_rows
   }
 }
@@ -4780,6 +4793,8 @@ export type InsertAttemptMutationFn = ApolloReactCommon.MutationFunction<InsertA
  *      jobId: // value for 'jobId'
  *      attemptedAt: // value for 'attemptedAt'
  *      success: // value for 'success'
+ *      notes: // value for 'notes'
+ *      imageUrl: // value for 'imageUrl'
  *   },
  * });
  */

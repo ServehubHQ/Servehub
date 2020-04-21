@@ -2,7 +2,6 @@ import {
   CircularProgress,
   colors,
   IconButton,
-  Link,
   List,
   ListItem,
   ListItemIcon,
@@ -14,7 +13,7 @@ import {
 import { Delete } from '@material-ui/icons'
 import FileCopyIcon from '@material-ui/icons/FileCopy'
 import clsx from 'clsx'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState, MouseEvent } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { bytesToSize } from '../lib/bytesToSize'
 import { uploadFile } from '../lib/uploadFile'
@@ -60,12 +59,22 @@ export interface DroppedFile {
   size: string
   file: File
   uploading: boolean
-  url: string
+  url?: string
+}
+
+function fileToDroppedFile(file: File): DroppedFile {
+  return {
+    name: file.name,
+    size: bytesToSize(file.size),
+    file,
+    uploading: true,
+  }
 }
 
 interface FilesDropzoneProps {
   filePath: string
   onChange: (urls: DroppedFile[]) => void
+  multiFile?: boolean
   className?: string
 }
 
@@ -73,6 +82,7 @@ export function FilesDropzone({
   onChange,
   className,
   filePath,
+  multiFile = true,
 }: FilesDropzoneProps) {
   const classes = useStyles()
   const [files, setFiles] = useState<DroppedFile[]>([])
@@ -86,16 +96,13 @@ export function FilesDropzone({
 
   const handleDrop = useCallback(
     async (acceptedFiles) => {
-      setFiles((prevFiles) =>
-        [...prevFiles].concat(
-          acceptedFiles.map((file: File) => ({
-            name: file.name,
-            size: bytesToSize(file.size),
-            file,
-            uploading: true,
-          })),
-        ),
-      )
+      if (multiFile) {
+        setFiles((prevFiles) =>
+          [...prevFiles].concat(acceptedFiles.map(fileToDroppedFile)),
+        )
+      } else {
+        setFiles(acceptedFiles.slice(-1).map(fileToDroppedFile))
+      }
       await Promise.all(
         acceptedFiles.map(async (file: File) => {
           const url = await uploadFile(file, filePath, file.name)
@@ -120,7 +127,16 @@ export function FilesDropzone({
         }),
       )
     },
-    [setFiles, filePath],
+    [setFiles, filePath, multiFile],
+  )
+
+  const handleRemoveFile = useCallback(
+    (file: DroppedFile) => (event: MouseEvent<HTMLButtonElement>) => {
+      setFiles((files) =>
+        files.filter(({ name }: DroppedFile) => name !== file.name),
+      )
+    },
+    [setFiles],
   )
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -173,7 +189,11 @@ export function FilesDropzone({
                 <CircularProgress />
               ) : (
                 <Tooltip title='Delete'>
-                  <IconButton edge='end'>
+                  <IconButton
+                    edge='end'
+                    aria-label='delete'
+                    onClick={handleRemoveFile(file)}
+                  >
                     <Delete fontSize='small' />
                   </IconButton>
                 </Tooltip>

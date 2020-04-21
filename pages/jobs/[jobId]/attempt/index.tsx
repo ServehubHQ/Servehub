@@ -8,12 +8,13 @@ import {
   FormControlLabel,
   Grid,
   Link as MuiLink,
+  TextField,
 } from '@material-ui/core'
 import { DateTimePicker } from '@material-ui/pickers'
 import { Moment } from 'moment'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Heading } from '../../../../components/Heading'
 import { Page } from '../../../../components/Page'
@@ -23,10 +24,12 @@ import {
 } from '../../../../graphql-codegen'
 import { useAuth } from '../../../../lib/useAuth'
 import { useAuthRequired } from '../../../../lib/useAuthRequired'
+import { FilesDropzone, DroppedFile } from '../../../../components/FileDropzone'
 
 interface FormData {
   attemptedAt: Date
   success: boolean
+  notes: string
   imageUrl?: string
 }
 
@@ -35,12 +38,15 @@ export default function JobDetailsPage() {
   const router = useRouter()
   const { jobId } = router.query
   const { userId } = useAuth()
+  const [files, setFiles] = useState<DroppedFile[]>([])
   const { data } = useJobAttemptQuery({ variables: { jobId, userId } })
   const job = useMemo(() => data?.jobs_by_pk, [data])
   const [insertAttempt, { loading }] = useInsertAttemptMutation()
-  const { register, handleSubmit, watch, setValue } = useForm<FormData>({
-    defaultValues: { attemptedAt: new Date() },
-  })
+  const { register, handleSubmit, watch, setValue, errors } = useForm<FormData>(
+    {
+      defaultValues: { attemptedAt: new Date() },
+    },
+  )
   const attemptedAt = watch('attemptedAt')
 
   useEffect(() => {
@@ -59,10 +65,16 @@ export default function JobDetailsPage() {
       if (!job) {
         throw new Error('missing job when inserting attempt')
       }
-      await insertAttempt({ variables: { ...formData, jobId: job.id } })
+      await insertAttempt({
+        variables: {
+          ...formData,
+          imageUrl: files.length > 0 ? files[0].url : null,
+          jobId: job.id,
+        },
+      })
       router.push(`/jobs/${job.id}`)
     },
-    [job, insertAttempt, router],
+    [job, insertAttempt, router, files],
   )
 
   return (
@@ -85,7 +97,7 @@ export default function JobDetailsPage() {
           <form noValidate onSubmit={handleSubmit(handleFormValid)}>
             <Card>
               <CardContent>
-                <Grid container direction='column' spacing={1}>
+                <Grid container direction='column' spacing={2}>
                   <Grid item>
                     <FormControlLabel
                       control={
@@ -104,6 +116,26 @@ export default function JobDetailsPage() {
                       variant='dialog'
                       value={attemptedAt}
                       onChange={handleAttemptedAtChange}
+                    />
+                  </Grid>
+                  <Grid item>
+                    <FilesDropzone
+                      filePath={`/jobs/${jobId}/attempts`}
+                      onChange={setFiles}
+                      multiFile={false}
+                    />
+                  </Grid>
+                  <Grid item>
+                    <TextField
+                      variant='filled'
+                      margin='normal'
+                      label='Notes'
+                      name='notes'
+                      fullWidth
+                      multiline
+                      inputRef={register()}
+                      error={Boolean(errors.notes)}
+                      helperText={errors.notes?.message}
                     />
                   </Grid>
                 </Grid>
