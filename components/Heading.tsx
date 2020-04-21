@@ -2,7 +2,7 @@ import { Breadcrumbs, Grid, Typography } from '@material-ui/core'
 import { ReactNode } from 'react'
 
 interface HeadingProps {
-  title: string
+  title: string | ReactNode
   breadcrumbs?: ReactNode
   action?: ReactNode
 }

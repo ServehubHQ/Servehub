@@ -5,6 +5,7 @@ import {
   makeStyles,
   Tab,
   Tabs,
+  Typography,
 } from '@material-ui/core'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -77,13 +78,24 @@ export function JobDetailsPage({
         <Grid item>
           <Heading
             title={
-              tab === 'index'
-                ? job?.target_name || 'Job'
-                : tab === 'documents'
-                ? 'Documents'
-                : tab === 'chat'
-                ? 'Chat'
-                : ''
+              <>
+                {tab === 'index'
+                  ? job?.target_name || 'Job'
+                  : tab === 'documents'
+                  ? 'Documents'
+                  : tab === 'chat'
+                  ? 'Chat'
+                  : ''}
+                {job?.case_number ? (
+                  <Typography
+                    component='span'
+                    variant='subtitle1'
+                    color='textSecondary'
+                  >
+                    {` #${job?.case_number}`}
+                  </Typography>
+                ) : null}
+              </>
             }
             breadcrumbs={[
               <Link href='/jobs' passHref key='jobs'>

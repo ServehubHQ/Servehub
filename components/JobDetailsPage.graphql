@@ -1,6 +1,7 @@
 fragment JobDetailsPageJob on jobs {
   id
   target_name
+  case_number
 
   server {
     id

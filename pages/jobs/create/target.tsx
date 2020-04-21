@@ -1,4 +1,4 @@
-import { TextField } from '@material-ui/core'
+import { TextField, Grid } from '@material-ui/core'
 import { useRouter } from 'next/router'
 import { useCallback, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
@@ -14,6 +14,7 @@ import { useAuthRequired } from '../../../lib/useAuthRequired'
 
 interface FormData extends InsertAddressMutationVariables {
   name: string
+  caseNumber: string
 }
 
 export default function JobsCreateTargetPage() {
@@ -37,7 +38,7 @@ export default function JobsCreateTargetPage() {
   const { register, handleSubmit, errors, setError } = useForm<FormData>()
 
   const handleFormValid = useCallback(
-    async ({ name: targetName, ...targetAddress }: FormData) => {
+    async ({ name: targetName, caseNumber, ...targetAddress }: FormData) => {
       const { data: addressData } = await insertAddress({
         variables: targetAddress,
       })
@@ -52,6 +53,7 @@ export default function JobsCreateTargetPage() {
         variables: {
           jobId: router.query.id,
           targetName,
+          caseNumber,
           addressId,
         },
       })
@@ -69,18 +71,35 @@ export default function JobsCreateTargetPage() {
       loading={loading}
       query={data}
     >
-      <TextField
-        variant='filled'
-        margin='normal'
-        label='Full Name'
-        name='name'
-        required
-        autoFocus
-        fullWidth
-        inputRef={register({ required: true })}
-        error={Boolean(errors.name)}
-        helperText={errors.name?.message}
-      />
+      <Grid container direction='row' spacing={2}>
+        <Grid item xs={6}>
+          <TextField
+            variant='filled'
+            margin='normal'
+            label='Full Name'
+            name='name'
+            required
+            autoFocus
+            fullWidth
+            inputRef={register({ required: true })}
+            error={Boolean(errors.name)}
+            helperText={errors.name?.message}
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <TextField
+            variant='filled'
+            margin='normal'
+            label='Case Number'
+            name='caseNumber'
+            autoFocus
+            fullWidth
+            inputRef={register({ required: true })}
+            error={Boolean(errors.caseNumber)}
+            helperText={errors.caseNumber?.message}
+          />
+        </Grid>
+      </Grid>
       <AddressForm register={register} errors={errors} />
     </CreateJobPage>
   )

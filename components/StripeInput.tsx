@@ -1,6 +1,6 @@
-import { Ref, useImperativeHandle, useState, useCallback, Props } from 'react'
 import { CardNumberElement } from '@stripe/react-stripe-js'
 import { StripeCardNumberElementOptions } from '@stripe/stripe-js'
+import { Props, Ref, useImperativeHandle, useState } from 'react'
 
 interface StripeInputProps<T> extends Props<T> {
   Element: T
@@ -22,22 +22,13 @@ export function StripeInput({
       focus: () => {
         element?.focus()
       },
-      // hiding the value e.g. react-stripe-elements
     }),
     [element],
   )
 
-  const handleReady = useCallback(
-    (element) => {
-      console.log(element)
-      setElement(element)
-    },
-    [setElement],
-  )
-
   return (
     <Element
-      onReady={handleReady}
+      onReady={setElement}
       options={{
         style: {
           base: {

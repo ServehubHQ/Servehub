@@ -32,15 +32,17 @@ fragment JobsListJob on jobs {
 }
 
 query JobsList($userId: uuid!, $isLawyer: Boolean!) {
-  lawyerJobs: jobs @include(if: $isLawyer) {
+  lawyerJobs: jobs(order_by: { created_at: desc }) @include(if: $isLawyer) {
     id
 
     ...JobsListJob
     ...JobCardJob
   }
 
-  serverJobs: jobs(where: { server_user_id: { _eq: $userId } })
-    @skip(if: $isLawyer) {
+  serverJobs: jobs(
+    order_by: { created_at: desc }
+    where: { server_user_id: { _eq: $userId } }
+  ) @skip(if: $isLawyer) {
     id
 
     ...JobsListJob

@@ -8,13 +8,19 @@ export function useGlobalLoading() {
   const [routerLoading, setRouterLoading] = useState(false)
 
   useEffect(() => {
-    const handleRouteChangeStart = () => setRouterLoading(true)
-    const handleRouteChangeComplete = () => setRouterLoading(false)
+    const handleRouteChangeStart = (url: string) => {
+      console.log('[router] start', url)
+      setRouterLoading(true)
+    }
+    const handleRouteChangeComplete = (url: string) => {
+      console.log('[router] end', url)
+      setRouterLoading(false)
+    }
     const handleRouteChangeError = (
       error: { cancelled: boolean },
       url: string,
     ) => {
-      console.warn('[router] change error', url, error)
+      console.warn('[router] error', url, error)
       setRouterLoading(false)
     }
     router.events.on('routeChangeStart', handleRouteChangeStart)

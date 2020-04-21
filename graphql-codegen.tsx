@@ -1544,6 +1544,7 @@ export type Jobs = {
    __typename?: 'jobs';
   attempts: Array<Attempts>;
   attempts_aggregate: Attempts_Aggregate;
+  case_number?: Maybe<Scalars['String']>;
   created_at: Scalars['timestamptz'];
   description?: Maybe<Scalars['String']>;
   documents: Array<Documents>;
@@ -1656,6 +1657,7 @@ export type Jobs_Bool_Exp = {
   _not?: Maybe<Jobs_Bool_Exp>;
   _or?: Maybe<Array<Maybe<Jobs_Bool_Exp>>>;
   attempts?: Maybe<Attempts_Bool_Exp>;
+  case_number?: Maybe<String_Comparison_Exp>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
   description?: Maybe<String_Comparison_Exp>;
   documents?: Maybe<Documents_Bool_Exp>;
@@ -1683,6 +1685,7 @@ export enum Jobs_Constraint {
 
 export type Jobs_Insert_Input = {
   attempts?: Maybe<Attempts_Arr_Rel_Insert_Input>;
+  case_number?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   description?: Maybe<Scalars['String']>;
   documents?: Maybe<Documents_Arr_Rel_Insert_Input>;
@@ -1706,6 +1709,7 @@ export type Jobs_Insert_Input = {
 
 export type Jobs_Max_Fields = {
    __typename?: 'jobs_max_fields';
+  case_number?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   description?: Maybe<Scalars['String']>;
   stripe_payment_intent_client_secret?: Maybe<Scalars['String']>;
@@ -1715,6 +1719,7 @@ export type Jobs_Max_Fields = {
 };
 
 export type Jobs_Max_Order_By = {
+  case_number?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   description?: Maybe<Order_By>;
   stripe_payment_intent_client_secret?: Maybe<Order_By>;
@@ -1725,6 +1730,7 @@ export type Jobs_Max_Order_By = {
 
 export type Jobs_Min_Fields = {
    __typename?: 'jobs_min_fields';
+  case_number?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   description?: Maybe<Scalars['String']>;
   stripe_payment_intent_client_secret?: Maybe<Scalars['String']>;
@@ -1734,6 +1740,7 @@ export type Jobs_Min_Fields = {
 };
 
 export type Jobs_Min_Order_By = {
+  case_number?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   description?: Maybe<Order_By>;
   stripe_payment_intent_client_secret?: Maybe<Order_By>;
@@ -1761,6 +1768,7 @@ export type Jobs_On_Conflict = {
 
 export type Jobs_Order_By = {
   attempts_aggregate?: Maybe<Attempts_Aggregate_Order_By>;
+  case_number?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   description?: Maybe<Order_By>;
   documents_aggregate?: Maybe<Documents_Aggregate_Order_By>;
@@ -1783,6 +1791,7 @@ export type Jobs_Order_By = {
 };
 
 export enum Jobs_Select_Column {
+  CaseNumber = 'case_number',
   CreatedAt = 'created_at',
   Description = 'description',
   Id = 'id',
@@ -1799,6 +1808,7 @@ export enum Jobs_Select_Column {
 }
 
 export type Jobs_Set_Input = {
+  case_number?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
@@ -1815,6 +1825,7 @@ export type Jobs_Set_Input = {
 };
 
 export enum Jobs_Update_Column {
+  CaseNumber = 'case_number',
   CreatedAt = 'created_at',
   Description = 'description',
   Id = 'id',
@@ -4026,7 +4037,7 @@ export type JobCardJobFragment = (
 
 export type JobDetailsPageJobFragment = (
   { __typename?: 'jobs' }
-  & Pick<Jobs, 'id' | 'target_name'>
+  & Pick<Jobs, 'id' | 'target_name' | 'case_number'>
   & { server: Maybe<(
     { __typename?: 'users' }
     & Pick<Users, 'id'>
@@ -4244,6 +4255,7 @@ export type SetJobTargetMutationVariables = {
   jobId: Scalars['uuid'];
   targetName: Scalars['String'];
   addressId: Scalars['uuid'];
+  caseNumber?: Maybe<Scalars['String']>;
 };
 
 
@@ -4550,6 +4562,7 @@ export const JobDetailsPageJobFragmentDoc = gql`
     fragment JobDetailsPageJob on jobs {
   id
   target_name
+  case_number
   server {
     id
   }
@@ -5051,8 +5064,8 @@ export type SetJobStripePaymentIntentSucceededMutationHookResult = ReturnType<ty
 export type SetJobStripePaymentIntentSucceededMutationResult = ApolloReactCommon.MutationResult<SetJobStripePaymentIntentSucceededMutation>;
 export type SetJobStripePaymentIntentSucceededMutationOptions = ApolloReactCommon.BaseMutationOptions<SetJobStripePaymentIntentSucceededMutation, SetJobStripePaymentIntentSucceededMutationVariables>;
 export const SetJobTargetDocument = gql`
-    mutation SetJobTarget($jobId: uuid!, $targetName: String!, $addressId: uuid!) {
-  update_jobs(where: {id: {_eq: $jobId}}, _set: {target_name: $targetName, target_address_id: $addressId}) {
+    mutation SetJobTarget($jobId: uuid!, $targetName: String!, $addressId: uuid!, $caseNumber: String) {
+  update_jobs(where: {id: {_eq: $jobId}}, _set: {target_name: $targetName, target_address_id: $addressId, case_number: $caseNumber}) {
     affected_rows
     returning {
       id
@@ -5080,6 +5093,7 @@ export type SetJobTargetMutationFn = ApolloReactCommon.MutationFunction<SetJobTa
  *      jobId: // value for 'jobId'
  *      targetName: // value for 'targetName'
  *      addressId: // value for 'addressId'
+ *      caseNumber: // value for 'caseNumber'
  *   },
  * });
  */
@@ -5547,12 +5561,12 @@ export type JobsCreateTargetPageLazyQueryHookResult = ReturnType<typeof useJobsC
 export type JobsCreateTargetPageQueryResult = ApolloReactCommon.QueryResult<JobsCreateTargetPageQuery, JobsCreateTargetPageQueryVariables>;
 export const JobsListDocument = gql`
     query JobsList($userId: uuid!, $isLawyer: Boolean!) {
-  lawyerJobs: jobs @include(if: $isLawyer) {
+  lawyerJobs: jobs(order_by: {created_at: desc}) @include(if: $isLawyer) {
     id
     ...JobsListJob
     ...JobCardJob
   }
-  serverJobs: jobs(where: {server_user_id: {_eq: $userId}}) @skip(if: $isLawyer) {
+  serverJobs: jobs(order_by: {created_at: desc}, where: {server_user_id: {_eq: $userId}}) @skip(if: $isLawyer) {
     id
     ...JobsListJob
     ...JobCardJob
