@@ -66,7 +66,7 @@ export default function JobsCreateDocumentsPage() {
         await Promise.all(
           files.map((file) =>
             insertDocument({
-              variables: { jobId, title: file.name, url: file.url },
+              variables: { jobId, title: file.name, url: file.url! },
             }),
           ),
         )

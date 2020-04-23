@@ -1,5 +1,6 @@
 mutation SetJobStripePaymentIntent(
   $jobId: uuid!
+  $planId: uuid!
   $stripePaymentIntentId: String!
   $stripePaymentIntentClientSecret: String!
 ) {
@@ -8,6 +9,7 @@ mutation SetJobStripePaymentIntent(
     _set: {
       stripe_payment_intent_id: $stripePaymentIntentId
       stripe_payment_intent_client_secret: $stripePaymentIntentClientSecret
+      plan_id: $planId
     }
   ) {
     affected_rows

@@ -1,4 +1,4 @@
-import { Box, Button, FormHelperText } from '@material-ui/core'
+import { FormHelperText, Grid } from '@material-ui/core'
 import {
   CardCvcElement,
   CardExpiryElement,
@@ -37,7 +37,7 @@ export default function JobsCreatePaymentPage() {
     () => data?.jobs[0].stripe_payment_intent_client_secret,
     [data],
   )
-
+  console.log(data)
   const handleSubmit = useCallback(
     async (event) => {
       event.preventDefault()
@@ -65,36 +65,45 @@ export default function JobsCreatePaymentPage() {
     },
     [stripe, elements, setError, stripeClientSecret, router, jobId],
   )
+
   return (
     <CreateJobPage
       onSubmit={handleSubmit}
-      activeStep={2}
+      activeStep={3}
       title='Payment'
       loading={loading}
     >
       <FormHelperText error>{error}</FormHelperText>
 
-      <StripeField
-        Element={CardNumberElement}
-        label='Card Number'
-        margin='normal'
-        required
-        fullWidth
-      />
-      <StripeField
-        Element={CardExpiryElement}
-        label='Expiry'
-        margin='normal'
-        required
-        fullWidth
-      />
-      <StripeField
-        Element={CardCvcElement}
-        label='CVC'
-        margin='normal'
-        required
-        fullWidth
-      />
+      <Grid container spacing={2}>
+        <Grid item xs={12} md={6}>
+          <StripeField
+            Element={CardNumberElement}
+            label='Card Number'
+            margin='normal'
+            required
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={6} md={3}>
+          <StripeField
+            Element={CardExpiryElement}
+            label='Expiry'
+            margin='normal'
+            required
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={6} md={3}>
+          <StripeField
+            Element={CardCvcElement}
+            label='CVC'
+            margin='normal'
+            required
+            fullWidth
+          />
+        </Grid>
+      </Grid>
     </CreateJobPage>
   )
 }

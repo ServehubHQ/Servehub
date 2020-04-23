@@ -6,11 +6,11 @@ import {
   SetJobStripePaymentIntentSucceededDocument,
   SetJobStripePaymentIntentSucceededMutation,
   SetJobStripePaymentIntentSucceededMutationVariables,
-} from '../../graphql-codegen'
-import { config as appConfig } from '../../lib/config'
-import { getApolloClient } from '../../lib/getApolloClient'
-import { getStripeServerClient } from '../../lib/getStripeServerClient'
-import { ApiAuthClient } from '../../lib/AuthClient'
+} from '../../../graphql-codegen'
+import { config as appConfig } from '../../../lib/config'
+import { getApolloClient } from '../../../lib/getApolloClient'
+import { getStripeServerClient } from '../../../lib/getStripeServerClient'
+import { ApiAuthClient } from '../../../lib/AuthClient'
 
 export const config = {
   api: {

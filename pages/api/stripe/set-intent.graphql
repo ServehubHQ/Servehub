@@ -1,0 +1,16 @@
+query SetIntent($jobId: uuid!, $planId: uuid!) {
+  job: jobs_by_pk(id: $jobId) {
+    id
+    stripe_payment_intent_id
+
+    lawyer {
+      id
+      stripe_customer_id
+    }
+  }
+  plan: plans_by_pk(id: $planId) {
+    id
+    fee
+    bounty
+  }
+}

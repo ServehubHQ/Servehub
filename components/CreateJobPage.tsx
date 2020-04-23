@@ -6,10 +6,14 @@ import {
   CardHeader,
   Divider,
   makeStyles,
+  Step,
+  StepIcon as MuiStepIcon,
+  StepIconProps,
+  StepLabel,
+  Stepper,
 } from '@material-ui/core'
-import { ReactNode, FormEvent } from 'react'
+import { FormEvent, ReactNode } from 'react'
 import { useAuthRequired } from '../lib/useAuthRequired'
-import { CreateJobSteps } from './CreateJobSteps'
 import { Page, PageProps } from './Page'
 
 interface CreateJobPageProps extends PageProps {
@@ -25,7 +29,21 @@ const useStyles = makeStyles((theme) => ({
   actions: {
     justifyContent: 'flex-end',
   },
+  activeIcon: {
+    color: `${theme.palette.primary.main} !important`,
+  },
 }))
+
+function StepIcon({ active, ...props }: StepIconProps) {
+  const classNames = useStyles()
+  return (
+    <MuiStepIcon
+      {...props}
+      active={active}
+      classes={{ active: classNames.activeIcon }}
+    />
+  )
+}
 
 export function CreateJobPage({
   activeStep,
@@ -45,7 +63,22 @@ export function CreateJobPage({
         <Card>
           <CardHeader
             title='Create Job'
-            subheader={<CreateJobSteps activeStep={activeStep} />}
+            subheader={
+              <Stepper activeStep={activeStep}>
+                <Step>
+                  <StepLabel StepIconComponent={StepIcon}>Target</StepLabel>
+                </Step>
+                <Step>
+                  <StepLabel StepIconComponent={StepIcon}>Documents</StepLabel>
+                </Step>
+                <Step>
+                  <StepLabel StepIconComponent={StepIcon}>Plan</StepLabel>
+                </Step>
+                <Step>
+                  <StepLabel StepIconComponent={StepIcon}>Payment</StepLabel>
+                </Step>
+              </Stepper>
+            }
           />
           <Divider />
           <CardContent>{children}</CardContent>

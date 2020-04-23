@@ -12,6 +12,7 @@ export type Scalars = {
   timestamptz: any;
   uuid: any;
   jsonb: any;
+  interval: any;
 };
 
 export type Addresses = {
@@ -1551,6 +1552,31 @@ export enum Documents_Update_Column {
   Url = 'url'
 }
 
+export type Int_Comparison_Exp = {
+  _eq?: Maybe<Scalars['Int']>;
+  _gt?: Maybe<Scalars['Int']>;
+  _gte?: Maybe<Scalars['Int']>;
+  _in?: Maybe<Array<Scalars['Int']>>;
+  _is_null?: Maybe<Scalars['Boolean']>;
+  _lt?: Maybe<Scalars['Int']>;
+  _lte?: Maybe<Scalars['Int']>;
+  _neq?: Maybe<Scalars['Int']>;
+  _nin?: Maybe<Array<Scalars['Int']>>;
+};
+
+
+export type Interval_Comparison_Exp = {
+  _eq?: Maybe<Scalars['interval']>;
+  _gt?: Maybe<Scalars['interval']>;
+  _gte?: Maybe<Scalars['interval']>;
+  _in?: Maybe<Array<Scalars['interval']>>;
+  _is_null?: Maybe<Scalars['Boolean']>;
+  _lt?: Maybe<Scalars['interval']>;
+  _lte?: Maybe<Scalars['interval']>;
+  _neq?: Maybe<Scalars['interval']>;
+  _nin?: Maybe<Array<Scalars['interval']>>;
+};
+
 export type Jobs = {
    __typename?: 'jobs';
   attempts: Array<Attempts>;
@@ -2035,6 +2061,7 @@ export type Mutation_Root = {
   delete_documents?: Maybe<Documents_Mutation_Response>;
   delete_jobs?: Maybe<Jobs_Mutation_Response>;
   delete_messages?: Maybe<Messages_Mutation_Response>;
+  delete_plans?: Maybe<Plans_Mutation_Response>;
   delete_provinces?: Maybe<Provinces_Mutation_Response>;
   delete_roles?: Maybe<Roles_Mutation_Response>;
   delete_user_roles?: Maybe<User_Roles_Mutation_Response>;
@@ -2050,6 +2077,7 @@ export type Mutation_Root = {
   insert_documents?: Maybe<Documents_Mutation_Response>;
   insert_jobs?: Maybe<Jobs_Mutation_Response>;
   insert_messages?: Maybe<Messages_Mutation_Response>;
+  insert_plans?: Maybe<Plans_Mutation_Response>;
   insert_provinces?: Maybe<Provinces_Mutation_Response>;
   insert_roles?: Maybe<Roles_Mutation_Response>;
   insert_user_roles?: Maybe<User_Roles_Mutation_Response>;
@@ -2065,6 +2093,7 @@ export type Mutation_Root = {
   update_documents?: Maybe<Documents_Mutation_Response>;
   update_jobs?: Maybe<Jobs_Mutation_Response>;
   update_messages?: Maybe<Messages_Mutation_Response>;
+  update_plans?: Maybe<Plans_Mutation_Response>;
   update_provinces?: Maybe<Provinces_Mutation_Response>;
   update_roles?: Maybe<Roles_Mutation_Response>;
   update_user_roles?: Maybe<User_Roles_Mutation_Response>;
@@ -2124,6 +2153,11 @@ export type Mutation_RootDelete_JobsArgs = {
 
 export type Mutation_RootDelete_MessagesArgs = {
   where: Messages_Bool_Exp;
+};
+
+
+export type Mutation_RootDelete_PlansArgs = {
+  where: Plans_Bool_Exp;
 };
 
 
@@ -2209,6 +2243,12 @@ export type Mutation_RootInsert_JobsArgs = {
 export type Mutation_RootInsert_MessagesArgs = {
   objects: Array<Messages_Insert_Input>;
   on_conflict?: Maybe<Messages_On_Conflict>;
+};
+
+
+export type Mutation_RootInsert_PlansArgs = {
+  objects: Array<Plans_Insert_Input>;
+  on_conflict?: Maybe<Plans_On_Conflict>;
 };
 
 
@@ -2307,6 +2347,13 @@ export type Mutation_RootUpdate_MessagesArgs = {
 };
 
 
+export type Mutation_RootUpdate_PlansArgs = {
+  _inc?: Maybe<Plans_Inc_Input>;
+  _set?: Maybe<Plans_Set_Input>;
+  where: Plans_Bool_Exp;
+};
+
+
 export type Mutation_RootUpdate_ProvincesArgs = {
   _set?: Maybe<Provinces_Set_Input>;
   where: Provinces_Bool_Exp;
@@ -2343,6 +2390,302 @@ export enum Order_By {
   DescNullsFirst = 'desc_nulls_first',
   DescNullsLast = 'desc_nulls_last'
 }
+
+export type Plans = {
+   __typename?: 'plans';
+  attempts: Scalars['Int'];
+  bounty: Scalars['Int'];
+  created_at: Scalars['timestamptz'];
+  duration: Scalars['interval'];
+  fee: Scalars['Int'];
+  id: Scalars['uuid'];
+  name: Scalars['String'];
+  updated_at: Scalars['timestamptz'];
+};
+
+export type Plans_Aggregate = {
+   __typename?: 'plans_aggregate';
+  aggregate?: Maybe<Plans_Aggregate_Fields>;
+  nodes: Array<Plans>;
+};
+
+export type Plans_Aggregate_Fields = {
+   __typename?: 'plans_aggregate_fields';
+  avg?: Maybe<Plans_Avg_Fields>;
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<Plans_Max_Fields>;
+  min?: Maybe<Plans_Min_Fields>;
+  stddev?: Maybe<Plans_Stddev_Fields>;
+  stddev_pop?: Maybe<Plans_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Plans_Stddev_Samp_Fields>;
+  sum?: Maybe<Plans_Sum_Fields>;
+  var_pop?: Maybe<Plans_Var_Pop_Fields>;
+  var_samp?: Maybe<Plans_Var_Samp_Fields>;
+  variance?: Maybe<Plans_Variance_Fields>;
+};
+
+
+export type Plans_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Plans_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+export type Plans_Aggregate_Order_By = {
+  avg?: Maybe<Plans_Avg_Order_By>;
+  count?: Maybe<Order_By>;
+  max?: Maybe<Plans_Max_Order_By>;
+  min?: Maybe<Plans_Min_Order_By>;
+  stddev?: Maybe<Plans_Stddev_Order_By>;
+  stddev_pop?: Maybe<Plans_Stddev_Pop_Order_By>;
+  stddev_samp?: Maybe<Plans_Stddev_Samp_Order_By>;
+  sum?: Maybe<Plans_Sum_Order_By>;
+  var_pop?: Maybe<Plans_Var_Pop_Order_By>;
+  var_samp?: Maybe<Plans_Var_Samp_Order_By>;
+  variance?: Maybe<Plans_Variance_Order_By>;
+};
+
+export type Plans_Arr_Rel_Insert_Input = {
+  data: Array<Plans_Insert_Input>;
+  on_conflict?: Maybe<Plans_On_Conflict>;
+};
+
+export type Plans_Avg_Fields = {
+   __typename?: 'plans_avg_fields';
+  attempts?: Maybe<Scalars['Float']>;
+  bounty?: Maybe<Scalars['Float']>;
+  fee?: Maybe<Scalars['Float']>;
+};
+
+export type Plans_Avg_Order_By = {
+  attempts?: Maybe<Order_By>;
+  bounty?: Maybe<Order_By>;
+  fee?: Maybe<Order_By>;
+};
+
+export type Plans_Bool_Exp = {
+  _and?: Maybe<Array<Maybe<Plans_Bool_Exp>>>;
+  _not?: Maybe<Plans_Bool_Exp>;
+  _or?: Maybe<Array<Maybe<Plans_Bool_Exp>>>;
+  attempts?: Maybe<Int_Comparison_Exp>;
+  bounty?: Maybe<Int_Comparison_Exp>;
+  created_at?: Maybe<Timestamptz_Comparison_Exp>;
+  duration?: Maybe<Interval_Comparison_Exp>;
+  fee?: Maybe<Int_Comparison_Exp>;
+  id?: Maybe<Uuid_Comparison_Exp>;
+  name?: Maybe<String_Comparison_Exp>;
+  updated_at?: Maybe<Timestamptz_Comparison_Exp>;
+};
+
+export enum Plans_Constraint {
+  PlansPkey = 'plans_pkey'
+}
+
+export type Plans_Inc_Input = {
+  attempts?: Maybe<Scalars['Int']>;
+  bounty?: Maybe<Scalars['Int']>;
+  fee?: Maybe<Scalars['Int']>;
+};
+
+export type Plans_Insert_Input = {
+  attempts?: Maybe<Scalars['Int']>;
+  bounty?: Maybe<Scalars['Int']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  duration?: Maybe<Scalars['interval']>;
+  fee?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['uuid']>;
+  name?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+export type Plans_Max_Fields = {
+   __typename?: 'plans_max_fields';
+  attempts?: Maybe<Scalars['Int']>;
+  bounty?: Maybe<Scalars['Int']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  fee?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+export type Plans_Max_Order_By = {
+  attempts?: Maybe<Order_By>;
+  bounty?: Maybe<Order_By>;
+  created_at?: Maybe<Order_By>;
+  fee?: Maybe<Order_By>;
+  name?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+};
+
+export type Plans_Min_Fields = {
+   __typename?: 'plans_min_fields';
+  attempts?: Maybe<Scalars['Int']>;
+  bounty?: Maybe<Scalars['Int']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  fee?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+export type Plans_Min_Order_By = {
+  attempts?: Maybe<Order_By>;
+  bounty?: Maybe<Order_By>;
+  created_at?: Maybe<Order_By>;
+  fee?: Maybe<Order_By>;
+  name?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+};
+
+export type Plans_Mutation_Response = {
+   __typename?: 'plans_mutation_response';
+  affected_rows: Scalars['Int'];
+  returning: Array<Plans>;
+};
+
+export type Plans_Obj_Rel_Insert_Input = {
+  data: Plans_Insert_Input;
+  on_conflict?: Maybe<Plans_On_Conflict>;
+};
+
+export type Plans_On_Conflict = {
+  constraint: Plans_Constraint;
+  update_columns: Array<Plans_Update_Column>;
+  where?: Maybe<Plans_Bool_Exp>;
+};
+
+export type Plans_Order_By = {
+  attempts?: Maybe<Order_By>;
+  bounty?: Maybe<Order_By>;
+  created_at?: Maybe<Order_By>;
+  duration?: Maybe<Order_By>;
+  fee?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  name?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+};
+
+export enum Plans_Select_Column {
+  Attempts = 'attempts',
+  Bounty = 'bounty',
+  CreatedAt = 'created_at',
+  Duration = 'duration',
+  Fee = 'fee',
+  Id = 'id',
+  Name = 'name',
+  UpdatedAt = 'updated_at'
+}
+
+export type Plans_Set_Input = {
+  attempts?: Maybe<Scalars['Int']>;
+  bounty?: Maybe<Scalars['Int']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  duration?: Maybe<Scalars['interval']>;
+  fee?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['uuid']>;
+  name?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+export type Plans_Stddev_Fields = {
+   __typename?: 'plans_stddev_fields';
+  attempts?: Maybe<Scalars['Float']>;
+  bounty?: Maybe<Scalars['Float']>;
+  fee?: Maybe<Scalars['Float']>;
+};
+
+export type Plans_Stddev_Order_By = {
+  attempts?: Maybe<Order_By>;
+  bounty?: Maybe<Order_By>;
+  fee?: Maybe<Order_By>;
+};
+
+export type Plans_Stddev_Pop_Fields = {
+   __typename?: 'plans_stddev_pop_fields';
+  attempts?: Maybe<Scalars['Float']>;
+  bounty?: Maybe<Scalars['Float']>;
+  fee?: Maybe<Scalars['Float']>;
+};
+
+export type Plans_Stddev_Pop_Order_By = {
+  attempts?: Maybe<Order_By>;
+  bounty?: Maybe<Order_By>;
+  fee?: Maybe<Order_By>;
+};
+
+export type Plans_Stddev_Samp_Fields = {
+   __typename?: 'plans_stddev_samp_fields';
+  attempts?: Maybe<Scalars['Float']>;
+  bounty?: Maybe<Scalars['Float']>;
+  fee?: Maybe<Scalars['Float']>;
+};
+
+export type Plans_Stddev_Samp_Order_By = {
+  attempts?: Maybe<Order_By>;
+  bounty?: Maybe<Order_By>;
+  fee?: Maybe<Order_By>;
+};
+
+export type Plans_Sum_Fields = {
+   __typename?: 'plans_sum_fields';
+  attempts?: Maybe<Scalars['Int']>;
+  bounty?: Maybe<Scalars['Int']>;
+  fee?: Maybe<Scalars['Int']>;
+};
+
+export type Plans_Sum_Order_By = {
+  attempts?: Maybe<Order_By>;
+  bounty?: Maybe<Order_By>;
+  fee?: Maybe<Order_By>;
+};
+
+export enum Plans_Update_Column {
+  Attempts = 'attempts',
+  Bounty = 'bounty',
+  CreatedAt = 'created_at',
+  Duration = 'duration',
+  Fee = 'fee',
+  Id = 'id',
+  Name = 'name',
+  UpdatedAt = 'updated_at'
+}
+
+export type Plans_Var_Pop_Fields = {
+   __typename?: 'plans_var_pop_fields';
+  attempts?: Maybe<Scalars['Float']>;
+  bounty?: Maybe<Scalars['Float']>;
+  fee?: Maybe<Scalars['Float']>;
+};
+
+export type Plans_Var_Pop_Order_By = {
+  attempts?: Maybe<Order_By>;
+  bounty?: Maybe<Order_By>;
+  fee?: Maybe<Order_By>;
+};
+
+export type Plans_Var_Samp_Fields = {
+   __typename?: 'plans_var_samp_fields';
+  attempts?: Maybe<Scalars['Float']>;
+  bounty?: Maybe<Scalars['Float']>;
+  fee?: Maybe<Scalars['Float']>;
+};
+
+export type Plans_Var_Samp_Order_By = {
+  attempts?: Maybe<Order_By>;
+  bounty?: Maybe<Order_By>;
+  fee?: Maybe<Order_By>;
+};
+
+export type Plans_Variance_Fields = {
+   __typename?: 'plans_variance_fields';
+  attempts?: Maybe<Scalars['Float']>;
+  bounty?: Maybe<Scalars['Float']>;
+  fee?: Maybe<Scalars['Float']>;
+};
+
+export type Plans_Variance_Order_By = {
+  attempts?: Maybe<Order_By>;
+  bounty?: Maybe<Order_By>;
+  fee?: Maybe<Order_By>;
+};
 
 export type Provinces = {
    __typename?: 'provinces';
@@ -2514,6 +2857,9 @@ export type Query_Root = {
   messages: Array<Messages>;
   messages_aggregate: Messages_Aggregate;
   messages_by_pk?: Maybe<Messages>;
+  plans: Array<Plans>;
+  plans_aggregate: Plans_Aggregate;
+  plans_by_pk?: Maybe<Plans>;
   provinces: Array<Provinces>;
   provinces_aggregate: Provinces_Aggregate;
   provinces_by_pk?: Maybe<Provinces>;
@@ -2773,6 +3119,29 @@ export type Query_RootMessages_AggregateArgs = {
 
 
 export type Query_RootMessages_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Query_RootPlansArgs = {
+  distinct_on?: Maybe<Array<Plans_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Plans_Order_By>>;
+  where?: Maybe<Plans_Bool_Exp>;
+};
+
+
+export type Query_RootPlans_AggregateArgs = {
+  distinct_on?: Maybe<Array<Plans_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Plans_Order_By>>;
+  where?: Maybe<Plans_Bool_Exp>;
+};
+
+
+export type Query_RootPlans_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
@@ -3067,6 +3436,9 @@ export type Subscription_Root = {
   messages: Array<Messages>;
   messages_aggregate: Messages_Aggregate;
   messages_by_pk?: Maybe<Messages>;
+  plans: Array<Plans>;
+  plans_aggregate: Plans_Aggregate;
+  plans_by_pk?: Maybe<Plans>;
   provinces: Array<Provinces>;
   provinces_aggregate: Provinces_Aggregate;
   provinces_by_pk?: Maybe<Provinces>;
@@ -3326,6 +3698,29 @@ export type Subscription_RootMessages_AggregateArgs = {
 
 
 export type Subscription_RootMessages_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+export type Subscription_RootPlansArgs = {
+  distinct_on?: Maybe<Array<Plans_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Plans_Order_By>>;
+  where?: Maybe<Plans_Bool_Exp>;
+};
+
+
+export type Subscription_RootPlans_AggregateArgs = {
+  distinct_on?: Maybe<Array<Plans_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Plans_Order_By>>;
+  where?: Maybe<Plans_Bool_Exp>;
+};
+
+
+export type Subscription_RootPlans_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
@@ -4312,23 +4707,6 @@ export type SetStripeCustomerIdMutation = (
   )> }
 );
 
-export type JobInsertedQueryVariables = {
-  jobId: Scalars['uuid'];
-};
-
-
-export type JobInsertedQuery = (
-  { __typename?: 'query_root' }
-  & { jobs: Array<(
-    { __typename?: 'jobs' }
-    & Pick<Jobs, 'id' | 'stripe_payment_intent_id'>
-    & { lawyer: (
-      { __typename?: 'users' }
-      & Pick<Users, 'stripe_customer_id' | 'id'>
-    ) }
-  )> }
-);
-
 export type JobUpdatedQueryVariables = {};
 
 
@@ -4337,6 +4715,27 @@ export type JobUpdatedQuery = (
   & { users: Array<(
     { __typename?: 'users' }
     & Pick<Users, 'firebase_messaging_token' | 'id'>
+  )> }
+);
+
+export type SetIntentQueryVariables = {
+  jobId: Scalars['uuid'];
+  planId: Scalars['uuid'];
+};
+
+
+export type SetIntentQuery = (
+  { __typename?: 'query_root' }
+  & { job: Maybe<(
+    { __typename?: 'jobs' }
+    & Pick<Jobs, 'id' | 'stripe_payment_intent_id'>
+    & { lawyer: (
+      { __typename?: 'users' }
+      & Pick<Users, 'id' | 'stripe_customer_id'>
+    ) }
+  )>, plan: Maybe<(
+    { __typename?: 'plans' }
+    & Pick<Plans, 'id' | 'fee' | 'bounty'>
   )> }
 );
 
@@ -4460,6 +4859,23 @@ export type JobsCreatePaymentQuery = (
   & { jobs: Array<(
     { __typename?: 'jobs' }
     & Pick<Jobs, 'stripe_payment_intent_client_secret' | 'id'>
+  )> }
+  & PageQueryFragment
+);
+
+export type JobsCreatePlanQueryVariables = {
+  jobId: Scalars['uuid'];
+};
+
+
+export type JobsCreatePlanQuery = (
+  { __typename?: 'query_root' }
+  & { jobs: Array<(
+    { __typename?: 'jobs' }
+    & Pick<Jobs, 'stripe_payment_intent_client_secret' | 'id'>
+  )>, plans: Array<(
+    { __typename?: 'plans' }
+    & Pick<Plans, 'id' | 'name' | 'fee' | 'bounty' | 'attempts' | 'duration'>
   )> }
   & PageQueryFragment
 );
@@ -5184,44 +5600,6 @@ export function useSetStripeCustomerIdMutation(baseOptions?: ApolloReactHooks.Mu
 export type SetStripeCustomerIdMutationHookResult = ReturnType<typeof useSetStripeCustomerIdMutation>;
 export type SetStripeCustomerIdMutationResult = ApolloReactCommon.MutationResult<SetStripeCustomerIdMutation>;
 export type SetStripeCustomerIdMutationOptions = ApolloReactCommon.BaseMutationOptions<SetStripeCustomerIdMutation, SetStripeCustomerIdMutationVariables>;
-export const JobInsertedDocument = gql`
-    query JobInserted($jobId: uuid!) {
-  jobs(where: {id: {_eq: $jobId}}) {
-    id
-    stripe_payment_intent_id
-    lawyer {
-      stripe_customer_id
-      id
-    }
-  }
-}
-    `;
-
-/**
- * __useJobInsertedQuery__
- *
- * To run a query within a React component, call `useJobInsertedQuery` and pass it any options that fit your needs.
- * When your component renders, `useJobInsertedQuery` returns an object from Apollo Client that contains loading, error, and data properties 
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useJobInsertedQuery({
- *   variables: {
- *      jobId: // value for 'jobId'
- *   },
- * });
- */
-export function useJobInsertedQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<JobInsertedQuery, JobInsertedQueryVariables>) {
-        return ApolloReactHooks.useQuery<JobInsertedQuery, JobInsertedQueryVariables>(JobInsertedDocument, baseOptions);
-      }
-export function useJobInsertedLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<JobInsertedQuery, JobInsertedQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<JobInsertedQuery, JobInsertedQueryVariables>(JobInsertedDocument, baseOptions);
-        }
-export type JobInsertedQueryHookResult = ReturnType<typeof useJobInsertedQuery>;
-export type JobInsertedLazyQueryHookResult = ReturnType<typeof useJobInsertedLazyQuery>;
-export type JobInsertedQueryResult = ApolloReactCommon.QueryResult<JobInsertedQuery, JobInsertedQueryVariables>;
 export const JobUpdatedDocument = gql`
     query JobUpdated {
   users(where: {role: {role: {_eq: "server"}}, firebase_messaging_token: {_is_null: false}, approved: {_eq: true}}) {
@@ -5255,6 +5633,50 @@ export function useJobUpdatedLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryH
 export type JobUpdatedQueryHookResult = ReturnType<typeof useJobUpdatedQuery>;
 export type JobUpdatedLazyQueryHookResult = ReturnType<typeof useJobUpdatedLazyQuery>;
 export type JobUpdatedQueryResult = ApolloReactCommon.QueryResult<JobUpdatedQuery, JobUpdatedQueryVariables>;
+export const SetIntentDocument = gql`
+    query SetIntent($jobId: uuid!, $planId: uuid!) {
+  job: jobs_by_pk(id: $jobId) {
+    id
+    stripe_payment_intent_id
+    lawyer {
+      id
+      stripe_customer_id
+    }
+  }
+  plan: plans_by_pk(id: $planId) {
+    id
+    fee
+    bounty
+  }
+}
+    `;
+
+/**
+ * __useSetIntentQuery__
+ *
+ * To run a query within a React component, call `useSetIntentQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSetIntentQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSetIntentQuery({
+ *   variables: {
+ *      jobId: // value for 'jobId'
+ *      planId: // value for 'planId'
+ *   },
+ * });
+ */
+export function useSetIntentQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SetIntentQuery, SetIntentQueryVariables>) {
+        return ApolloReactHooks.useQuery<SetIntentQuery, SetIntentQueryVariables>(SetIntentDocument, baseOptions);
+      }
+export function useSetIntentLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SetIntentQuery, SetIntentQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<SetIntentQuery, SetIntentQueryVariables>(SetIntentDocument, baseOptions);
+        }
+export type SetIntentQueryHookResult = ReturnType<typeof useSetIntentQuery>;
+export type SetIntentLazyQueryHookResult = ReturnType<typeof useSetIntentLazyQuery>;
+export type SetIntentQueryResult = ApolloReactCommon.QueryResult<SetIntentQuery, SetIntentQueryVariables>;
 export const IndexPageDocument = gql`
     query IndexPage($userId: uuid) {
   current_user {
@@ -5544,6 +5966,49 @@ export function useJobsCreatePaymentLazyQuery(baseOptions?: ApolloReactHooks.Laz
 export type JobsCreatePaymentQueryHookResult = ReturnType<typeof useJobsCreatePaymentQuery>;
 export type JobsCreatePaymentLazyQueryHookResult = ReturnType<typeof useJobsCreatePaymentLazyQuery>;
 export type JobsCreatePaymentQueryResult = ApolloReactCommon.QueryResult<JobsCreatePaymentQuery, JobsCreatePaymentQueryVariables>;
+export const JobsCreatePlanDocument = gql`
+    query JobsCreatePlan($jobId: uuid!) {
+  jobs(where: {id: {_eq: $jobId}}) {
+    stripe_payment_intent_client_secret
+    id
+  }
+  plans {
+    id
+    name
+    fee
+    bounty
+    attempts
+    duration
+  }
+  ...PageQuery
+}
+    ${PageQueryFragmentDoc}`;
+
+/**
+ * __useJobsCreatePlanQuery__
+ *
+ * To run a query within a React component, call `useJobsCreatePlanQuery` and pass it any options that fit your needs.
+ * When your component renders, `useJobsCreatePlanQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useJobsCreatePlanQuery({
+ *   variables: {
+ *      jobId: // value for 'jobId'
+ *   },
+ * });
+ */
+export function useJobsCreatePlanQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<JobsCreatePlanQuery, JobsCreatePlanQueryVariables>) {
+        return ApolloReactHooks.useQuery<JobsCreatePlanQuery, JobsCreatePlanQueryVariables>(JobsCreatePlanDocument, baseOptions);
+      }
+export function useJobsCreatePlanLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<JobsCreatePlanQuery, JobsCreatePlanQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<JobsCreatePlanQuery, JobsCreatePlanQueryVariables>(JobsCreatePlanDocument, baseOptions);
+        }
+export type JobsCreatePlanQueryHookResult = ReturnType<typeof useJobsCreatePlanQuery>;
+export type JobsCreatePlanLazyQueryHookResult = ReturnType<typeof useJobsCreatePlanLazyQuery>;
+export type JobsCreatePlanQueryResult = ApolloReactCommon.QueryResult<JobsCreatePlanQuery, JobsCreatePlanQueryVariables>;
 export const JobsCreateTargetPageDocument = gql`
     query JobsCreateTargetPage {
   ...PageQuery

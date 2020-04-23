@@ -92,9 +92,8 @@ export default function JobsCreateTargetPage() {
             margin='normal'
             label='Case Number'
             name='caseNumber'
-            autoFocus
             fullWidth
-            inputRef={register({ required: true })}
+            inputRef={register()}
             error={Boolean(errors.caseNumber)}
             helperText={errors.caseNumber?.message}
           />
