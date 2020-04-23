@@ -72,6 +72,8 @@ export default function JobsCreatePaymentPage() {
       activeStep={3}
       title='Payment'
       loading={loading}
+      cta='Pay'
+      actionExtra={<img src='/images/powered_by_stripe.svg' />}
     >
       <FormHelperText error>{error}</FormHelperText>
 

@@ -20,6 +20,7 @@ interface CreateJobPageProps extends PageProps {
   activeStep: number
   title: string
   loading: boolean
+  actionExtra?: ReactNode
   cta?: string
   onSubmit?: (event: FormEvent<HTMLFormElement>) => void
   children?: ReactNode
@@ -52,6 +53,7 @@ export function CreateJobPage({
   cta = 'Next',
   onSubmit,
   children,
+  actionExtra,
   ...pageProps
 }: CreateJobPageProps) {
   useAuthRequired()
@@ -86,6 +88,7 @@ export function CreateJobPage({
             <>
               <Divider />
               <CardActions className={classNames.actions}>
+                {actionExtra}
                 <Button
                   type='submit'
                   variant='contained'
