@@ -7,11 +7,13 @@ import {
 } from 'react-admin'
 
 interface ApproveBulkActionProps {
+  disapprove?: boolean
   resource?: string
   selectedIds?: string[]
 }
 
 export function ApproveBulkAction({
+  disapprove = false,
   selectedIds = [],
   resource = 'users',
 }: ApproveBulkActionProps) {
@@ -22,12 +24,12 @@ export function ApproveBulkAction({
     resource,
     selectedIds,
     {
-      approved: true,
+      approved: !disapprove,
     },
     {
       onSuccess: () => {
         refresh()
-        notify('Users approved')
+        notify('Users updated')
         unselectAll('users')
       },
       onFailure: (err: any) => {
@@ -36,5 +38,11 @@ export function ApproveBulkAction({
       },
     },
   )
-  return <Button label='Approve' onClick={approve} disabled={loading} />
+  return (
+    <Button
+      label={disapprove ? 'Disapprove' : 'Approve'}
+      onClick={approve}
+      disabled={loading}
+    />
+  )
 }

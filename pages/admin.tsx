@@ -1,13 +1,13 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { Admin, Resource, ShowGuesser } from 'react-admin'
+import { Admin, Resource } from 'react-admin'
+import { DocumentShow } from '../admin/resources/documents'
 import { JobIcon, JobList } from '../admin/resources/jobs'
 import { TargetShow } from '../admin/resources/targets'
 import { UserIcon, UserList, UserShow } from '../admin/resources/users'
 import { getApolloClient } from '../lib/getApolloClient'
 import { getAuthClient } from '../lib/getAuthClient'
 import { theme } from '../theme'
-import { DocumentShow } from '../admin/resources/documents'
 
 export default function AdminPage() {
   const [dataProvider, setDataProvider] = useState()

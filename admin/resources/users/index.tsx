@@ -37,7 +37,10 @@ export const UserList = (props: any) => (
   <List
     {...props}
     title='Users'
-    bulkActionButtons={<ApproveBulkAction />}
+    bulkActionButtons={[
+      <ApproveBulkAction key={0} disapprove />,
+      <ApproveBulkAction key={1} />,
+    ]}
     filters={<UserListFilter />}
   >
     <Datagrid rowClick='toggleSelection'>
