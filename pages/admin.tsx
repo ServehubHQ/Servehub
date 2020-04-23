@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { Admin, Resource } from 'react-admin'
 import { DocumentShow } from '../admin/resources/documents'
 import { JobIcon, JobList } from '../admin/resources/jobs'
-import { TargetShow } from '../admin/resources/targets'
+import { AddressShow } from '../admin/resources/addresses'
 import { UserIcon, UserList, UserShow } from '../admin/resources/users'
 import { getApolloClient } from '../lib/getApolloClient'
 import { getAuthClient } from '../lib/getAuthClient'
@@ -43,7 +43,7 @@ export default function AdminPage() {
     <Admin dataProvider={dataProvider} theme={theme}>
       <Resource name='users' list={UserList} icon={UserIcon} show={UserShow} />
       <Resource name='jobs' list={JobList} icon={JobIcon} />
-      <Resource name='targets' show={TargetShow} />
+      <Resource name='addresses' show={AddressShow} />
       <Resource name='documents' show={DocumentShow} />
     </Admin>
   )

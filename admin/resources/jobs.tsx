@@ -17,8 +17,13 @@ export const JobIcon = WorkIcon
 export const JobList = (props: any) => (
   <List {...props}>
     <Datagrid>
-      <ReferenceField source='target_id' reference='targets' link='show'>
-        <TextField source='name' />
+      <TextField source='target_name' />
+      <ReferenceField
+        source='target_address_id'
+        reference='addresses'
+        link='show'
+      >
+        <TextField source='street' />
       </ReferenceField>
       <ReferenceField
         source='lawyer_user_id'
@@ -37,6 +42,13 @@ export const JobList = (props: any) => (
         <TextField source='name' />
       </ReferenceField>
       <BooleanField source='pickup_required' />
+      <ReferenceField
+        source='pickup_address_id'
+        reference='addresses'
+        link='show'
+      >
+        <TextField source='street' />
+      </ReferenceField>
       <ReferenceManyField
         reference='documents'
         target='job_id'

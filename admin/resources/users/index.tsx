@@ -12,6 +12,7 @@ import {
   Show,
   SimpleShowLayout,
   TextField,
+  ReferenceField,
 } from 'react-admin'
 import { ApproveBulkAction } from './ApproveBulkAction'
 import { StripeCustomerField } from './StripeCustomerField'
@@ -62,6 +63,9 @@ export const UserShow = (props: any) => (
       <BooleanField source='approved' />
       <EmailField source='email' />
       <StripeCustomerField source='stripe_customer_id' />
+      <ReferenceField source='address_id' reference='addresses' link='show'>
+        <TextField source='street' />
+      </ReferenceField>
       <DateField source='created_at' />
       <TextField source='id' />
     </SimpleShowLayout>
