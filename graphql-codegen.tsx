@@ -1594,6 +1594,8 @@ export type Jobs = {
   pickup_address?: Maybe<Addresses>;
   pickup_address_id?: Maybe<Scalars['uuid']>;
   pickup_required: Scalars['Boolean'];
+  plan?: Maybe<Plans>;
+  plan_id?: Maybe<Scalars['uuid']>;
   server?: Maybe<Users>;
   server_user_id?: Maybe<Scalars['uuid']>;
   stripe_payment_intent_client_secret?: Maybe<Scalars['String']>;
@@ -1705,6 +1707,8 @@ export type Jobs_Bool_Exp = {
   pickup_address?: Maybe<Addresses_Bool_Exp>;
   pickup_address_id?: Maybe<Uuid_Comparison_Exp>;
   pickup_required?: Maybe<Boolean_Comparison_Exp>;
+  plan?: Maybe<Plans_Bool_Exp>;
+  plan_id?: Maybe<Uuid_Comparison_Exp>;
   server?: Maybe<Users_Bool_Exp>;
   server_user_id?: Maybe<Uuid_Comparison_Exp>;
   stripe_payment_intent_client_secret?: Maybe<String_Comparison_Exp>;
@@ -1733,6 +1737,8 @@ export type Jobs_Insert_Input = {
   pickup_address?: Maybe<Addresses_Obj_Rel_Insert_Input>;
   pickup_address_id?: Maybe<Scalars['uuid']>;
   pickup_required?: Maybe<Scalars['Boolean']>;
+  plan?: Maybe<Plans_Obj_Rel_Insert_Input>;
+  plan_id?: Maybe<Scalars['uuid']>;
   server?: Maybe<Users_Obj_Rel_Insert_Input>;
   server_user_id?: Maybe<Scalars['uuid']>;
   stripe_payment_intent_client_secret?: Maybe<Scalars['String']>;
@@ -1816,6 +1822,8 @@ export type Jobs_Order_By = {
   pickup_address?: Maybe<Addresses_Order_By>;
   pickup_address_id?: Maybe<Order_By>;
   pickup_required?: Maybe<Order_By>;
+  plan?: Maybe<Plans_Order_By>;
+  plan_id?: Maybe<Order_By>;
   server?: Maybe<Users_Order_By>;
   server_user_id?: Maybe<Order_By>;
   stripe_payment_intent_client_secret?: Maybe<Order_By>;
@@ -1835,6 +1843,7 @@ export enum Jobs_Select_Column {
   LawyerUserId = 'lawyer_user_id',
   PickupAddressId = 'pickup_address_id',
   PickupRequired = 'pickup_required',
+  PlanId = 'plan_id',
   ServerUserId = 'server_user_id',
   StripePaymentIntentClientSecret = 'stripe_payment_intent_client_secret',
   StripePaymentIntentId = 'stripe_payment_intent_id',
@@ -1852,6 +1861,7 @@ export type Jobs_Set_Input = {
   lawyer_user_id?: Maybe<Scalars['uuid']>;
   pickup_address_id?: Maybe<Scalars['uuid']>;
   pickup_required?: Maybe<Scalars['Boolean']>;
+  plan_id?: Maybe<Scalars['uuid']>;
   server_user_id?: Maybe<Scalars['uuid']>;
   stripe_payment_intent_client_secret?: Maybe<Scalars['String']>;
   stripe_payment_intent_id?: Maybe<Scalars['String']>;
@@ -1869,6 +1879,7 @@ export enum Jobs_Update_Column {
   LawyerUserId = 'lawyer_user_id',
   PickupAddressId = 'pickup_address_id',
   PickupRequired = 'pickup_required',
+  PlanId = 'plan_id',
   ServerUserId = 'server_user_id',
   StripePaymentIntentClientSecret = 'stripe_payment_intent_client_secret',
   StripePaymentIntentId = 'stripe_payment_intent_id',
@@ -2400,6 +2411,7 @@ export type Plans = {
   fee: Scalars['Int'];
   id: Scalars['uuid'];
   name: Scalars['String'];
+  order: Scalars['Int'];
   updated_at: Scalars['timestamptz'];
 };
 
@@ -2454,12 +2466,14 @@ export type Plans_Avg_Fields = {
   attempts?: Maybe<Scalars['Float']>;
   bounty?: Maybe<Scalars['Float']>;
   fee?: Maybe<Scalars['Float']>;
+  order?: Maybe<Scalars['Float']>;
 };
 
 export type Plans_Avg_Order_By = {
   attempts?: Maybe<Order_By>;
   bounty?: Maybe<Order_By>;
   fee?: Maybe<Order_By>;
+  order?: Maybe<Order_By>;
 };
 
 export type Plans_Bool_Exp = {
@@ -2473,10 +2487,12 @@ export type Plans_Bool_Exp = {
   fee?: Maybe<Int_Comparison_Exp>;
   id?: Maybe<Uuid_Comparison_Exp>;
   name?: Maybe<String_Comparison_Exp>;
+  order?: Maybe<Int_Comparison_Exp>;
   updated_at?: Maybe<Timestamptz_Comparison_Exp>;
 };
 
 export enum Plans_Constraint {
+  PlansOrderKey = 'plans_order_key',
   PlansPkey = 'plans_pkey'
 }
 
@@ -2484,6 +2500,7 @@ export type Plans_Inc_Input = {
   attempts?: Maybe<Scalars['Int']>;
   bounty?: Maybe<Scalars['Int']>;
   fee?: Maybe<Scalars['Int']>;
+  order?: Maybe<Scalars['Int']>;
 };
 
 export type Plans_Insert_Input = {
@@ -2494,6 +2511,7 @@ export type Plans_Insert_Input = {
   fee?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['uuid']>;
   name?: Maybe<Scalars['String']>;
+  order?: Maybe<Scalars['Int']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
@@ -2504,6 +2522,7 @@ export type Plans_Max_Fields = {
   created_at?: Maybe<Scalars['timestamptz']>;
   fee?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
+  order?: Maybe<Scalars['Int']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
@@ -2513,6 +2532,7 @@ export type Plans_Max_Order_By = {
   created_at?: Maybe<Order_By>;
   fee?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
+  order?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
 
@@ -2523,6 +2543,7 @@ export type Plans_Min_Fields = {
   created_at?: Maybe<Scalars['timestamptz']>;
   fee?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
+  order?: Maybe<Scalars['Int']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
@@ -2532,6 +2553,7 @@ export type Plans_Min_Order_By = {
   created_at?: Maybe<Order_By>;
   fee?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
+  order?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
 
@@ -2560,6 +2582,7 @@ export type Plans_Order_By = {
   fee?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
+  order?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
 
@@ -2571,6 +2594,7 @@ export enum Plans_Select_Column {
   Fee = 'fee',
   Id = 'id',
   Name = 'name',
+  Order = 'order',
   UpdatedAt = 'updated_at'
 }
 
@@ -2582,6 +2606,7 @@ export type Plans_Set_Input = {
   fee?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['uuid']>;
   name?: Maybe<Scalars['String']>;
+  order?: Maybe<Scalars['Int']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
@@ -2590,12 +2615,14 @@ export type Plans_Stddev_Fields = {
   attempts?: Maybe<Scalars['Float']>;
   bounty?: Maybe<Scalars['Float']>;
   fee?: Maybe<Scalars['Float']>;
+  order?: Maybe<Scalars['Float']>;
 };
 
 export type Plans_Stddev_Order_By = {
   attempts?: Maybe<Order_By>;
   bounty?: Maybe<Order_By>;
   fee?: Maybe<Order_By>;
+  order?: Maybe<Order_By>;
 };
 
 export type Plans_Stddev_Pop_Fields = {
@@ -2603,12 +2630,14 @@ export type Plans_Stddev_Pop_Fields = {
   attempts?: Maybe<Scalars['Float']>;
   bounty?: Maybe<Scalars['Float']>;
   fee?: Maybe<Scalars['Float']>;
+  order?: Maybe<Scalars['Float']>;
 };
 
 export type Plans_Stddev_Pop_Order_By = {
   attempts?: Maybe<Order_By>;
   bounty?: Maybe<Order_By>;
   fee?: Maybe<Order_By>;
+  order?: Maybe<Order_By>;
 };
 
 export type Plans_Stddev_Samp_Fields = {
@@ -2616,12 +2645,14 @@ export type Plans_Stddev_Samp_Fields = {
   attempts?: Maybe<Scalars['Float']>;
   bounty?: Maybe<Scalars['Float']>;
   fee?: Maybe<Scalars['Float']>;
+  order?: Maybe<Scalars['Float']>;
 };
 
 export type Plans_Stddev_Samp_Order_By = {
   attempts?: Maybe<Order_By>;
   bounty?: Maybe<Order_By>;
   fee?: Maybe<Order_By>;
+  order?: Maybe<Order_By>;
 };
 
 export type Plans_Sum_Fields = {
@@ -2629,12 +2660,14 @@ export type Plans_Sum_Fields = {
   attempts?: Maybe<Scalars['Int']>;
   bounty?: Maybe<Scalars['Int']>;
   fee?: Maybe<Scalars['Int']>;
+  order?: Maybe<Scalars['Int']>;
 };
 
 export type Plans_Sum_Order_By = {
   attempts?: Maybe<Order_By>;
   bounty?: Maybe<Order_By>;
   fee?: Maybe<Order_By>;
+  order?: Maybe<Order_By>;
 };
 
 export enum Plans_Update_Column {
@@ -2645,6 +2678,7 @@ export enum Plans_Update_Column {
   Fee = 'fee',
   Id = 'id',
   Name = 'name',
+  Order = 'order',
   UpdatedAt = 'updated_at'
 }
 
@@ -2653,12 +2687,14 @@ export type Plans_Var_Pop_Fields = {
   attempts?: Maybe<Scalars['Float']>;
   bounty?: Maybe<Scalars['Float']>;
   fee?: Maybe<Scalars['Float']>;
+  order?: Maybe<Scalars['Float']>;
 };
 
 export type Plans_Var_Pop_Order_By = {
   attempts?: Maybe<Order_By>;
   bounty?: Maybe<Order_By>;
   fee?: Maybe<Order_By>;
+  order?: Maybe<Order_By>;
 };
 
 export type Plans_Var_Samp_Fields = {
@@ -2666,12 +2702,14 @@ export type Plans_Var_Samp_Fields = {
   attempts?: Maybe<Scalars['Float']>;
   bounty?: Maybe<Scalars['Float']>;
   fee?: Maybe<Scalars['Float']>;
+  order?: Maybe<Scalars['Float']>;
 };
 
 export type Plans_Var_Samp_Order_By = {
   attempts?: Maybe<Order_By>;
   bounty?: Maybe<Order_By>;
   fee?: Maybe<Order_By>;
+  order?: Maybe<Order_By>;
 };
 
 export type Plans_Variance_Fields = {
@@ -2679,12 +2717,14 @@ export type Plans_Variance_Fields = {
   attempts?: Maybe<Scalars['Float']>;
   bounty?: Maybe<Scalars['Float']>;
   fee?: Maybe<Scalars['Float']>;
+  order?: Maybe<Scalars['Float']>;
 };
 
 export type Plans_Variance_Order_By = {
   attempts?: Maybe<Order_By>;
   bounty?: Maybe<Order_By>;
   fee?: Maybe<Order_By>;
+  order?: Maybe<Order_By>;
 };
 
 export type Provinces = {
@@ -4633,6 +4673,7 @@ export type SetJobPickupRequiredMutation = (
 
 export type SetJobStripePaymentIntentMutationVariables = {
   jobId: Scalars['uuid'];
+  planId: Scalars['uuid'];
   stripePaymentIntentId: Scalars['String'];
   stripePaymentIntentClientSecret: Scalars['String'];
 };
@@ -4815,9 +4856,9 @@ export type JobDetialsQueryVariables = {
 
 export type JobDetialsQuery = (
   { __typename?: 'query_root' }
-  & { jobs_by_pk: Maybe<(
+  & { job: Maybe<(
     { __typename?: 'jobs' }
-    & Pick<Jobs, 'id' | 'description' | 'stripe_payment_intent_succeeded' | 'target_name'>
+    & Pick<Jobs, 'id' | 'created_at' | 'description' | 'stripe_payment_intent_succeeded' | 'target_name'>
     & { target_address: Maybe<(
       { __typename?: 'addresses' }
       & Pick<Addresses, 'id' | 'street' | 'unit' | 'postal_code' | 'city' | 'province'>
@@ -4827,6 +4868,9 @@ export type JobDetialsQuery = (
     )>, attempts: Array<(
       { __typename?: 'attempts' }
       & Pick<Attempts, 'id' | 'attempted_at' | 'success'>
+    )>, plan: Maybe<(
+      { __typename?: 'plans' }
+      & Pick<Plans, 'id' | 'attempts' | 'duration'>
     )> }
     & JobDetailsPageJobFragment
   )> }
@@ -4870,7 +4914,7 @@ export type JobsCreatePlanQueryVariables = {
 
 export type JobsCreatePlanQuery = (
   { __typename?: 'query_root' }
-  & { jobs: Array<(
+  & { job: Maybe<(
     { __typename?: 'jobs' }
     & Pick<Jobs, 'stripe_payment_intent_client_secret' | 'id'>
   )>, plans: Array<(
@@ -5429,8 +5473,8 @@ export type SetJobPickupRequiredMutationHookResult = ReturnType<typeof useSetJob
 export type SetJobPickupRequiredMutationResult = ApolloReactCommon.MutationResult<SetJobPickupRequiredMutation>;
 export type SetJobPickupRequiredMutationOptions = ApolloReactCommon.BaseMutationOptions<SetJobPickupRequiredMutation, SetJobPickupRequiredMutationVariables>;
 export const SetJobStripePaymentIntentDocument = gql`
-    mutation SetJobStripePaymentIntent($jobId: uuid!, $stripePaymentIntentId: String!, $stripePaymentIntentClientSecret: String!) {
-  update_jobs(where: {id: {_eq: $jobId}}, _set: {stripe_payment_intent_id: $stripePaymentIntentId, stripe_payment_intent_client_secret: $stripePaymentIntentClientSecret}) {
+    mutation SetJobStripePaymentIntent($jobId: uuid!, $planId: uuid!, $stripePaymentIntentId: String!, $stripePaymentIntentClientSecret: String!) {
+  update_jobs(where: {id: {_eq: $jobId}}, _set: {stripe_payment_intent_id: $stripePaymentIntentId, stripe_payment_intent_client_secret: $stripePaymentIntentClientSecret, plan_id: $planId}) {
     affected_rows
   }
 }
@@ -5451,6 +5495,7 @@ export type SetJobStripePaymentIntentMutationFn = ApolloReactCommon.MutationFunc
  * const [setJobStripePaymentIntentMutation, { data, loading, error }] = useSetJobStripePaymentIntentMutation({
  *   variables: {
  *      jobId: // value for 'jobId'
+ *      planId: // value for 'planId'
  *      stripePaymentIntentId: // value for 'stripePaymentIntentId'
  *      stripePaymentIntentClientSecret: // value for 'stripePaymentIntentClientSecret'
  *   },
@@ -5839,8 +5884,9 @@ export type JobDetailsDocumentsLazyQueryHookResult = ReturnType<typeof useJobDet
 export type JobDetailsDocumentsQueryResult = ApolloReactCommon.QueryResult<JobDetailsDocumentsQuery, JobDetailsDocumentsQueryVariables>;
 export const JobDetialsDocument = gql`
     query JobDetials($jobId: uuid!, $userId: uuid) {
-  jobs_by_pk(id: $jobId) {
+  job: jobs_by_pk(id: $jobId) {
     id
+    created_at
     description
     stripe_payment_intent_succeeded
     target_name
@@ -5860,6 +5906,11 @@ export const JobDetialsDocument = gql`
       id
       attempted_at
       success
+    }
+    plan {
+      id
+      attempts
+      duration
     }
     ...JobDetailsPageJob
   }
@@ -5968,11 +6019,11 @@ export type JobsCreatePaymentLazyQueryHookResult = ReturnType<typeof useJobsCrea
 export type JobsCreatePaymentQueryResult = ApolloReactCommon.QueryResult<JobsCreatePaymentQuery, JobsCreatePaymentQueryVariables>;
 export const JobsCreatePlanDocument = gql`
     query JobsCreatePlan($jobId: uuid!) {
-  jobs(where: {id: {_eq: $jobId}}) {
+  job: jobs_by_pk(id: $jobId) {
     stripe_payment_intent_client_secret
     id
   }
-  plans {
+  plans(order_by: {order: asc}) {
     id
     name
     fee

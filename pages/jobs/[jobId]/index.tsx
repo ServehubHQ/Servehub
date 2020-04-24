@@ -7,6 +7,7 @@ import {
   Grid,
   makeStyles,
   Typography,
+  Tooltip,
 } from '@material-ui/core'
 import { CheckCircle, Error } from '@material-ui/icons'
 import moment from 'moment'
@@ -34,10 +35,15 @@ export default function JobDetails() {
   const { userId } = useAuth()
   const { data, refetch } = useJobDetialsQuery({ variables: { jobId, userId } })
 
-  const job = useMemo(() => data?.jobs_by_pk, [data])
+  const dueDate = useMemo(() => {
+    if (data?.job?.plan?.duration) {
+      const [value, unit] = data.job.plan.duration.split(' ')
+      return moment(data.job.created_at).add(value, unit)
+    }
+  }, [data])
 
   return (
-    <JobDetailsPage job={data?.jobs_by_pk} query={data} refetch={refetch}>
+    <JobDetailsPage job={data?.job} query={data} refetch={refetch}>
       <Grid container spacing={2}>
         <Grid item sm={12} md={6}>
           <Card>
@@ -50,7 +56,7 @@ export default function JobDetails() {
                     Name
                   </Typography>
                   <Typography variant='h6' component='h2'>
-                    {job?.target_name}
+                    {data?.job?.target_name}
                   </Typography>
                 </div>
                 <div>
@@ -58,15 +64,17 @@ export default function JobDetails() {
                     Address
                   </Typography>
                   <Typography variant='h6' component='h2'>
-                    {job?.target_address ? (
-                      <Address {...job.target_address} />
+                    {data?.job?.target_address ? (
+                      <Address {...data?.job.target_address} />
                     ) : null}
                   </Typography>
                 </div>
               </Stack>
             </CardContent>
             <CardMedia>
-              {job?.target_address ? <Map {...job.target_address} /> : null}
+              {data?.job?.target_address ? (
+                <Map {...data?.job.target_address} />
+              ) : null}
             </CardMedia>
           </Card>
         </Grid>
@@ -77,11 +85,39 @@ export default function JobDetails() {
                 <CardHeader title='Attempts' />
                 <Divider />
                 <CardContent>
-                  {(job?.attempts.length || 0) === 0 ? (
-                    <Typography>No Attempts made yet.</Typography>
-                  ) : (
-                    <Grid container spacing={2} direction='column'>
-                      {job?.attempts.map((attempt) => (
+                  <Stack>
+                    {dueDate ? (
+                      <>
+                        <Typography variant='subtitle1' color='textSecondary'>
+                          Due
+                        </Typography>
+                        <Tooltip
+                          title={dueDate.format(
+                            'dddd, MMMM Do YYYY, h:mm:ss a',
+                          )}
+                          aria-label='due'
+                        >
+                          <Typography variant='h6' component='span'>
+                            {dueDate.fromNow()}
+                          </Typography>
+                        </Tooltip>
+                      </>
+                    ) : null}
+                    {data?.job?.plan ? (
+                      <>
+                        <Typography variant='subtitle1' color='textSecondary'>
+                          Attempts
+                        </Typography>
+                        <Typography variant='h6' component='span'>
+                          {data.job.plan.attempts - data.job.attempts.length}{' '}
+                          attempts remaining
+                        </Typography>
+                      </>
+                    ) : null}
+                    {(data?.job?.attempts.length || 0) === 0 ? (
+                      <Typography>No Attempts made yet.</Typography>
+                    ) : (
+                      data?.job?.attempts.map((attempt) => (
                         <Grid item key={attempt.id}>
                           <Grid container spacing={1} alignItems='center'>
                             <Grid item>
@@ -102,14 +138,14 @@ export default function JobDetails() {
                             </Grid>
                           </Grid>
                         </Grid>
-                      ))}
-                    </Grid>
-                  )}
+                      ))
+                    )}
+                  </Stack>
                 </CardContent>
               </Card>
             </Grid>
             <Grid item>
-              {job?.server ? (
+              {data?.job?.server ? (
                 <Card>
                   <CardHeader title='Server' />
                   <Divider />
@@ -118,7 +154,7 @@ export default function JobDetails() {
                       Name
                     </Typography>
                     <Typography variant='h6' component='h2'>
-                      {job?.server.name}
+                      {data?.job?.server.name}
                     </Typography>
                   </CardContent>
                 </Card>

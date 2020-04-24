@@ -2,7 +2,7 @@ import { Button, Grid, makeStyles, Typography } from '@material-ui/core'
 import clsx from 'clsx'
 import fetch from 'cross-fetch'
 import { useRouter } from 'next/router'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState, useEffect } from 'react'
 import { CreateJobPage } from '../../../components/CreateJobPage'
 import { Money } from '../../../components/Money'
 import {
@@ -40,7 +40,15 @@ export default function JobsCreatePaymentPage() {
   const [loading, setLoading] = useState(false)
   const [planId, setPlanId] = useState<string | null>(null)
   const jobId = useMemo(() => router.query.id, [router])
-  const { data } = useJobsCreatePlanQuery({ variables: { jobId } })
+  const { data } = useJobsCreatePlanQuery({
+    variables: { jobId },
+  })
+
+  useEffect(() => {
+    if (typeof data?.job?.stripe_payment_intent_client_secret === 'string') {
+      router.push(`/jobs/create/payment?id=${jobId}`)
+    }
+  }, [data, router, jobId])
 
   const handlePlanClick = useCallback(
     (plan: JobsCreatePlanQuery['plans'][0]) => () => {

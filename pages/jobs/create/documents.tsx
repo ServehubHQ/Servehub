@@ -71,7 +71,7 @@ export default function JobsCreateDocumentsPage() {
           ),
         )
       }
-      router.push(`/jobs/create/payment?id=${jobId}`)
+      router.push(`/jobs/create/plan?id=${jobId}`)
     },
     [
       router,

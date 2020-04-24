@@ -1,10 +1,10 @@
 query JobsCreatePlan($jobId: uuid!) {
-  jobs(where: { id: { _eq: $jobId } }) {
+  job: jobs_by_pk(id: $jobId) {
     stripe_payment_intent_client_secret
     id
   }
 
-  plans {
+  plans(order_by: { order: asc }) {
     id
     name
     fee

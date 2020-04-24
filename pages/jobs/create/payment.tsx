@@ -7,7 +7,7 @@ import {
   useStripe,
 } from '@stripe/react-stripe-js'
 import { useRouter } from 'next/router'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState, useEffect } from 'react'
 import { CreateJobPage } from '../../../components/CreateJobPage'
 import { StripeField } from '../../../components/StripeField'
 import { useJobsCreatePaymentQuery } from '../../../graphql-codegen'
@@ -32,12 +32,20 @@ export default function JobsCreatePaymentPage() {
   const [error, setError] = useState<string | undefined>()
   const [loading, setLoading] = useState(false)
   const jobId = useMemo(() => router.query.id, [router])
-  const { data } = useJobsCreatePaymentQuery({ variables: { jobId, userId } })
+  const { data, loading: dataLoading } = useJobsCreatePaymentQuery({
+    variables: { jobId, userId },
+  })
   const stripeClientSecret = useMemo(
     () => data?.jobs[0].stripe_payment_intent_client_secret,
     [data],
   )
-  console.log(data)
+
+  useEffect(() => {
+    if (!stripeClientSecret && !dataLoading) {
+      router.push(`/jobs/create/plan?id=${jobId}`)
+    }
+  }, [stripeClientSecret, dataLoading, router, jobId])
+
   const handleSubmit = useCallback(
     async (event) => {
       event.preventDefault()

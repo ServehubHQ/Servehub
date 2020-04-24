@@ -61,7 +61,8 @@ export default async function stripeSetIntent(
     SetJobStripePaymentIntentMutationVariables
   >({
     variables: {
-      jobId: data.job.id,
+      jobId,
+      planId,
       stripePaymentIntentId: paymentIntent.id,
       stripePaymentIntentClientSecret: paymentIntent.client_secret!,
     },

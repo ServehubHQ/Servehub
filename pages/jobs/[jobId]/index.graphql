@@ -1,6 +1,7 @@
 query JobDetials($jobId: uuid!, $userId: uuid) {
-  jobs_by_pk(id: $jobId) {
+  job: jobs_by_pk(id: $jobId) {
     id
+    created_at
     description
     stripe_payment_intent_succeeded
 
@@ -23,6 +24,12 @@ query JobDetials($jobId: uuid!, $userId: uuid) {
       id
       attempted_at
       success
+    }
+
+    plan {
+      id
+      attempts
+      duration
     }
 
     ...JobDetailsPageJob
