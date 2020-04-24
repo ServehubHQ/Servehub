@@ -20,6 +20,8 @@ import { useAuth } from '../../../lib/useAuth'
 import { useAuthRequired } from '../../../lib/useAuthRequired'
 import { Address } from '../../../components/Address'
 import { Stack } from '../../../components/Stack'
+import { RateCard } from '../../../components/RateCard'
+import { Rating } from '@material-ui/lab'
 
 const useStyles = makeStyles((theme) => ({
   successIcon: {
@@ -42,9 +44,26 @@ export default function JobDetails() {
     }
   }, [data])
 
+  const isComplete = useMemo(() => {
+    if (data?.job?.plan) {
+      return (
+        dueDate?.isBefore() ||
+        data.job.attempts.length >= data.job.plan.attempts ||
+        data.job.attempts.some((attempt) => attempt.success)
+      )
+    } else {
+      return false
+    }
+  }, [data, dueDate])
+
   return (
     <JobDetailsPage job={data?.job} query={data} refetch={refetch}>
       <Grid container spacing={2}>
+        <Grid item xs={12}>
+          {data?.job && userId && isComplete ? (
+            <RateCard job={data.job} currentUserId={userId} onRated={refetch} />
+          ) : null}
+        </Grid>
         <Grid item sm={12} md={6}>
           <Card>
             <CardHeader title='Target' />
@@ -150,12 +169,38 @@ export default function JobDetails() {
                   <CardHeader title='Server' />
                   <Divider />
                   <CardContent>
-                    <Typography variant='subtitle1' color='textSecondary'>
-                      Name
-                    </Typography>
-                    <Typography variant='h6' component='h2'>
-                      {data?.job?.server.name}
-                    </Typography>
+                    <Stack>
+                      <>
+                        <Typography variant='subtitle1' color='textSecondary'>
+                          Name
+                        </Typography>
+                        <Typography variant='h6' component='h2'>
+                          {data.job.server.name}
+                        </Typography>
+                      </>
+                      <>
+                        <Typography variant='subtitle1' color='textSecondary'>
+                          Rating
+                        </Typography>
+                        <Rating
+                          value={
+                            data.job.server.ratings_aggregate.aggregate?.avg
+                              ?.value
+                          }
+                          readOnly
+                        />
+                        <Typography variant='h6' component='h2'>
+                          {`Avg. of ${
+                            data.job.server.ratings_aggregate.aggregate?.count
+                          } rating${
+                            data.job.server.ratings_aggregate.aggregate
+                              ?.count === 1
+                              ? ''
+                              : 's'
+                          }`}
+                        </Typography>
+                      </>
+                    </Stack>
                   </CardContent>
                 </Card>
               ) : null}

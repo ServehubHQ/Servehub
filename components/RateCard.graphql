@@ -1,0 +1,17 @@
+fragment RateCardJob on jobs {
+  id
+
+  ratings(where: { user_id: { _neq: $userId } }) {
+    value
+  }
+
+  server {
+    id
+    name
+  }
+
+  lawyer {
+    id
+    name
+  }
+}

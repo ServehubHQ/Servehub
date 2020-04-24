@@ -1596,6 +1596,8 @@ export type Jobs = {
   pickup_required: Scalars['Boolean'];
   plan?: Maybe<Plans>;
   plan_id?: Maybe<Scalars['uuid']>;
+  ratings: Array<Ratings>;
+  ratings_aggregate: Ratings_Aggregate;
   server?: Maybe<Users>;
   server_user_id?: Maybe<Scalars['uuid']>;
   stripe_payment_intent_client_secret?: Maybe<Scalars['String']>;
@@ -1661,6 +1663,24 @@ export type JobsMessages_AggregateArgs = {
   where?: Maybe<Messages_Bool_Exp>;
 };
 
+
+export type JobsRatingsArgs = {
+  distinct_on?: Maybe<Array<Ratings_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Ratings_Order_By>>;
+  where?: Maybe<Ratings_Bool_Exp>;
+};
+
+
+export type JobsRatings_AggregateArgs = {
+  distinct_on?: Maybe<Array<Ratings_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Ratings_Order_By>>;
+  where?: Maybe<Ratings_Bool_Exp>;
+};
+
 export type Jobs_Aggregate = {
    __typename?: 'jobs_aggregate';
   aggregate?: Maybe<Jobs_Aggregate_Fields>;
@@ -1709,6 +1729,7 @@ export type Jobs_Bool_Exp = {
   pickup_required?: Maybe<Boolean_Comparison_Exp>;
   plan?: Maybe<Plans_Bool_Exp>;
   plan_id?: Maybe<Uuid_Comparison_Exp>;
+  ratings?: Maybe<Ratings_Bool_Exp>;
   server?: Maybe<Users_Bool_Exp>;
   server_user_id?: Maybe<Uuid_Comparison_Exp>;
   stripe_payment_intent_client_secret?: Maybe<String_Comparison_Exp>;
@@ -1739,6 +1760,7 @@ export type Jobs_Insert_Input = {
   pickup_required?: Maybe<Scalars['Boolean']>;
   plan?: Maybe<Plans_Obj_Rel_Insert_Input>;
   plan_id?: Maybe<Scalars['uuid']>;
+  ratings?: Maybe<Ratings_Arr_Rel_Insert_Input>;
   server?: Maybe<Users_Obj_Rel_Insert_Input>;
   server_user_id?: Maybe<Scalars['uuid']>;
   stripe_payment_intent_client_secret?: Maybe<Scalars['String']>;
@@ -1824,6 +1846,7 @@ export type Jobs_Order_By = {
   pickup_required?: Maybe<Order_By>;
   plan?: Maybe<Plans_Order_By>;
   plan_id?: Maybe<Order_By>;
+  ratings_aggregate?: Maybe<Ratings_Aggregate_Order_By>;
   server?: Maybe<Users_Order_By>;
   server_user_id?: Maybe<Order_By>;
   stripe_payment_intent_client_secret?: Maybe<Order_By>;
@@ -2074,6 +2097,7 @@ export type Mutation_Root = {
   delete_messages?: Maybe<Messages_Mutation_Response>;
   delete_plans?: Maybe<Plans_Mutation_Response>;
   delete_provinces?: Maybe<Provinces_Mutation_Response>;
+  delete_ratings?: Maybe<Ratings_Mutation_Response>;
   delete_roles?: Maybe<Roles_Mutation_Response>;
   delete_user_roles?: Maybe<User_Roles_Mutation_Response>;
   delete_users?: Maybe<Users_Mutation_Response>;
@@ -2090,6 +2114,7 @@ export type Mutation_Root = {
   insert_messages?: Maybe<Messages_Mutation_Response>;
   insert_plans?: Maybe<Plans_Mutation_Response>;
   insert_provinces?: Maybe<Provinces_Mutation_Response>;
+  insert_ratings?: Maybe<Ratings_Mutation_Response>;
   insert_roles?: Maybe<Roles_Mutation_Response>;
   insert_user_roles?: Maybe<User_Roles_Mutation_Response>;
   insert_users?: Maybe<Users_Mutation_Response>;
@@ -2106,6 +2131,7 @@ export type Mutation_Root = {
   update_messages?: Maybe<Messages_Mutation_Response>;
   update_plans?: Maybe<Plans_Mutation_Response>;
   update_provinces?: Maybe<Provinces_Mutation_Response>;
+  update_ratings?: Maybe<Ratings_Mutation_Response>;
   update_roles?: Maybe<Roles_Mutation_Response>;
   update_user_roles?: Maybe<User_Roles_Mutation_Response>;
   update_users?: Maybe<Users_Mutation_Response>;
@@ -2174,6 +2200,11 @@ export type Mutation_RootDelete_PlansArgs = {
 
 export type Mutation_RootDelete_ProvincesArgs = {
   where: Provinces_Bool_Exp;
+};
+
+
+export type Mutation_RootDelete_RatingsArgs = {
+  where: Ratings_Bool_Exp;
 };
 
 
@@ -2266,6 +2297,12 @@ export type Mutation_RootInsert_PlansArgs = {
 export type Mutation_RootInsert_ProvincesArgs = {
   objects: Array<Provinces_Insert_Input>;
   on_conflict?: Maybe<Provinces_On_Conflict>;
+};
+
+
+export type Mutation_RootInsert_RatingsArgs = {
+  objects: Array<Ratings_Insert_Input>;
+  on_conflict?: Maybe<Ratings_On_Conflict>;
 };
 
 
@@ -2368,6 +2405,13 @@ export type Mutation_RootUpdate_PlansArgs = {
 export type Mutation_RootUpdate_ProvincesArgs = {
   _set?: Maybe<Provinces_Set_Input>;
   where: Provinces_Bool_Exp;
+};
+
+
+export type Mutation_RootUpdate_RatingsArgs = {
+  _inc?: Maybe<Ratings_Inc_Input>;
+  _set?: Maybe<Ratings_Set_Input>;
+  where: Ratings_Bool_Exp;
 };
 
 
@@ -2903,6 +2947,9 @@ export type Query_Root = {
   provinces: Array<Provinces>;
   provinces_aggregate: Provinces_Aggregate;
   provinces_by_pk?: Maybe<Provinces>;
+  ratings: Array<Ratings>;
+  ratings_aggregate: Ratings_Aggregate;
+  ratings_by_pk?: Maybe<Ratings>;
   roles: Array<Roles>;
   roles_aggregate: Roles_Aggregate;
   roles_by_pk?: Maybe<Roles>;
@@ -3209,6 +3256,29 @@ export type Query_RootProvinces_By_PkArgs = {
 };
 
 
+export type Query_RootRatingsArgs = {
+  distinct_on?: Maybe<Array<Ratings_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Ratings_Order_By>>;
+  where?: Maybe<Ratings_Bool_Exp>;
+};
+
+
+export type Query_RootRatings_AggregateArgs = {
+  distinct_on?: Maybe<Array<Ratings_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Ratings_Order_By>>;
+  where?: Maybe<Ratings_Bool_Exp>;
+};
+
+
+export type Query_RootRatings_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
 export type Query_RootRolesArgs = {
   distinct_on?: Maybe<Array<Roles_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -3275,6 +3345,261 @@ export type Query_RootUsers_AggregateArgs = {
 
 export type Query_RootUsers_By_PkArgs = {
   id: Scalars['uuid'];
+};
+
+export type Ratings = {
+   __typename?: 'ratings';
+  comment?: Maybe<Scalars['String']>;
+  created_at: Scalars['timestamptz'];
+  id: Scalars['uuid'];
+  job: Jobs;
+  job_id: Scalars['uuid'];
+  updated_at: Scalars['timestamptz'];
+  user: Users;
+  user_id: Scalars['uuid'];
+  value: Scalars['Int'];
+};
+
+export type Ratings_Aggregate = {
+   __typename?: 'ratings_aggregate';
+  aggregate?: Maybe<Ratings_Aggregate_Fields>;
+  nodes: Array<Ratings>;
+};
+
+export type Ratings_Aggregate_Fields = {
+   __typename?: 'ratings_aggregate_fields';
+  avg?: Maybe<Ratings_Avg_Fields>;
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<Ratings_Max_Fields>;
+  min?: Maybe<Ratings_Min_Fields>;
+  stddev?: Maybe<Ratings_Stddev_Fields>;
+  stddev_pop?: Maybe<Ratings_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Ratings_Stddev_Samp_Fields>;
+  sum?: Maybe<Ratings_Sum_Fields>;
+  var_pop?: Maybe<Ratings_Var_Pop_Fields>;
+  var_samp?: Maybe<Ratings_Var_Samp_Fields>;
+  variance?: Maybe<Ratings_Variance_Fields>;
+};
+
+
+export type Ratings_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Ratings_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+export type Ratings_Aggregate_Order_By = {
+  avg?: Maybe<Ratings_Avg_Order_By>;
+  count?: Maybe<Order_By>;
+  max?: Maybe<Ratings_Max_Order_By>;
+  min?: Maybe<Ratings_Min_Order_By>;
+  stddev?: Maybe<Ratings_Stddev_Order_By>;
+  stddev_pop?: Maybe<Ratings_Stddev_Pop_Order_By>;
+  stddev_samp?: Maybe<Ratings_Stddev_Samp_Order_By>;
+  sum?: Maybe<Ratings_Sum_Order_By>;
+  var_pop?: Maybe<Ratings_Var_Pop_Order_By>;
+  var_samp?: Maybe<Ratings_Var_Samp_Order_By>;
+  variance?: Maybe<Ratings_Variance_Order_By>;
+};
+
+export type Ratings_Arr_Rel_Insert_Input = {
+  data: Array<Ratings_Insert_Input>;
+  on_conflict?: Maybe<Ratings_On_Conflict>;
+};
+
+export type Ratings_Avg_Fields = {
+   __typename?: 'ratings_avg_fields';
+  value?: Maybe<Scalars['Float']>;
+};
+
+export type Ratings_Avg_Order_By = {
+  value?: Maybe<Order_By>;
+};
+
+export type Ratings_Bool_Exp = {
+  _and?: Maybe<Array<Maybe<Ratings_Bool_Exp>>>;
+  _not?: Maybe<Ratings_Bool_Exp>;
+  _or?: Maybe<Array<Maybe<Ratings_Bool_Exp>>>;
+  comment?: Maybe<String_Comparison_Exp>;
+  created_at?: Maybe<Timestamptz_Comparison_Exp>;
+  id?: Maybe<Uuid_Comparison_Exp>;
+  job?: Maybe<Jobs_Bool_Exp>;
+  job_id?: Maybe<Uuid_Comparison_Exp>;
+  updated_at?: Maybe<Timestamptz_Comparison_Exp>;
+  user?: Maybe<Users_Bool_Exp>;
+  user_id?: Maybe<Uuid_Comparison_Exp>;
+  value?: Maybe<Int_Comparison_Exp>;
+};
+
+export enum Ratings_Constraint {
+  RatingsPkey = 'ratings_pkey'
+}
+
+export type Ratings_Inc_Input = {
+  value?: Maybe<Scalars['Int']>;
+};
+
+export type Ratings_Insert_Input = {
+  comment?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  job?: Maybe<Jobs_Obj_Rel_Insert_Input>;
+  job_id?: Maybe<Scalars['uuid']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+  user?: Maybe<Users_Obj_Rel_Insert_Input>;
+  user_id?: Maybe<Scalars['uuid']>;
+  value?: Maybe<Scalars['Int']>;
+};
+
+export type Ratings_Max_Fields = {
+   __typename?: 'ratings_max_fields';
+  comment?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+  value?: Maybe<Scalars['Int']>;
+};
+
+export type Ratings_Max_Order_By = {
+  comment?: Maybe<Order_By>;
+  created_at?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+  value?: Maybe<Order_By>;
+};
+
+export type Ratings_Min_Fields = {
+   __typename?: 'ratings_min_fields';
+  comment?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+  value?: Maybe<Scalars['Int']>;
+};
+
+export type Ratings_Min_Order_By = {
+  comment?: Maybe<Order_By>;
+  created_at?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+  value?: Maybe<Order_By>;
+};
+
+export type Ratings_Mutation_Response = {
+   __typename?: 'ratings_mutation_response';
+  affected_rows: Scalars['Int'];
+  returning: Array<Ratings>;
+};
+
+export type Ratings_Obj_Rel_Insert_Input = {
+  data: Ratings_Insert_Input;
+  on_conflict?: Maybe<Ratings_On_Conflict>;
+};
+
+export type Ratings_On_Conflict = {
+  constraint: Ratings_Constraint;
+  update_columns: Array<Ratings_Update_Column>;
+  where?: Maybe<Ratings_Bool_Exp>;
+};
+
+export type Ratings_Order_By = {
+  comment?: Maybe<Order_By>;
+  created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  job?: Maybe<Jobs_Order_By>;
+  job_id?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+  user?: Maybe<Users_Order_By>;
+  user_id?: Maybe<Order_By>;
+  value?: Maybe<Order_By>;
+};
+
+export enum Ratings_Select_Column {
+  Comment = 'comment',
+  CreatedAt = 'created_at',
+  Id = 'id',
+  JobId = 'job_id',
+  UpdatedAt = 'updated_at',
+  UserId = 'user_id',
+  Value = 'value'
+}
+
+export type Ratings_Set_Input = {
+  comment?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  job_id?: Maybe<Scalars['uuid']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+  user_id?: Maybe<Scalars['uuid']>;
+  value?: Maybe<Scalars['Int']>;
+};
+
+export type Ratings_Stddev_Fields = {
+   __typename?: 'ratings_stddev_fields';
+  value?: Maybe<Scalars['Float']>;
+};
+
+export type Ratings_Stddev_Order_By = {
+  value?: Maybe<Order_By>;
+};
+
+export type Ratings_Stddev_Pop_Fields = {
+   __typename?: 'ratings_stddev_pop_fields';
+  value?: Maybe<Scalars['Float']>;
+};
+
+export type Ratings_Stddev_Pop_Order_By = {
+  value?: Maybe<Order_By>;
+};
+
+export type Ratings_Stddev_Samp_Fields = {
+   __typename?: 'ratings_stddev_samp_fields';
+  value?: Maybe<Scalars['Float']>;
+};
+
+export type Ratings_Stddev_Samp_Order_By = {
+  value?: Maybe<Order_By>;
+};
+
+export type Ratings_Sum_Fields = {
+   __typename?: 'ratings_sum_fields';
+  value?: Maybe<Scalars['Int']>;
+};
+
+export type Ratings_Sum_Order_By = {
+  value?: Maybe<Order_By>;
+};
+
+export enum Ratings_Update_Column {
+  Comment = 'comment',
+  CreatedAt = 'created_at',
+  Id = 'id',
+  JobId = 'job_id',
+  UpdatedAt = 'updated_at',
+  UserId = 'user_id',
+  Value = 'value'
+}
+
+export type Ratings_Var_Pop_Fields = {
+   __typename?: 'ratings_var_pop_fields';
+  value?: Maybe<Scalars['Float']>;
+};
+
+export type Ratings_Var_Pop_Order_By = {
+  value?: Maybe<Order_By>;
+};
+
+export type Ratings_Var_Samp_Fields = {
+   __typename?: 'ratings_var_samp_fields';
+  value?: Maybe<Scalars['Float']>;
+};
+
+export type Ratings_Var_Samp_Order_By = {
+  value?: Maybe<Order_By>;
+};
+
+export type Ratings_Variance_Fields = {
+   __typename?: 'ratings_variance_fields';
+  value?: Maybe<Scalars['Float']>;
+};
+
+export type Ratings_Variance_Order_By = {
+  value?: Maybe<Order_By>;
 };
 
 export type Roles = {
@@ -3482,6 +3807,9 @@ export type Subscription_Root = {
   provinces: Array<Provinces>;
   provinces_aggregate: Provinces_Aggregate;
   provinces_by_pk?: Maybe<Provinces>;
+  ratings: Array<Ratings>;
+  ratings_aggregate: Ratings_Aggregate;
+  ratings_by_pk?: Maybe<Ratings>;
   roles: Array<Roles>;
   roles_aggregate: Roles_Aggregate;
   roles_by_pk?: Maybe<Roles>;
@@ -3788,6 +4116,29 @@ export type Subscription_RootProvinces_By_PkArgs = {
 };
 
 
+export type Subscription_RootRatingsArgs = {
+  distinct_on?: Maybe<Array<Ratings_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Ratings_Order_By>>;
+  where?: Maybe<Ratings_Bool_Exp>;
+};
+
+
+export type Subscription_RootRatings_AggregateArgs = {
+  distinct_on?: Maybe<Array<Ratings_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Ratings_Order_By>>;
+  where?: Maybe<Ratings_Bool_Exp>;
+};
+
+
+export type Subscription_RootRatings_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
 export type Subscription_RootRolesArgs = {
   distinct_on?: Maybe<Array<Roles_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -4022,6 +4373,8 @@ export type Users = {
   lawyer_jobs_aggregate: Jobs_Aggregate;
   name?: Maybe<Scalars['String']>;
   notifications_enabled: Scalars['Boolean'];
+  ratings: Array<Ratings>;
+  ratings_aggregate: Ratings_Aggregate;
   refresh_tokens: Array<Auth_Refresh_Tokens>;
   refresh_tokens_aggregate: Auth_Refresh_Tokens_Aggregate;
   register_data?: Maybe<Scalars['jsonb']>;
@@ -4056,6 +4409,24 @@ export type UsersLawyer_Jobs_AggregateArgs = {
   offset?: Maybe<Scalars['Int']>;
   order_by?: Maybe<Array<Jobs_Order_By>>;
   where?: Maybe<Jobs_Bool_Exp>;
+};
+
+
+export type UsersRatingsArgs = {
+  distinct_on?: Maybe<Array<Ratings_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Ratings_Order_By>>;
+  where?: Maybe<Ratings_Bool_Exp>;
+};
+
+
+export type UsersRatings_AggregateArgs = {
+  distinct_on?: Maybe<Array<Ratings_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Ratings_Order_By>>;
+  where?: Maybe<Ratings_Bool_Exp>;
 };
 
 
@@ -4206,6 +4577,7 @@ export type Users_Bool_Exp = {
   lawyer_jobs?: Maybe<Jobs_Bool_Exp>;
   name?: Maybe<String_Comparison_Exp>;
   notifications_enabled?: Maybe<Boolean_Comparison_Exp>;
+  ratings?: Maybe<Ratings_Bool_Exp>;
   refresh_tokens?: Maybe<Auth_Refresh_Tokens_Bool_Exp>;
   register_data?: Maybe<Jsonb_Comparison_Exp>;
   role?: Maybe<Roles_Bool_Exp>;
@@ -4253,6 +4625,7 @@ export type Users_Insert_Input = {
   lawyer_jobs?: Maybe<Jobs_Arr_Rel_Insert_Input>;
   name?: Maybe<Scalars['String']>;
   notifications_enabled?: Maybe<Scalars['Boolean']>;
+  ratings?: Maybe<Ratings_Arr_Rel_Insert_Input>;
   refresh_tokens?: Maybe<Auth_Refresh_Tokens_Arr_Rel_Insert_Input>;
   register_data?: Maybe<Scalars['jsonb']>;
   role?: Maybe<Roles_Obj_Rel_Insert_Input>;
@@ -4353,6 +4726,7 @@ export type Users_Order_By = {
   lawyer_jobs_aggregate?: Maybe<Jobs_Aggregate_Order_By>;
   name?: Maybe<Order_By>;
   notifications_enabled?: Maybe<Order_By>;
+  ratings_aggregate?: Maybe<Ratings_Aggregate_Order_By>;
   refresh_tokens_aggregate?: Maybe<Auth_Refresh_Tokens_Aggregate_Order_By>;
   register_data?: Maybe<Order_By>;
   role?: Maybe<Roles_Order_By>;
@@ -4506,6 +4880,21 @@ export type PageQueryFragment = (
   )> }
 );
 
+export type RateCardJobFragment = (
+  { __typename?: 'jobs' }
+  & Pick<Jobs, 'id'>
+  & { ratings: Array<(
+    { __typename?: 'ratings' }
+    & Pick<Ratings, 'value'>
+  )>, server: Maybe<(
+    { __typename?: 'users' }
+    & Pick<Users, 'id' | 'name'>
+  )>, lawyer: (
+    { __typename?: 'users' }
+    & Pick<Users, 'id' | 'name'>
+  ) }
+);
+
 export type ClaimJobMutationVariables = {
   jobId: Scalars['uuid'];
 };
@@ -4607,6 +4996,22 @@ export type InsertJobMutation = (
       { __typename?: 'jobs' }
       & Pick<Jobs, 'id'>
     )> }
+  )> }
+);
+
+export type InsertRatingMutationVariables = {
+  jobId: Scalars['uuid'];
+  userId: Scalars['uuid'];
+  rating?: Maybe<Scalars['Int']>;
+  comment?: Maybe<Scalars['String']>;
+};
+
+
+export type InsertRatingMutation = (
+  { __typename?: 'mutation_root' }
+  & { insert_ratings: Maybe<(
+    { __typename?: 'ratings_mutation_response' }
+    & Pick<Ratings_Mutation_Response, 'affected_rows'>
   )> }
 );
 
@@ -4865,6 +5270,17 @@ export type JobDetialsQuery = (
     )>, server: Maybe<(
       { __typename?: 'users' }
       & Pick<Users, 'id' | 'name'>
+      & { ratings_aggregate: (
+        { __typename?: 'ratings_aggregate' }
+        & { aggregate: Maybe<(
+          { __typename?: 'ratings_aggregate_fields' }
+          & Pick<Ratings_Aggregate_Fields, 'count'>
+          & { avg: Maybe<(
+            { __typename?: 'ratings_avg_fields' }
+            & Pick<Ratings_Avg_Fields, 'value'>
+          )> }
+        )> }
+      ) }
     )>, attempts: Array<(
       { __typename?: 'attempts' }
       & Pick<Attempts, 'id' | 'attempted_at' | 'success'>
@@ -4872,6 +5288,7 @@ export type JobDetialsQuery = (
       { __typename?: 'plans' }
       & Pick<Plans, 'id' | 'attempts' | 'duration'>
     )> }
+    & RateCardJobFragment
     & JobDetailsPageJobFragment
   )> }
   & JobDetailsPageQueryFragment
@@ -5059,6 +5476,22 @@ export const JobDetailsPageQueryFragmentDoc = gql`
   ...PageQuery
 }
     ${PageQueryFragmentDoc}`;
+export const RateCardJobFragmentDoc = gql`
+    fragment RateCardJob on jobs {
+  id
+  ratings(where: {user_id: {_neq: $userId}}) {
+    value
+  }
+  server {
+    id
+    name
+  }
+  lawyer {
+    id
+    name
+  }
+}
+    `;
 export const JobsListJobFragmentDoc = gql`
     fragment JobsListJob on jobs {
   id
@@ -5335,6 +5768,41 @@ export function useInsertJobMutation(baseOptions?: ApolloReactHooks.MutationHook
 export type InsertJobMutationHookResult = ReturnType<typeof useInsertJobMutation>;
 export type InsertJobMutationResult = ApolloReactCommon.MutationResult<InsertJobMutation>;
 export type InsertJobMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertJobMutation, InsertJobMutationVariables>;
+export const InsertRatingDocument = gql`
+    mutation InsertRating($jobId: uuid!, $userId: uuid!, $rating: Int, $comment: String) {
+  insert_ratings(objects: {job_id: $jobId, user_id: $userId, value: $rating, comment: $comment}) {
+    affected_rows
+  }
+}
+    `;
+export type InsertRatingMutationFn = ApolloReactCommon.MutationFunction<InsertRatingMutation, InsertRatingMutationVariables>;
+
+/**
+ * __useInsertRatingMutation__
+ *
+ * To run a mutation, you first call `useInsertRatingMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertRatingMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertRatingMutation, { data, loading, error }] = useInsertRatingMutation({
+ *   variables: {
+ *      jobId: // value for 'jobId'
+ *      userId: // value for 'userId'
+ *      rating: // value for 'rating'
+ *      comment: // value for 'comment'
+ *   },
+ * });
+ */
+export function useInsertRatingMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<InsertRatingMutation, InsertRatingMutationVariables>) {
+        return ApolloReactHooks.useMutation<InsertRatingMutation, InsertRatingMutationVariables>(InsertRatingDocument, baseOptions);
+      }
+export type InsertRatingMutationHookResult = ReturnType<typeof useInsertRatingMutation>;
+export type InsertRatingMutationResult = ApolloReactCommon.MutationResult<InsertRatingMutation>;
+export type InsertRatingMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertRatingMutation, InsertRatingMutationVariables>;
 export const PostSignupDocument = gql`
     mutation PostSignup($role: String!, $userId: uuid!, $name: String) {
   insert_user_roles(objects: [{role: $role, user_id: $userId}]) {
@@ -5901,6 +6369,14 @@ export const JobDetialsDocument = gql`
     server {
       id
       name
+      ratings_aggregate {
+        aggregate {
+          count
+          avg {
+            value
+          }
+        }
+      }
     }
     attempts {
       id
@@ -5912,11 +6388,13 @@ export const JobDetialsDocument = gql`
       attempts
       duration
     }
+    ...RateCardJob
     ...JobDetailsPageJob
   }
   ...JobDetailsPageQuery
 }
-    ${JobDetailsPageJobFragmentDoc}
+    ${RateCardJobFragmentDoc}
+${JobDetailsPageJobFragmentDoc}
 ${JobDetailsPageQueryFragmentDoc}`;
 
 /**

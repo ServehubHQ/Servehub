@@ -18,6 +18,15 @@ query JobDetials($jobId: uuid!, $userId: uuid) {
     server {
       id
       name
+
+      ratings_aggregate {
+        aggregate {
+          count
+          avg {
+            value
+          }
+        }
+      }
     }
 
     attempts {
@@ -32,6 +41,7 @@ query JobDetials($jobId: uuid!, $userId: uuid) {
       duration
     }
 
+    ...RateCardJob
     ...JobDetailsPageJob
   }
 

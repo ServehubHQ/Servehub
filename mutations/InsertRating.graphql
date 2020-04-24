@@ -1,0 +1,17 @@
+mutation InsertRating(
+  $jobId: uuid!
+  $userId: uuid!
+  $rating: Int
+  $comment: String
+) {
+  insert_ratings(
+    objects: {
+      job_id: $jobId
+      user_id: $userId
+      value: $rating
+      comment: $comment
+    }
+  ) {
+    affected_rows
+  }
+}
