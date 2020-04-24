@@ -76,7 +76,7 @@ export function RateCard({ job, currentUserId, onRated }: RateCardProps) {
   return (
     <form onSubmit={handleSubmit(handleFormValid)}>
       <Card>
-        <CardHeader title='Leave your feedback' />
+        <CardHeader title='Feedback' />
         <Divider />
         {rating ? (
           <CardContent>
