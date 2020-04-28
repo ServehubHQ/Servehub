@@ -1,5 +1,6 @@
 import {
   Grid,
+  ListItemText,
   makeStyles,
   Paper,
   Table,
@@ -7,21 +8,16 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  Typography,
-  ListItemText,
 } from '@material-ui/core'
-import { CheckCircle, Error } from '@material-ui/icons'
 import { useRouter } from 'next/router'
 import { useCallback, useMemo } from 'react'
 import { Address } from '../../components/Address'
 import { Heading } from '../../components/Heading'
 import { Page } from '../../components/Page'
-import { useJobsListQuery, JobsListJobFragment } from '../../graphql-codegen'
+import { JobsListJobFragment, useJobsListQuery } from '../../graphql-codegen'
+import { jobDueDate, jobIsFailed, jobIsSuccessful } from '../../lib/jobUtils'
 import { useAuth } from '../../lib/useAuth'
 import { useAuthRequired } from '../../lib/useAuthRequired'
-import { jobDueDate, jobIsFailed, jobIsSuccessful } from '../../lib/jobUtils'
-import { Inline } from '../../components/Inline'
-import { Stack } from '../../components/Stack'
 
 const useStyles = makeStyles((theme) => ({
   successIcon: {

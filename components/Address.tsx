@@ -24,14 +24,13 @@ export function Address({
   const classNames = useStyles()
   return (
     <address className={classNames.address}>
-      <Typography variant='h6' component='span'>
+      <Typography variant='h6' component='p'>
         {street}
         {unit ? `, ${unit}` : null}
       </Typography>
-      <br />
-      {postal_code}
-      <br />
-      {city}, {province}
+      <Typography variant='body2' component='p'>
+        {city}, {province} {postal_code}
+      </Typography>
     </address>
   )
 }

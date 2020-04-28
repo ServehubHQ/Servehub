@@ -13,7 +13,6 @@ import { ChangeEvent, ReactNode, useCallback, useMemo } from 'react'
 import {
   JobDetailsPageJobFragment,
   JobDetailsPageQueryFragment,
-  useClaimJobMutation,
 } from '../graphql-codegen'
 import { useAuth } from '../lib/useAuth'
 import { Heading } from './Heading'
@@ -42,21 +41,12 @@ export function JobDetailsPage({
 }: JobDetailsPageProps) {
   const router = useRouter()
   const className = useStyles()
-  const { userId, role } = useAuth()
-  const [claimJob, { loading }] = useClaimJobMutation()
+  const { userId } = useAuth()
 
   const complete = useMemo(
     () => job?.attempts.some((attempt) => attempt.success),
     [job],
   )
-
-  const handleClaimClick = useCallback(async () => {
-    if (!job) {
-      throw new Error('Job undefined when claiming')
-    }
-    await claimJob({ variables: { jobId: job.id } })
-    await refetch()
-  }, [claimJob, job, refetch])
 
   const handleTabsChange = useCallback(
     (event: ChangeEvent<{}>, newTab: string) => {
@@ -108,16 +98,7 @@ export function JobDetailsPage({
               ) : null,
             ]}
             action={
-              role === 'server' && !job?.server ? (
-                <Button
-                  variant='contained'
-                  color='primary'
-                  onClick={handleClaimClick}
-                  disabled={loading}
-                >
-                  Claim Job
-                </Button>
-              ) : !complete && job?.server?.id === userId ? (
+              !complete && job?.server?.id === userId ? (
                 <Link href={`/jobs/${job?.id}/attempt`} passHref>
                   <Button variant='contained' color='primary'>
                     Record Attempt

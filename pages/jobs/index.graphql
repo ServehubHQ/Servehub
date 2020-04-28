@@ -29,7 +29,6 @@ query JobsList($userId: uuid!, $isLawyer: Boolean!) {
   ) @include(if: $isLawyer) {
     id
     ...JobsListJob
-    ...JobCardJob
   }
   serverJobs: jobs(
     order_by: { created_at: desc }
@@ -40,7 +39,6 @@ query JobsList($userId: uuid!, $isLawyer: Boolean!) {
   ) @skip(if: $isLawyer) {
     id
     ...JobsListJob
-    ...JobCardJob
   }
   ...PageQuery
 }

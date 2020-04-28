@@ -1,14 +1,33 @@
-query JobsAvailable($userId: uuid) {
-  jobs(
-    where: {
-      server_user_id: { _is_null: true }
-      stripe_payment_intent_succeeded: { _eq: true }
-    }
-    order_by: { created_at: asc }
-  ) {
+query JobsAvailable {
+  available_jobs(order_by: { created_at: asc }) {
     id
+    created_at
+    pickup_required
+    target_name
 
-    ...JobCardJob
+    target_address {
+      id
+      street
+      unit
+      postal_code
+      city
+      province
+    }
+
+    pickup_address {
+      id
+      street
+      unit
+      postal_code
+      city
+      province
+    }
+
+    plan {
+      id
+      attempts
+      duration
+    }
   }
 
   ...PageQuery
