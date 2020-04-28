@@ -2,6 +2,7 @@ fragment ChatMessageMessage on messages {
   id
   created_at
   message
+  read_at
 
   user {
     id

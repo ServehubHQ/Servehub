@@ -1,0 +1,5 @@
+mutation MarkMessageRead($messageId: uuid!) {
+  update_messages(where: { id: { _eq: $messageId } }) {
+    affected_rows
+  }
+}

@@ -1,8 +1,12 @@
 import { colors, makeStyles, Typography } from '@material-ui/core'
+import { Visibility, VisibilityOff } from '@material-ui/icons'
 import clsx from 'clsx'
 import moment from 'moment'
-import React, { useMemo } from 'react'
-import { ChatMessageMessageFragment } from '../graphql-codegen'
+import React, { useEffect, useMemo } from 'react'
+import {
+  ChatMessageMessageFragment,
+  useMarkMessageReadMutation,
+} from '../graphql-codegen'
 import { useAuth } from '../lib/useAuth'
 
 interface ChatMessageProps {
@@ -25,9 +29,6 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     maxWidth: 500,
   },
-  avatar: {
-    marginRight: theme.spacing(2),
-  },
   body: {
     backgroundColor: colors.grey[100],
     color: theme.palette.text.primary,
@@ -37,48 +38,64 @@ const useStyles = makeStyles((theme) => ({
   content: {
     marginTop: theme.spacing(1),
   },
-  image: {
-    marginTop: theme.spacing(2),
-    height: 'auto',
-    width: 380,
-    maxWidth: '100%',
-  },
   footer: {
     marginTop: theme.spacing(1),
     display: 'flex',
     justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  readIcon: {
+    fontSize: 14,
+    marginRight: theme.spacing(1),
   },
 }))
 
 export function ChatMessage({ message }: ChatMessageProps) {
   const { userId } = useAuth()
-  const classes = useStyles()
+  const classNames = useStyles()
+  const [markRead] = useMarkMessageReadMutation({
+    variables: { messageId: message.id },
+  })
   const isCurrentUser = useMemo(() => message.user.id === userId, [
     message,
     userId,
   ])
 
+  useEffect(() => {
+    if (!isCurrentUser && !message.read_at) {
+      markRead()
+    }
+  }, [markRead, isCurrentUser, message])
+
   return (
     <div
-      className={clsx(classes.root, {
-        [classes.authUser]: isCurrentUser,
+      className={clsx(classNames.root, {
+        [classNames.authUser]: isCurrentUser,
       })}
     >
-      <div className={classes.inner}>
+      <div className={classNames.inner}>
         <div>
-          <div className={classes.body}>
+          <div className={classNames.body}>
             <div>{isCurrentUser ? 'Me' : message.user.name}</div>
-            <div className={classes.content}>
+            <div className={classNames.content}>
               <Typography color='inherit' variant='body1'>
                 {message.message}
               </Typography>
             </div>
           </div>
-          <div className={classes.footer}>
-            <Typography variant='body2'>
-              {moment(message.created_at).fromNow()}
-            </Typography>
-          </div>
+          <Typography variant='body2' className={classNames.footer}>
+            {isCurrentUser ? (
+              message.read_at ? (
+                <Visibility color='disabled' className={classNames.readIcon} />
+              ) : (
+                <VisibilityOff
+                  color='disabled'
+                  className={classNames.readIcon}
+                />
+              )
+            ) : null}
+            {moment(message.created_at).fromNow()}
+          </Typography>
         </div>
       </div>
     </div>

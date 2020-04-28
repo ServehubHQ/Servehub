@@ -1,9 +1,8 @@
 import { makeStyles } from '@material-ui/core'
-import React, { useRef, useEffect, useCallback } from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
+import PerfectScrollbar from 'react-perfect-scrollbar'
 import { useChatMessagesSubscription } from '../graphql-codegen'
 import { ChatMessage } from './ChatMessage'
-
-import PerfectScrollbar from 'react-perfect-scrollbar'
 
 interface ChatMessagesProps {
   jobId: string

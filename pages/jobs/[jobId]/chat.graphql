@@ -1,4 +1,4 @@
-query JobDetailsChat($jobId: uuid!, $userId: uuid) {
+query JobDetailsChat($jobId: uuid!) {
   jobs_by_pk(id: $jobId) {
     id
     ...JobDetailsPageJob

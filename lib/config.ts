@@ -1,4 +1,5 @@
 export const config = {
+  baseUrl: process.env.VERCEL_URL,
   nhostBackendUrl: process.env.NHOST_BACKEND_URL,
   hasuraWebhookSecret: process.env.HASURA_WEBHOOK_SECRET,
   hasuraAdminSecret: process.env.HASURA_ADMIN_SECRET,

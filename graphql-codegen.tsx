@@ -1956,6 +1956,7 @@ export type Messages = {
   job: Jobs;
   job_id: Scalars['uuid'];
   message: Scalars['String'];
+  read_at?: Maybe<Scalars['timestamptz']>;
   updated_at: Scalars['timestamptz'];
   user: Users;
   user_id: Scalars['uuid'];
@@ -2000,6 +2001,7 @@ export type Messages_Bool_Exp = {
   job?: Maybe<Jobs_Bool_Exp>;
   job_id?: Maybe<Uuid_Comparison_Exp>;
   message?: Maybe<String_Comparison_Exp>;
+  read_at?: Maybe<Timestamptz_Comparison_Exp>;
   updated_at?: Maybe<Timestamptz_Comparison_Exp>;
   user?: Maybe<Users_Bool_Exp>;
   user_id?: Maybe<Uuid_Comparison_Exp>;
@@ -2015,6 +2017,7 @@ export type Messages_Insert_Input = {
   job?: Maybe<Jobs_Obj_Rel_Insert_Input>;
   job_id?: Maybe<Scalars['uuid']>;
   message?: Maybe<Scalars['String']>;
+  read_at?: Maybe<Scalars['timestamptz']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
   user?: Maybe<Users_Obj_Rel_Insert_Input>;
   user_id?: Maybe<Scalars['uuid']>;
@@ -2024,12 +2027,14 @@ export type Messages_Max_Fields = {
    __typename?: 'messages_max_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
   message?: Maybe<Scalars['String']>;
+  read_at?: Maybe<Scalars['timestamptz']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 export type Messages_Max_Order_By = {
   created_at?: Maybe<Order_By>;
   message?: Maybe<Order_By>;
+  read_at?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
 
@@ -2037,12 +2042,14 @@ export type Messages_Min_Fields = {
    __typename?: 'messages_min_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
   message?: Maybe<Scalars['String']>;
+  read_at?: Maybe<Scalars['timestamptz']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 export type Messages_Min_Order_By = {
   created_at?: Maybe<Order_By>;
   message?: Maybe<Order_By>;
+  read_at?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
 
@@ -2069,6 +2076,7 @@ export type Messages_Order_By = {
   job?: Maybe<Jobs_Order_By>;
   job_id?: Maybe<Order_By>;
   message?: Maybe<Order_By>;
+  read_at?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
   user?: Maybe<Users_Order_By>;
   user_id?: Maybe<Order_By>;
@@ -2079,6 +2087,7 @@ export enum Messages_Select_Column {
   Id = 'id',
   JobId = 'job_id',
   Message = 'message',
+  ReadAt = 'read_at',
   UpdatedAt = 'updated_at',
   UserId = 'user_id'
 }
@@ -2088,6 +2097,7 @@ export type Messages_Set_Input = {
   id?: Maybe<Scalars['uuid']>;
   job_id?: Maybe<Scalars['uuid']>;
   message?: Maybe<Scalars['String']>;
+  read_at?: Maybe<Scalars['timestamptz']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
   user_id?: Maybe<Scalars['uuid']>;
 };
@@ -2097,6 +2107,7 @@ export enum Messages_Update_Column {
   Id = 'id',
   JobId = 'job_id',
   Message = 'message',
+  ReadAt = 'read_at',
   UpdatedAt = 'updated_at',
   UserId = 'user_id'
 }
@@ -4864,7 +4875,7 @@ export type Uuid_Comparison_Exp = {
 
 export type ChatMessageMessageFragment = (
   { __typename?: 'messages' }
-  & Pick<Messages, 'id' | 'created_at' | 'message'>
+  & Pick<Messages, 'id' | 'created_at' | 'message' | 'read_at'>
   & { user: (
     { __typename?: 'users' }
     & Pick<Users, 'id' | 'name'>
@@ -5057,6 +5068,19 @@ export type InsertRatingMutation = (
   )> }
 );
 
+export type MarkMessageReadMutationVariables = {
+  messageId: Scalars['uuid'];
+};
+
+
+export type MarkMessageReadMutation = (
+  { __typename?: 'mutation_root' }
+  & { update_messages: Maybe<(
+    { __typename?: 'messages_mutation_response' }
+    & Pick<Messages_Mutation_Response, 'affected_rows'>
+  )> }
+);
+
 export type PostSignupMutationVariables = {
   role: Scalars['String'];
   userId: Scalars['uuid'];
@@ -5206,6 +5230,33 @@ export type JobUpdatedQuery = (
   )> }
 );
 
+export type HasuraMessageInsertedApiQueryVariables = {
+  messageId: Scalars['uuid'];
+};
+
+
+export type HasuraMessageInsertedApiQuery = (
+  { __typename?: 'query_root' }
+  & { message: Maybe<(
+    { __typename?: 'messages' }
+    & Pick<Messages, 'id' | 'read_at' | 'message'>
+    & { user: (
+      { __typename?: 'users' }
+      & Pick<Users, 'id'>
+    ), job: (
+      { __typename?: 'jobs' }
+      & Pick<Jobs, 'id' | 'target_name'>
+      & { server: Maybe<(
+        { __typename?: 'users' }
+        & Pick<Users, 'id' | 'firebase_messaging_token'>
+      )>, lawyer: (
+        { __typename?: 'users' }
+        & Pick<Users, 'id' | 'firebase_messaging_token'>
+      ) }
+    ) }
+  )> }
+);
+
 export type SetIntentQueryVariables = {
   jobId: Scalars['uuid'];
   planId: Scalars['uuid'];
@@ -5258,7 +5309,6 @@ export type JobAttemptQuery = (
 
 export type JobDetailsChatQueryVariables = {
   jobId: Scalars['uuid'];
-  userId?: Maybe<Scalars['uuid']>;
 };
 
 
@@ -5477,6 +5527,7 @@ export const ChatMessageMessageFragmentDoc = gql`
   id
   created_at
   message
+  read_at
   user {
     id
     name
@@ -5571,7 +5622,7 @@ export const JobsListJobFragmentDoc = gql`
     `;
 export const ChatMessagesDocument = gql`
     subscription ChatMessages($jobId: uuid!) {
-  messages(where: {job_id: {_eq: $jobId}}) {
+  messages(where: {job_id: {_eq: $jobId}}, order_by: {created_at: asc}) {
     id
     ...ChatMessageMessage
   }
@@ -5851,6 +5902,38 @@ export function useInsertRatingMutation(baseOptions?: ApolloReactHooks.MutationH
 export type InsertRatingMutationHookResult = ReturnType<typeof useInsertRatingMutation>;
 export type InsertRatingMutationResult = ApolloReactCommon.MutationResult<InsertRatingMutation>;
 export type InsertRatingMutationOptions = ApolloReactCommon.BaseMutationOptions<InsertRatingMutation, InsertRatingMutationVariables>;
+export const MarkMessageReadDocument = gql`
+    mutation MarkMessageRead($messageId: uuid!) {
+  update_messages(where: {id: {_eq: $messageId}}) {
+    affected_rows
+  }
+}
+    `;
+export type MarkMessageReadMutationFn = ApolloReactCommon.MutationFunction<MarkMessageReadMutation, MarkMessageReadMutationVariables>;
+
+/**
+ * __useMarkMessageReadMutation__
+ *
+ * To run a mutation, you first call `useMarkMessageReadMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useMarkMessageReadMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [markMessageReadMutation, { data, loading, error }] = useMarkMessageReadMutation({
+ *   variables: {
+ *      messageId: // value for 'messageId'
+ *   },
+ * });
+ */
+export function useMarkMessageReadMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<MarkMessageReadMutation, MarkMessageReadMutationVariables>) {
+        return ApolloReactHooks.useMutation<MarkMessageReadMutation, MarkMessageReadMutationVariables>(MarkMessageReadDocument, baseOptions);
+      }
+export type MarkMessageReadMutationHookResult = ReturnType<typeof useMarkMessageReadMutation>;
+export type MarkMessageReadMutationResult = ApolloReactCommon.MutationResult<MarkMessageReadMutation>;
+export type MarkMessageReadMutationOptions = ApolloReactCommon.BaseMutationOptions<MarkMessageReadMutation, MarkMessageReadMutationVariables>;
 export const PostSignupDocument = gql`
     mutation PostSignup($role: String!, $userId: uuid!, $name: String) {
   insert_user_roles(objects: [{role: $role, user_id: $userId}]) {
@@ -6194,6 +6277,56 @@ export function useJobUpdatedLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryH
 export type JobUpdatedQueryHookResult = ReturnType<typeof useJobUpdatedQuery>;
 export type JobUpdatedLazyQueryHookResult = ReturnType<typeof useJobUpdatedLazyQuery>;
 export type JobUpdatedQueryResult = ApolloReactCommon.QueryResult<JobUpdatedQuery, JobUpdatedQueryVariables>;
+export const HasuraMessageInsertedApiDocument = gql`
+    query HasuraMessageInsertedApi($messageId: uuid!) {
+  message: messages_by_pk(id: $messageId) {
+    id
+    read_at
+    message
+    user {
+      id
+    }
+    job {
+      id
+      target_name
+      server {
+        id
+        firebase_messaging_token
+      }
+      lawyer {
+        id
+        firebase_messaging_token
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useHasuraMessageInsertedApiQuery__
+ *
+ * To run a query within a React component, call `useHasuraMessageInsertedApiQuery` and pass it any options that fit your needs.
+ * When your component renders, `useHasuraMessageInsertedApiQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useHasuraMessageInsertedApiQuery({
+ *   variables: {
+ *      messageId: // value for 'messageId'
+ *   },
+ * });
+ */
+export function useHasuraMessageInsertedApiQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<HasuraMessageInsertedApiQuery, HasuraMessageInsertedApiQueryVariables>) {
+        return ApolloReactHooks.useQuery<HasuraMessageInsertedApiQuery, HasuraMessageInsertedApiQueryVariables>(HasuraMessageInsertedApiDocument, baseOptions);
+      }
+export function useHasuraMessageInsertedApiLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<HasuraMessageInsertedApiQuery, HasuraMessageInsertedApiQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<HasuraMessageInsertedApiQuery, HasuraMessageInsertedApiQueryVariables>(HasuraMessageInsertedApiDocument, baseOptions);
+        }
+export type HasuraMessageInsertedApiQueryHookResult = ReturnType<typeof useHasuraMessageInsertedApiQuery>;
+export type HasuraMessageInsertedApiLazyQueryHookResult = ReturnType<typeof useHasuraMessageInsertedApiLazyQuery>;
+export type HasuraMessageInsertedApiQueryResult = ApolloReactCommon.QueryResult<HasuraMessageInsertedApiQuery, HasuraMessageInsertedApiQueryVariables>;
 export const SetIntentDocument = gql`
     query SetIntent($jobId: uuid!, $planId: uuid!) {
   job: jobs_by_pk(id: $jobId) {
@@ -6311,7 +6444,7 @@ export type JobAttemptQueryHookResult = ReturnType<typeof useJobAttemptQuery>;
 export type JobAttemptLazyQueryHookResult = ReturnType<typeof useJobAttemptLazyQuery>;
 export type JobAttemptQueryResult = ApolloReactCommon.QueryResult<JobAttemptQuery, JobAttemptQueryVariables>;
 export const JobDetailsChatDocument = gql`
-    query JobDetailsChat($jobId: uuid!, $userId: uuid) {
+    query JobDetailsChat($jobId: uuid!) {
   jobs_by_pk(id: $jobId) {
     id
     ...JobDetailsPageJob
@@ -6334,7 +6467,6 @@ ${JobDetailsPageQueryFragmentDoc}`;
  * const { data, loading, error } = useJobDetailsChatQuery({
  *   variables: {
  *      jobId: // value for 'jobId'
- *      userId: // value for 'userId'
  *   },
  * });
  */

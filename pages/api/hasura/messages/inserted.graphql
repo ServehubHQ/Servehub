@@ -1,0 +1,26 @@
+query HasuraMessageInsertedApi($messageId: uuid!) {
+  message: messages_by_pk(id: $messageId) {
+    id
+    read_at
+    message
+
+    user {
+      id
+    }
+
+    job {
+      id
+      target_name
+
+      server {
+        id
+        firebase_messaging_token
+      }
+
+      lawyer {
+        id
+        firebase_messaging_token
+      }
+    }
+  }
+}

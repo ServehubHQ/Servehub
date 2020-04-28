@@ -1,4 +1,3 @@
-import firebaseAdmin from 'firebase-admin'
 import { NextApiRequest, NextApiResponse } from 'next'
 import {
   Jobs,
@@ -6,10 +5,11 @@ import {
   JobUpdatedQuery,
   JobUpdatedQueryVariables,
 } from '../../../../graphql-codegen'
+import { ApiAuthClient } from '../../../../lib/AuthClient'
 import { config } from '../../../../lib/config'
 import { getApolloClient } from '../../../../lib/getApolloClient'
 import hasuraWebhookValid from '../../../../lib/hasuraWebhookValid'
-import { ApiAuthClient } from '../../../../lib/AuthClient'
+import { sendFirebaseMessage } from '../../../../lib/sendFirebaseMessage'
 
 export default async function hasurajobUpdatedApi(
   req: NextApiRequest,
@@ -35,15 +35,6 @@ export default async function hasurajobUpdatedApi(
   console.log('[hasurajobUpdatedApi] job updated', job)
 
   if (job.stripe_payment_intent_succeeded && !job.server_user_id) {
-    if (firebaseAdmin.apps.length === 0) {
-      firebaseAdmin.initializeApp({
-        ...config.firebaseInitialization,
-        credential: firebaseAdmin.credential.cert(
-          JSON.parse(config.firebaseAdminCredentials),
-        ),
-      })
-    }
-    const messaging = firebaseAdmin.messaging()
     const apollo = getApolloClient(new ApiAuthClient())
 
     const { data } = await apollo.query<
@@ -53,19 +44,14 @@ export default async function hasurajobUpdatedApi(
       query: JobUpdatedDocument,
     })
 
-    console.log('[hasurajobUpdatedApi] data', data)
+    console.log('[hasurajobUpdatedApi] sending firebase message')
 
-    const notification: firebaseAdmin.messaging.WebpushConfig['notification'] = {
-      title: 'New Job!',
+    await sendFirebaseMessage(data.users, {
+      title: 'New Servehub Job available',
       body: 'Click here to learn more',
-      icon: 'https://placekitten.com/360/240',
-      badge: 'https://placekitten.com/512/512',
-      click_action: `https://defrex.ngrok.io/jobs/${job.id}`,
-    }
-
-    await messaging.sendMulticast({
-      webpush: { notification },
-      tokens: data.users.map((server) => server.firebase_messaging_token!),
+      // icon: 'https://placekitten.com/360/240',
+      // badge: 'https://placekitten.com/512/512',
+      click_action: `${config.baseUrl}/jobs/${job.id}`,
     })
   }
 

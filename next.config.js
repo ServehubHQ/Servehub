@@ -13,5 +13,6 @@ module.exports = withOffline({
     NHOST_BACKEND_URL: process.env.NHOST_BACKEND_URL,
     HASURA_HTTP_ENDPOINT: process.env.HASURA_HTTP_ENDPOINT,
     HASURA_WS_ENDPOINT: process.env.HASURA_WS_ENDPOINT,
+    VERCEL_URL: process.env.VERCEL_URL,
   },
 })
