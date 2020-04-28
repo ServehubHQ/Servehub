@@ -82,6 +82,7 @@ export default function JobsCreatePaymentPage() {
       loading={loading}
       cta='Pay'
       actionExtra={<img src='/images/powered_by_stripe.svg' />}
+      query={data}
     >
       <FormHelperText error>{error}</FormHelperText>
 

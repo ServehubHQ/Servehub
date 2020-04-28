@@ -93,6 +93,7 @@ export default function JobsCreatePaymentPage() {
       activeStep={2}
       title='Payment'
       loading={loading}
+      query={data}
     >
       <Grid container spacing={6}>
         {data?.plans.map((plan) => (

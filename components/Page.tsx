@@ -46,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
   loadingBar: {
     position: 'absolute',
     width: '100%',
+    height: '2px',
   },
   bar: {
     boxShadow: 'none',

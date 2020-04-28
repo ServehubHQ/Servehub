@@ -22,6 +22,7 @@ import { Address } from '../../../components/Address'
 import { Stack } from '../../../components/Stack'
 import { RateCard } from '../../../components/RateCard'
 import { Rating } from '@material-ui/lab'
+import { jobDueDate, jobIsComplete } from '../../../lib/jobUtils'
 
 const useStyles = makeStyles((theme) => ({
   successIcon: {
@@ -36,25 +37,8 @@ export default function JobDetails() {
   const styles = useStyles()
   const { userId } = useAuth()
   const { data, refetch } = useJobDetialsQuery({ variables: { jobId, userId } })
-
-  const dueDate = useMemo(() => {
-    if (data?.job?.plan?.duration) {
-      const [value, unit] = data.job.plan.duration.split(' ')
-      return moment(data.job.created_at).add(value, unit)
-    }
-  }, [data])
-
-  const isComplete = useMemo(() => {
-    if (data?.job?.plan) {
-      return (
-        dueDate?.isBefore() ||
-        data.job.attempts.length >= data.job.plan.attempts ||
-        data.job.attempts.some((attempt) => attempt.success)
-      )
-    } else {
-      return false
-    }
-  }, [data, dueDate])
+  const dueDate = useMemo(() => jobDueDate(data?.job), [data])
+  const isComplete = useMemo(() => jobIsComplete(data?.job), [data])
 
   return (
     <JobDetailsPage job={data?.job} query={data} refetch={refetch}>

@@ -19,14 +19,12 @@ export type Addresses = {
    __typename?: 'addresses';
   city: Scalars['String'];
   country: Countries_Enum;
-  countryByCountry: Countries;
   created_at: Scalars['timestamptz'];
   id: Scalars['uuid'];
   pickup_jobs: Array<Jobs>;
   pickup_jobs_aggregate: Jobs_Aggregate;
   postal_code: Scalars['String'];
   province: Provinces_Enum;
-  provinceByProvince: Provinces;
   street: Scalars['String'];
   target_jobs: Array<Jobs>;
   target_jobs_aggregate: Jobs_Aggregate;
@@ -126,13 +124,11 @@ export type Addresses_Bool_Exp = {
   _or?: Maybe<Array<Maybe<Addresses_Bool_Exp>>>;
   city?: Maybe<String_Comparison_Exp>;
   country?: Maybe<Countries_Enum_Comparison_Exp>;
-  countryByCountry?: Maybe<Countries_Bool_Exp>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
   id?: Maybe<Uuid_Comparison_Exp>;
   pickup_jobs?: Maybe<Jobs_Bool_Exp>;
   postal_code?: Maybe<String_Comparison_Exp>;
   province?: Maybe<Provinces_Enum_Comparison_Exp>;
-  provinceByProvince?: Maybe<Provinces_Bool_Exp>;
   street?: Maybe<String_Comparison_Exp>;
   target_jobs?: Maybe<Jobs_Bool_Exp>;
   unit?: Maybe<String_Comparison_Exp>;
@@ -147,13 +143,11 @@ export enum Addresses_Constraint {
 export type Addresses_Insert_Input = {
   city?: Maybe<Scalars['String']>;
   country?: Maybe<Countries_Enum>;
-  countryByCountry?: Maybe<Countries_Obj_Rel_Insert_Input>;
   created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['uuid']>;
   pickup_jobs?: Maybe<Jobs_Arr_Rel_Insert_Input>;
   postal_code?: Maybe<Scalars['String']>;
   province?: Maybe<Provinces_Enum>;
-  provinceByProvince?: Maybe<Provinces_Obj_Rel_Insert_Input>;
   street?: Maybe<Scalars['String']>;
   target_jobs?: Maybe<Jobs_Arr_Rel_Insert_Input>;
   unit?: Maybe<Scalars['String']>;
@@ -219,13 +213,11 @@ export type Addresses_On_Conflict = {
 export type Addresses_Order_By = {
   city?: Maybe<Order_By>;
   country?: Maybe<Order_By>;
-  countryByCountry?: Maybe<Countries_Order_By>;
   created_at?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   pickup_jobs_aggregate?: Maybe<Jobs_Aggregate_Order_By>;
   postal_code?: Maybe<Order_By>;
   province?: Maybe<Order_By>;
-  provinceByProvince?: Maybe<Provinces_Order_By>;
   street?: Maybe<Order_By>;
   target_jobs_aggregate?: Maybe<Jobs_Aggregate_Order_By>;
   unit?: Maybe<Order_By>;
@@ -1030,8 +1022,28 @@ export type Boolean_Comparison_Exp = {
 
 export type Countries = {
    __typename?: 'countries';
+  addresses: Array<Addresses>;
+  addresses_aggregate: Addresses_Aggregate;
   id: Scalars['String'];
   name: Scalars['String'];
+};
+
+
+export type CountriesAddressesArgs = {
+  distinct_on?: Maybe<Array<Addresses_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Addresses_Order_By>>;
+  where?: Maybe<Addresses_Bool_Exp>;
+};
+
+
+export type CountriesAddresses_AggregateArgs = {
+  distinct_on?: Maybe<Array<Addresses_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Addresses_Order_By>>;
+  where?: Maybe<Addresses_Bool_Exp>;
 };
 
 export type Countries_Aggregate = {
@@ -1068,6 +1080,7 @@ export type Countries_Bool_Exp = {
   _and?: Maybe<Array<Maybe<Countries_Bool_Exp>>>;
   _not?: Maybe<Countries_Bool_Exp>;
   _or?: Maybe<Array<Maybe<Countries_Bool_Exp>>>;
+  addresses?: Maybe<Addresses_Bool_Exp>;
   id?: Maybe<String_Comparison_Exp>;
   name?: Maybe<String_Comparison_Exp>;
 };
@@ -1089,6 +1102,7 @@ export type Countries_Enum_Comparison_Exp = {
 };
 
 export type Countries_Insert_Input = {
+  addresses?: Maybe<Addresses_Arr_Rel_Insert_Input>;
   id?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
 };
@@ -1133,6 +1147,7 @@ export type Countries_On_Conflict = {
 };
 
 export type Countries_Order_By = {
+  addresses_aggregate?: Maybe<Addresses_Aggregate_Order_By>;
   id?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
 };
@@ -1155,6 +1170,7 @@ export enum Countries_Update_Column {
 export type Current_User = {
    __typename?: 'current_user';
   active?: Maybe<Scalars['Boolean']>;
+  address?: Maybe<Addresses>;
   address_id?: Maybe<Scalars['uuid']>;
   approved?: Maybe<Scalars['Boolean']>;
   avatar_url?: Maybe<Scalars['String']>;
@@ -1217,6 +1233,7 @@ export type Current_User_Bool_Exp = {
   _not?: Maybe<Current_User_Bool_Exp>;
   _or?: Maybe<Array<Maybe<Current_User_Bool_Exp>>>;
   active?: Maybe<Boolean_Comparison_Exp>;
+  address?: Maybe<Addresses_Bool_Exp>;
   address_id?: Maybe<Uuid_Comparison_Exp>;
   approved?: Maybe<Boolean_Comparison_Exp>;
   avatar_url?: Maybe<String_Comparison_Exp>;
@@ -1250,6 +1267,7 @@ export type Current_User_Delete_Key_Input = {
 
 export type Current_User_Insert_Input = {
   active?: Maybe<Scalars['Boolean']>;
+  address?: Maybe<Addresses_Obj_Rel_Insert_Input>;
   address_id?: Maybe<Scalars['uuid']>;
   approved?: Maybe<Scalars['Boolean']>;
   avatar_url?: Maybe<Scalars['String']>;
@@ -1335,6 +1353,7 @@ export type Current_User_Obj_Rel_Insert_Input = {
 
 export type Current_User_Order_By = {
   active?: Maybe<Order_By>;
+  address?: Maybe<Addresses_Order_By>;
   address_id?: Maybe<Order_By>;
   approved?: Maybe<Order_By>;
   avatar_url?: Maybe<Order_By>;
@@ -2773,8 +2792,28 @@ export type Plans_Variance_Order_By = {
 
 export type Provinces = {
    __typename?: 'provinces';
+  addresses: Array<Addresses>;
+  addresses_aggregate: Addresses_Aggregate;
   id: Scalars['String'];
   name: Scalars['String'];
+};
+
+
+export type ProvincesAddressesArgs = {
+  distinct_on?: Maybe<Array<Addresses_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Addresses_Order_By>>;
+  where?: Maybe<Addresses_Bool_Exp>;
+};
+
+
+export type ProvincesAddresses_AggregateArgs = {
+  distinct_on?: Maybe<Array<Addresses_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Addresses_Order_By>>;
+  where?: Maybe<Addresses_Bool_Exp>;
 };
 
 export type Provinces_Aggregate = {
@@ -2811,6 +2850,7 @@ export type Provinces_Bool_Exp = {
   _and?: Maybe<Array<Maybe<Provinces_Bool_Exp>>>;
   _not?: Maybe<Provinces_Bool_Exp>;
   _or?: Maybe<Array<Maybe<Provinces_Bool_Exp>>>;
+  addresses?: Maybe<Addresses_Bool_Exp>;
   id?: Maybe<String_Comparison_Exp>;
   name?: Maybe<String_Comparison_Exp>;
 };
@@ -2844,6 +2884,7 @@ export type Provinces_Enum_Comparison_Exp = {
 };
 
 export type Provinces_Insert_Input = {
+  addresses?: Maybe<Addresses_Arr_Rel_Insert_Input>;
   id?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
 };
@@ -2888,6 +2929,7 @@ export type Provinces_On_Conflict = {
 };
 
 export type Provinces_Order_By = {
+  addresses_aggregate?: Maybe<Addresses_Aggregate_Order_By>;
   id?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
 };
@@ -5309,6 +5351,28 @@ export type JobsAvailableQuery = (
   & PageQueryFragment
 );
 
+export type JobsCreateDocumentsQueryVariables = {
+  jobId: Scalars['uuid'];
+};
+
+
+export type JobsCreateDocumentsQuery = (
+  { __typename?: 'query_root' }
+  & { current_user: Array<(
+    { __typename?: 'current_user' }
+    & Pick<Current_User, 'id'>
+    & { address: Maybe<(
+      { __typename?: 'addresses' }
+      & Pick<Addresses, 'id' | 'street' | 'unit' | 'city' | 'province'>
+      & { postalCode: Addresses['postal_code'] }
+    )> }
+  )>, job: Maybe<(
+    { __typename?: 'jobs' }
+    & Pick<Jobs, 'id'>
+  )> }
+  & PageQueryFragment
+);
+
 export type JobsCreatePaymentQueryVariables = {
   jobId: Scalars['uuid'];
   userId?: Maybe<Scalars['uuid']>;
@@ -5351,29 +5415,17 @@ export type JobsCreateTargetPageQuery = (
 
 export type JobsListJobFragment = (
   { __typename?: 'jobs' }
-  & Pick<Jobs, 'id' | 'pickup_required' | 'target_name'>
+  & Pick<Jobs, 'id' | 'created_at' | 'case_number' | 'pickup_required' | 'target_name'>
   & { target_address: Maybe<(
     { __typename?: 'addresses' }
     & Pick<Addresses, 'id' | 'street' | 'city' | 'postal_code' | 'province'>
-  )>, successfulAttempts: (
-    { __typename?: 'attempts_aggregate' }
-    & { aggregate: Maybe<(
-      { __typename?: 'attempts_aggregate_fields' }
-      & Pick<Attempts_Aggregate_Fields, 'count'>
-    )> }
-  ), allAttempts: (
-    { __typename?: 'attempts_aggregate' }
-    & { aggregate: Maybe<(
-      { __typename?: 'attempts_aggregate_fields' }
-      & Pick<Attempts_Aggregate_Fields, 'count'>
-    )> }
-  ), documents_aggregate: (
-    { __typename?: 'documents_aggregate' }
-    & { aggregate: Maybe<(
-      { __typename?: 'documents_aggregate_fields' }
-      & Pick<Documents_Aggregate_Fields, 'count'>
-    )> }
-  ) }
+  )>, attempts: Array<(
+    { __typename?: 'attempts' }
+    & Pick<Attempts, 'id' | 'success'>
+  )>, plan: Maybe<(
+    { __typename?: 'plans' }
+    & Pick<Plans, 'id' | 'duration' | 'attempts'>
+  )> }
 );
 
 export type JobsListQueryVariables = {
@@ -5495,6 +5547,8 @@ export const RateCardJobFragmentDoc = gql`
 export const JobsListJobFragmentDoc = gql`
     fragment JobsListJob on jobs {
   id
+  created_at
+  case_number
   pickup_required
   target_name
   target_address {
@@ -5504,20 +5558,14 @@ export const JobsListJobFragmentDoc = gql`
     postal_code
     province
   }
-  successfulAttempts: attempts_aggregate(where: {success: {_eq: true}}) {
-    aggregate {
-      count
-    }
+  attempts {
+    id
+    success
   }
-  allAttempts: attempts_aggregate {
-    aggregate {
-      count
-    }
-  }
-  documents_aggregate {
-    aggregate {
-      count
-    }
+  plan {
+    id
+    duration
+    attempts
   }
 }
     `;
@@ -6459,6 +6507,51 @@ export function useJobsAvailableLazyQuery(baseOptions?: ApolloReactHooks.LazyQue
 export type JobsAvailableQueryHookResult = ReturnType<typeof useJobsAvailableQuery>;
 export type JobsAvailableLazyQueryHookResult = ReturnType<typeof useJobsAvailableLazyQuery>;
 export type JobsAvailableQueryResult = ApolloReactCommon.QueryResult<JobsAvailableQuery, JobsAvailableQueryVariables>;
+export const JobsCreateDocumentsDocument = gql`
+    query JobsCreateDocuments($jobId: uuid!) {
+  current_user {
+    id
+    address {
+      id
+      street
+      unit
+      postalCode: postal_code
+      city
+      province
+    }
+  }
+  job: jobs_by_pk(id: $jobId) {
+    id
+  }
+  ...PageQuery
+}
+    ${PageQueryFragmentDoc}`;
+
+/**
+ * __useJobsCreateDocumentsQuery__
+ *
+ * To run a query within a React component, call `useJobsCreateDocumentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useJobsCreateDocumentsQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useJobsCreateDocumentsQuery({
+ *   variables: {
+ *      jobId: // value for 'jobId'
+ *   },
+ * });
+ */
+export function useJobsCreateDocumentsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<JobsCreateDocumentsQuery, JobsCreateDocumentsQueryVariables>) {
+        return ApolloReactHooks.useQuery<JobsCreateDocumentsQuery, JobsCreateDocumentsQueryVariables>(JobsCreateDocumentsDocument, baseOptions);
+      }
+export function useJobsCreateDocumentsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<JobsCreateDocumentsQuery, JobsCreateDocumentsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<JobsCreateDocumentsQuery, JobsCreateDocumentsQueryVariables>(JobsCreateDocumentsDocument, baseOptions);
+        }
+export type JobsCreateDocumentsQueryHookResult = ReturnType<typeof useJobsCreateDocumentsQuery>;
+export type JobsCreateDocumentsLazyQueryHookResult = ReturnType<typeof useJobsCreateDocumentsLazyQuery>;
+export type JobsCreateDocumentsQueryResult = ApolloReactCommon.QueryResult<JobsCreateDocumentsQuery, JobsCreateDocumentsQueryVariables>;
 export const JobsCreatePaymentDocument = gql`
     query JobsCreatePayment($jobId: uuid!, $userId: uuid) {
   jobs(where: {id: {_eq: $jobId}}) {

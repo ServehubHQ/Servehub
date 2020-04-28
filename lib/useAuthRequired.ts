@@ -9,8 +9,7 @@ export function useAuthRequired() {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      const params = { ...router.query, next: router.pathname }
-      router.push(`/login?${encodeQuerystring(params)}`)
+      router.push(`/login?${encodeQuerystring({ next: router.asPath })}`)
     }
   }, [isAuthenticated, router])
 }

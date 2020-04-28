@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core'
+import { makeStyles, Typography } from '@material-ui/core'
 
 interface AddressProps {
   street: string
@@ -24,8 +24,10 @@ export function Address({
   const classNames = useStyles()
   return (
     <address className={classNames.address}>
-      {street}
-      {unit ? `, ${unit}` : null}
+      <Typography variant='h6' component='span'>
+        {street}
+        {unit ? `, ${unit}` : null}
+      </Typography>
       <br />
       {postal_code}
       <br />

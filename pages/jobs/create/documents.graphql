@@ -1,0 +1,20 @@
+query JobsCreateDocuments($jobId: uuid!) {
+  current_user {
+    id
+
+    address {
+      id
+      street
+      unit
+      postalCode: postal_code
+      city
+      province
+    }
+  }
+
+  job: jobs_by_pk(id: $jobId) {
+    id
+  }
+
+  ...PageQuery
+}

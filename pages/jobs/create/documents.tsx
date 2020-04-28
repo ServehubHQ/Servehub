@@ -10,13 +10,16 @@ import {
   useInsertAddressMutation,
   useSetJobPickupRequiredMutation,
   useInsertDocumentMutation,
+  useJobsCreateDocumentsQuery,
 } from '../../../graphql-codegen'
 import { useAuthRequired } from '../../../lib/useAuthRequired'
+import { undefinedIfNull } from '../../../components/undefinedIfNull'
 
 export default function JobsCreateDocumentsPage() {
   useAuthRequired()
   const router = useRouter()
   const jobId = useMemo(() => router.query.id, [router])
+  const { data } = useJobsCreateDocumentsQuery({ variables: { jobId } })
   const [pickup, setPickup] = useState(false)
   const [files, setFiles] = useState<DroppedFile[]>([])
   const [
@@ -38,7 +41,9 @@ export default function JobsCreateDocumentsPage() {
   )
   const { register, handleSubmit, errors, setError } = useForm<
     InsertAddressMutationVariables
-  >()
+  >({
+    defaultValues: undefinedIfNull(data?.current_user[0]?.address),
+  })
 
   const handlePickupChange = useCallback(
     (event, pickup: boolean) => {
@@ -91,6 +96,7 @@ export default function JobsCreateDocumentsPage() {
       onSubmit={handleSubmit(handleFormValid)}
       title='Documents'
       loading={loading}
+      query={data}
     >
       <Grid container spacing={2} direction='column'>
         <Grid item>
