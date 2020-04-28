@@ -6795,12 +6795,12 @@ export type JobsCreateTargetPageLazyQueryHookResult = ReturnType<typeof useJobsC
 export type JobsCreateTargetPageQueryResult = ApolloReactCommon.QueryResult<JobsCreateTargetPageQuery, JobsCreateTargetPageQueryVariables>;
 export const JobsListDocument = gql`
     query JobsList($userId: uuid!, $isLawyer: Boolean!) {
-  lawyerJobs: jobs(order_by: {created_at: desc}) @include(if: $isLawyer) {
+  lawyerJobs: jobs(order_by: {created_at: desc}, where: {stripe_payment_intent_succeeded: {_eq: true}}) @include(if: $isLawyer) {
     id
     ...JobsListJob
     ...JobCardJob
   }
-  serverJobs: jobs(order_by: {created_at: desc}, where: {server_user_id: {_eq: $userId}}) @skip(if: $isLawyer) {
+  serverJobs: jobs(order_by: {created_at: desc}, where: {server_user_id: {_eq: $userId}, stripe_payment_intent_succeeded: {_eq: true}}) @skip(if: $isLawyer) {
     id
     ...JobsListJob
     ...JobCardJob
