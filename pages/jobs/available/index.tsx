@@ -96,14 +96,16 @@ function AvailableJob({ job }: AvailableJobProps) {
       </CardContent>
       <Divider />
       {job.pickup_required && job.pickup_address ? (
-        <>
-          <CardContent>
-            <Typography variant='h5'>Pickup Required</Typography>
-            <Address {...job.pickup_address} />
-          </CardContent>
-          <Divider />
-        </>
-      ) : null}
+        <CardContent>
+          <Typography variant='h5'>Pickup Required</Typography>
+          <Address {...job.pickup_address} />
+        </CardContent>
+      ) : (
+        <CardContent>
+          <Typography variant='h5'>Printing Required</Typography>
+        </CardContent>
+      )}
+      <Divider />
       <CardContent>
         <Typography variant='h5'>Target</Typography>
         {job?.target_address ? <Address {...job.target_address} /> : null}
