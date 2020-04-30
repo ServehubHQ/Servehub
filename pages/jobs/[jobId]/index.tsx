@@ -15,6 +15,8 @@ import {
   TableHead,
   TableRow,
   Typography,
+  useTheme,
+  useMediaQuery,
 } from '@material-ui/core'
 import { CheckCircleOutlined, HighlightOffOutlined } from '@material-ui/icons'
 import moment from 'moment'
@@ -45,6 +47,8 @@ const useStyles = makeStyles((theme) => ({
 export default function JobDetails() {
   useAuthRequired()
   const router = useRouter()
+  const theme = useTheme()
+  const isSmall = useMediaQuery(theme.breakpoints.down('sm'))
   const { jobId } = router.query
   const classNames = useStyles()
   const { userId } = useAuth()
@@ -58,6 +62,7 @@ export default function JobDetails() {
         <Grid item xs={12}>
           <Paper>
             <Stepper
+              orientation={isSmall ? 'vertical' : 'horizontal'}
               activeStep={
                 typeof data?.job?.server === 'undefined'
                   ? 1

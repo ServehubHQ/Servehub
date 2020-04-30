@@ -1,30 +1,29 @@
 import {
   Button,
+  CardContent,
+  CardHeader,
+  Divider,
   Grid,
   makeStyles,
   Typography,
-  CardHeader,
-  Divider,
-  CardContent,
 } from '@material-ui/core'
+import {
+  DirectionsCarTwoTone,
+  DirectionsRunTwoTone,
+  DirectionsWalkTwoTone,
+} from '@material-ui/icons'
 import clsx from 'clsx'
 import fetch from 'cross-fetch'
 import { useRouter } from 'next/router'
-import { useCallback, useMemo, useState, useEffect } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { CreateJobPage } from '../../../components/CreateJobPage'
 import { Money } from '../../../components/Money'
+import { Stack } from '../../../components/Stack'
 import {
   JobsCreatePlanQuery,
   useJobsCreatePlanQuery,
 } from '../../../graphql-codegen'
 import { useAuthRequired } from '../../../lib/useAuthRequired'
-import {
-  DirectionsWalkTwoTone,
-  DirectionsRunTwoTone,
-  DirectionsCarTwoTone,
-} from '@material-ui/icons'
-import { Stack } from '../../../components/Stack'
-import { colors } from '@material-ui/core'
 
 interface FormData {
   name: string
@@ -46,8 +45,6 @@ const useClassNames = makeStyles((theme) => ({
     boxShadow: theme.shadows[1],
     borderColor: theme.palette.grey[400],
     backgroundColor: theme.palette.grey[50],
-    // backgroundColor: colors.lightBlue[50],
-    // borderColor: theme.palette.primary.main,
   },
   planIcon: {
     fontSize: 64,
@@ -101,7 +98,6 @@ export default function JobsCreatePaymentPage() {
       })
 
       if (response.status !== 200) {
-        // setError(error.message)
         setLoading(false)
         return
       }
@@ -129,7 +125,7 @@ export default function JobsCreatePaymentPage() {
           {data?.plans.map((plan) => (
             <Grid item key={plan.id} xs={12} sm={12} md={4}>
               <Stack
-                spacing={3}
+                spacing={2}
                 className={clsx(classNames.plan, {
                   [classNames.selectedPlan]: planId === plan.id,
                 })}

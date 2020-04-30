@@ -1,12 +1,15 @@
-import { Divider, makeStyles, Paper } from '@material-ui/core'
+import { Divider, makeStyles, Paper, Button } from '@material-ui/core'
 import { useRouter } from 'next/router'
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef, MouseEvent, useCallback } from 'react'
 import { ChatForm } from '../../../components/ChatForm'
 import { ChatMessages } from '../../../components/ChatMessages'
 import { JobDetailsPage } from '../../../components/JobDetailsPage'
 import { useJobDetailsChatQuery } from '../../../graphql-codegen'
 import { useAuthRequired } from '../../../lib/useAuthRequired'
 import { useAuth } from '../../../lib/useAuth'
+import { Alert } from '@material-ui/lab'
+import { getAndSaveMessagingToken } from '../../../lib/firebase'
+import { Stack } from '../../../components/Stack'
 
 const useStyles = makeStyles((theme) => ({
   chatCard: {
@@ -25,7 +28,6 @@ export default function JobDetailsChat() {
   const { data, refetch } = useJobDetailsChatQuery({
     variables: { jobId, userId },
   })
-  const job = useMemo(() => data?.jobs_by_pk, [data])
   const chatCardRef = useRef<HTMLDivElement>()
 
   useEffect(() => {
@@ -38,20 +40,42 @@ export default function JobDetailsChat() {
     )
   }, [chatCardRef])
 
+  const handleEnableNotificationsClick = useCallback(
+    async (event: MouseEvent<HTMLButtonElement>) => {
+      await getAndSaveMessagingToken(true)
+      await refetch()
+    },
+    [refetch],
+  )
+  console.log(data)
   return (
-    <JobDetailsPage
-      job={data?.jobs_by_pk}
-      query={data}
-      tab='chat'
-      refetch={refetch}
-    >
-      {job ? (
-        <Paper className={classNames.chatCard} ref={chatCardRef}>
-          <ChatMessages jobId={job.id} />
-          <Divider />
-          <ChatForm jobId={job.id} />
-        </Paper>
-      ) : null}
+    <JobDetailsPage job={data?.job} query={data} tab='chat' refetch={refetch}>
+      <Stack>
+        {!data?.current_user[0].notifications_enabled ? (
+          <Alert
+            variant='filled'
+            severity='info'
+            action={
+              <Button
+                color='inherit'
+                size='small'
+                onClick={handleEnableNotificationsClick}
+              >
+                Enable Notifications
+              </Button>
+            }
+          >
+            Enable notification to ensure you see new messages when offline.
+          </Alert>
+        ) : null}
+        {data?.job ? (
+          <Paper className={classNames.chatCard} ref={chatCardRef}>
+            <ChatMessages jobId={data.job.id} />
+            <Divider />
+            <ChatForm jobId={data.job.id} />
+          </Paper>
+        ) : null}
+      </Stack>
     </JobDetailsPage>
   )
 }

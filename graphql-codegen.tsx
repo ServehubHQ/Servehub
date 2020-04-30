@@ -5527,7 +5527,10 @@ export type JobDetailsChatQueryVariables = {
 
 export type JobDetailsChatQuery = (
   { __typename?: 'query_root' }
-  & { jobs_by_pk: Maybe<(
+  & { current_user: Array<(
+    { __typename?: 'current_user' }
+    & Pick<Current_User, 'id' | 'notifications_enabled'>
+  )>, job: Maybe<(
     { __typename?: 'jobs' }
     & Pick<Jobs, 'id'>
     & JobDetailsPageJobFragment
@@ -6684,7 +6687,11 @@ export type JobAttemptLazyQueryHookResult = ReturnType<typeof useJobAttemptLazyQ
 export type JobAttemptQueryResult = ApolloReactCommon.QueryResult<JobAttemptQuery, JobAttemptQueryVariables>;
 export const JobDetailsChatDocument = gql`
     query JobDetailsChat($jobId: uuid!, $userId: uuid) {
-  jobs_by_pk(id: $jobId) {
+  current_user {
+    id
+    notifications_enabled
+  }
+  job: jobs_by_pk(id: $jobId) {
     id
     ...JobDetailsPageJob
   }
