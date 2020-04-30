@@ -5702,6 +5702,18 @@ export type JobsListQuery = (
   & PageQueryFragment
 );
 
+export type LawyerOnboardingPageQueryVariables = {};
+
+
+export type LawyerOnboardingPageQuery = (
+  { __typename?: 'query_root' }
+  & { current_user: Array<(
+    { __typename?: 'current_user' }
+    & Pick<Current_User, 'id' | 'address_id'>
+  )> }
+  & PageQueryFragment
+);
+
 export type OnboardingPageQueryVariables = {};
 
 
@@ -7045,6 +7057,40 @@ export function useJobsListLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHoo
 export type JobsListQueryHookResult = ReturnType<typeof useJobsListQuery>;
 export type JobsListLazyQueryHookResult = ReturnType<typeof useJobsListLazyQuery>;
 export type JobsListQueryResult = ApolloReactCommon.QueryResult<JobsListQuery, JobsListQueryVariables>;
+export const LawyerOnboardingPageDocument = gql`
+    query LawyerOnboardingPage {
+  current_user {
+    id
+    address_id
+  }
+  ...PageQuery
+}
+    ${PageQueryFragmentDoc}`;
+
+/**
+ * __useLawyerOnboardingPageQuery__
+ *
+ * To run a query within a React component, call `useLawyerOnboardingPageQuery` and pass it any options that fit your needs.
+ * When your component renders, `useLawyerOnboardingPageQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useLawyerOnboardingPageQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useLawyerOnboardingPageQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<LawyerOnboardingPageQuery, LawyerOnboardingPageQueryVariables>) {
+        return ApolloReactHooks.useQuery<LawyerOnboardingPageQuery, LawyerOnboardingPageQueryVariables>(LawyerOnboardingPageDocument, baseOptions);
+      }
+export function useLawyerOnboardingPageLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<LawyerOnboardingPageQuery, LawyerOnboardingPageQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<LawyerOnboardingPageQuery, LawyerOnboardingPageQueryVariables>(LawyerOnboardingPageDocument, baseOptions);
+        }
+export type LawyerOnboardingPageQueryHookResult = ReturnType<typeof useLawyerOnboardingPageQuery>;
+export type LawyerOnboardingPageLazyQueryHookResult = ReturnType<typeof useLawyerOnboardingPageLazyQuery>;
+export type LawyerOnboardingPageQueryResult = ApolloReactCommon.QueryResult<LawyerOnboardingPageQuery, LawyerOnboardingPageQueryVariables>;
 export const OnboardingPageDocument = gql`
     query OnboardingPage {
   current_user {

@@ -22,9 +22,7 @@ export default function HomePage() {
       return
     }
 
-    if (!data?.current_user[0].address_id) {
-      router.push(`/onboarding/${role}`)
-    } else if (role !== 'server' || data?.current_user[0].approved) {
+    if (role !== 'server' || data?.current_user[0].approved) {
       router.push('/jobs')
     } else {
       router.push(`/onboarding/${role}`)

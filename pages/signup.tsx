@@ -63,8 +63,8 @@ export default function SignupPage() {
   )
 
   useEffect(() => {
-    if (isAuthenticated) {
-      router.push(`/onboarding/${role || 'server'}`)
+    if (isAuthenticated && role) {
+      router.push(`/onboarding/${role}`)
     }
   }, [isAuthenticated, router, role])
 

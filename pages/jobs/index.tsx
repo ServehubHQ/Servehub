@@ -10,23 +10,18 @@ import {
   TableRow,
   Typography,
 } from '@material-ui/core'
-import {
-  AccessTimeOutlined,
-  CheckCircleOutlined,
-  HighlightOffOutlined,
-} from '@material-ui/icons'
 import clsx from 'clsx'
 import { useRouter } from 'next/router'
 import { useCallback, useMemo } from 'react'
 import { Address } from '../../components/Address'
 import { Heading } from '../../components/Heading'
+import { JobStatusIcon } from '../../components/JobStatusIcon'
 import { Page } from '../../components/Page'
 import { JobsListJobFragment, useJobsListQuery } from '../../graphql-codegen'
+import { DATE_FORMAT_LONG } from '../../lib/constants'
 import { jobDueDate, jobIsFailed, jobIsSuccessful } from '../../lib/jobUtils'
 import { useAuth } from '../../lib/useAuth'
 import { useAuthRequired } from '../../lib/useAuthRequired'
-import { DATE_FORMAT_LONG } from '../../lib/constants'
-import { JobStatusIcon } from '../../components/JobStatusIcon'
 
 const useStyles = makeStyles((theme) => ({
   tableHead: {

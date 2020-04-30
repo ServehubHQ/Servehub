@@ -57,10 +57,14 @@ export default async function hasuraUserInserted(
     postmark.sendEmail({
       From: 'Servehub <hello@servehub.com>',
       To: user.email!,
-      Subject: '📑 Get Started on Servehub - Complete Background Check',
-      TextBody: `Hello${user.name ? ` ${user.name},` : ','}
+      Subject: '📑 Get Started on Servehub',
+      TextBody: `Hello ${user.name}
 
-To start accepting jobs on Servehub, you first need to complete a background check.
+To start accepting jobs on Servehub, we need to get to know you a little.
+
+Send us a photo of your driver's license, vehicle insurance, vehicle registration
+and a clear background check with your phone number and we will let you know in a
+few days if you've been approved.
 
 Thanks,
 Servehub Team`,

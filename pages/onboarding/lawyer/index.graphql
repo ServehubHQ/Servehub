@@ -1,0 +1,8 @@
+query LawyerOnboardingPage {
+  current_user {
+    id
+    address_id
+  }
+
+  ...PageQuery
+}
