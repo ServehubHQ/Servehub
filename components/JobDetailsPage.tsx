@@ -16,6 +16,7 @@ import {
 } from '../graphql-codegen'
 import { useAuth } from '../lib/useAuth'
 import { Heading } from './Heading'
+import { Inline } from './Inline'
 import { Page } from './Page'
 
 interface JobDetailsPageProps {
@@ -30,6 +31,12 @@ const useStyles = makeStyles((theme) => ({
   tabContent: {
     flex: 1,
   },
+  badge: {
+    backgroundColor: theme.palette.success.dark,
+    color: theme.palette.getContrastText(theme.palette.success.dark),
+    borderRadius: '50%',
+    minWidth: 24,
+  },
 }))
 
 export function JobDetailsPage({
@@ -40,7 +47,7 @@ export function JobDetailsPage({
   query,
 }: JobDetailsPageProps) {
   const router = useRouter()
-  const className = useStyles()
+  const classNames = useStyles()
   const { userId } = useAuth()
 
   const complete = useMemo(
@@ -71,8 +78,6 @@ export function JobDetailsPage({
               <>
                 {tab === 'index'
                   ? job?.target_name || 'Job'
-                  : tab === 'documents'
-                  ? 'Documents'
                   : tab === 'chat'
                   ? 'Chat'
                   : ''}
@@ -116,11 +121,22 @@ export function JobDetailsPage({
             variant='scrollable'
           >
             <Tab label='Details' value='index' />
-            <Tab label='Documents' value='documents' />
-            <Tab label='Chat' value='chat' />
+            <Tab
+              label={
+                <Inline align='center' spacing={1}>
+                  Chat
+                  {(job?.messages_aggregate.aggregate?.count || 0) > 0 ? (
+                    <div className={classNames.badge}>
+                      {job?.messages_aggregate.aggregate?.count}
+                    </div>
+                  ) : null}
+                </Inline>
+              }
+              value='chat'
+            />
           </Tabs>
         </Grid>
-        <Grid item className={className.tabContent}>
+        <Grid item className={classNames.tabContent}>
           {children}
         </Grid>
       </Grid>

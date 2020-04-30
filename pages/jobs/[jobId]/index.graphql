@@ -4,9 +4,19 @@ query JobDetials($jobId: uuid!, $userId: uuid) {
     created_at
     description
     stripe_payment_intent_succeeded
-
     target_name
+    pickup_required
+
     target_address {
+      id
+      street
+      unit
+      postal_code
+      city
+      province
+    }
+
+    pickup_address {
       id
       street
       unit
@@ -33,12 +43,21 @@ query JobDetials($jobId: uuid!, $userId: uuid) {
       id
       attempted_at
       success
+      notes
+      image_url
     }
 
     plan {
       id
+      name
       attempts
       duration
+    }
+
+    documents {
+      id
+      title
+      url
     }
 
     ...RateCardJob

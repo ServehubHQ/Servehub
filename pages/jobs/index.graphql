@@ -20,6 +20,7 @@ fragment JobsListJob on jobs {
     duration
     attempts
   }
+  ...JobStatusIconJob
 }
 
 query JobsList($userId: uuid!, $isLawyer: Boolean!) {

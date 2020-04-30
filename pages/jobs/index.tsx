@@ -8,7 +8,14 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  Typography,
 } from '@material-ui/core'
+import {
+  AccessTimeOutlined,
+  CheckCircleOutlined,
+  HighlightOffOutlined,
+} from '@material-ui/icons'
+import clsx from 'clsx'
 import { useRouter } from 'next/router'
 import { useCallback, useMemo } from 'react'
 import { Address } from '../../components/Address'
@@ -18,10 +25,25 @@ import { JobsListJobFragment, useJobsListQuery } from '../../graphql-codegen'
 import { jobDueDate, jobIsFailed, jobIsSuccessful } from '../../lib/jobUtils'
 import { useAuth } from '../../lib/useAuth'
 import { useAuthRequired } from '../../lib/useAuthRequired'
+import { DATE_FORMAT_LONG } from '../../lib/constants'
+import { JobStatusIcon } from '../../components/JobStatusIcon'
 
 const useStyles = makeStyles((theme) => ({
-  successIcon: {
-    fill: theme.palette.success.main,
+  tableHead: {
+    backgroundColor: theme.palette.grey[800],
+  },
+  tableHeadCell: {
+    color: theme.palette.getContrastText(theme.palette.grey[800]),
+  },
+  hideOnXs: {
+    [theme.breakpoints.down('xs')]: {
+      display: 'none',
+    },
+  },
+  hideOnSm: {
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
   },
   row: {
     cursor: 'pointer',
@@ -30,6 +52,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function JobListPage() {
   useAuthRequired()
+  const classNames = useStyles()
   const { userId, role } = useAuth()
   const { data } = useJobsListQuery({
     variables: { userId, isLawyer: role === 'lawyer' },
@@ -49,11 +72,34 @@ export default function JobListPage() {
         <Grid item>
           <Paper>
             <Table>
-              <TableHead>
+              <TableHead className={classNames.tableHead}>
                 <TableRow>
-                  <TableCell>Target</TableCell>
-                  <TableCell>Status</TableCell>
-                  <TableCell>Address</TableCell>
+                  <TableCell className={classNames.tableHeadCell}>
+                    Status
+                  </TableCell>
+                  <TableCell className={classNames.tableHeadCell}>
+                    Target
+                  </TableCell>
+                  <TableCell
+                    className={clsx(
+                      classNames.tableHeadCell,
+                      classNames.hideOnXs,
+                    )}
+                  >
+                    Location
+                  </TableCell>
+                  <TableCell className={classNames.tableHeadCell}>
+                    Due Date
+                  </TableCell>
+                  <TableCell
+                    className={clsx(
+                      classNames.tableHeadCell,
+                      classNames.hideOnXs,
+                      classNames.hideOnSm,
+                    )}
+                  >
+                    Attempts
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -75,20 +121,11 @@ interface JobRowProps {
 
 function JobRow({ job }: JobRowProps) {
   const router = useRouter()
-  const styles = useStyles()
+  const classNames = useStyles()
 
   const dueDate = useMemo(() => jobDueDate(job), [job])
   const isFailed = useMemo(() => jobIsFailed(job), [job])
   const isSuccessful = useMemo(() => jobIsSuccessful(job), [job])
-  const attemptsRemaining = useMemo(
-    () => (job.plan?.attempts || 0) - job.attempts.length,
-    [job],
-  )
-  const attemptsCopy = useMemo(
-    () =>
-      `${job.attempts.length} attemp${job.attempts.length === 1 ? '' : 's'}`,
-    [job],
-  )
 
   const handleJobClick = useCallback(
     (jobId: string) => () => {
@@ -102,8 +139,11 @@ function JobRow({ job }: JobRowProps) {
       key={job.id}
       hover
       onClick={handleJobClick(job.id)}
-      className={styles.row}
+      className={classNames.row}
     >
+      <TableCell>
+        <JobStatusIcon job={job} />
+      </TableCell>
       <TableCell>
         <ListItemText
           primary={job.target_name}
@@ -111,31 +151,30 @@ function JobRow({ job }: JobRowProps) {
           secondary={job.case_number ? `#${job.case_number}` : null}
         />
       </TableCell>
-      <TableCell>
-        {isSuccessful ? (
-          <ListItemText
-            primary='Job Successful'
-            primaryTypographyProps={{ variant: 'h6' }}
-            secondary={`After ${attemptsCopy}`}
-          />
-        ) : isFailed ? (
-          <ListItemText
-            primary='Job Unsuccessful'
-            primaryTypographyProps={{ variant: 'h6' }}
-            secondary={`${attemptsCopy} made`}
-          />
-        ) : (
-          <ListItemText
-            primary={`Due ${dueDate?.fromNow()}`}
-            primaryTypographyProps={{ variant: 'h6' }}
-            secondary={`${attemptsRemaining} attempt${
-              attemptsRemaining === 1 ? '' : 's'
-            } remaining`}
-          />
-        )}
+      <TableCell className={clsx(classNames.hideOnXs, classNames.hideOnSm)}>
+        {job.target_address ? (
+          <Address {...job.target_address} highlightStreet />
+        ) : null}
       </TableCell>
       <TableCell>
-        {job.target_address ? <Address {...job.target_address} /> : null}
+        {isSuccessful || isFailed ? (
+          <ListItemText
+            primary={dueDate?.format(DATE_FORMAT_LONG)}
+            primaryTypographyProps={{ variant: 'h6' }}
+            secondary={dueDate?.fromNow()}
+          />
+        ) : dueDate ? (
+          <ListItemText
+            primary={dueDate.format(DATE_FORMAT_LONG)}
+            primaryTypographyProps={{ variant: 'h6' }}
+            secondary={dueDate.fromNow()}
+          />
+        ) : null}
+      </TableCell>
+      <TableCell className={clsx(classNames.hideOnXs)}>
+        <Typography variant='h6' component='p'>
+          {`${job.attempts.length}/${job.plan?.attempts || 0}`}
+        </Typography>
       </TableCell>
     </TableRow>
   )

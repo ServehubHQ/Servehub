@@ -103,13 +103,17 @@ export function RateCard({ job, currentUserId, onRated }: RateCardProps) {
                 <TextField
                   variant='filled'
                   margin='normal'
-                  label='Comment to Servehub Admins'
+                  label='Comment'
                   name='comment'
                   fullWidth
                   multiline
                   inputRef={register()}
                   error={Boolean(errors.comment)}
-                  helperText={errors.comment?.message}
+                  helperText={
+                    errors.comment
+                      ? errors.comment.message
+                      : 'This will only be visible to the Servehub team.'
+                  }
                 />
               </Stack>
             </CardContent>

@@ -174,7 +174,7 @@ export function Page({ title, children, query }: PageProps) {
       </Head>
       <AppBar position='static' className={classNames.bar}>
         {globalLoading ? (
-          <LinearProgress className={classNames.loadingBar} />
+          <LinearProgress className={classNames.loadingBar} color='secondary' />
         ) : null}
         <Container fixed>
           <Toolbar disableGutters>

@@ -11,6 +11,14 @@ fragment JobDetailsPageJob on jobs {
     id
     success
   }
+
+  messages_aggregate(
+    where: { read_at: { _is_null: true }, user_id: { _neq: $userId } }
+  ) {
+    aggregate {
+      count
+    }
+  }
 }
 
 fragment JobDetailsPageQuery on query_root {

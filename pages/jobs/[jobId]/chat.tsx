@@ -6,6 +6,7 @@ import { ChatMessages } from '../../../components/ChatMessages'
 import { JobDetailsPage } from '../../../components/JobDetailsPage'
 import { useJobDetailsChatQuery } from '../../../graphql-codegen'
 import { useAuthRequired } from '../../../lib/useAuthRequired'
+import { useAuth } from '../../../lib/useAuth'
 
 const useStyles = makeStyles((theme) => ({
   chatCard: {
@@ -17,11 +18,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function JobDetailsChat() {
   useAuthRequired()
+  const { userId } = useAuth()
   const classNames = useStyles()
   const router = useRouter()
   const { jobId } = router.query
   const { data, refetch } = useJobDetailsChatQuery({
-    variables: { jobId },
+    variables: { jobId, userId },
   })
   const job = useMemo(() => data?.jobs_by_pk, [data])
   const chatCardRef = useRef<HTMLDivElement>()

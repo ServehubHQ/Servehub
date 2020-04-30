@@ -4,17 +4,14 @@ import {
   Card,
   CardActions,
   CardContent,
-  CardHeader,
   CardMedia,
   Divider,
-  Grid,
   Link as MuiLink,
-  ListItemText,
   makeStyles,
   Typography,
 } from '@material-ui/core'
 import Link from 'next/link'
-import { useMemo, useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { Address } from '../../../components/Address'
 import { Heading } from '../../../components/Heading'
 import { Map } from '../../../components/Map'
@@ -22,33 +19,37 @@ import { Page } from '../../../components/Page'
 import { Stack } from '../../../components/Stack'
 import {
   JobsAvailableQuery,
-  useJobsAvailableQuery,
   useClaimJobMutation,
+  useJobsAvailableQuery,
 } from '../../../graphql-codegen'
+import { DATE_FORMAT_LONG } from '../../../lib/constants'
 import { jobDueDate } from '../../../lib/jobUtils'
 import { useAuthRequired } from '../../../lib/useAuthRequired'
 
 export const useStyles = makeStyles((theme) => ({
+  heading: {
+    marginBottom: theme.spacing(1),
+  },
   map: {
     height: '100%',
     width: '100%',
   },
-  mapEmbed: {
-    border: 0,
-    height: '100%',
-    width: '100%',
+  cardContainer: {
+    maxWidth: 768,
+    margin: 'auto',
   },
 }))
 
 export default function JobsAvailablePage() {
   useAuthRequired()
+  const classNames = useStyles()
   const { data } = useJobsAvailableQuery()
 
   return (
-    <Page query={data} title='Available Jobs'>
+    <Page query={data} title='Jobs Available'>
       <Box mb={4}>
         <Heading
-          title='Available Jobs'
+          title='Available'
           breadcrumbs={[
             <Link href='/jobs' passHref key='jobs'>
               <MuiLink color='inherit'>Jobs</MuiLink>
@@ -56,7 +57,7 @@ export default function JobsAvailablePage() {
           ]}
         />
       </Box>
-      <Stack>
+      <Stack spacing={3} className={classNames.cardContainer}>
         {data?.available_jobs.map((job) => (
           <AvailableJob key={job.id} job={job} />
         ))}
@@ -71,7 +72,7 @@ interface AvailableJobProps {
 }
 
 function AvailableJob({ job }: AvailableJobProps) {
-  const styles = useStyles()
+  const classNames = useStyles()
   const dueDate = useMemo(() => jobDueDate(job as Required<AvailableJob>), [
     job,
   ])
@@ -85,35 +86,47 @@ function AvailableJob({ job }: AvailableJobProps) {
 
   return (
     <Card>
-      <CardContent>
-        <ListItemText
-          primary={`Due ${dueDate?.fromNow()}`}
-          primaryTypographyProps={{ variant: 'h6' }}
-          secondary={`${job.plan?.attempts} attemp${
-            job.plan?.attempts === 1 ? '' : 's'
-          } required`}
-        />
-      </CardContent>
-      <Divider />
-      {job.pickup_required && job.pickup_address ? (
-        <CardContent>
-          <Typography variant='h5'>Pickup Required</Typography>
-          <Address {...job.pickup_address} />
-        </CardContent>
-      ) : (
-        <CardContent>
-          <Typography variant='h5'>Printing Required</Typography>
-        </CardContent>
-      )}
-      <Divider />
-      <CardContent>
-        <Typography variant='h5'>Target</Typography>
-        {job?.target_address ? <Address {...job.target_address} /> : null}
-      </CardContent>
-      <Divider />
-      <CardMedia className={styles.map}>
+      <CardMedia className={classNames.map}>
         {job.target_address ? <Map {...job.target_address} /> : null}
       </CardMedia>
+      <Divider />
+      <CardContent>
+        <Typography variant='h5' className={classNames.heading}>
+          Target Location
+        </Typography>
+        {job?.target_address ? (
+          <Address {...job.target_address} typeVariant='body1' />
+        ) : null}
+      </CardContent>
+      <Divider />
+      <CardContent>
+        <Typography variant='h5' className={classNames.heading}>
+          Due Date
+        </Typography>
+        <Typography variant='body1'>
+          {`${dueDate?.format(DATE_FORMAT_LONG)} `}
+          <Typography variant='body2' component='span'>
+            {`${dueDate?.fromNow()}`}
+          </Typography>
+        </Typography>
+        <Typography variant='body1'>{`${job.plan?.attempts} attempt${
+          job.plan?.attempts === 1 ? '' : 's'
+        } required`}</Typography>
+      </CardContent>
+      <Divider />
+      <CardContent>
+        <Typography variant='h5' className={classNames.heading}>
+          Documents
+        </Typography>
+        {job.pickup_required && job.pickup_address ? (
+          <>
+            <Typography variant='body1'>Pickup Required</Typography>
+            <Address {...job.pickup_address} typeVariant='body1' />
+          </>
+        ) : (
+          <Typography variant='body1'>Printing Required</Typography>
+        )}
+      </CardContent>
       <Divider />
       <CardActions>
         <Button

@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { config } from '../lib/config'
+import { encodeLocation } from '../lib/encodeLocation'
 
 interface MapProps {
   street: string
@@ -9,27 +10,14 @@ interface MapProps {
   province: string
 }
 
-export function Map({ street, city, postal_code, province }: MapProps) {
-  const query = useMemo(
-    () =>
-      encodeURIComponent(
-        [
-          street,
-          // unit,
-          city,
-          postal_code,
-          province,
-          'CA',
-        ].join(','),
-      ),
-    [street, city, postal_code, province],
-  )
+export function Map(location: MapProps) {
+  const query = useMemo(() => encodeLocation(location), [location])
   return (
     <iframe
       width='100%'
       height='100%'
       frameBorder='0'
-      style={{ width: '100%', height: '100%' }}
+      style={{ width: '100%', height: '100%', display: 'block' }}
       src={`https://www.google.com/maps/embed/v1/place?key=${config.googleMapsApiKey}&q=${query}`}
     />
   )

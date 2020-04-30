@@ -5111,12 +5111,30 @@ export type JobDetailsPageJobFragment = (
   )>, attempts: Array<(
     { __typename?: 'attempts' }
     & Pick<Attempts, 'id' | 'success'>
-  )> }
+  )>, messages_aggregate: (
+    { __typename?: 'messages_aggregate' }
+    & { aggregate: Maybe<(
+      { __typename?: 'messages_aggregate_fields' }
+      & Pick<Messages_Aggregate_Fields, 'count'>
+    )> }
+  ) }
 );
 
 export type JobDetailsPageQueryFragment = (
   { __typename?: 'query_root' }
   & PageQueryFragment
+);
+
+export type JobStatusIconJobFragment = (
+  { __typename?: 'jobs' }
+  & Pick<Jobs, 'id' | 'created_at'>
+  & { attempts: Array<(
+    { __typename?: 'attempts' }
+    & Pick<Attempts, 'id' | 'success'>
+  )>, plan: Maybe<(
+    { __typename?: 'plans' }
+    & Pick<Plans, 'id' | 'attempts' | 'duration'>
+  )> }
 );
 
 export type PageQueryFragment = (
@@ -5503,6 +5521,7 @@ export type JobAttemptQuery = (
 
 export type JobDetailsChatQueryVariables = {
   jobId: Scalars['uuid'];
+  userId?: Maybe<Scalars['uuid']>;
 };
 
 
@@ -5511,29 +5530,6 @@ export type JobDetailsChatQuery = (
   & { jobs_by_pk: Maybe<(
     { __typename?: 'jobs' }
     & Pick<Jobs, 'id'>
-    & JobDetailsPageJobFragment
-  )> }
-  & JobDetailsPageQueryFragment
-);
-
-export type JobDetailsDocumentsQueryVariables = {
-  jobId: Scalars['uuid'];
-  userId?: Maybe<Scalars['uuid']>;
-};
-
-
-export type JobDetailsDocumentsQuery = (
-  { __typename?: 'query_root' }
-  & { jobs_by_pk: Maybe<(
-    { __typename?: 'jobs' }
-    & Pick<Jobs, 'id' | 'pickup_required'>
-    & { pickup_address: Maybe<(
-      { __typename?: 'addresses' }
-      & Pick<Addresses, 'id' | 'street' | 'unit' | 'postal_code' | 'city' | 'province'>
-    )>, documents: Array<(
-      { __typename?: 'documents' }
-      & Pick<Documents, 'id' | 'title' | 'url'>
-    )> }
     & JobDetailsPageJobFragment
   )> }
   & JobDetailsPageQueryFragment
@@ -5549,8 +5545,11 @@ export type JobDetialsQuery = (
   { __typename?: 'query_root' }
   & { job: Maybe<(
     { __typename?: 'jobs' }
-    & Pick<Jobs, 'id' | 'created_at' | 'description' | 'stripe_payment_intent_succeeded' | 'target_name'>
+    & Pick<Jobs, 'id' | 'created_at' | 'description' | 'stripe_payment_intent_succeeded' | 'target_name' | 'pickup_required'>
     & { target_address: Maybe<(
+      { __typename?: 'addresses' }
+      & Pick<Addresses, 'id' | 'street' | 'unit' | 'postal_code' | 'city' | 'province'>
+    )>, pickup_address: Maybe<(
       { __typename?: 'addresses' }
       & Pick<Addresses, 'id' | 'street' | 'unit' | 'postal_code' | 'city' | 'province'>
     )>, server: Maybe<(
@@ -5569,10 +5568,13 @@ export type JobDetialsQuery = (
       ) }
     )>, attempts: Array<(
       { __typename?: 'attempts' }
-      & Pick<Attempts, 'id' | 'attempted_at' | 'success'>
+      & Pick<Attempts, 'id' | 'attempted_at' | 'success' | 'notes' | 'image_url'>
     )>, plan: Maybe<(
       { __typename?: 'plans' }
-      & Pick<Plans, 'id' | 'attempts' | 'duration'>
+      & Pick<Plans, 'id' | 'name' | 'attempts' | 'duration'>
+    )>, documents: Array<(
+      { __typename?: 'documents' }
+      & Pick<Documents, 'id' | 'title' | 'url'>
     )> }
     & RateCardJobFragment
     & JobDetailsPageJobFragment
@@ -5677,6 +5679,7 @@ export type JobsListJobFragment = (
     { __typename?: 'plans' }
     & Pick<Plans, 'id' | 'duration' | 'attempts'>
   )> }
+  & JobStatusIconJobFragment
 );
 
 export type JobsListQueryVariables = {
@@ -5745,6 +5748,11 @@ export const JobDetailsPageJobFragmentDoc = gql`
     id
     success
   }
+  messages_aggregate(where: {read_at: {_is_null: true}, user_id: {_neq: $userId}}) {
+    aggregate {
+      count
+    }
+  }
 }
     `;
 export const PageQueryFragmentDoc = gql`
@@ -5777,6 +5785,21 @@ export const RateCardJobFragmentDoc = gql`
   }
 }
     `;
+export const JobStatusIconJobFragmentDoc = gql`
+    fragment JobStatusIconJob on jobs {
+  id
+  created_at
+  attempts {
+    id
+    success
+  }
+  plan {
+    id
+    attempts
+    duration
+  }
+}
+    `;
 export const JobsListJobFragmentDoc = gql`
     fragment JobsListJob on jobs {
   id
@@ -5800,8 +5823,9 @@ export const JobsListJobFragmentDoc = gql`
     duration
     attempts
   }
+  ...JobStatusIconJob
 }
-    `;
+    ${JobStatusIconJobFragmentDoc}`;
 export const ChatMessagesDocument = gql`
     subscription ChatMessages($jobId: uuid!) {
   messages(where: {job_id: {_eq: $jobId}}, order_by: {created_at: asc}) {
@@ -6626,7 +6650,7 @@ export type JobAttemptQueryHookResult = ReturnType<typeof useJobAttemptQuery>;
 export type JobAttemptLazyQueryHookResult = ReturnType<typeof useJobAttemptLazyQuery>;
 export type JobAttemptQueryResult = ApolloReactCommon.QueryResult<JobAttemptQuery, JobAttemptQueryVariables>;
 export const JobDetailsChatDocument = gql`
-    query JobDetailsChat($jobId: uuid!) {
+    query JobDetailsChat($jobId: uuid!, $userId: uuid) {
   jobs_by_pk(id: $jobId) {
     id
     ...JobDetailsPageJob
@@ -6649,6 +6673,7 @@ ${JobDetailsPageQueryFragmentDoc}`;
  * const { data, loading, error } = useJobDetailsChatQuery({
  *   variables: {
  *      jobId: // value for 'jobId'
+ *      userId: // value for 'userId'
  *   },
  * });
  */
@@ -6661,57 +6686,6 @@ export function useJobDetailsChatLazyQuery(baseOptions?: ApolloReactHooks.LazyQu
 export type JobDetailsChatQueryHookResult = ReturnType<typeof useJobDetailsChatQuery>;
 export type JobDetailsChatLazyQueryHookResult = ReturnType<typeof useJobDetailsChatLazyQuery>;
 export type JobDetailsChatQueryResult = ApolloReactCommon.QueryResult<JobDetailsChatQuery, JobDetailsChatQueryVariables>;
-export const JobDetailsDocumentsDocument = gql`
-    query JobDetailsDocuments($jobId: uuid!, $userId: uuid) {
-  jobs_by_pk(id: $jobId) {
-    id
-    pickup_required
-    pickup_address {
-      id
-      street
-      unit
-      postal_code
-      city
-      province
-    }
-    documents {
-      id
-      title
-      url
-    }
-    ...JobDetailsPageJob
-  }
-  ...JobDetailsPageQuery
-}
-    ${JobDetailsPageJobFragmentDoc}
-${JobDetailsPageQueryFragmentDoc}`;
-
-/**
- * __useJobDetailsDocumentsQuery__
- *
- * To run a query within a React component, call `useJobDetailsDocumentsQuery` and pass it any options that fit your needs.
- * When your component renders, `useJobDetailsDocumentsQuery` returns an object from Apollo Client that contains loading, error, and data properties 
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useJobDetailsDocumentsQuery({
- *   variables: {
- *      jobId: // value for 'jobId'
- *      userId: // value for 'userId'
- *   },
- * });
- */
-export function useJobDetailsDocumentsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<JobDetailsDocumentsQuery, JobDetailsDocumentsQueryVariables>) {
-        return ApolloReactHooks.useQuery<JobDetailsDocumentsQuery, JobDetailsDocumentsQueryVariables>(JobDetailsDocumentsDocument, baseOptions);
-      }
-export function useJobDetailsDocumentsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<JobDetailsDocumentsQuery, JobDetailsDocumentsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<JobDetailsDocumentsQuery, JobDetailsDocumentsQueryVariables>(JobDetailsDocumentsDocument, baseOptions);
-        }
-export type JobDetailsDocumentsQueryHookResult = ReturnType<typeof useJobDetailsDocumentsQuery>;
-export type JobDetailsDocumentsLazyQueryHookResult = ReturnType<typeof useJobDetailsDocumentsLazyQuery>;
-export type JobDetailsDocumentsQueryResult = ApolloReactCommon.QueryResult<JobDetailsDocumentsQuery, JobDetailsDocumentsQueryVariables>;
 export const JobDetialsDocument = gql`
     query JobDetials($jobId: uuid!, $userId: uuid) {
   job: jobs_by_pk(id: $jobId) {
@@ -6720,7 +6694,16 @@ export const JobDetialsDocument = gql`
     description
     stripe_payment_intent_succeeded
     target_name
+    pickup_required
     target_address {
+      id
+      street
+      unit
+      postal_code
+      city
+      province
+    }
+    pickup_address {
       id
       street
       unit
@@ -6744,11 +6727,19 @@ export const JobDetialsDocument = gql`
       id
       attempted_at
       success
+      notes
+      image_url
     }
     plan {
       id
+      name
       attempts
       duration
+    }
+    documents {
+      id
+      title
+      url
     }
     ...RateCardJob
     ...JobDetailsPageJob

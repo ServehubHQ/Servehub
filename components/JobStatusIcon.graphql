@@ -1,0 +1,15 @@
+fragment JobStatusIconJob on jobs {
+  id
+  created_at
+
+  attempts {
+    id
+    success
+  }
+
+  plan {
+    id
+    attempts
+    duration
+  }
+}
