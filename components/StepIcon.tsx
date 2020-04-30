@@ -1,34 +1,6 @@
-import {
-  withStyles,
-  makeStyles,
-  StepConnector as MuiStepConnector,
-  StepIconProps,
-} from '@material-ui/core'
-import clsx from 'clsx'
+import { makeStyles, StepIconProps } from '@material-ui/core'
 import { Check } from '@material-ui/icons'
-
-export const StepConnector = withStyles((theme) => ({
-  // alternativeLabel: {
-  //   top: 10,
-  //   left: 'calc(-50% + 16px)',
-  //   right: 'calc(50% + 16px)',
-  // },
-  active: {
-    '& $line': {
-      borderColor: theme.palette.success.main,
-    },
-  },
-  completed: {
-    '& $line': {
-      borderColor: theme.palette.success.main,
-    },
-  },
-  // line: {
-  //   borderColor: theme.palette.text.secondary,
-  //   borderTopWidth: 3,
-  //   borderRadius: 1,
-  // },
-}))(MuiStepConnector)
+import clsx from 'clsx'
 
 const useQontoStepIconStyles = makeStyles((theme) => ({
   root: {

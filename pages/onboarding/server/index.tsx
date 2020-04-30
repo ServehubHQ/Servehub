@@ -7,22 +7,22 @@ import {
   Divider,
 } from '@material-ui/core'
 import { useRouter } from 'next/router'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { AddressForm } from '../../components/AddressForm'
-import { Page } from '../../components/Page'
+import { AddressForm } from '../../../components/AddressForm'
+import ServerOnboardingPage from '../../../components/ServerOnboardingPage'
 import {
   InsertAddressMutationVariables,
   useInsertAddressMutation,
   useOnboardingPageQuery,
   useSetUserAddressMutation,
-} from '../../graphql-codegen'
-import { useAuth } from '../../lib/useAuth'
-import { useAuthRequired } from '../../lib/useAuthRequired'
+} from '../../../graphql-codegen'
+import { useAuth } from '../../../lib/useAuth'
+import { useAuthRequired } from '../../../lib/useAuthRequired'
 
 export default function OnboardingPage() {
   useAuthRequired()
-  const { userId, authClient } = useAuth()
+  const { userId, authClient, role } = useAuth()
   const router = useRouter()
   const { data } = useOnboardingPageQuery({ variables: { userId } })
   const [
@@ -41,6 +41,12 @@ export default function OnboardingPage() {
     insertAddressLoading,
     setUserAddressLoading,
   ])
+
+  useEffect(() => {
+    if (!data?.current_user[0]?.address_id) {
+      router.push(`/onboarding/${role}/notifications`)
+    }
+  }, [data, router, role])
 
   const handleFormValid = useCallback(
     async (formData: InsertAddressMutationVariables) => {
@@ -71,10 +77,13 @@ export default function OnboardingPage() {
   )
 
   return (
-    <Page query={data} title='Onboarding'>
+    <ServerOnboardingPage query={data} step='address'>
       <form noValidate onSubmit={handleSubmit(handleFormValid)}>
         <Card>
-          <CardHeader title='Enter your Address' />
+          <CardHeader
+            title='Enter your Address'
+            subheader='Your address will be used to find serves in your area.'
+          />
           <Divider />
           <CardContent>
             <AddressForm register={register} errors={errors} />
@@ -92,6 +101,6 @@ export default function OnboardingPage() {
           </CardActions>
         </Card>
       </form>
-    </Page>
+    </ServerOnboardingPage>
   )
 }

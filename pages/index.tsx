@@ -23,11 +23,11 @@ export default function HomePage() {
     }
 
     if (!data?.current_user[0].address_id) {
-      router.push('/onboarding')
+      router.push(`/onboarding/${role}`)
     } else if (role !== 'server' || data?.current_user[0].approved) {
       router.push('/jobs')
     } else {
-      router.push('/pending-approval')
+      router.push(`/onboarding/${role}`)
     }
   }, [loading, isAuthenticated, data, router, role])
 

@@ -195,11 +195,11 @@ export function Page({ title, children, query }: PageProps) {
                   <Link href='/jobs/available' passHref>
                     <Button color='inherit'>Available Jobs</Button>
                   </Link>
-                ) : (
+                ) : role === 'lawyer' ? (
                   <Link href='/jobs/create' passHref>
                     <Button color='inherit'>New Job</Button>
                   </Link>
-                )}
+                ) : null}
                 <IconButton
                   aria-label='user account'
                   aria-controls='menu-appbar'

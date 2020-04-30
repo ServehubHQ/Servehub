@@ -1,0 +1,8 @@
+query OnboardingPage {
+  current_user {
+    id
+    address_id
+  }
+
+  ...PageQuery
+}

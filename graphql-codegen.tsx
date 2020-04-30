@@ -5707,6 +5707,18 @@ export type OnboardingPageQueryVariables = {};
 
 export type OnboardingPageQuery = (
   { __typename?: 'query_root' }
+  & { current_user: Array<(
+    { __typename?: 'current_user' }
+    & Pick<Current_User, 'id' | 'address_id'>
+  )> }
+  & PageQueryFragment
+);
+
+export type ServerOnboardingNotificationsQueryVariables = {};
+
+
+export type ServerOnboardingNotificationsQuery = (
+  { __typename?: 'query_root' }
   & PageQueryFragment
 );
 
@@ -7030,6 +7042,10 @@ export type JobsListLazyQueryHookResult = ReturnType<typeof useJobsListLazyQuery
 export type JobsListQueryResult = ApolloReactCommon.QueryResult<JobsListQuery, JobsListQueryVariables>;
 export const OnboardingPageDocument = gql`
     query OnboardingPage {
+  current_user {
+    id
+    address_id
+  }
   ...PageQuery
 }
     ${PageQueryFragmentDoc}`;
@@ -7058,6 +7074,36 @@ export function useOnboardingPageLazyQuery(baseOptions?: ApolloReactHooks.LazyQu
 export type OnboardingPageQueryHookResult = ReturnType<typeof useOnboardingPageQuery>;
 export type OnboardingPageLazyQueryHookResult = ReturnType<typeof useOnboardingPageLazyQuery>;
 export type OnboardingPageQueryResult = ApolloReactCommon.QueryResult<OnboardingPageQuery, OnboardingPageQueryVariables>;
+export const ServerOnboardingNotificationsDocument = gql`
+    query ServerOnboardingNotifications {
+  ...PageQuery
+}
+    ${PageQueryFragmentDoc}`;
+
+/**
+ * __useServerOnboardingNotificationsQuery__
+ *
+ * To run a query within a React component, call `useServerOnboardingNotificationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useServerOnboardingNotificationsQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useServerOnboardingNotificationsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useServerOnboardingNotificationsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<ServerOnboardingNotificationsQuery, ServerOnboardingNotificationsQueryVariables>) {
+        return ApolloReactHooks.useQuery<ServerOnboardingNotificationsQuery, ServerOnboardingNotificationsQueryVariables>(ServerOnboardingNotificationsDocument, baseOptions);
+      }
+export function useServerOnboardingNotificationsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<ServerOnboardingNotificationsQuery, ServerOnboardingNotificationsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<ServerOnboardingNotificationsQuery, ServerOnboardingNotificationsQueryVariables>(ServerOnboardingNotificationsDocument, baseOptions);
+        }
+export type ServerOnboardingNotificationsQueryHookResult = ReturnType<typeof useServerOnboardingNotificationsQuery>;
+export type ServerOnboardingNotificationsLazyQueryHookResult = ReturnType<typeof useServerOnboardingNotificationsLazyQuery>;
+export type ServerOnboardingNotificationsQueryResult = ApolloReactCommon.QueryResult<ServerOnboardingNotificationsQuery, ServerOnboardingNotificationsQueryVariables>;
 export const PendingApprovalDocument = gql`
     query PendingApproval($userId: uuid) {
   current_user {

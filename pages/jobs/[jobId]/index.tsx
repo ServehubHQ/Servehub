@@ -1,21 +1,20 @@
 import {
   Button,
   Card,
+  CardActions,
   CardContent,
   CardMedia,
   Divider,
   Grid,
   makeStyles,
   Paper,
+  Step,
+  Stepper,
   Table,
   TableCell,
   TableHead,
   TableRow,
   Typography,
-  CardActions,
-  Stepper,
-  Step,
-  StepLabel,
 } from '@material-ui/core'
 import { CheckCircleOutlined, HighlightOffOutlined } from '@material-ui/icons'
 import moment from 'moment'
@@ -25,14 +24,14 @@ import { Address } from '../../../components/Address'
 import { JobDetailsPage } from '../../../components/JobDetailsPage'
 import { Map } from '../../../components/Map'
 import { RateCard } from '../../../components/RateCard'
+import { Stack } from '../../../components/Stack'
+import { StepLabel } from '../../../components/StepLabel'
 import { useJobDetialsQuery } from '../../../graphql-codegen'
 import { DATETIME_FORMAT_LONG, DATE_FORMAT_LONG } from '../../../lib/constants'
+import { encodeLocation } from '../../../lib/encodeLocation'
 import { jobDueDate, jobIsComplete } from '../../../lib/jobUtils'
 import { useAuth } from '../../../lib/useAuth'
 import { useAuthRequired } from '../../../lib/useAuthRequired'
-import { encodeLocation } from '../../../lib/encodeLocation'
-import { Stack } from '../../../components/Stack'
-import { StepConnector, StepIcon } from '../../../components/StepIcon'
 
 const useStyles = makeStyles((theme) => ({
   heading: {
@@ -43,10 +42,6 @@ const useStyles = makeStyles((theme) => ({
   },
   attemptIcon: {
     fontSize: 49,
-  },
-  stepLabel: {
-    ...theme.typography.h5,
-    fontWeight: 'inherit',
   },
 }))
 
@@ -66,7 +61,6 @@ export default function JobDetails() {
         <Grid item xs={12}>
           <Paper>
             <Stepper
-              connector={<StepConnector />}
               activeStep={
                 typeof data?.job?.server === 'undefined'
                   ? 1
@@ -76,36 +70,16 @@ export default function JobDetails() {
               }
             >
               <Step>
-                <StepLabel
-                  classes={{ label: classNames.stepLabel }}
-                  StepIconComponent={StepIcon}
-                >
-                  Job Posted
-                </StepLabel>
+                <StepLabel>Job Posted</StepLabel>
               </Step>
               <Step>
-                <StepLabel
-                  classes={{ label: classNames.stepLabel }}
-                  StepIconComponent={StepIcon}
-                >
-                  Finding Server
-                </StepLabel>
+                <StepLabel>Finding Server</StepLabel>
               </Step>
               <Step>
-                <StepLabel
-                  classes={{ label: classNames.stepLabel }}
-                  StepIconComponent={StepIcon}
-                >
-                  Serve in Progress
-                </StepLabel>
+                <StepLabel>Serve in Progress</StepLabel>
               </Step>
               <Step>
-                <StepLabel
-                  classes={{ label: classNames.stepLabel }}
-                  StepIconComponent={StepIcon}
-                >
-                  Serve Complete
-                </StepLabel>
+                <StepLabel>Serve Complete</StepLabel>
               </Step>
             </Stepper>
           </Paper>

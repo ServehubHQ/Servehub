@@ -74,6 +74,19 @@ export default function SignupPage() {
         noValidate
         onSubmit={handleSubmit(handleFormValid)}
       >
+        <SelectField
+          name='role'
+          label='Role'
+          control={control}
+          rules={{ required: true }}
+          required
+          fullWidth
+          error={Boolean(errors.role)}
+          helperText={errors.role?.message}
+        >
+          <MenuItem value='lawyer'>Law Firm</MenuItem>
+          <MenuItem value='server'>Process Server</MenuItem>
+        </SelectField>
         <TextField
           variant='filled'
           margin='normal'
@@ -82,7 +95,6 @@ export default function SignupPage() {
           label='Email Address'
           name='email'
           autoComplete='email'
-          autoFocus
           inputRef={register({ required: true })}
           error={Boolean(errors.email)}
           helperText={errors.email?.message}
@@ -111,19 +123,6 @@ export default function SignupPage() {
           error={Boolean(errors.name)}
           helperText={errors.name?.message}
         />
-        <SelectField
-          name='role'
-          label='Role'
-          control={control}
-          rules={{ required: true }}
-          required
-          fullWidth
-          error={Boolean(errors.role)}
-          helperText={errors.role?.message}
-        >
-          <MenuItem value='lawyer'>Lawyer</MenuItem>
-          <MenuItem value='server'>Process Server</MenuItem>
-        </SelectField>
         <Button
           type='submit'
           variant='contained'
