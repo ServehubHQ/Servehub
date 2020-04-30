@@ -1,4 +1,10 @@
-import { Paper, Step, Stepper } from '@material-ui/core'
+import {
+  Paper,
+  Step,
+  Stepper,
+  useTheme,
+  useMediaQuery,
+} from '@material-ui/core'
 import { Page } from './Page'
 import { Stack } from './Stack'
 import { StepLabel } from './StepLabel'
@@ -24,12 +30,17 @@ export default function ServerOnboardingPage({
   query,
 }: ServerOnboardingPageProps) {
   useAuthRequired()
+  const theme = useTheme()
+  const isSmall = useMediaQuery(theme.breakpoints.down('sm'))
 
   return (
     <Page query={query} title='Server Onboarding'>
       <Stack>
         <Paper>
-          <Stepper activeStep={stepIndexes[step]}>
+          <Stepper
+            activeStep={stepIndexes[step]}
+            orientation={isSmall ? 'vertical' : 'horizontal'}
+          >
             <Step>
               <StepLabel>Signup</StepLabel>
             </Step>

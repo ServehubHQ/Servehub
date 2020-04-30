@@ -47,7 +47,7 @@ export default function JobDetailsChat() {
     },
     [refetch],
   )
-  console.log(data)
+
   return (
     <JobDetailsPage job={data?.job} query={data} tab='chat' refetch={refetch}>
       <Stack>

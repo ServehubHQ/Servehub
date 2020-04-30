@@ -47,10 +47,9 @@ export default async function hasurajobUpdatedApi(
     console.log('[hasurajobUpdatedApi] sending firebase message')
 
     await sendFirebaseMessage(data.users, {
-      title: 'New Servehub Job available',
+      title: 'New Servehub job available!',
       body: 'Click here to learn more',
-      // icon: 'https://placekitten.com/360/240',
-      // badge: 'https://placekitten.com/512/512',
+      icon: `${config.baseUrl}/images/brand/icon-512x512.png`,
       click_action: `${config.baseUrl}/jobs/${job.id}`,
     })
   }

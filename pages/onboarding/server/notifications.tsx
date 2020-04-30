@@ -55,9 +55,9 @@ export default function OnboardingServerNotifications() {
             color='primary'
             variant='contained'
           >
-            Enable Notifications
+            Enable
           </Button>
-          <Button onClick={handleSkipClick}>Skip For Now</Button>
+          <Button onClick={handleSkipClick}>Skip</Button>
         </CardActions>
       </Card>
     </ServerOnboardingPage>
