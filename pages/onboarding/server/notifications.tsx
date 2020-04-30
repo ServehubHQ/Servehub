@@ -1,29 +1,44 @@
 import {
   Button,
   Card,
-  CardContent,
+  CardActions,
   CardHeader,
   Divider,
-  CardActions,
 } from '@material-ui/core'
-import { MouseEvent, useCallback } from 'react'
+import { useRouter } from 'next/router'
+import { MouseEvent, useCallback, useEffect } from 'react'
 import ServerOnboardingPage from '../../../components/ServerOnboardingPage'
 import { useServerOnboardingNotificationsQuery } from '../../../graphql-codegen'
 import { getAndSaveMessagingToken } from '../../../lib/firebase'
-import { useApolloClient } from '../../../lib/getApolloClient'
 import { useAuthRequired } from '../../../lib/useAuthRequired'
+
+const NEXT_PATH = '/onboarding/server/pending-approval'
 
 export default function OnboardingServerNotifications() {
   useAuthRequired()
-  const { data } = useServerOnboardingNotificationsQuery()
-  const apolloClient = useApolloClient()
+  const { data, refetch } = useServerOnboardingNotificationsQuery()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (data?.current_user[0]?.firebase_messaging_token) {
+      router.push(NEXT_PATH)
+    }
+  }, [data, router])
 
   const handleEnableNotificationsClick = useCallback(
     async (event: MouseEvent<HTMLButtonElement>) => {
       await getAndSaveMessagingToken(true)
-      await apolloClient.resetStore()
+      await refetch()
+      router.push(NEXT_PATH)
     },
-    [apolloClient],
+    [refetch, router],
+  )
+
+  const handleSkipClick = useCallback(
+    async (event: MouseEvent<HTMLButtonElement>) => {
+      router.push(NEXT_PATH)
+    },
+    [router],
   )
 
   return (
@@ -31,7 +46,7 @@ export default function OnboardingServerNotifications() {
       <Card>
         <CardHeader
           title='Notifications'
-          subheader='Make sure you know when a new serve is available.'
+          subheader='Make sure you know when a new jobs is available.'
         />
         <Divider />
         <CardActions>
@@ -42,6 +57,7 @@ export default function OnboardingServerNotifications() {
           >
             Enable Notifications
           </Button>
+          <Button onClick={handleSkipClick}>Skip For Now</Button>
         </CardActions>
       </Card>
     </ServerOnboardingPage>

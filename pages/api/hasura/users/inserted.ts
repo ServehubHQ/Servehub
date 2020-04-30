@@ -57,8 +57,13 @@ export default async function hasuraUserInserted(
     postmark.sendEmail({
       From: 'Servehub <hello@servehub.com>',
       To: user.email!,
-      Subject: '📑 Complete background check to get started on Servehub',
-      TextBody: 'TODO: email content',
+      Subject: '📑 Get Started on Servehub - Complete Background Check',
+      TextBody: `Hello${user.name ? ` ${user.name},` : ','}
+
+To start accepting jobs on Servehub, you first need to complete a background check.
+
+Thanks,
+Servehub Team`,
     })
   }
 

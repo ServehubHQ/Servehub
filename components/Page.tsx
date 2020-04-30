@@ -191,7 +191,7 @@ export function Page({ title, children, query }: PageProps) {
             </Box>
             {isAuthenticated ? (
               <>
-                {role === 'server' ? (
+                {role === 'server' && query?.current_user[0]?.approved ? (
                   <Link href='/jobs/available' passHref>
                     <Button color='inherit'>Available Jobs</Button>
                   </Link>

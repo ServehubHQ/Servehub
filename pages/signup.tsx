@@ -34,9 +34,10 @@ export default function SignupPage() {
   const { isAuthenticated, authClient } = useAuth()
   const router = useRouter()
   const classNames = useStyles()
-  const { register, handleSubmit, errors, setError, control } = useForm<
+  const { watch, register, handleSubmit, errors, setError, control } = useForm<
     FormData
   >()
+  const role = watch('role')
 
   const handleFormValid = useCallback(
     async ({ email, password, ...additionData }: FormData) => {
@@ -63,9 +64,9 @@ export default function SignupPage() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      router.push('/onboarding')
+      router.push(`/onboarding/${role || 'server'}`)
     }
-  }, [isAuthenticated, router])
+  }, [isAuthenticated, router, role])
 
   return (
     <AuthPage title='Signup'>

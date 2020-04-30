@@ -5141,7 +5141,7 @@ export type PageQueryFragment = (
   { __typename?: 'query_root' }
   & { current_user: Array<(
     { __typename?: 'current_user' }
-    & Pick<Current_User, 'id' | 'firebase_messaging_token' | 'notifications_enabled'>
+    & Pick<Current_User, 'id' | 'firebase_messaging_token' | 'notifications_enabled' | 'approved'>
   )> }
 );
 
@@ -5719,6 +5719,10 @@ export type ServerOnboardingNotificationsQueryVariables = {};
 
 export type ServerOnboardingNotificationsQuery = (
   { __typename?: 'query_root' }
+  & { current_user: Array<(
+    { __typename?: 'current_user' }
+    & Pick<Current_User, 'id' | 'firebase_messaging_token'>
+  )> }
   & PageQueryFragment
 );
 
@@ -5773,6 +5777,7 @@ export const PageQueryFragmentDoc = gql`
     id
     firebase_messaging_token
     notifications_enabled
+    approved
   }
 }
     `;
@@ -7076,6 +7081,10 @@ export type OnboardingPageLazyQueryHookResult = ReturnType<typeof useOnboardingP
 export type OnboardingPageQueryResult = ApolloReactCommon.QueryResult<OnboardingPageQuery, OnboardingPageQueryVariables>;
 export const ServerOnboardingNotificationsDocument = gql`
     query ServerOnboardingNotifications {
+  current_user {
+    id
+    firebase_messaging_token
+  }
   ...PageQuery
 }
     ${PageQueryFragmentDoc}`;

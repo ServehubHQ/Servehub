@@ -43,7 +43,7 @@ export default function OnboardingPage() {
   ])
 
   useEffect(() => {
-    if (!data?.current_user[0]?.address_id) {
+    if (data?.current_user[0]?.address_id) {
       router.push(`/onboarding/${role}/notifications`)
     }
   }, [data, router, role])
@@ -61,17 +61,8 @@ export default function OnboardingPage() {
       await setUserAddress({ variables: { addressId, userId } })
 
       await authClient?.refreshToken(true)
-      if (authClient?.getRole() === 'lawyer') {
-        router.push(`/jobs/create`)
-      } else if (authClient?.getRole() === 'server') {
-        router.push(`/pending-approval`)
-      } else {
-        console.warn(
-          'Unable to determine user role after setting address. Current role:',
-          authClient?.getRole(),
-        )
-        router.push('/')
-      }
+      const role = authClient?.getRole()
+      router.push(`/onboarding/${role}/notifications`)
     },
     [insertAddress, setUserAddress, router, setError, userId, authClient],
   )
@@ -82,7 +73,7 @@ export default function OnboardingPage() {
         <Card>
           <CardHeader
             title='Enter your Address'
-            subheader='Your address will be used to find serves in your area.'
+            subheader='Your address will be used to find jobs in your area.'
           />
           <Divider />
           <CardContent>

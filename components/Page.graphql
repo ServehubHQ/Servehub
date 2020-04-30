@@ -3,5 +3,6 @@ fragment PageQuery on query_root {
     id
     firebase_messaging_token
     notifications_enabled
+    approved
   }
 }
