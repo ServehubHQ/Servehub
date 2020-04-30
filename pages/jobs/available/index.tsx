@@ -25,6 +25,7 @@ import {
 import { DATE_FORMAT_LONG } from '../../../lib/constants'
 import { jobDueDate } from '../../../lib/jobUtils'
 import { useAuthRequired } from '../../../lib/useAuthRequired'
+import { useRouter } from 'next/router'
 
 export const useStyles = makeStyles((theme) => ({
   heading: {
@@ -35,8 +36,10 @@ export const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
   cardContainer: {
-    maxWidth: 768,
-    margin: 'auto',
+    [theme.breakpoints.up('md')]: {
+      maxWidth: 768,
+      margin: 'auto',
+    },
   },
 }))
 
@@ -72,6 +75,7 @@ interface AvailableJobProps {
 }
 
 function AvailableJob({ job }: AvailableJobProps) {
+  const router = useRouter()
   const classNames = useStyles()
   const dueDate = useMemo(() => jobDueDate(job as Required<AvailableJob>), [
     job,
@@ -82,7 +86,8 @@ function AvailableJob({ job }: AvailableJobProps) {
   })
   const handleClaimClick = useCallback(async () => {
     await claimJob()
-  }, [claimJob])
+    router.push(`/jobs/${job.id}`)
+  }, [claimJob, job, router])
 
   return (
     <Card>

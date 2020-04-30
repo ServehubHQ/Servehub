@@ -1,13 +1,13 @@
 import {
+  CardContent,
+  CardHeader,
+  Divider,
   FormControlLabel,
   Grid,
   Switch,
-  CardContent,
-  Divider,
-  CardHeader,
 } from '@material-ui/core'
 import { useRouter } from 'next/router'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { AddressForm } from '../../../components/AddressForm'
 import { CreateJobPage } from '../../../components/CreateJobPage'
@@ -15,12 +15,11 @@ import { DroppedFile, FilesDropzone } from '../../../components/FileDropzone'
 import {
   InsertAddressMutationVariables,
   useInsertAddressMutation,
-  useSetJobPickupRequiredMutation,
   useInsertDocumentMutation,
   useJobsCreateDocumentsQuery,
+  useSetJobPickupRequiredMutation,
 } from '../../../graphql-codegen'
 import { useAuthRequired } from '../../../lib/useAuthRequired'
-import { undefinedIfNull } from '../../../components/undefinedIfNull'
 
 export default function JobsCreateDocumentsPage() {
   useAuthRequired()
@@ -46,11 +45,19 @@ export default function JobsCreateDocumentsPage() {
       insertAddressLoading || setPickupRequiredLoading || insertDocumentLoading,
     [insertAddressLoading, setPickupRequiredLoading, insertDocumentLoading],
   )
-  const { register, handleSubmit, errors, setError } = useForm<
+  const { register, handleSubmit, errors, setError, setValue } = useForm<
     InsertAddressMutationVariables
-  >({
-    defaultValues: undefinedIfNull(data?.current_user[0]?.address),
-  })
+  >()
+
+  useEffect(() => {
+    if (pickup && data?.current_user[0].address) {
+      for (const [key, value] of Object.entries(
+        data?.current_user[0].address,
+      )) {
+        setValue(key, value)
+      }
+    }
+  }, [pickup, data, setValue])
 
   const handlePickupChange = useCallback(
     (event, pickup: boolean) => {

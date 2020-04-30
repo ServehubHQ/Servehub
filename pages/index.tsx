@@ -18,11 +18,11 @@ export default function HomePage() {
     if (!isAuthenticated) {
       router.push('/signup')
     }
-    if (loading) {
+    if (loading || !data?.current_user[0]) {
       return
     }
 
-    if (role !== 'server' || data?.current_user[0].approved) {
+    if (role !== 'server' || data.current_user[0].approved) {
       router.push('/jobs')
     } else {
       router.push(`/onboarding/${role}`)

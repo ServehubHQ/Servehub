@@ -5,6 +5,7 @@ import {
   CardContent,
   CardHeader,
   Divider,
+  makeStyles,
 } from '@material-ui/core'
 import { useRouter } from 'next/router'
 import { useCallback, useMemo, useEffect } from 'react'
@@ -20,8 +21,15 @@ import {
 import { useAuth } from '../../../lib/useAuth'
 import { useAuthRequired } from '../../../lib/useAuthRequired'
 
+const useClassNames = makeStyles((theme) => ({
+  actions: {
+    justifyContent: 'flex-end',
+  },
+}))
+
 export default function OnboardingPage() {
   useAuthRequired()
+  const classNames = useClassNames()
   const { userId, authClient, role } = useAuth()
   const router = useRouter()
   const { data } = useOnboardingPageQuery({ variables: { userId } })
@@ -80,7 +88,7 @@ export default function OnboardingPage() {
             <AddressForm register={register} errors={errors} />
           </CardContent>
           <Divider />
-          <CardActions>
+          <CardActions className={classNames.actions}>
             <Button
               type='submit'
               variant='contained'

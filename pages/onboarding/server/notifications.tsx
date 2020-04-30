@@ -4,9 +4,10 @@ import {
   CardActions,
   CardHeader,
   Divider,
+  makeStyles,
 } from '@material-ui/core'
 import { useRouter } from 'next/router'
-import { MouseEvent, useCallback, useEffect } from 'react'
+import { MouseEvent, useCallback, useEffect, useState } from 'react'
 import ServerOnboardingPage from '../../../components/ServerOnboardingPage'
 import { useServerOnboardingNotificationsQuery } from '../../../graphql-codegen'
 import { getAndSaveMessagingToken } from '../../../lib/firebase'
@@ -14,8 +15,16 @@ import { useAuthRequired } from '../../../lib/useAuthRequired'
 
 const NEXT_PATH = '/onboarding/server/pending-approval'
 
+const useClassNames = makeStyles((theme) => ({
+  actions: {
+    justifyContent: 'flex-end',
+  },
+}))
+
 export default function OnboardingServerNotifications() {
   useAuthRequired()
+  const classNames = useClassNames()
+  const [loading, setLoading] = useState(false)
   const { data, refetch } = useServerOnboardingNotificationsQuery()
   const router = useRouter()
 
@@ -27,15 +36,17 @@ export default function OnboardingServerNotifications() {
 
   const handleEnableNotificationsClick = useCallback(
     async (event: MouseEvent<HTMLButtonElement>) => {
+      setLoading(true)
       await getAndSaveMessagingToken(true)
       await refetch()
       router.push(NEXT_PATH)
     },
-    [refetch, router],
+    [refetch, router, setLoading],
   )
 
   const handleSkipClick = useCallback(
     async (event: MouseEvent<HTMLButtonElement>) => {
+      setLoading(true)
       router.push(NEXT_PATH)
     },
     [router],
@@ -49,15 +60,16 @@ export default function OnboardingServerNotifications() {
           subheader='Make sure you know when a new jobs is available.'
         />
         <Divider />
-        <CardActions>
+        <CardActions className={classNames.actions}>
+          <Button onClick={handleSkipClick}>Skip</Button>
           <Button
             onClick={handleEnableNotificationsClick}
             color='primary'
             variant='contained'
+            disabled={loading}
           >
             Enable
           </Button>
-          <Button onClick={handleSkipClick}>Skip</Button>
         </CardActions>
       </Card>
     </ServerOnboardingPage>
