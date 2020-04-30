@@ -50,6 +50,7 @@ export default async function hasurajobUpdatedApi(
       title: 'New Servehub job available!',
       body: 'Click here to learn more',
       icon: `${config.baseUrl}/images/brand/icon-512x512.png`,
+      badge: `${config.baseUrl}/images/brand/icon-512x512.png`,
       click_action: `${config.baseUrl}/jobs/${job.id}`,
     })
   }
