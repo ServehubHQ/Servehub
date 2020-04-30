@@ -58,8 +58,8 @@ export default async function hasuraMessageInsertedApi(
       await sendFirebaseMessage([recipient], {
         title: `New message for job: ${data.message.job.target_name}`,
         body: data.message.message,
-        // icon: 'https://placekitten.com/360/240',
-        // badge: 'https://placekitten.com/512/512',
+        icon: `${config.baseUrl}/images/brand/icon-512x512.png`,
+        badge: `${config.baseUrl}/images/brand/icon-512x512.png`,
         click_action: `${config.baseUrl}/jobs/${data.message.job.id}/chat`,
       })
     }
