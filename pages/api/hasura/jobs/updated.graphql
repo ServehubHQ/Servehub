@@ -1,9 +1,19 @@
-query JobUpdated {
+query JobUpdated($jobId: uuid!) {
+  job: jobs_by_pk(id: $jobId) {
+    id
+    target_address {
+      city
+    }
+  }
+}
+query JobUpdatedServers($city: String!) {
   users(
     where: {
       role: { role: { _eq: "server" } }
       firebase_messaging_token: { _is_null: false }
       approved: { _eq: true }
+      address: { city: { _ilike: $city } }
+      notifications_enabled: { _eq: true }
     }
   ) {
     firebase_messaging_token

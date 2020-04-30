@@ -5431,10 +5431,29 @@ export type SetStripeCustomerIdMutation = (
   )> }
 );
 
-export type JobUpdatedQueryVariables = {};
+export type JobUpdatedQueryVariables = {
+  jobId: Scalars['uuid'];
+};
 
 
 export type JobUpdatedQuery = (
+  { __typename?: 'query_root' }
+  & { job: Maybe<(
+    { __typename?: 'jobs' }
+    & Pick<Jobs, 'id'>
+    & { target_address: Maybe<(
+      { __typename?: 'addresses' }
+      & Pick<Addresses, 'city'>
+    )> }
+  )> }
+);
+
+export type JobUpdatedServersQueryVariables = {
+  city: Scalars['String'];
+};
+
+
+export type JobUpdatedServersQuery = (
   { __typename?: 'query_root' }
   & { users: Array<(
     { __typename?: 'users' }
@@ -6487,10 +6506,12 @@ export type SetStripeCustomerIdMutationHookResult = ReturnType<typeof useSetStri
 export type SetStripeCustomerIdMutationResult = ApolloReactCommon.MutationResult<SetStripeCustomerIdMutation>;
 export type SetStripeCustomerIdMutationOptions = ApolloReactCommon.BaseMutationOptions<SetStripeCustomerIdMutation, SetStripeCustomerIdMutationVariables>;
 export const JobUpdatedDocument = gql`
-    query JobUpdated {
-  users(where: {role: {role: {_eq: "server"}}, firebase_messaging_token: {_is_null: false}, approved: {_eq: true}}) {
-    firebase_messaging_token
+    query JobUpdated($jobId: uuid!) {
+  job: jobs_by_pk(id: $jobId) {
     id
+    target_address {
+      city
+    }
   }
 }
     `;
@@ -6507,6 +6528,7 @@ export const JobUpdatedDocument = gql`
  * @example
  * const { data, loading, error } = useJobUpdatedQuery({
  *   variables: {
+ *      jobId: // value for 'jobId'
  *   },
  * });
  */
@@ -6519,6 +6541,40 @@ export function useJobUpdatedLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryH
 export type JobUpdatedQueryHookResult = ReturnType<typeof useJobUpdatedQuery>;
 export type JobUpdatedLazyQueryHookResult = ReturnType<typeof useJobUpdatedLazyQuery>;
 export type JobUpdatedQueryResult = ApolloReactCommon.QueryResult<JobUpdatedQuery, JobUpdatedQueryVariables>;
+export const JobUpdatedServersDocument = gql`
+    query JobUpdatedServers($city: String!) {
+  users(where: {role: {role: {_eq: "server"}}, firebase_messaging_token: {_is_null: false}, approved: {_eq: true}, address: {city: {_ilike: $city}}, notifications_enabled: {_eq: true}}) {
+    firebase_messaging_token
+    id
+  }
+}
+    `;
+
+/**
+ * __useJobUpdatedServersQuery__
+ *
+ * To run a query within a React component, call `useJobUpdatedServersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useJobUpdatedServersQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useJobUpdatedServersQuery({
+ *   variables: {
+ *      city: // value for 'city'
+ *   },
+ * });
+ */
+export function useJobUpdatedServersQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<JobUpdatedServersQuery, JobUpdatedServersQueryVariables>) {
+        return ApolloReactHooks.useQuery<JobUpdatedServersQuery, JobUpdatedServersQueryVariables>(JobUpdatedServersDocument, baseOptions);
+      }
+export function useJobUpdatedServersLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<JobUpdatedServersQuery, JobUpdatedServersQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<JobUpdatedServersQuery, JobUpdatedServersQueryVariables>(JobUpdatedServersDocument, baseOptions);
+        }
+export type JobUpdatedServersQueryHookResult = ReturnType<typeof useJobUpdatedServersQuery>;
+export type JobUpdatedServersLazyQueryHookResult = ReturnType<typeof useJobUpdatedServersLazyQuery>;
+export type JobUpdatedServersQueryResult = ApolloReactCommon.QueryResult<JobUpdatedServersQuery, JobUpdatedServersQueryVariables>;
 export const HasuraMessageInsertedApiDocument = gql`
     query HasuraMessageInsertedApi($messageId: uuid!) {
   message: messages_by_pk(id: $messageId) {
