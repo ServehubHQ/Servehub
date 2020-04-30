@@ -11,6 +11,7 @@ query JobsCreatePlan($jobId: uuid!) {
     bounty
     attempts
     duration
+    order
   }
 
   ...PageQuery

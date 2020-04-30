@@ -1,4 +1,11 @@
-import { FormControlLabel, Grid, Switch } from '@material-ui/core'
+import {
+  FormControlLabel,
+  Grid,
+  Switch,
+  CardContent,
+  Divider,
+  CardHeader,
+} from '@material-ui/core'
 import { useRouter } from 'next/router'
 import { useCallback, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -98,31 +105,38 @@ export default function JobsCreateDocumentsPage() {
       loading={loading}
       query={data}
     >
-      <Grid container spacing={2} direction='column'>
-        <Grid item>
-          <FormControlLabel
-            control={
-              <Switch
-                name='pickup'
-                color='primary'
-                onChange={handlePickupChange}
-              />
-            }
-            label='Require Pickup'
-          />
-        </Grid>
-
-        <Grid item>
-          {pickup ? (
-            <AddressForm register={register} errors={errors} />
-          ) : (
-            <FilesDropzone
-              filePath={`/jobs/${jobId}/documents`}
-              onChange={setFiles}
+      <CardHeader
+        title='Documents'
+        subheader='You can have the server pick them up, or print the documents themselves.'
+      />
+      <Divider />
+      <CardContent>
+        <Grid container spacing={2} direction='column'>
+          <Grid item>
+            <FormControlLabel
+              control={
+                <Switch
+                  name='pickup'
+                  color='primary'
+                  onChange={handlePickupChange}
+                />
+              }
+              label='Require Pickup'
             />
-          )}
+          </Grid>
+
+          <Grid item>
+            {pickup ? (
+              <AddressForm register={register} errors={errors} />
+            ) : (
+              <FilesDropzone
+                filePath={`/jobs/${jobId}/documents`}
+                onChange={setFiles}
+              />
+            )}
+          </Grid>
         </Grid>
-      </Grid>
+      </CardContent>
     </CreateJobPage>
   )
 }

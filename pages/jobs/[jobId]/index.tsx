@@ -40,9 +40,6 @@ const useStyles = makeStyles((theme) => ({
   successIcon: {
     fill: theme.palette.success.main,
   },
-  attemptIcon: {
-    fontSize: 49,
-  },
 }))
 
 export default function JobDetails() {

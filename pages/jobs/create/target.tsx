@@ -1,4 +1,10 @@
-import { TextField, Grid } from '@material-ui/core'
+import {
+  TextField,
+  Grid,
+  CardContent,
+  CardHeader,
+  Divider,
+} from '@material-ui/core'
 import { useRouter } from 'next/router'
 import { useCallback, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
@@ -71,35 +77,42 @@ export default function JobsCreateTargetPage() {
       loading={loading}
       query={data}
     >
-      <Grid container direction='row' spacing={2}>
-        <Grid item xs={6}>
-          <TextField
-            variant='filled'
-            margin='normal'
-            label='Full Name'
-            name='name'
-            required
-            autoFocus
-            fullWidth
-            inputRef={register({ required: true })}
-            error={Boolean(errors.name)}
-            helperText={errors.name?.message}
-          />
+      <CardHeader
+        title='Target Information'
+        subheader='This is the person who will be served.'
+      />
+      <Divider />
+      <CardContent>
+        <Grid container direction='row' spacing={2}>
+          <Grid item xs={6}>
+            <TextField
+              variant='filled'
+              margin='normal'
+              label='Full Name'
+              name='name'
+              required
+              autoFocus
+              fullWidth
+              inputRef={register({ required: true })}
+              error={Boolean(errors.name)}
+              helperText={errors.name?.message}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              variant='filled'
+              margin='normal'
+              label='Case Number'
+              name='caseNumber'
+              fullWidth
+              inputRef={register()}
+              error={Boolean(errors.caseNumber)}
+              helperText={errors.caseNumber?.message}
+            />
+          </Grid>
         </Grid>
-        <Grid item xs={6}>
-          <TextField
-            variant='filled'
-            margin='normal'
-            label='Case Number'
-            name='caseNumber'
-            fullWidth
-            inputRef={register()}
-            error={Boolean(errors.caseNumber)}
-            helperText={errors.caseNumber?.message}
-          />
-        </Grid>
-      </Grid>
-      <AddressForm register={register} errors={errors} />
+        <AddressForm register={register} errors={errors} />
+      </CardContent>
     </CreateJobPage>
   )
 }

@@ -5634,9 +5634,13 @@ export type JobsCreatePaymentQueryVariables = {
 
 export type JobsCreatePaymentQuery = (
   { __typename?: 'query_root' }
-  & { jobs: Array<(
+  & { job: Maybe<(
     { __typename?: 'jobs' }
     & Pick<Jobs, 'stripe_payment_intent_client_secret' | 'id'>
+    & { plan: Maybe<(
+      { __typename?: 'plans' }
+      & Pick<Plans, 'id' | 'name' | 'fee' | 'bounty' | 'attempts' | 'duration'>
+    )> }
   )> }
   & PageQueryFragment
 );
@@ -5653,7 +5657,7 @@ export type JobsCreatePlanQuery = (
     & Pick<Jobs, 'stripe_payment_intent_client_secret' | 'id'>
   )>, plans: Array<(
     { __typename?: 'plans' }
-    & Pick<Plans, 'id' | 'name' | 'fee' | 'bounty' | 'attempts' | 'duration'>
+    & Pick<Plans, 'id' | 'name' | 'fee' | 'bounty' | 'attempts' | 'duration' | 'order'>
   )> }
   & PageQueryFragment
 );
@@ -6909,9 +6913,17 @@ export type JobsCreateDocumentsLazyQueryHookResult = ReturnType<typeof useJobsCr
 export type JobsCreateDocumentsQueryResult = ApolloReactCommon.QueryResult<JobsCreateDocumentsQuery, JobsCreateDocumentsQueryVariables>;
 export const JobsCreatePaymentDocument = gql`
     query JobsCreatePayment($jobId: uuid!, $userId: uuid) {
-  jobs(where: {id: {_eq: $jobId}}) {
+  job: jobs_by_pk(id: $jobId) {
     stripe_payment_intent_client_secret
     id
+    plan {
+      id
+      name
+      fee
+      bounty
+      attempts
+      duration
+    }
   }
   ...PageQuery
 }
@@ -6956,6 +6968,7 @@ export const JobsCreatePlanDocument = gql`
     bounty
     attempts
     duration
+    order
   }
   ...PageQuery
 }

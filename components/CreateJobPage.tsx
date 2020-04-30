@@ -9,12 +9,15 @@ import {
   Step,
   Stepper,
   Paper,
+  useTheme,
+  useMediaQuery,
 } from '@material-ui/core'
 import { FormEvent, ReactNode } from 'react'
 import { useAuthRequired } from '../lib/useAuthRequired'
 import { Page, PageProps } from './Page'
 import { StepLabel } from './StepLabel'
 import { Stack } from './Stack'
+import { Heading } from './Heading'
 
 interface CreateJobPageProps extends PageProps {
   activeStep: number
@@ -47,12 +50,19 @@ export function CreateJobPage({
 }: CreateJobPageProps) {
   useAuthRequired()
   const classNames = useStyles()
+  const theme = useTheme()
+  const isSm = useMediaQuery(theme.breakpoints.down('sm'))
 
   return (
     <Page {...pageProps} title={`${title} - Create Job`}>
       <Stack>
+        <Heading title='Create Job' />
+
         <Paper>
-          <Stepper activeStep={activeStep}>
+          <Stepper
+            activeStep={activeStep}
+            orientation={isSm ? 'vertical' : 'horizontal'}
+          >
             <Step>
               <StepLabel>Target</StepLabel>
             </Step>
@@ -67,6 +77,7 @@ export function CreateJobPage({
             </Step>
           </Stepper>
         </Paper>
+
         <form noValidate onSubmit={onSubmit}>
           <Card>
             {children}

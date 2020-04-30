@@ -1,11 +1,17 @@
 interface MoneyProps {
   cents: number
+  className?: string
 }
 
 export function formatMoney(cents: number): string {
-  return `$${(cents / 100).toFixed(2)}`
+  const dollars = cents / 100
+  if (dollars % 1 > 0) {
+    return `$${dollars.toFixed(2)}`
+  } else {
+    return `$${dollars}`
+  }
 }
 
-export function Money({ cents }: MoneyProps) {
-  return <>{formatMoney(cents)}</>
+export function Money({ cents, className }: MoneyProps) {
+  return <span className={className}>{formatMoney(cents)}</span>
 }

@@ -1,8 +1,9 @@
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { CreateJobPage } from '../../../components/CreateJobPage'
+import { Inline } from '../../../components/Inline'
 import { useInsertJobMutation } from '../../../graphql-codegen'
-import { CircularProgress } from '@material-ui/core'
+import { CircularProgress, CardContent } from '@material-ui/core'
 
 export default function JobsCreateTargetPage() {
   const router = useRouter()
@@ -19,7 +20,11 @@ export default function JobsCreateTargetPage() {
 
   return (
     <CreateJobPage activeStep={0} title='Initializing' loading={loading}>
-      <CircularProgress />
+      <CardContent>
+        <Inline align='center'>
+          <CircularProgress />
+        </Inline>
+      </CardContent>
     </CreateJobPage>
   )
 }

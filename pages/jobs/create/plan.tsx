@@ -1,4 +1,12 @@
-import { Button, Grid, makeStyles, Typography } from '@material-ui/core'
+import {
+  Button,
+  Grid,
+  makeStyles,
+  Typography,
+  CardHeader,
+  Divider,
+  CardContent,
+} from '@material-ui/core'
 import clsx from 'clsx'
 import fetch from 'cross-fetch'
 import { useRouter } from 'next/router'
@@ -10,6 +18,13 @@ import {
   useJobsCreatePlanQuery,
 } from '../../../graphql-codegen'
 import { useAuthRequired } from '../../../lib/useAuthRequired'
+import {
+  DirectionsWalkTwoTone,
+  DirectionsRunTwoTone,
+  DirectionsCarTwoTone,
+} from '@material-ui/icons'
+import { Stack } from '../../../components/Stack'
+import { colors } from '@material-ui/core'
 
 interface FormData {
   name: string
@@ -24,12 +39,21 @@ const useClassNames = makeStyles((theme) => ({
   plan: {
     textAlign: 'center',
     padding: theme.spacing(2),
-    border: `1px solid ${theme.palette.grey[500]}`,
+    border: `1px solid ${theme.palette.grey[300]}`,
     borderRadius: theme.spacing(1),
   },
   selectedPlan: {
-    borderColor: theme.palette.primary.main,
     boxShadow: theme.shadows[1],
+    borderColor: theme.palette.grey[400],
+    backgroundColor: theme.palette.grey[50],
+    // backgroundColor: colors.lightBlue[50],
+    // borderColor: theme.palette.primary.main,
+  },
+  planIcon: {
+    fontSize: 64,
+  },
+  money: {
+    color: theme.palette.secondary.main,
   },
 }))
 
@@ -95,51 +119,83 @@ export default function JobsCreatePaymentPage() {
       loading={loading}
       query={data}
     >
-      <Grid container spacing={6}>
-        {data?.plans.map((plan) => (
-          <Grid item key={plan.id} xs={12} sm={12} md={4}>
-            <Grid
-              container
-              spacing={1}
-              direction='column'
-              className={clsx(classNames.plan, {
-                [classNames.selectedPlan]: planId === plan.id,
-              })}
-            >
-              <Grid item>
-                <Typography variant='h2'>{plan.name}</Typography>
-              </Grid>
-              <Grid item>
-                <Typography>{`${plan.attempts} attempt${
-                  plan.attempts > 1 ? 's' : ''
-                } in ${plan.duration}`}</Typography>
-              </Grid>
-              <Grid item>
-                <Typography variant='overline'>Fee</Typography>
-                <Typography variant='h5'>
-                  <Money cents={plan.fee} />
-                </Typography>
-              </Grid>
-              <Grid item>
-                <Typography variant='overline'>Bounty</Typography>
-                <Typography variant='h5'>
-                  <Money cents={plan.bounty} />
-                </Typography>
-              </Grid>
-              <Grid item>
+      <CardHeader
+        title='Select a Plan'
+        subheader='The bounty portion of the price will be refunded if the serve is unsuccessful.'
+      />
+      <Divider />
+      <CardContent>
+        <Grid container spacing={6}>
+          {data?.plans.map((plan) => (
+            <Grid item key={plan.id} xs={12} sm={12} md={4}>
+              <Stack
+                spacing={3}
+                className={clsx(classNames.plan, {
+                  [classNames.selectedPlan]: planId === plan.id,
+                })}
+              >
+                {plan.order === 1 ? (
+                  <DirectionsWalkTwoTone
+                    className={classNames.planIcon}
+                    color='primary'
+                  />
+                ) : plan.order === 2 ? (
+                  <DirectionsRunTwoTone
+                    className={classNames.planIcon}
+                    color='primary'
+                  />
+                ) : (
+                  <DirectionsCarTwoTone
+                    className={classNames.planIcon}
+                    color='primary'
+                  />
+                )}
+
+                <Stack spacing={0}>
+                  <Typography variant='h2'>{plan.name}</Typography>
+
+                  <Typography>{`${plan.attempts} attempt${
+                    plan.attempts > 1 ? 's' : ''
+                  } in ${plan.duration}`}</Typography>
+                </Stack>
+
+                <Stack spacing={0}>
+                  <Typography variant='h1' component='div'>
+                    <Money
+                      cents={plan.fee + plan.bounty}
+                      className={classNames.money}
+                    />
+                  </Typography>
+
+                  <Grid container direction='row' justify='space-around'>
+                    <Grid item>
+                      <Typography variant='overline'>Fee</Typography>
+                      <Typography variant='h5'>
+                        <Money cents={plan.fee} />
+                      </Typography>
+                    </Grid>
+                    <Grid item>
+                      <Typography variant='overline'>Bounty</Typography>
+                      <Typography variant='h5'>
+                        <Money cents={plan.bounty} />
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                </Stack>
+
+                <Divider />
                 <Button
-                  variant='contained'
                   color='primary'
                   onClick={handlePlanClick(plan)}
                   disabled={planId === plan.id}
                 >
                   Select
                 </Button>
-              </Grid>
+              </Stack>
             </Grid>
-          </Grid>
-        ))}
-      </Grid>
+          ))}
+        </Grid>
+      </CardContent>
     </CreateJobPage>
   )
 }

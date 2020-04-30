@@ -1,4 +1,12 @@
-import { FormHelperText, Grid } from '@material-ui/core'
+import {
+  CardContent,
+  CardHeader,
+  Divider,
+  FormHelperText,
+  Grid,
+  makeStyles,
+  Typography,
+} from '@material-ui/core'
 import {
   CardCvcElement,
   CardExpiryElement,
@@ -7,12 +15,25 @@ import {
   useStripe,
 } from '@stripe/react-stripe-js'
 import { useRouter } from 'next/router'
-import { useCallback, useMemo, useState, useEffect } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { CreateJobPage } from '../../../components/CreateJobPage'
+import { Inline } from '../../../components/Inline'
+import { Money } from '../../../components/Money'
 import { StripeField } from '../../../components/StripeField'
 import { useJobsCreatePaymentQuery } from '../../../graphql-codegen'
 import { useAuth } from '../../../lib/useAuth'
 import { useAuthRequired } from '../../../lib/useAuthRequired'
+import { Stack } from '../../../components/Stack'
+
+const useClassNames = makeStyles((theme) => ({
+  money: {
+    color: theme.palette.primary.main,
+  },
+  moneyText: {
+    borderRight: `1px solid ${theme.palette.grey[200]}`,
+    paddingRight: theme.spacing(2),
+  },
+}))
 
 interface FormData {
   name: string
@@ -26,6 +47,7 @@ interface FormData {
 export default function JobsCreatePaymentPage() {
   useAuthRequired()
   const router = useRouter()
+  const classNames = useClassNames()
   const { userId } = useAuth()
   const stripe = useStripe()
   const elements = useElements()
@@ -36,7 +58,7 @@ export default function JobsCreatePaymentPage() {
     variables: { jobId, userId },
   })
   const stripeClientSecret = useMemo(
-    () => data?.jobs[0].stripe_payment_intent_client_secret,
+    () => data?.job?.stripe_payment_intent_client_secret,
     [data],
   )
 
@@ -84,37 +106,68 @@ export default function JobsCreatePaymentPage() {
       actionExtra={<img src='/images/powered_by_stripe.svg' />}
       query={data}
     >
-      <FormHelperText error>{error}</FormHelperText>
+      <CardHeader title='Payment' />
+      <Divider />
+      <CardContent>
+        <FormHelperText error>{error}</FormHelperText>
 
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={6}>
-          <StripeField
-            Element={CardNumberElement}
-            label='Card Number'
-            margin='normal'
-            required
-            fullWidth
-          />
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={6}>
+            <StripeField
+              Element={CardNumberElement}
+              label='Card Number'
+              margin='normal'
+              required
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={6} md={3}>
+            <StripeField
+              Element={CardExpiryElement}
+              label='Expiry'
+              margin='normal'
+              required
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={6} md={3}>
+            <StripeField
+              Element={CardCvcElement}
+              label='CVC'
+              margin='normal'
+              required
+              fullWidth
+            />
+          </Grid>
         </Grid>
-        <Grid item xs={6} md={3}>
-          <StripeField
-            Element={CardExpiryElement}
-            label='Expiry'
-            margin='normal'
-            required
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={6} md={3}>
-          <StripeField
-            Element={CardCvcElement}
-            label='CVC'
-            margin='normal'
-            required
-            fullWidth
-          />
-        </Grid>
-      </Grid>
+      </CardContent>
+      <Divider />
+      <CardContent>
+        {data?.job?.plan ? (
+          <Inline align='flex-end'>
+            <Stack
+              spacing={0}
+              align='flex-end'
+              className={classNames.moneyText}
+            >
+              <Typography variant='h6' component='span'>
+                {data.job.plan.name}
+              </Typography>
+
+              <Typography>{`${data.job.plan.attempts} attempt${
+                data.job.plan.attempts > 1 ? 's' : ''
+              } in ${data.job.plan.duration}`}</Typography>
+            </Stack>
+
+            <Typography variant='h5' component='span'>
+              <Money
+                cents={(data.job.plan.fee || 0) + (data.job.plan.bounty || 0)}
+                className={classNames.money}
+              />
+            </Typography>
+          </Inline>
+        ) : null}
+      </CardContent>
     </CreateJobPage>
   )
 }
