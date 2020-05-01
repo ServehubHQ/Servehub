@@ -9,6 +9,9 @@
     "gen": "graphql-codegen -r dotenv/config --config graphql-codegen.yml",
     "gen-watch": "graphql-codegen --watch -r dotenv/config --config graphql-codegen.yml"
   },
+  "browserslist": [
+    "defaults"
+  ],
   "dependencies": {
     "@apollo/client": "^3.0.0-beta.38",
     "@apollo/link-context": "^2.0.0-beta.3",

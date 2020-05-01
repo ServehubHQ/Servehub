@@ -1,6 +1,5 @@
 import { makeStyles } from '@material-ui/core'
-import React, { useCallback, useEffect, useRef } from 'react'
-import PerfectScrollbar from 'react-perfect-scrollbar'
+import React, { useEffect, useRef } from 'react'
 import { useChatMessagesSubscription } from '../graphql-codegen'
 import { ChatMessage } from './ChatMessage'
 
@@ -14,38 +13,43 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'hidden',
     maxHeight: '100%',
   },
+  outer: {
+    overflowY: 'scroll',
+    overflowX: 'hidden',
+  },
   inner: {
     padding: theme.spacing(2),
   },
 }))
 
 export function ChatMessages({ jobId }: ChatMessagesProps) {
-  const classes = useStyles()
+  const classNames = useStyles()
   const { data } = useChatMessagesSubscription({ variables: { jobId } })
-  const scrollRef = useRef<HTMLElement>()
-
-  const setRef = useCallback((ref: HTMLElement) => (scrollRef.current = ref), [
-    scrollRef,
-  ])
+  const scrollRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (typeof scrollRef?.current === 'undefined') {
+    if (!scrollRef?.current) {
       return
     }
+
+    scrollRef.current.setAttribute(
+      'style',
+      `height: ${window.innerHeight - scrollRef.current.offsetTop - 96}px`,
+    )
     scrollRef.current.scrollTop = scrollRef.current.scrollHeight
   }, [data, scrollRef])
 
   return (
-    <div className={classes.root}>
-      <PerfectScrollbar containerRef={setRef}>
-        <div className={classes.inner}>
+    <div className={classNames.root}>
+      <div ref={scrollRef} className={classNames.outer}>
+        <div className={classNames.inner}>
           {(data?.messages.length || 0) === 0
             ? 'No messages yet!'
             : data?.messages.map((message) => {
                 return <ChatMessage key={message.id} message={message} />
               })}
         </div>
-      </PerfectScrollbar>
+      </div>
     </div>
   )
 }

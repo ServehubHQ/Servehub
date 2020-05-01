@@ -16,7 +16,11 @@ import { useMemo } from 'react'
 import 'react-perfect-scrollbar/dist/css/styles.css'
 import { AuthClient } from '../lib/AuthClient'
 import { config } from '../lib/config'
-import { getAndSaveMessagingToken, initFirebase } from '../lib/firebase'
+import {
+  getAndSaveMessagingToken,
+  initFirebase,
+  pushNotificationsSupported,
+} from '../lib/firebase'
 import { getApolloClient } from '../lib/getApolloClient'
 import { getAuthClient } from '../lib/getAuthClient'
 import { AuthProvider } from '../lib/useAuth'
@@ -111,7 +115,7 @@ if (typeof window === 'undefined') {
       apolloClient,
     }
   }
-} else {
+} else if (pushNotificationsSupported()) {
   initFirebase().then(async () => {
     const messaging = firebase.messaging()
     messaging.onTokenRefresh(getAndSaveMessagingToken)

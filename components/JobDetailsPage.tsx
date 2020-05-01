@@ -25,6 +25,7 @@ interface JobDetailsPageProps {
   query?: JobDetailsPageQueryFragment
   job?: JobDetailsPageJobFragment | null
   tab?: string
+  unreadMessageCount?: number
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -45,6 +46,7 @@ export function JobDetailsPage({
   refetch,
   job,
   query,
+  unreadMessageCount = 0,
 }: JobDetailsPageProps) {
   const router = useRouter()
   const classNames = useStyles()
@@ -125,10 +127,8 @@ export function JobDetailsPage({
               label={
                 <Inline align='center' spacing={1}>
                   Chat
-                  {(job?.messages_aggregate.aggregate?.count || 0) > 0 ? (
-                    <div className={classNames.badge}>
-                      {job?.messages_aggregate.aggregate?.count}
-                    </div>
+                  {unreadMessageCount > 0 ? (
+                    <div className={classNames.badge}>{unreadMessageCount}</div>
                   ) : null}
                 </Inline>
               }

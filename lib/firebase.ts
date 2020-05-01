@@ -9,6 +9,10 @@ import {
 } from '../graphql-codegen'
 import { config } from './config'
 
+export function pushNotificationsSupported() {
+  return typeof window !== 'undefined' && firebase?.messaging?.isSupported()
+}
+
 export async function initFirebase() {
   if (firebase.apps.length !== 0) {
     console.info('[firebase init] skipping')
@@ -27,6 +31,9 @@ export async function initFirebase() {
 }
 
 export async function getAndSaveMessagingToken(notificationsEnabled = true) {
+  if (!pushNotificationsSupported()) {
+    return
+  }
   const auth = getAuthClient()
   const userId = auth.getUserId()
   if (!userId) return

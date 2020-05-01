@@ -225,7 +225,7 @@ export function Page({ title, children, query }: PageProps) {
                   onClose={handleMenuClose}
                 >
                   {isAdmin ? (
-                    <Link href={`/admin`}>
+                    <Link href={`/admin`} passHref>
                       <MenuItem component='a'>Admin</MenuItem>
                     </Link>
                   ) : null}

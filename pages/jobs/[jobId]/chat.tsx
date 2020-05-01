@@ -1,15 +1,18 @@
-import { Divider, makeStyles, Paper, Button } from '@material-ui/core'
+import { Button, Divider, makeStyles, Paper } from '@material-ui/core'
+import { Alert } from '@material-ui/lab'
 import { useRouter } from 'next/router'
-import { useEffect, useMemo, useRef, MouseEvent, useCallback } from 'react'
+import { MouseEvent, useCallback } from 'react'
 import { ChatForm } from '../../../components/ChatForm'
 import { ChatMessages } from '../../../components/ChatMessages'
 import { JobDetailsPage } from '../../../components/JobDetailsPage'
-import { useJobDetailsChatQuery } from '../../../graphql-codegen'
-import { useAuthRequired } from '../../../lib/useAuthRequired'
-import { useAuth } from '../../../lib/useAuth'
-import { Alert } from '@material-ui/lab'
-import { getAndSaveMessagingToken } from '../../../lib/firebase'
 import { Stack } from '../../../components/Stack'
+import { useJobDetailsChatQuery } from '../../../graphql-codegen'
+import {
+  getAndSaveMessagingToken,
+  pushNotificationsSupported,
+} from '../../../lib/firebase'
+import { useAuth } from '../../../lib/useAuth'
+import { useAuthRequired } from '../../../lib/useAuthRequired'
 
 const useStyles = makeStyles((theme) => ({
   chatCard: {
@@ -28,17 +31,6 @@ export default function JobDetailsChat() {
   const { data, refetch } = useJobDetailsChatQuery({
     variables: { jobId, userId },
   })
-  const chatCardRef = useRef<HTMLDivElement>()
-
-  useEffect(() => {
-    if (typeof chatCardRef.current === 'undefined') {
-      return
-    }
-    chatCardRef.current.setAttribute(
-      'style',
-      `height: ${window.innerHeight - chatCardRef.current.offsetTop - 32}px`,
-    )
-  }, [chatCardRef])
 
   const handleEnableNotificationsClick = useCallback(
     async (event: MouseEvent<HTMLButtonElement>) => {
@@ -51,7 +43,8 @@ export default function JobDetailsChat() {
   return (
     <JobDetailsPage job={data?.job} query={data} tab='chat' refetch={refetch}>
       <Stack>
-        {!data?.current_user[0].notifications_enabled ? (
+        {pushNotificationsSupported() &&
+        !data?.current_user[0].notifications_enabled ? (
           <Alert
             variant='filled'
             severity='info'
@@ -69,7 +62,7 @@ export default function JobDetailsChat() {
           </Alert>
         ) : null}
         {data?.job ? (
-          <Paper className={classNames.chatCard} ref={chatCardRef}>
+          <Paper className={classNames.chatCard}>
             <ChatMessages jobId={data.job.id} />
             <Divider />
             <ChatForm jobId={data.job.id} />

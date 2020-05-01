@@ -28,15 +28,6 @@ query JobDetials($jobId: uuid!, $userId: uuid) {
     server {
       id
       name
-
-      ratings_aggregate {
-        aggregate {
-          count
-          avg {
-            value
-          }
-        }
-      }
     }
 
     attempts {
@@ -65,4 +56,16 @@ query JobDetials($jobId: uuid!, $userId: uuid) {
   }
 
   ...JobDetailsPageQuery
+}
+
+subscription JobDetails($jobId: uuid!, $userId: uuid) {
+  job: jobs_by_pk(id: $jobId) {
+    messages_aggregate(
+      where: { read_at: { _is_null: true }, user_id: { _neq: $userId } }
+    ) {
+      aggregate {
+        count
+      }
+    }
+  }
 }

@@ -28,12 +28,16 @@ import { Map } from '../../../components/Map'
 import { RateCard } from '../../../components/RateCard'
 import { Stack } from '../../../components/Stack'
 import { StepLabel } from '../../../components/StepLabel'
-import { useJobDetialsQuery } from '../../../graphql-codegen'
+import {
+  useJobDetialsQuery,
+  useJobDetailsSubscription,
+} from '../../../graphql-codegen'
 import { DATETIME_FORMAT_LONG, DATE_FORMAT_LONG } from '../../../lib/constants'
 import { encodeLocation } from '../../../lib/encodeLocation'
 import { jobDueDate, jobIsComplete } from '../../../lib/jobUtils'
 import { useAuth } from '../../../lib/useAuth'
 import { useAuthRequired } from '../../../lib/useAuthRequired'
+import { undefinedIfNull } from '../../../components/undefinedIfNull'
 
 const useStyles = makeStyles((theme) => ({
   heading: {
@@ -55,9 +59,19 @@ export default function JobDetails() {
   const { data, refetch } = useJobDetialsQuery({ variables: { jobId, userId } })
   const dueDate = useMemo(() => jobDueDate(data?.job), [data])
   const isComplete = useMemo(() => jobIsComplete(data?.job), [data])
+  const { data: unreadMessageData } = useJobDetailsSubscription({
+    variables: { jobId, userId },
+  })
 
   return (
-    <JobDetailsPage job={data?.job} query={data} refetch={refetch}>
+    <JobDetailsPage
+      job={data?.job}
+      query={data}
+      refetch={refetch}
+      unreadMessageCount={undefinedIfNull(
+        unreadMessageData?.job?.messages_aggregate.aggregate?.count,
+      )}
+    >
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Paper>

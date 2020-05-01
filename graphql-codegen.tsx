@@ -5111,13 +5111,7 @@ export type JobDetailsPageJobFragment = (
   )>, attempts: Array<(
     { __typename?: 'attempts' }
     & Pick<Attempts, 'id' | 'success'>
-  )>, messages_aggregate: (
-    { __typename?: 'messages_aggregate' }
-    & { aggregate: Maybe<(
-      { __typename?: 'messages_aggregate_fields' }
-      & Pick<Messages_Aggregate_Fields, 'count'>
-    )> }
-  ) }
+  )> }
 );
 
 export type JobDetailsPageQueryFragment = (
@@ -5577,17 +5571,6 @@ export type JobDetialsQuery = (
     )>, server: Maybe<(
       { __typename?: 'users' }
       & Pick<Users, 'id' | 'name'>
-      & { ratings_aggregate: (
-        { __typename?: 'ratings_aggregate' }
-        & { aggregate: Maybe<(
-          { __typename?: 'ratings_aggregate_fields' }
-          & Pick<Ratings_Aggregate_Fields, 'count'>
-          & { avg: Maybe<(
-            { __typename?: 'ratings_avg_fields' }
-            & Pick<Ratings_Avg_Fields, 'value'>
-          )> }
-        )> }
-      ) }
     )>, attempts: Array<(
       { __typename?: 'attempts' }
       & Pick<Attempts, 'id' | 'attempted_at' | 'success' | 'notes' | 'image_url'>
@@ -5602,6 +5585,26 @@ export type JobDetialsQuery = (
     & JobDetailsPageJobFragment
   )> }
   & JobDetailsPageQueryFragment
+);
+
+export type JobDetailsSubscriptionVariables = {
+  jobId: Scalars['uuid'];
+  userId?: Maybe<Scalars['uuid']>;
+};
+
+
+export type JobDetailsSubscription = (
+  { __typename?: 'subscription_root' }
+  & { job: Maybe<(
+    { __typename?: 'jobs' }
+    & { messages_aggregate: (
+      { __typename?: 'messages_aggregate' }
+      & { aggregate: Maybe<(
+        { __typename?: 'messages_aggregate_fields' }
+        & Pick<Messages_Aggregate_Fields, 'count'>
+      )> }
+    ) }
+  )> }
 );
 
 export type JobsAvailableQueryVariables = {};
@@ -5778,6 +5781,14 @@ export type PendingApprovalQuery = (
   & PageQueryFragment
 );
 
+export type SettingsPageQueryVariables = {};
+
+
+export type SettingsPageQuery = (
+  { __typename?: 'query_root' }
+  & PageQueryFragment
+);
+
 export const ChatMessageMessageFragmentDoc = gql`
     fragment ChatMessageMessage on messages {
   id
@@ -5801,11 +5812,6 @@ export const JobDetailsPageJobFragmentDoc = gql`
   attempts {
     id
     success
-  }
-  messages_aggregate(where: {read_at: {_is_null: true}, user_id: {_neq: $userId}}) {
-    aggregate {
-      count
-    }
   }
 }
     `;
@@ -6810,14 +6816,6 @@ export const JobDetialsDocument = gql`
     server {
       id
       name
-      ratings_aggregate {
-        aggregate {
-          count
-          avg {
-            value
-          }
-        }
-      }
     }
     attempts {
       id
@@ -6872,6 +6870,40 @@ export function useJobDetialsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryH
 export type JobDetialsQueryHookResult = ReturnType<typeof useJobDetialsQuery>;
 export type JobDetialsLazyQueryHookResult = ReturnType<typeof useJobDetialsLazyQuery>;
 export type JobDetialsQueryResult = ApolloReactCommon.QueryResult<JobDetialsQuery, JobDetialsQueryVariables>;
+export const JobDetailsDocument = gql`
+    subscription JobDetails($jobId: uuid!, $userId: uuid) {
+  job: jobs_by_pk(id: $jobId) {
+    messages_aggregate(where: {read_at: {_is_null: true}, user_id: {_neq: $userId}}) {
+      aggregate {
+        count
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useJobDetailsSubscription__
+ *
+ * To run a query within a React component, call `useJobDetailsSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useJobDetailsSubscription` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useJobDetailsSubscription({
+ *   variables: {
+ *      jobId: // value for 'jobId'
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useJobDetailsSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<JobDetailsSubscription, JobDetailsSubscriptionVariables>) {
+        return ApolloReactHooks.useSubscription<JobDetailsSubscription, JobDetailsSubscriptionVariables>(JobDetailsDocument, baseOptions);
+      }
+export type JobDetailsSubscriptionHookResult = ReturnType<typeof useJobDetailsSubscription>;
+export type JobDetailsSubscriptionResult = ApolloReactCommon.SubscriptionResult<JobDetailsSubscription>;
 export const JobsAvailableDocument = gql`
     query JobsAvailable {
   available_jobs(order_by: {created_at: asc}) {
@@ -7270,3 +7302,33 @@ export function usePendingApprovalLazyQuery(baseOptions?: ApolloReactHooks.LazyQ
 export type PendingApprovalQueryHookResult = ReturnType<typeof usePendingApprovalQuery>;
 export type PendingApprovalLazyQueryHookResult = ReturnType<typeof usePendingApprovalLazyQuery>;
 export type PendingApprovalQueryResult = ApolloReactCommon.QueryResult<PendingApprovalQuery, PendingApprovalQueryVariables>;
+export const SettingsPageDocument = gql`
+    query SettingsPage {
+  ...PageQuery
+}
+    ${PageQueryFragmentDoc}`;
+
+/**
+ * __useSettingsPageQuery__
+ *
+ * To run a query within a React component, call `useSettingsPageQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSettingsPageQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSettingsPageQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useSettingsPageQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SettingsPageQuery, SettingsPageQueryVariables>) {
+        return ApolloReactHooks.useQuery<SettingsPageQuery, SettingsPageQueryVariables>(SettingsPageDocument, baseOptions);
+      }
+export function useSettingsPageLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SettingsPageQuery, SettingsPageQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<SettingsPageQuery, SettingsPageQueryVariables>(SettingsPageDocument, baseOptions);
+        }
+export type SettingsPageQueryHookResult = ReturnType<typeof useSettingsPageQuery>;
+export type SettingsPageLazyQueryHookResult = ReturnType<typeof useSettingsPageLazyQuery>;
+export type SettingsPageQueryResult = ApolloReactCommon.QueryResult<SettingsPageQuery, SettingsPageQueryVariables>;
