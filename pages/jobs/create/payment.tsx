@@ -24,6 +24,7 @@ import { useJobsCreatePaymentQuery } from '../../../graphql-codegen'
 import { useAuth } from '../../../lib/useAuth'
 import { useAuthRequired } from '../../../lib/useAuthRequired'
 import { Stack } from '../../../components/Stack'
+import { timeout } from '../../../lib/timeout'
 
 const useClassNames = makeStyles((theme) => ({
   money: {
@@ -52,9 +53,10 @@ export default function JobsCreatePaymentPage() {
   const stripe = useStripe()
   const elements = useElements()
   const [error, setError] = useState<string | undefined>()
+  const [retries, setRetries] = useState(0)
   const [loading, setLoading] = useState(false)
   const jobId = useMemo(() => router.query.id, [router])
-  const { data, loading: dataLoading } = useJobsCreatePaymentQuery({
+  const { data, loading: dataLoading, refetch } = useJobsCreatePaymentQuery({
     variables: { jobId, userId },
   })
   const stripeClientSecret = useMemo(
@@ -64,9 +66,24 @@ export default function JobsCreatePaymentPage() {
 
   useEffect(() => {
     if (!stripeClientSecret && !dataLoading) {
-      router.push(`/jobs/create/plan?id=${jobId}`)
+      if (retries >= 3) {
+        router.push(`/jobs/create/plan?id=${jobId}`)
+      } else {
+        timeout(100).then(() => {
+          refetch()
+          setRetries(retries + 1)
+        })
+      }
     }
-  }, [stripeClientSecret, dataLoading, router, jobId])
+  }, [
+    stripeClientSecret,
+    dataLoading,
+    router,
+    jobId,
+    retries,
+    setRetries,
+    refetch,
+  ])
 
   const handleSubmit = useCallback(
     async (event) => {
