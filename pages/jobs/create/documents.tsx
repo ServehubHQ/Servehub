@@ -45,7 +45,7 @@ export default function JobsCreateDocumentsPage() {
       insertAddressLoading || setPickupRequiredLoading || insertDocumentLoading,
     [insertAddressLoading, setPickupRequiredLoading, insertDocumentLoading],
   )
-  const { register, handleSubmit, errors, setError, setValue } = useForm<
+  const { register, handleSubmit, errors, setError, setValue, watch } = useForm<
     InsertAddressMutationVariables
   >()
 
@@ -134,7 +134,7 @@ export default function JobsCreateDocumentsPage() {
 
           <Grid item>
             {pickup ? (
-              <AddressForm register={register} errors={errors} />
+              <AddressForm register={register} errors={errors} watch={watch} />
             ) : (
               <FilesDropzone
                 filePath={`/jobs/${jobId}/documents`}

@@ -5786,6 +5786,15 @@ export type SettingsPageQueryVariables = {};
 
 export type SettingsPageQuery = (
   { __typename?: 'query_root' }
+  & { current_user: Array<(
+    { __typename?: 'current_user' }
+    & Pick<Current_User, 'id' | 'notifications_enabled' | 'firebase_messaging_token'>
+    & { address: Maybe<(
+      { __typename?: 'addresses' }
+      & Pick<Addresses, 'id' | 'street' | 'unit' | 'city' | 'province'>
+      & { postalCode: Addresses['postal_code'] }
+    )> }
+  )> }
   & PageQueryFragment
 );
 
@@ -7304,6 +7313,19 @@ export type PendingApprovalLazyQueryHookResult = ReturnType<typeof usePendingApp
 export type PendingApprovalQueryResult = ApolloReactCommon.QueryResult<PendingApprovalQuery, PendingApprovalQueryVariables>;
 export const SettingsPageDocument = gql`
     query SettingsPage {
+  current_user {
+    id
+    notifications_enabled
+    firebase_messaging_token
+    address {
+      id
+      street
+      unit
+      postalCode: postal_code
+      city
+      province
+    }
+  }
   ...PageQuery
 }
     ${PageQueryFragmentDoc}`;

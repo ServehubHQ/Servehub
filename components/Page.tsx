@@ -3,30 +3,19 @@ import {
   Box,
   Button,
   Container,
-  FormControlLabel,
   IconButton,
   LinearProgress,
   makeStyles,
   Menu,
   MenuItem,
-  Switch,
   Toolbar,
 } from '@material-ui/core'
 import { AccountCircle } from '@material-ui/icons'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import {
-  ChangeEvent,
-  MouseEvent,
-  ReactNode,
-  useCallback,
-  useMemo,
-  useState,
-} from 'react'
+import { MouseEvent, ReactNode, useCallback, useState } from 'react'
 import { PageQueryFragment } from '../graphql-codegen'
-import { getAndSaveMessagingToken } from '../lib/firebase'
-import { useApolloClient } from '../lib/getApolloClient'
 import { useAuth } from '../lib/useAuth'
 import { useGlobalLoading } from '../lib/useGlobalLoading'
 
@@ -75,28 +64,11 @@ export function Page({ title, children, query }: PageProps) {
   const router = useRouter()
   const globalLoading = useGlobalLoading()
   const { isAuthenticated, authClient, isAdmin, role } = useAuth()
-  const apolloClient = useApolloClient()
   const classNames = useStyles()
   const [
     accountMenuAnchorEl,
     setAccountMenuAnchorEl,
   ] = useState<HTMLElement | null>(null)
-  const [
-    optimisticNotificationsEnabled,
-    setOptimisticNotificationsEnabled,
-  ] = useState<boolean | null>(null)
-  const notificationsEnabled = useMemo(
-    () =>
-      typeof optimisticNotificationsEnabled === 'boolean'
-        ? optimisticNotificationsEnabled
-        : Boolean(
-            query?.current_user &&
-              query?.current_user[0] &&
-              query?.current_user[0].firebase_messaging_token &&
-              query?.current_user[0].notifications_enabled,
-          ),
-    [query, optimisticNotificationsEnabled],
-  )
 
   const handleLogoutClick = useCallback(() => {
     authClient!.logout()
@@ -114,16 +86,6 @@ export function Page({ title, children, query }: PageProps) {
   const handleMenuClose = useCallback(() => {
     setAccountMenuAnchorEl(null)
   }, [setAccountMenuAnchorEl])
-
-  const handleNotificationsSwitch = useCallback(
-    async (event: ChangeEvent<HTMLInputElement>, value: boolean) => {
-      setOptimisticNotificationsEnabled(value)
-      await getAndSaveMessagingToken(value)
-      await apolloClient.resetStore()
-      setOptimisticNotificationsEnabled(null)
-    },
-    [apolloClient, setOptimisticNotificationsEnabled],
-  )
 
   return (
     <div className={classNames.root}>
@@ -229,18 +191,9 @@ export function Page({ title, children, query }: PageProps) {
                       <MenuItem component='a'>Admin</MenuItem>
                     </Link>
                   ) : null}
-                  <MenuItem>
-                    <FormControlLabel
-                      control={
-                        <Switch
-                          checked={notificationsEnabled}
-                          onChange={handleNotificationsSwitch}
-                          name='Notifications'
-                        />
-                      }
-                      label='Notifications'
-                    />
-                  </MenuItem>
+                  <Link href={`/settings`} passHref>
+                    <MenuItem component='a'>Settings</MenuItem>
+                  </Link>
                   <MenuItem onClick={handleLogoutClick}>Logout</MenuItem>
                 </Menu>
               </>

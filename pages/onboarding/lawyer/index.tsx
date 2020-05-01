@@ -6,14 +6,16 @@ import {
   CardHeader,
   Divider,
   Paper,
-  Stepper,
   Step,
+  Stepper,
 } from '@material-ui/core'
 import { useRouter } from 'next/router'
-import { useCallback, useMemo, useEffect } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { AddressForm } from '../../../components/AddressForm'
-import ServerOnboardingPage from '../../../components/ServerOnboardingPage'
+import { Page } from '../../../components/Page'
+import { Stack } from '../../../components/Stack'
+import { StepLabel } from '../../../components/StepLabel'
 import {
   InsertAddressMutationVariables,
   useInsertAddressMutation,
@@ -22,9 +24,6 @@ import {
 } from '../../../graphql-codegen'
 import { useAuth } from '../../../lib/useAuth'
 import { useAuthRequired } from '../../../lib/useAuthRequired'
-import { Page } from '../../../components/Page'
-import { Stack } from '../../../components/Stack'
-import { StepLabel } from '../../../components/StepLabel'
 
 export default function LawyerOnboardingPage() {
   useAuthRequired()
@@ -39,7 +38,7 @@ export default function LawyerOnboardingPage() {
     setUserAddress,
     { loading: setUserAddressLoading },
   ] = useSetUserAddressMutation()
-  const { register, handleSubmit, errors, setError } = useForm<
+  const { register, handleSubmit, errors, setError, watch } = useForm<
     InsertAddressMutationVariables
   >()
 
@@ -96,7 +95,7 @@ export default function LawyerOnboardingPage() {
             />
             <Divider />
             <CardContent>
-              <AddressForm register={register} errors={errors} />
+              <AddressForm register={register} errors={errors} watch={watch} />
             </CardContent>
             <Divider />
             <CardActions>

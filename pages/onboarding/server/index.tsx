@@ -41,7 +41,7 @@ export default function OnboardingPage() {
     setUserAddress,
     { loading: setUserAddressLoading },
   ] = useSetUserAddressMutation()
-  const { register, handleSubmit, errors, setError } = useForm<
+  const { register, handleSubmit, errors, setError, watch } = useForm<
     InsertAddressMutationVariables
   >()
 
@@ -85,7 +85,7 @@ export default function OnboardingPage() {
           />
           <Divider />
           <CardContent>
-            <AddressForm register={register} errors={errors} />
+            <AddressForm register={register} errors={errors} watch={watch} />
           </CardContent>
           <Divider />
           <CardActions className={classNames.actions}>

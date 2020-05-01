@@ -10,7 +10,7 @@ import { Provinces_Enum } from '../graphql-codegen'
 
 interface AddressFormData {
   street: string
-  unit?: string
+  unit?: string | null
   postalCode: string
   city: string
   province: Provinces_Enum
@@ -19,9 +19,11 @@ interface AddressFormData {
 interface AddressFormProps {
   register: FormContextValues<AddressFormData>['register']
   errors: FormContextValues<AddressFormData>['errors']
+  watch: FormContextValues<AddressFormData>['watch']
 }
 
-export function AddressForm({ register, errors }: AddressFormProps) {
+export function AddressForm({ register, errors, watch }: AddressFormProps) {
+  const values = watch()
   return (
     <>
       <Grid container spacing={2}>
@@ -36,6 +38,7 @@ export function AddressForm({ register, errors }: AddressFormProps) {
             inputRef={register({ required: true })}
             error={Boolean(errors.street)}
             helperText={errors.street?.message}
+            InputLabelProps={{ shrink: Boolean(values.street) }}
           />
         </Grid>
 
@@ -49,6 +52,7 @@ export function AddressForm({ register, errors }: AddressFormProps) {
             inputRef={register()}
             error={Boolean(errors.unit)}
             helperText={errors.unit?.message}
+            InputLabelProps={{ shrink: Boolean(values.unit) }}
           />
         </Grid>
       </Grid>
@@ -63,6 +67,7 @@ export function AddressForm({ register, errors }: AddressFormProps) {
         inputRef={register({ required: true })}
         error={Boolean(errors.postalCode)}
         helperText={errors.postalCode?.message}
+        InputLabelProps={{ shrink: Boolean(values.postalCode) }}
       />
 
       <Grid container spacing={2}>
@@ -77,6 +82,7 @@ export function AddressForm({ register, errors }: AddressFormProps) {
             inputRef={register({ required: true })}
             error={Boolean(errors.city)}
             helperText={errors.city?.message}
+            InputLabelProps={{ shrink: Boolean(values.city) }}
           />
         </Grid>
 

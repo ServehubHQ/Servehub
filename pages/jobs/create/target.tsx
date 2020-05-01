@@ -41,7 +41,9 @@ export default function JobsCreateTargetPage() {
     setJobTargetLoading,
   ])
 
-  const { register, handleSubmit, errors, setError } = useForm<FormData>()
+  const { register, handleSubmit, errors, setError, watch } = useForm<
+    FormData
+  >()
 
   const handleFormValid = useCallback(
     async ({ name: targetName, caseNumber, ...targetAddress }: FormData) => {
@@ -111,7 +113,7 @@ export default function JobsCreateTargetPage() {
             />
           </Grid>
         </Grid>
-        <AddressForm register={register} errors={errors} />
+        <AddressForm register={register} errors={errors} watch={watch} />
       </CardContent>
     </CreateJobPage>
   )

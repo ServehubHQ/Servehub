@@ -32,7 +32,9 @@ export async function initFirebase() {
 
 export async function getAndSaveMessagingToken(notificationsEnabled = true) {
   if (!pushNotificationsSupported()) {
-    return
+    throw new Error(
+      'Attempted to enable push notifications for unsupported envisonment',
+    )
   }
   const auth = getAuthClient()
   const userId = auth.getUserId()
