@@ -20,6 +20,7 @@ import {
 } from '../../../graphql-codegen'
 import { useAuth } from '../../../lib/useAuth'
 import { useAuthRequired } from '../../../lib/useAuthRequired'
+import { pushNotificationsSupported } from '../../../lib/firebase'
 
 const useClassNames = makeStyles((theme) => ({
   actions: {
@@ -70,7 +71,12 @@ export default function OnboardingPage() {
 
       await authClient?.refreshToken(true)
       const role = authClient?.getRole()
-      router.push(`/onboarding/${role}/notifications`)
+
+      if (pushNotificationsSupported()) {
+        router.push(`/onboarding/${role}/notifications`)
+      } else {
+        router.push(`/onboarding/${role}/pending-approval`)
+      }
     },
     [insertAddress, setUserAddress, router, setError, userId, authClient],
   )

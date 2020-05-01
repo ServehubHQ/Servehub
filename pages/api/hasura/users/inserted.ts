@@ -58,7 +58,7 @@ export default async function hasuraUserInserted(
       From: 'Servehub <hello@servehub.com>',
       To: user.email!,
       Subject: '📑 Get Started on Servehub',
-      TextBody: `Hello ${user.name}
+      TextBody: `Hello,
 
 To start accepting jobs on Servehub, we need to get to know you a little.
 

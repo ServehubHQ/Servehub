@@ -7,7 +7,7 @@ import {
   makeStyles,
 } from '@material-ui/core'
 import { useRouter } from 'next/router'
-import { MouseEvent, useCallback, useEffect, useState } from 'react'
+import { MouseEvent, useCallback, useState } from 'react'
 import ServerOnboardingPage from '../../../components/ServerOnboardingPage'
 import { useServerOnboardingNotificationsQuery } from '../../../graphql-codegen'
 import { getAndSaveMessagingToken } from '../../../lib/firebase'
@@ -27,12 +27,6 @@ export default function OnboardingServerNotifications() {
   const [loading, setLoading] = useState(false)
   const { data, refetch } = useServerOnboardingNotificationsQuery()
   const router = useRouter()
-
-  useEffect(() => {
-    if (data?.current_user[0]?.firebase_messaging_token) {
-      router.push(NEXT_PATH)
-    }
-  }, [data, router])
 
   const handleEnableNotificationsClick = useCallback(
     async (event: MouseEvent<HTMLButtonElement>) => {
