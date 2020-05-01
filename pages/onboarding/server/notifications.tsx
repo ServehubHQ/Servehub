@@ -51,7 +51,7 @@ export default function OnboardingServerNotifications() {
       <Card>
         <CardHeader
           title='Notifications'
-          subheader='Make sure you know when a new jobs is available.'
+          subheader='Make sure you know when a new job is available.'
         />
         <Divider />
         <CardActions className={classNames.actions}>
