@@ -1,4 +1,4 @@
-query JobDetailsChat($jobId: uuid!, $userId: uuid) {
+query JobDetailsChat($jobId: uuid!) {
   current_user {
     id
     notifications_enabled

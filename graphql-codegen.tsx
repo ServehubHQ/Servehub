@@ -5534,7 +5534,6 @@ export type JobAttemptQuery = (
 
 export type JobDetailsChatQueryVariables = {
   jobId: Scalars['uuid'];
-  userId?: Maybe<Scalars['uuid']>;
 };
 
 
@@ -6757,7 +6756,7 @@ export type JobAttemptQueryHookResult = ReturnType<typeof useJobAttemptQuery>;
 export type JobAttemptLazyQueryHookResult = ReturnType<typeof useJobAttemptLazyQuery>;
 export type JobAttemptQueryResult = ApolloReactCommon.QueryResult<JobAttemptQuery, JobAttemptQueryVariables>;
 export const JobDetailsChatDocument = gql`
-    query JobDetailsChat($jobId: uuid!, $userId: uuid) {
+    query JobDetailsChat($jobId: uuid!) {
   current_user {
     id
     notifications_enabled
@@ -6784,7 +6783,6 @@ ${JobDetailsPageQueryFragmentDoc}`;
  * const { data, loading, error } = useJobDetailsChatQuery({
  *   variables: {
  *      jobId: // value for 'jobId'
- *      userId: // value for 'userId'
  *   },
  * });
  */

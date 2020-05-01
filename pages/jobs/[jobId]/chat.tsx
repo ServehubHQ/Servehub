@@ -11,7 +11,6 @@ import {
   getAndSaveMessagingToken,
   pushNotificationsSupported,
 } from '../../../lib/firebase'
-import { useAuth } from '../../../lib/useAuth'
 import { useAuthRequired } from '../../../lib/useAuthRequired'
 
 const useStyles = makeStyles((theme) => ({
@@ -24,12 +23,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function JobDetailsChat() {
   useAuthRequired()
-  const { userId } = useAuth()
   const classNames = useStyles()
   const router = useRouter()
   const { jobId } = router.query
   const { data, refetch } = useJobDetailsChatQuery({
-    variables: { jobId, userId },
+    variables: { jobId },
   })
 
   const handleEnableNotificationsClick = useCallback(

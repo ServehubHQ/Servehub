@@ -66,10 +66,10 @@ export default function JobsCreatePaymentPage() {
 
   useEffect(() => {
     if (!stripeClientSecret && !dataLoading) {
-      if (retries >= 3) {
+      if (retries > 3) {
         router.push(`/jobs/create/plan?id=${jobId}`)
       } else {
-        timeout(100).then(() => {
+        timeout(100 * retries).then(() => {
           refetch()
           setRetries(retries + 1)
         })
