@@ -1,0 +1,7 @@
+query JobsAvailableJob($jobId: uuid!) {
+  available_jobs(where: { id: { _eq: $jobId } }) {
+    id
+    ...AvailableJobJob
+  }
+  ...JobDetailsPageQuery
+}

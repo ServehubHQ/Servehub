@@ -66,7 +66,7 @@ export default async function hasurajobUpdatedApi(
       body: 'Click to learn more',
       icon: `${config.baseUrl}/images/brand/icon-512x512.png`,
       badge: `${config.baseUrl}/images/brand/icon-512x512.png`,
-      click_action: `${config.baseUrl}/jobs/${job.id}`,
+      click_action: `${config.baseUrl}/jobs/available/${job.id}`,
     })
 
     await sendFirebaseMessage(data.users, {
@@ -74,7 +74,7 @@ export default async function hasurajobUpdatedApi(
       body: 'Click to learn more',
       icon: `${config.baseUrl}/images/brand/icon-512x512.png`,
       badge: `${config.baseUrl}/images/brand/icon-512x512.png`,
-      click_action: `${config.baseUrl}/jobs/${job.id}`,
+      click_action: `${config.baseUrl}/jobs/available/${job.id}`,
     })
   }
 

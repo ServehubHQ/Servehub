@@ -5079,6 +5079,21 @@ export type Uuid_Comparison_Exp = {
   _nin?: Maybe<Array<Scalars['uuid']>>;
 };
 
+export type AvailableJobJobFragment = (
+  { __typename?: 'available_jobs' }
+  & Pick<Available_Jobs, 'id' | 'created_at' | 'pickup_required' | 'target_name'>
+  & { target_address: Maybe<(
+    { __typename?: 'addresses' }
+    & Pick<Addresses, 'id' | 'street' | 'unit' | 'postal_code' | 'city' | 'province'>
+  )>, pickup_address: Maybe<(
+    { __typename?: 'addresses' }
+    & Pick<Addresses, 'id' | 'street' | 'unit' | 'postal_code' | 'city' | 'province'>
+  )>, plan: Maybe<(
+    { __typename?: 'plans' }
+    & Pick<Plans, 'id' | 'attempts' | 'duration'>
+  )> }
+);
+
 export type ChatMessageMessageFragment = (
   { __typename?: 'messages' }
   & Pick<Messages, 'id' | 'created_at' | 'message' | 'read_at'>
@@ -5606,6 +5621,21 @@ export type JobDetailsSubscription = (
   )> }
 );
 
+export type JobsAvailableJobQueryVariables = {
+  jobId: Scalars['uuid'];
+};
+
+
+export type JobsAvailableJobQuery = (
+  { __typename?: 'query_root' }
+  & { available_jobs: Array<(
+    { __typename?: 'available_jobs' }
+    & Pick<Available_Jobs, 'id'>
+    & AvailableJobJobFragment
+  )> }
+  & JobDetailsPageQueryFragment
+);
+
 export type JobsAvailableQueryVariables = {};
 
 
@@ -5613,17 +5643,8 @@ export type JobsAvailableQuery = (
   { __typename?: 'query_root' }
   & { available_jobs: Array<(
     { __typename?: 'available_jobs' }
-    & Pick<Available_Jobs, 'id' | 'created_at' | 'pickup_required' | 'target_name'>
-    & { target_address: Maybe<(
-      { __typename?: 'addresses' }
-      & Pick<Addresses, 'id' | 'street' | 'unit' | 'postal_code' | 'city' | 'province'>
-    )>, pickup_address: Maybe<(
-      { __typename?: 'addresses' }
-      & Pick<Addresses, 'id' | 'street' | 'unit' | 'postal_code' | 'city' | 'province'>
-    )>, plan: Maybe<(
-      { __typename?: 'plans' }
-      & Pick<Plans, 'id' | 'attempts' | 'duration'>
-    )> }
+    & Pick<Available_Jobs, 'id'>
+    & AvailableJobJobFragment
   )> }
   & PageQueryFragment
 );
@@ -5797,6 +5818,35 @@ export type SettingsPageQuery = (
   & PageQueryFragment
 );
 
+export const AvailableJobJobFragmentDoc = gql`
+    fragment AvailableJobJob on available_jobs {
+  id
+  created_at
+  pickup_required
+  target_name
+  target_address {
+    id
+    street
+    unit
+    postal_code
+    city
+    province
+  }
+  pickup_address {
+    id
+    street
+    unit
+    postal_code
+    city
+    province
+  }
+  plan {
+    id
+    attempts
+    duration
+  }
+}
+    `;
 export const ChatMessageMessageFragmentDoc = gql`
     fragment ChatMessageMessage on messages {
   id
@@ -6911,38 +6961,52 @@ export function useJobDetailsSubscription(baseOptions?: ApolloReactHooks.Subscri
       }
 export type JobDetailsSubscriptionHookResult = ReturnType<typeof useJobDetailsSubscription>;
 export type JobDetailsSubscriptionResult = ApolloReactCommon.SubscriptionResult<JobDetailsSubscription>;
+export const JobsAvailableJobDocument = gql`
+    query JobsAvailableJob($jobId: uuid!) {
+  available_jobs(where: {id: {_eq: $jobId}}) {
+    id
+    ...AvailableJobJob
+  }
+  ...JobDetailsPageQuery
+}
+    ${AvailableJobJobFragmentDoc}
+${JobDetailsPageQueryFragmentDoc}`;
+
+/**
+ * __useJobsAvailableJobQuery__
+ *
+ * To run a query within a React component, call `useJobsAvailableJobQuery` and pass it any options that fit your needs.
+ * When your component renders, `useJobsAvailableJobQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useJobsAvailableJobQuery({
+ *   variables: {
+ *      jobId: // value for 'jobId'
+ *   },
+ * });
+ */
+export function useJobsAvailableJobQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<JobsAvailableJobQuery, JobsAvailableJobQueryVariables>) {
+        return ApolloReactHooks.useQuery<JobsAvailableJobQuery, JobsAvailableJobQueryVariables>(JobsAvailableJobDocument, baseOptions);
+      }
+export function useJobsAvailableJobLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<JobsAvailableJobQuery, JobsAvailableJobQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<JobsAvailableJobQuery, JobsAvailableJobQueryVariables>(JobsAvailableJobDocument, baseOptions);
+        }
+export type JobsAvailableJobQueryHookResult = ReturnType<typeof useJobsAvailableJobQuery>;
+export type JobsAvailableJobLazyQueryHookResult = ReturnType<typeof useJobsAvailableJobLazyQuery>;
+export type JobsAvailableJobQueryResult = ApolloReactCommon.QueryResult<JobsAvailableJobQuery, JobsAvailableJobQueryVariables>;
 export const JobsAvailableDocument = gql`
     query JobsAvailable {
   available_jobs(order_by: {created_at: asc}) {
     id
-    created_at
-    pickup_required
-    target_name
-    target_address {
-      id
-      street
-      unit
-      postal_code
-      city
-      province
-    }
-    pickup_address {
-      id
-      street
-      unit
-      postal_code
-      city
-      province
-    }
-    plan {
-      id
-      attempts
-      duration
-    }
+    ...AvailableJobJob
   }
   ...PageQuery
 }
-    ${PageQueryFragmentDoc}`;
+    ${AvailableJobJobFragmentDoc}
+${PageQueryFragmentDoc}`;
 
 /**
  * __useJobsAvailableQuery__

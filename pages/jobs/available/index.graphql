@@ -1,33 +1,8 @@
 query JobsAvailable {
   available_jobs(order_by: { created_at: asc }) {
     id
-    created_at
-    pickup_required
-    target_name
 
-    target_address {
-      id
-      street
-      unit
-      postal_code
-      city
-      province
-    }
-
-    pickup_address {
-      id
-      street
-      unit
-      postal_code
-      city
-      province
-    }
-
-    plan {
-      id
-      attempts
-      duration
-    }
+    ...AvailableJobJob
   }
 
   ...PageQuery

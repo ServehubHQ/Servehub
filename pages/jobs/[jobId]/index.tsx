@@ -51,9 +51,9 @@ const useStyles = makeStyles((theme) => ({
 export default function JobDetails() {
   useAuthRequired()
   const router = useRouter()
+  const { jobId } = router.query
   const theme = useTheme()
   const isSmall = useMediaQuery(theme.breakpoints.down('sm'))
-  const { jobId } = router.query
   const classNames = useStyles()
   const { userId } = useAuth()
   const { data, refetch } = useJobDetialsQuery({ variables: { jobId, userId } })
