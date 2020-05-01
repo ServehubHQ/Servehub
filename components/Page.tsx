@@ -18,6 +18,7 @@ import { MouseEvent, ReactNode, useCallback, useState, useEffect } from 'react'
 import { PageQueryFragment } from '../graphql-codegen'
 import { useAuth } from '../lib/useAuth'
 import { useGlobalLoading } from '../lib/useGlobalLoading'
+import { ButtonLink } from './ButtonLink'
 
 export interface PageProps {
   title: string
@@ -165,14 +166,19 @@ export function Page({ title, children, query }: PageProps) {
             </Box>
             {isAuthenticated ? (
               <>
+                {role === 'lawyer' || query?.current_user[0]?.approved ? (
+                  <ButtonLink href='/jobs' color='inherit'>
+                    Your Jobs
+                  </ButtonLink>
+                ) : null}
                 {role === 'server' && query?.current_user[0]?.approved ? (
-                  <Link href='/jobs/available' passHref>
-                    <Button color='inherit'>Available Jobs</Button>
-                  </Link>
+                  <ButtonLink href='/jobs/available' color='inherit'>
+                    Available Jobs
+                  </ButtonLink>
                 ) : role === 'lawyer' ? (
-                  <Link href='/jobs/create' passHref>
-                    <Button color='inherit'>New Job</Button>
-                  </Link>
+                  <ButtonLink href='/jobs/create' color='inherit'>
+                    New Job
+                  </ButtonLink>
                 ) : null}
                 <IconButton
                   aria-label='user account'
