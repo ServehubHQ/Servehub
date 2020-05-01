@@ -45,6 +45,22 @@ export default class ServeHubDocument extends Document {
             name='viewport'
             content='minimum-scale=1, initial-scale=1, width=device-width'
           />
+
+          <script
+            async
+            src='https://www.googletagmanager.com/gtag/js?id=UA-61181334-6'
+          ></script>
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-61181334-6');
+`,
+            }}
+          />
         </Head>
         <body>
           <Main />
