@@ -53,12 +53,11 @@ export default class ServeHubDocument extends Document {
           <script
             dangerouslySetInnerHTML={{
               __html: `
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-61181334-6');
-`,
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'UA-61181334-6');
+              `,
             }}
           />
         </Head>

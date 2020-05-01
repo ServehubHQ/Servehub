@@ -14,7 +14,7 @@ import { AccountCircle } from '@material-ui/icons'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { MouseEvent, ReactNode, useCallback, useState } from 'react'
+import { MouseEvent, ReactNode, useCallback, useState, useEffect } from 'react'
 import { PageQueryFragment } from '../graphql-codegen'
 import { useAuth } from '../lib/useAuth'
 import { useGlobalLoading } from '../lib/useGlobalLoading'
@@ -63,12 +63,24 @@ const useStyles = makeStyles((theme) => ({
 export function Page({ title, children, query }: PageProps) {
   const router = useRouter()
   const globalLoading = useGlobalLoading()
-  const { isAuthenticated, authClient, isAdmin, role } = useAuth()
+  const { isAuthenticated, authClient, isAdmin, role, userId } = useAuth()
   const classNames = useStyles()
   const [
     accountMenuAnchorEl,
     setAccountMenuAnchorEl,
   ] = useState<HTMLElement | null>(null)
+
+  useEffect(() => {
+    if (isAuthenticated && userId && window.gtag) {
+      window.gtag('set', { user_id: userId })
+    }
+  }, [isAuthenticated, userId])
+
+  useEffect(() => {
+    if (window.gtag) {
+      window.gtag('send', 'pageview', router.asPath)
+    }
+  }, [router])
 
   const handleLogoutClick = useCallback(() => {
     authClient!.logout()
