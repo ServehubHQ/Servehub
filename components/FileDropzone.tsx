@@ -76,6 +76,7 @@ interface FilesDropzoneProps {
   onChange: (urls: DroppedFile[]) => void
   multiFile?: boolean
   className?: string
+  accept?: string
 }
 
 export function FilesDropzone({
@@ -83,6 +84,7 @@ export function FilesDropzone({
   className,
   filePath,
   multiFile = true,
+  accept,
 }: FilesDropzoneProps) {
   const classes = useStyles()
   const [files, setFiles] = useState<DroppedFile[]>([])
@@ -141,6 +143,7 @@ export function FilesDropzone({
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop: handleDrop,
+    accept,
   })
 
   return (

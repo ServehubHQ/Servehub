@@ -123,6 +123,7 @@ export default function JobDetailsPage() {
                       filePath={`/jobs/${jobId}/attempts`}
                       onChange={setFiles}
                       multiFile={false}
+                      accept='image/*'
                     />
                   </Grid>
                   <Grid item>
