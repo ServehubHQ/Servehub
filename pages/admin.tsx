@@ -1,9 +1,10 @@
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { Admin, Resource } from 'react-admin'
-import { DocumentShow } from '../admin/resources/documents'
-import { JobIcon, JobList } from '../admin/resources/jobs'
 import { AddressShow } from '../admin/resources/addresses'
+import { DocumentShow } from '../admin/resources/documents'
+import { JobIcon, JobList, JobShow } from '../admin/resources/jobs'
+import { MessageShow } from '../admin/resources/messages'
 import { UserIcon, UserList, UserShow } from '../admin/resources/users'
 import { getApolloClient } from '../lib/getApolloClient'
 import { getAuthClient } from '../lib/getAuthClient'
@@ -42,9 +43,11 @@ export default function AdminPage() {
   return (
     <Admin dataProvider={dataProvider} theme={theme}>
       <Resource name='users' list={UserList} icon={UserIcon} show={UserShow} />
-      <Resource name='jobs' list={JobList} icon={JobIcon} />
+      <Resource name='jobs' list={JobList} icon={JobIcon} show={JobShow} />
       <Resource name='addresses' show={AddressShow} />
       <Resource name='documents' show={DocumentShow} />
+      <Resource name='messages' show={MessageShow} />
+      <Resource name='ratings' />
     </Admin>
   )
 }

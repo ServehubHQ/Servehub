@@ -13,9 +13,11 @@ import {
   SimpleShowLayout,
   TextField,
   ReferenceField,
+  ReferenceManyField,
 } from 'react-admin'
 import { ApproveBulkAction } from './ApproveBulkAction'
 import { StripeCustomerField } from './StripeCustomerField'
+import { AverageRatingField } from './AverageRatingField'
 
 export const UserIcon = Group
 
@@ -44,11 +46,18 @@ export const UserList = (props: any) => (
     ]}
     filters={<UserListFilter />}
   >
-    <Datagrid rowClick='toggleSelection'>
+    <Datagrid rowClick='show'>
       <EmailField source='email' />
       <TextField source='name' />
       <TextField source='default_role' label='Role' />
       <BooleanField source='approved' />
+      <ReferenceManyField
+        reference='ratings'
+        target='user_id'
+        label='Avg. Rating'
+      >
+        <AverageRatingField />
+      </ReferenceManyField>
       <StripeCustomerField source='stripe_customer_id' />
       <DateField source='created_at' />
     </Datagrid>
@@ -68,6 +77,29 @@ export const UserShow = (props: any) => (
       </ReferenceField>
       <DateField source='created_at' />
       <TextField source='id' />
+
+      <ReferenceManyField
+        reference='ratings'
+        target='user_id'
+        label='Avg. Rating'
+      >
+        <AverageRatingField />
+      </ReferenceManyField>
+      <ReferenceManyField reference='ratings' target='user_id' label='Ratings'>
+        <Datagrid>
+          <DateField source='created_at' />
+          <ReferenceField
+            source='user_id'
+            reference='users'
+            link='show'
+            label='By'
+            sort={{ field: 'created_at', order: 'DESC' }}
+          >
+            <TextField source='name' />
+          </ReferenceField>
+          <TextField source='value' />
+        </Datagrid>
+      </ReferenceManyField>
     </SimpleShowLayout>
   </Show>
 )
