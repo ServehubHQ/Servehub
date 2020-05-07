@@ -4,7 +4,6 @@ import { Admin, Resource } from 'react-admin'
 import { AddressShow } from '../admin/resources/addresses'
 import { DocumentShow } from '../admin/resources/documents'
 import { JobIcon, JobList, JobShow } from '../admin/resources/jobs'
-import { MessageShow } from '../admin/resources/messages'
 import { UserIcon, UserList, UserShow } from '../admin/resources/users'
 import { getApolloClient } from '../lib/getApolloClient'
 import { getAuthClient } from '../lib/getAuthClient'
@@ -46,8 +45,9 @@ export default function AdminPage() {
       <Resource name='jobs' list={JobList} icon={JobIcon} show={JobShow} />
       <Resource name='addresses' show={AddressShow} />
       <Resource name='documents' show={DocumentShow} />
-      <Resource name='messages' show={MessageShow} />
+      <Resource name='messages' />
       <Resource name='ratings' />
+      <Resource name='attempt' />
     </Admin>
   )
 }
