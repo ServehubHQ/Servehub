@@ -5119,7 +5119,7 @@ export type ChatMessagesSubscription = (
 
 export type JobDetailsPageJobFragment = (
   { __typename?: 'jobs' }
-  & Pick<Jobs, 'id' | 'target_name' | 'case_number'>
+  & Pick<Jobs, 'id' | 'target_name' | 'case_number' | 'lawyer_user_id'>
   & { server: Maybe<(
     { __typename?: 'users' }
     & Pick<Users, 'id'>
@@ -5621,6 +5621,21 @@ export type JobDetailsSubscription = (
   )> }
 );
 
+export type JobDetailsReportQueryVariables = {
+  jobId: Scalars['uuid'];
+};
+
+
+export type JobDetailsReportQuery = (
+  { __typename?: 'query_root' }
+  & { job: Maybe<(
+    { __typename?: 'jobs' }
+    & Pick<Jobs, 'target_name'>
+    & JobDetailsPageJobFragment
+  )> }
+  & JobDetailsPageQueryFragment
+);
+
 export type JobsAvailableJobQueryVariables = {
   jobId: Scalars['uuid'];
 };
@@ -5864,6 +5879,7 @@ export const JobDetailsPageJobFragmentDoc = gql`
   id
   target_name
   case_number
+  lawyer_user_id
   server {
     id
   }
@@ -6961,6 +6977,42 @@ export function useJobDetailsSubscription(baseOptions?: ApolloReactHooks.Subscri
       }
 export type JobDetailsSubscriptionHookResult = ReturnType<typeof useJobDetailsSubscription>;
 export type JobDetailsSubscriptionResult = ApolloReactCommon.SubscriptionResult<JobDetailsSubscription>;
+export const JobDetailsReportDocument = gql`
+    query JobDetailsReport($jobId: uuid!) {
+  job: jobs_by_pk(id: $jobId) {
+    target_name
+    ...JobDetailsPageJob
+  }
+  ...JobDetailsPageQuery
+}
+    ${JobDetailsPageJobFragmentDoc}
+${JobDetailsPageQueryFragmentDoc}`;
+
+/**
+ * __useJobDetailsReportQuery__
+ *
+ * To run a query within a React component, call `useJobDetailsReportQuery` and pass it any options that fit your needs.
+ * When your component renders, `useJobDetailsReportQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useJobDetailsReportQuery({
+ *   variables: {
+ *      jobId: // value for 'jobId'
+ *   },
+ * });
+ */
+export function useJobDetailsReportQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<JobDetailsReportQuery, JobDetailsReportQueryVariables>) {
+        return ApolloReactHooks.useQuery<JobDetailsReportQuery, JobDetailsReportQueryVariables>(JobDetailsReportDocument, baseOptions);
+      }
+export function useJobDetailsReportLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<JobDetailsReportQuery, JobDetailsReportQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<JobDetailsReportQuery, JobDetailsReportQueryVariables>(JobDetailsReportDocument, baseOptions);
+        }
+export type JobDetailsReportQueryHookResult = ReturnType<typeof useJobDetailsReportQuery>;
+export type JobDetailsReportLazyQueryHookResult = ReturnType<typeof useJobDetailsReportLazyQuery>;
+export type JobDetailsReportQueryResult = ApolloReactCommon.QueryResult<JobDetailsReportQuery, JobDetailsReportQueryVariables>;
 export const JobsAvailableJobDocument = gql`
     query JobsAvailableJob($jobId: uuid!) {
   available_jobs(where: {id: {_eq: $jobId}}) {

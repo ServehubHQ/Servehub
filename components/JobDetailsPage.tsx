@@ -164,6 +164,12 @@ export function JobDetailsPage({
                 >
                   Request Update
                 </Button>
+              ) : complete && job?.lawyer_user_id === userId ? (
+                <Link href={`/jobs/${job?.id}/report`} passHref>
+                  <Button variant='contained' color='primary'>
+                    View Report
+                  </Button>
+                </Link>
               ) : null
             }
           />

@@ -1,0 +1,9 @@
+query JobDetailsReport($jobId: uuid!) {
+  job: jobs_by_pk(id: $jobId) {
+    target_name
+
+    ...JobDetailsPageJob
+  }
+
+  ...JobDetailsPageQuery
+}
