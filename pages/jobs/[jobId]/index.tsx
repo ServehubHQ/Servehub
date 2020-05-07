@@ -15,8 +15,8 @@ import {
   TableHead,
   TableRow,
   Typography,
-  useTheme,
   useMediaQuery,
+  useTheme,
 } from '@material-ui/core'
 import { CheckCircleOutlined, HighlightOffOutlined } from '@material-ui/icons'
 import moment from 'moment'
@@ -29,15 +29,15 @@ import { RateCard } from '../../../components/RateCard'
 import { Stack } from '../../../components/Stack'
 import { StepLabel } from '../../../components/StepLabel'
 import {
-  useJobDetialsQuery,
   useJobDetailsSubscription,
+  useJobDetialsQuery,
 } from '../../../graphql-codegen'
 import { DATETIME_FORMAT_LONG, DATE_FORMAT_LONG } from '../../../lib/constants'
 import { encodeLocation } from '../../../lib/encodeLocation'
 import { jobDueDate, jobIsComplete } from '../../../lib/jobUtils'
+import { undefinedIfNull } from '../../../lib/undefinedIfNull'
 import { useAuth } from '../../../lib/useAuth'
 import { useAuthRequired } from '../../../lib/useAuthRequired'
-import { undefinedIfNull } from '../../../components/undefinedIfNull'
 
 const useStyles = makeStyles((theme) => ({
   heading: {

@@ -3,21 +3,25 @@ import {
   Grid,
   Link as MuiLink,
   makeStyles,
+  Snackbar,
   Tab,
   Tabs,
   Typography,
+  IconButton,
 } from '@material-ui/core'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { ChangeEvent, ReactNode, useCallback, useMemo } from 'react'
+import { ChangeEvent, ReactNode, useCallback, useMemo, useState } from 'react'
 import {
   JobDetailsPageJobFragment,
   JobDetailsPageQueryFragment,
+  useSendMessageMutation,
 } from '../graphql-codegen'
 import { useAuth } from '../lib/useAuth'
 import { Heading } from './Heading'
 import { Inline } from './Inline'
 import { Page } from './Page'
+import { Close } from '@material-ui/icons'
 
 interface JobDetailsPageProps {
   children: ReactNode
@@ -51,11 +55,20 @@ export function JobDetailsPage({
   const router = useRouter()
   const classNames = useStyles()
   const { userId } = useAuth()
+  const [
+    sendMessage,
+    { loading: sendMessageLoading },
+  ] = useSendMessageMutation()
+  const [snackbarMessage, setSnackbarMessage] = useState<string | null>(null)
 
   const complete = useMemo(
     () => job?.attempts.some((attempt) => attempt.success),
     [job],
   )
+
+  const handleSnackbarClose = useCallback(() => {
+    setSnackbarMessage(null)
+  }, [setSnackbarMessage])
 
   const handleTabsChange = useCallback(
     (event: ChangeEvent<{}>, newTab: string) => {
@@ -71,8 +84,40 @@ export function JobDetailsPage({
     [router, job],
   )
 
+  const handleRequestUpdate = useCallback(async () => {
+    if (!job) {
+      console.error('Cannot request an update for a missing job')
+      return
+    }
+    await sendMessage({
+      variables: {
+        jobId: job.id,
+        message:
+          'Can you please provide an update on the current status of the job?',
+      },
+    })
+    setSnackbarMessage('Request sent')
+  }, [sendMessage, job])
+
   return (
     <Page query={query} title={job?.target_name || 'Job'}>
+      <Snackbar
+        open={snackbarMessage !== null}
+        onClose={handleSnackbarClose}
+        autoHideDuration={6000}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+        message={snackbarMessage}
+        action={
+          <IconButton
+            size='small'
+            aria-label='close'
+            color='inherit'
+            onClick={handleSnackbarClose}
+          >
+            <Close fontSize='small' />
+          </IconButton>
+        }
+      />
       <Grid container spacing={2} direction='column'>
         <Grid item>
           <Heading
@@ -111,6 +156,15 @@ export function JobDetailsPage({
                     Record Attempt
                   </Button>
                 </Link>
+              ) : !complete && typeof job?.server?.id !== 'undefined' ? (
+                <Button
+                  variant='contained'
+                  color='primary'
+                  onClick={handleRequestUpdate}
+                  disabled={sendMessageLoading}
+                >
+                  Request Update
+                </Button>
               ) : null
             }
           />
