@@ -92,8 +92,7 @@ export function JobDetailsPage({
     await sendMessage({
       variables: {
         jobId: job.id,
-        message:
-          'Can you please provide an update on the current status of the job?',
+        message: 'Please provide an update on the current status of the job.',
       },
     })
     setSnackbarMessage('Request sent')
