@@ -8,16 +8,17 @@ import {
   EmailField,
   Filter,
   List,
+  ReferenceField,
+  ReferenceManyField,
   SelectInput,
   Show,
   SimpleShowLayout,
   TextField,
-  ReferenceField,
-  ReferenceManyField,
 } from 'react-admin'
 import { ApproveBulkAction } from './ApproveBulkAction'
-import { StripeCustomerField } from './StripeCustomerField'
 import { AverageRatingField } from './AverageRatingField'
+import { JobsSummaryField } from './JobsSummaryField'
+import { StripeCustomerField } from './StripeCustomerField'
 
 export const UserIcon = Group
 
@@ -51,13 +52,7 @@ export const UserList = (props: any) => (
       <TextField source='name' />
       <TextField source='default_role' label='Role' />
       <BooleanField source='approved' />
-      <ReferenceManyField
-        reference='ratings'
-        target='user_id'
-        label='Avg. Rating'
-      >
-        <AverageRatingField />
-      </ReferenceManyField>
+      <AverageRatingField />
       <StripeCustomerField source='stripe_customer_id' />
       <DateField source='created_at' />
     </Datagrid>
@@ -70,6 +65,8 @@ export const UserShow = (props: any) => (
       <TextField source='name' />
       <TextField source='default_role' label='Role' />
       <BooleanField source='approved' />
+      <JobsSummaryField target='lawyer_user_id' />
+      <JobsSummaryField target='server_user_id' />
       <EmailField source='email' />
       <StripeCustomerField source='stripe_customer_id' />
       <ReferenceField source='address_id' reference='addresses' link='show'>
@@ -77,14 +74,7 @@ export const UserShow = (props: any) => (
       </ReferenceField>
       <DateField source='created_at' />
       <TextField source='id' />
-
-      <ReferenceManyField
-        reference='ratings'
-        target='user_id'
-        label='Avg. Rating'
-      >
-        <AverageRatingField />
-      </ReferenceManyField>
+      <AverageRatingField />
       <ReferenceManyField reference='ratings' target='user_id' label='Ratings'>
         <Datagrid>
           <DateField source='created_at' />

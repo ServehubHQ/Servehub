@@ -5,22 +5,35 @@ import {
   ChipField,
   Datagrid,
   DateField,
+  Filter,
   List,
   Pagination,
   ReferenceField,
+  ReferenceInput,
   ReferenceManyField,
+  SelectInput,
   Show,
   SimpleShowLayout,
   SingleFieldList,
   TextField,
 } from 'react-admin'
+import { Total } from '../Total'
 
 export const JobIcon = WorkIcon
 
-const Total = ({ total }: any) => <span>{total}</span>
+const JobListFilter = (props: any) => (
+  <Filter {...props}>
+    <ReferenceInput label='Lawyer' source='lawyer_user_id' reference='users'>
+      <SelectInput optionText='name' />
+    </ReferenceInput>
+    <ReferenceInput label='Server' source='server_user_id' reference='users'>
+      <SelectInput optionText='name' />
+    </ReferenceInput>
+  </Filter>
+)
 
 export const JobList = (props: any) => (
-  <List {...props}>
+  <List {...props} filters={<JobListFilter />}>
     <Datagrid rowClick='show'>
       <TextField source='target_name' label='Target' />
       <ReferenceField
@@ -109,6 +122,7 @@ export const JobShow = (props: any) => (
         target='job_id'
         label='Messages'
         sort={{ field: 'created_at', order: 'ASC' }}
+        perPage={10}
         pagination={<Pagination />}
       >
         <Datagrid>

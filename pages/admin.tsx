@@ -17,6 +17,7 @@ export default function AdminPage() {
     ;(async () => {
       if (!dataProvider) {
         const { default: buildHasuraProvider } = await import(
+          // eslint-disable-next-line comma-dangle
           'ra-data-hasura-graphql'
         )
         const authClient = getAuthClient(undefined, true)

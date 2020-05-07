@@ -1,29 +1,12 @@
 import { useMemo } from 'react'
+import { ReferenceManyField } from 'react-admin'
+import { ReferenceManyFieldChildProps } from '../../ReferenceManyFieldChildProps'
 
-interface AverageRatingFieldProps {
-  basePath?: string
-  className?: string
-  currentSort?: {
-    field: string
-    order: 'DESC' | 'ASC'
-  }
-  ids?: string[]
-  loaded?: boolean
-  resource?: 'ratings'
-  setSort?: () => void
-  total?: number
-  data?: {
-    [key: string]: {
-      value: number
-    }
-  }
-}
-
-export function AverageRatingField({
+function AverageRating({
   data,
   total,
   className,
-}: AverageRatingFieldProps) {
+}: ReferenceManyFieldChildProps<{ value: number }>) {
   const ratings = useMemo(() => Object.values(data || {}), [data])
   const avgRating = useMemo(() => {
     if (ratings.length === 0) {
@@ -37,4 +20,16 @@ export function AverageRatingField({
       {total === 0 ? '' : `${avgRating}/5 from ${total}`}
     </span>
   )
+}
+
+export function AverageRatingField(props: any) {
+  return (
+    <ReferenceManyField reference='ratings' target='user_id' {...props}>
+      <AverageRating />
+    </ReferenceManyField>
+  )
+}
+AverageRatingField.defaultProps = {
+  addLabel: true,
+  label: 'Avg. Rating',
 }
