@@ -12,9 +12,11 @@ export default function JobsCreateTargetPage() {
   useEffect(() => {
     ;(async () => {
       const { data } = await insertJob()
-      router.push(
-        `/jobs/create/target?id=${data?.insert_jobs?.returning[0].id}`,
-      )
+      const jobId = data?.insert_jobs?.returning?.[0].id
+      if (!jobId) {
+        throw new Error('Unable to retrieve jobId from mutation')
+      }
+      router.push(`/jobs/create/target?id=${jobId}`)
     })()
   }, [insertJob, router])
 

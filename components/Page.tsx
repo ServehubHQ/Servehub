@@ -166,12 +166,12 @@ export function Page({ title, children, query }: PageProps) {
             </Box>
             {isAuthenticated ? (
               <>
-                {role === 'lawyer' || query?.current_user[0]?.approved ? (
+                {role === 'lawyer' || query?.current_user?.[0]?.approved ? (
                   <ButtonLink href='/jobs' color='inherit'>
                     Your Jobs
                   </ButtonLink>
                 ) : null}
-                {role === 'server' && query?.current_user[0]?.approved ? (
+                {role === 'server' && query?.current_user?.[0]?.approved ? (
                   <ButtonLink href='/jobs/available' color='inherit'>
                     Available Jobs
                   </ButtonLink>
