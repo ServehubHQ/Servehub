@@ -11,6 +11,7 @@ import {
   Step,
   Stepper,
   Table,
+  TableBody,
   TableCell,
   TableHead,
   TableRow,
@@ -199,51 +200,53 @@ export default function JobDetails() {
                       <TableCell align='center'>Status</TableCell>
                     </TableRow>
                   </TableHead>
-                  {(data?.job?.attempts.length || 0) === 0 ? (
-                    <TableRow>
-                      <TableCell colSpan={2}>No Attempts made yet.</TableCell>
-                    </TableRow>
-                  ) : (
-                    data?.job?.attempts.map((attempt, index) => (
+                  <TableBody>
+                    {(data?.job?.attempts.length || 0) === 0 ? (
                       <TableRow>
-                        <TableCell align='center'>
-                          <Typography variant='body1'>{index + 1}</Typography>
-                        </TableCell>
-                        <TableCell>
-                          <Typography variant='body1'>
-                            {moment(attempt.attempted_at).format(
-                              DATETIME_FORMAT_LONG,
-                            )}
-                          </Typography>
-                          {attempt.notes ? (
-                            <Typography variant='body2'>
-                              {attempt.notes}
-                            </Typography>
-                          ) : null}
-                        </TableCell>
-                        <TableCell align='center'>
-                          {attempt.image_url ? (
-                            <Button href={attempt.image_url} target='_blank'>
-                              View
-                            </Button>
-                          ) : null}
-                        </TableCell>
-                        <TableCell align='center'>
-                          {attempt.success ? (
-                            <CheckCircleOutlined
-                              className={classNames.successIcon}
-                              fontSize='large'
-                            />
-                          ) : (
-                            <HighlightOffOutlined
-                              color='error'
-                              fontSize='large'
-                            />
-                          )}
-                        </TableCell>
+                        <TableCell colSpan={2}>No Attempts made yet.</TableCell>
                       </TableRow>
-                    ))
-                  )}
+                    ) : (
+                      data?.job?.attempts.map((attempt, index) => (
+                        <TableRow key={attempt.id}>
+                          <TableCell align='center'>
+                            <Typography variant='body1'>{index + 1}</Typography>
+                          </TableCell>
+                          <TableCell>
+                            <Typography variant='body1'>
+                              {moment(attempt.attempted_at).format(
+                                DATETIME_FORMAT_LONG,
+                              )}
+                            </Typography>
+                            {attempt.notes ? (
+                              <Typography variant='body2'>
+                                {attempt.notes}
+                              </Typography>
+                            ) : null}
+                          </TableCell>
+                          <TableCell align='center'>
+                            {attempt.image_url ? (
+                              <Button href={attempt.image_url} target='_blank'>
+                                View
+                              </Button>
+                            ) : null}
+                          </TableCell>
+                          <TableCell align='center'>
+                            {attempt.success ? (
+                              <CheckCircleOutlined
+                                className={classNames.successIcon}
+                                fontSize='large'
+                              />
+                            ) : (
+                              <HighlightOffOutlined
+                                color='error'
+                                fontSize='large'
+                              />
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    )}
+                  </TableBody>
                 </Table>
               </Paper>
             </Grid>
@@ -277,16 +280,18 @@ export default function JobDetails() {
                         <TableCell align='center'>Download</TableCell>
                       </TableRow>
                     </TableHead>
-                    {data?.job?.documents.map((document) => (
-                      <TableRow key={document.id}>
-                        <TableCell>{document.title}</TableCell>
-                        <TableCell align='center'>
-                          <Button href={document.url!} target='_blank'>
-                            Download
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                    <TableBody>
+                      {data?.job?.documents.map((document) => (
+                        <TableRow key={document.id}>
+                          <TableCell>{document.title}</TableCell>
+                          <TableCell align='center'>
+                            <Button href={document.url!} target='_blank'>
+                              Download
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
                   </Table>
                 </Paper>
               )}

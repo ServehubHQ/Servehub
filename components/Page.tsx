@@ -1,7 +1,6 @@
 import {
   AppBar,
   Box,
-  Button,
   Container,
   IconButton,
   LinearProgress,
@@ -14,11 +13,12 @@ import { AccountCircle } from '@material-ui/icons'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { MouseEvent, ReactNode, useCallback, useState, useEffect } from 'react'
+import { MouseEvent, ReactNode, useCallback, useEffect, useState } from 'react'
 import { PageQueryFragment } from '../graphql-codegen'
 import { useAuth } from '../lib/useAuth'
 import { useGlobalLoading } from '../lib/useGlobalLoading'
 import { ButtonLink } from './ButtonLink'
+import { MenuItemLink } from './MenuItemLink'
 
 export interface PageProps {
   title: string
@@ -205,40 +205,39 @@ export function Page({ title, children, query }: PageProps) {
                   onClose={handleMenuClose}
                 >
                   {isAdmin ? (
-                    <Link href={`/admin`} passHref>
-                      <MenuItem component='a'>Admin</MenuItem>
-                    </Link>
+                    <MenuItemLink href='/admin'>Admin</MenuItemLink>
                   ) : null}
-                  <Link href={`/settings`} passHref>
-                    <MenuItem component='a'>Settings</MenuItem>
-                  </Link>
+                  <MenuItemLink href='/settings'>Settings</MenuItemLink>
                   <MenuItem onClick={handleLogoutClick}>Logout</MenuItem>
                 </Menu>
               </>
             ) : (
               <>
-                <Link href={`/login?next=${router.pathname}`} passHref>
-                  <Button color='inherit' className={classNames.navButton}>
-                    Login
-                  </Button>
-                </Link>
-                <Link href='/signup' passHref>
-                  <Button
-                    variant='outlined'
-                    color='inherit'
-                    className={classNames.navButton}
-                  >
-                    Signup
-                  </Button>
-                </Link>
+                <ButtonLink
+                  href={`/login?next=${router.pathname}`}
+                  color='inherit'
+                  className={classNames.navButton}
+                >
+                  Login
+                </ButtonLink>
+                <ButtonLink
+                  href='/signup'
+                  variant='outlined'
+                  color='inherit'
+                  className={classNames.navButton}
+                >
+                  Signup
+                </ButtonLink>
               </>
             )}
           </Toolbar>
         </Container>
       </AppBar>
-      <Container fixed className={classNames.contentContainer}>
-        {children}
-      </Container>
+      {children ? (
+        <Container fixed className={classNames.contentContainer}>
+          {children}
+        </Container>
+      ) : null}
     </div>
   )
 }
