@@ -6062,10 +6062,10 @@ export type HasuraMessageInsertedApiQuery = (
       & Pick<Jobs, 'id' | 'target_name'>
       & { server: Maybe<(
         { __typename?: 'users' }
-        & Pick<Users, 'id' | 'firebase_messaging_token'>
+        & Pick<Users, 'id' | 'name' | 'firebase_messaging_token' | 'notifications_enabled' | 'email_notifications_enabled' | 'email'>
       )>, lawyer: (
         { __typename?: 'users' }
-        & Pick<Users, 'id' | 'firebase_messaging_token'>
+        & Pick<Users, 'id' | 'name' | 'firebase_messaging_token' | 'notifications_enabled' | 'email_notifications_enabled' | 'email'>
       ) }
     ) }
   )> }
@@ -7276,11 +7276,19 @@ export const HasuraMessageInsertedApiDocument = gql`
       target_name
       server {
         id
+        name
         firebase_messaging_token
+        notifications_enabled
+        email_notifications_enabled
+        email
       }
       lawyer {
         id
+        name
         firebase_messaging_token
+        notifications_enabled
+        email_notifications_enabled
+        email
       }
     }
   }

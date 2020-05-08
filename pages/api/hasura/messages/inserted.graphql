@@ -14,12 +14,20 @@ query HasuraMessageInsertedApi($messageId: uuid!) {
 
       server {
         id
+        name
         firebase_messaging_token
+        notifications_enabled
+        email_notifications_enabled
+        email
       }
 
       lawyer {
         id
+        name
         firebase_messaging_token
+        notifications_enabled
+        email_notifications_enabled
+        email
       }
     }
   }

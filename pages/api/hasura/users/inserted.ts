@@ -53,7 +53,6 @@ export default async function hasuraUserInserted(
 
   if (role === 'server') {
     const postmark = new ServerClient(config.postmarkSecretKey)
-
     postmark.sendEmail({
       From: 'Servehub <hello@servehub.com>',
       To: user.email!,

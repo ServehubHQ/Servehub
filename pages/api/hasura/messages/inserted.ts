@@ -11,6 +11,7 @@ import { timeout } from '../../../../lib/timeout'
 import { getApolloClient } from '../../../../lib/getApolloClient'
 import { ApiAuthClient } from '../../../../lib/AuthClient'
 import { sendFirebaseMessage } from '../../../../lib/sendFirebaseMessage'
+import { ServerClient } from 'postmark'
 
 export default async function hasuraMessageInsertedApi(
   req: NextApiRequest,
@@ -20,6 +21,9 @@ export default async function hasuraMessageInsertedApi(
   if (!hasuraWebhookValid(req, res)) return
   if (!config.hasuraAdminSecret) {
     throw new Error('Missing secrets required for Hasura webhooks')
+  }
+  if (!config.postmarkSecretKey) {
+    throw new Error('Missing config.postmarkSecretKey')
   }
 
   const {
@@ -50,18 +54,49 @@ export default async function hasuraMessageInsertedApi(
   }
 
   if (!data.message.read_at) {
-    const recipient =
+    const [recipient, sender] =
       data.message.user.id === data.message.job.lawyer.id
-        ? data.message.job.server
-        : data.message.job.lawyer
+        ? [data.message.job.server, data.message.job.lawyer]
+        : [data.message.job.lawyer, data.message.job.server]
     if (recipient) {
-      await sendFirebaseMessage([recipient], {
-        title: `New message for job: ${data.message.job.target_name}`,
-        body: data.message.message,
-        icon: `${config.baseUrl}/images/brand/icon-512x512.png`,
-        badge: `${config.baseUrl}/images/brand/icon-512x512.png`,
-        click_action: `${config.baseUrl}/jobs/${data.message.job.id}/chat`,
-      })
+      const title = `New message for job: ${data.message.job.target_name}`
+      const ctaUrl = `${config.baseUrl}/jobs/${data.message.job.id}/chat`
+
+      if (
+        recipient.notifications_enabled &&
+        recipient.firebase_messaging_token
+      ) {
+        await sendFirebaseMessage([recipient], {
+          title,
+          body: data.message.message,
+          icon: `${config.baseUrl}/images/brand/icon-512x512.png`,
+          badge: `${config.baseUrl}/images/brand/icon-512x512.png`,
+          click_action: ctaUrl,
+        })
+      }
+
+      if (recipient.email_notifications_enabled) {
+        const postmark = new ServerClient(config.postmarkSecretKey)
+        postmark.sendEmail({
+          From: 'Servehub <hello@servehub.com>',
+          To: recipient.email!,
+          Subject: `📑 ${title}`,
+          TextBody: `Hello,
+
+You've recieved a new message from ${sender?.name} regarding ${
+            data.message.job.target_name
+          }.
+
+${data.message.message.split('\n').map(
+  (line) => `
+> ${line}`,
+)}
+
+${ctaUrl}
+
+Servehub Team`,
+        })
+      }
     }
   }
 
