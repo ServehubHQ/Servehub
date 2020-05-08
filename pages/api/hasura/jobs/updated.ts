@@ -13,6 +13,7 @@ import { config } from '../../../../lib/config'
 import { getApolloClient } from '../../../../lib/getApolloClient'
 import hasuraWebhookValid from '../../../../lib/hasuraWebhookValid'
 import { sendFirebaseMessage } from '../../../../lib/sendFirebaseMessage'
+import { ServerClient } from 'postmark'
 
 export default async function hasurajobUpdatedApi(
   req: NextApiRequest,
@@ -22,6 +23,9 @@ export default async function hasurajobUpdatedApi(
   if (!hasuraWebhookValid(req, res)) return
   if (!config.hasuraAdminSecret || !config.firebaseAdminCredentials) {
     throw new Error('Missing secrets required for Hasura webhooks')
+  }
+  if (!config.postmarkSecretKey) {
+    throw new Error('Missing config.postmarkSecretKey')
   }
 
   const {
@@ -60,22 +64,32 @@ export default async function hasurajobUpdatedApi(
       variables: { city: jobData.job.target_address.city },
     })
 
-    console.log('[hasurajobUpdatedApi] sending firebase message')
-    console.log(data.users, {
-      title: 'New Servehub job available!',
+    const title = 'New Servehub job available!'
+    const ctaUrl = `${config.baseUrl}/jobs/available/${job.id}`
+
+    console.log('[hasurajobUpdatedApi] sending firebase messages')
+    await sendFirebaseMessage(data.users, {
+      title,
       body: 'Click to learn more',
-      icon: `${config.baseUrl}/images/brand/icon-512x512.png`,
-      badge: `${config.baseUrl}/images/brand/icon-512x512.png`,
-      click_action: `${config.baseUrl}/jobs/available/${job.id}`,
+      click_action: ctaUrl,
     })
 
-    await sendFirebaseMessage(data.users, {
-      title: 'New Servehub job available!',
-      body: 'Click to learn more',
-      icon: `${config.baseUrl}/images/brand/icon-512x512.png`,
-      badge: `${config.baseUrl}/images/brand/icon-512x512.png`,
-      click_action: `${config.baseUrl}/jobs/available/${job.id}`,
-    })
+    const postmark = new ServerClient(config.postmarkSecretKey)
+    for (const recipient of data.users) {
+      if (recipient.email_notifications_enabled) {
+        postmark.sendEmail({
+          From: 'Servehub <hello@servehub.com>',
+          To: `${recipient.email} <${recipient.email!}>`,
+          Subject: `📑 ${title}`,
+          TextBody: `Hello,
+
+Click below to learn more.
+${ctaUrl}
+
+Servehub Team`,
+        })
+      }
+    }
   }
 
   res.send('✔')

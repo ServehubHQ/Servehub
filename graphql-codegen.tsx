@@ -6040,7 +6040,7 @@ export type JobUpdatedServersQuery = (
   { __typename?: 'query_root' }
   & { users: Array<(
     { __typename?: 'users' }
-    & Pick<Users, 'firebase_messaging_token' | 'id'>
+    & Pick<Users, 'id' | 'name' | 'firebase_messaging_token' | 'notifications_enabled' | 'email_notifications_enabled' | 'email'>
   )> }
 );
 
@@ -7231,8 +7231,12 @@ export type JobUpdatedQueryResult = ApolloReactCommon.QueryResult<JobUpdatedQuer
 export const JobUpdatedServersDocument = gql`
     query JobUpdatedServers($city: String!) {
   users(where: {role: {role: {_eq: "server"}}, firebase_messaging_token: {_is_null: false}, approved: {_eq: true}, address: {city: {_ilike: $city}}, notifications_enabled: {_eq: true}}) {
-    firebase_messaging_token
     id
+    name
+    firebase_messaging_token
+    notifications_enabled
+    email_notifications_enabled
+    email
   }
 }
     `;

@@ -1,17 +1,17 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+import { ServerClient } from 'postmark'
 import {
-  Messages,
+  HasuraMessageInsertedApiDocument,
   HasuraMessageInsertedApiQuery,
   HasuraMessageInsertedApiQueryVariables,
-  HasuraMessageInsertedApiDocument,
+  Messages,
 } from '../../../../graphql-codegen'
-import { config } from '../../../../lib/config'
-import hasuraWebhookValid from '../../../../lib/hasuraWebhookValid'
-import { timeout } from '../../../../lib/timeout'
-import { getApolloClient } from '../../../../lib/getApolloClient'
 import { ApiAuthClient } from '../../../../lib/AuthClient'
+import { config } from '../../../../lib/config'
+import { getApolloClient } from '../../../../lib/getApolloClient'
+import hasuraWebhookValid from '../../../../lib/hasuraWebhookValid'
 import { sendFirebaseMessage } from '../../../../lib/sendFirebaseMessage'
-import { ServerClient } from 'postmark'
+import { timeout } from '../../../../lib/timeout'
 
 export default async function hasuraMessageInsertedApi(
   req: NextApiRequest,
@@ -69,8 +69,6 @@ export default async function hasuraMessageInsertedApi(
         await sendFirebaseMessage([recipient], {
           title,
           body: data.message.message,
-          icon: `${config.baseUrl}/images/brand/icon-512x512.png`,
-          badge: `${config.baseUrl}/images/brand/icon-512x512.png`,
           click_action: ctaUrl,
         })
       }
@@ -79,7 +77,7 @@ export default async function hasuraMessageInsertedApi(
         const postmark = new ServerClient(config.postmarkSecretKey)
         postmark.sendEmail({
           From: 'Servehub <hello@servehub.com>',
-          To: recipient.email!,
+          To: `${recipient.email} <${recipient.email!}>`,
           Subject: `📑 ${title}`,
           TextBody: `Hello,
 
