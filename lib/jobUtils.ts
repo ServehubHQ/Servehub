@@ -16,7 +16,7 @@ export function jobDueDate(job: DueDateJob) {
     return null
   }
   const [value, unit] = job.plan.duration.split(' ')
-  if (unit !== 'days') {
+  if (!unit.startsWith('day')) {
     console.warn('non-days due date interval', unit)
   }
   const duration = moment.duration(
