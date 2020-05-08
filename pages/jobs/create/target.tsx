@@ -51,7 +51,7 @@ export default function JobsCreateTargetPage() {
         variables: targetAddress,
       })
 
-      const addressId = addressData?.insert_addresses?.returning[0]?.id
+      const addressId = addressData?.insert_addresses?.returning?.[0]?.id
       if (!addressId) {
         setError('name', 'An unknown error has accured')
         return
