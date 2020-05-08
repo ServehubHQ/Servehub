@@ -1,6 +1,35 @@
 query JobDetailsReport($jobId: uuid!) {
   job: jobs_by_pk(id: $jobId) {
+    id
+    created_at
     target_name
+
+    target_address {
+      id
+      street
+      unit
+      postal_code
+      city
+      province
+    }
+
+    server {
+      id
+      name
+    }
+
+    attempts {
+      id
+      attempted_at
+      success
+      notes
+      image_url
+    }
+
+    documents {
+      id
+      title
+    }
 
     ...JobDetailsPageJob
   }

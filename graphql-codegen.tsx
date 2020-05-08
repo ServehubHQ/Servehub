@@ -6204,7 +6204,20 @@ export type JobDetailsReportQuery = (
   { __typename?: 'query_root' }
   & { job: Maybe<(
     { __typename?: 'jobs' }
-    & Pick<Jobs, 'target_name'>
+    & Pick<Jobs, 'id' | 'created_at' | 'target_name'>
+    & { target_address: Maybe<(
+      { __typename?: 'addresses' }
+      & Pick<Addresses, 'id' | 'street' | 'unit' | 'postal_code' | 'city' | 'province'>
+    )>, server: Maybe<(
+      { __typename?: 'users' }
+      & Pick<Users, 'id' | 'name'>
+    )>, attempts: Array<(
+      { __typename?: 'attempts' }
+      & Pick<Attempts, 'id' | 'attempted_at' | 'success' | 'notes' | 'image_url'>
+    )>, documents: Array<(
+      { __typename?: 'documents' }
+      & Pick<Documents, 'id' | 'title'>
+    )> }
     & JobDetailsPageJobFragment
   )> }
   & JobDetailsPageQueryFragment
@@ -7599,7 +7612,32 @@ export type JobDetailsSubscriptionResult = ApolloReactCommon.SubscriptionResult<
 export const JobDetailsReportDocument = gql`
     query JobDetailsReport($jobId: uuid!) {
   job: jobs_by_pk(id: $jobId) {
+    id
+    created_at
     target_name
+    target_address {
+      id
+      street
+      unit
+      postal_code
+      city
+      province
+    }
+    server {
+      id
+      name
+    }
+    attempts {
+      id
+      attempted_at
+      success
+      notes
+      image_url
+    }
+    documents {
+      id
+      title
+    }
     ...JobDetailsPageJob
   }
   ...JobDetailsPageQuery
