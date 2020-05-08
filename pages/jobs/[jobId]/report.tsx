@@ -34,6 +34,13 @@ export default function JobDetailsReport() {
       <Stack spacing={3}>
         <Typography variant='h1'>Record of Service</Typography>
         <Stack spacing={1}>
+          <Typography variant='h5'>Law Firm</Typography>
+          <Typography variant='body1'>{data?.job?.lawyer?.name}</Typography>
+          {data?.job?.lawyer?.address ? (
+            <Address {...data?.job?.lawyer?.address} typeVariant='body1' />
+          ) : null}
+        </Stack>
+        <Stack spacing={1}>
           <Typography variant='h5'>Requested</Typography>
           <Typography variant='body1'>
             {moment(data?.job?.created_at).format(DATETIME_FORMAT_LONG)}

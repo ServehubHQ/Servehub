@@ -31,6 +31,20 @@ query JobDetailsReport($jobId: uuid!) {
       title
     }
 
+    lawyer {
+      id
+      name
+
+      address {
+        id
+        street
+        unit
+        postal_code
+        city
+        province
+      }
+    }
+
     ...JobDetailsPageJob
   }
 

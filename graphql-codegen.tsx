@@ -6217,7 +6217,14 @@ export type JobDetailsReportQuery = (
     )>, documents: Array<(
       { __typename?: 'documents' }
       & Pick<Documents, 'id' | 'title'>
-    )> }
+    )>, lawyer: (
+      { __typename?: 'users' }
+      & Pick<Users, 'id' | 'name'>
+      & { address: Maybe<(
+        { __typename?: 'addresses' }
+        & Pick<Addresses, 'id' | 'street' | 'unit' | 'postal_code' | 'city' | 'province'>
+      )> }
+    ) }
     & JobDetailsPageJobFragment
   )> }
   & JobDetailsPageQueryFragment
@@ -7637,6 +7644,18 @@ export const JobDetailsReportDocument = gql`
     documents {
       id
       title
+    }
+    lawyer {
+      id
+      name
+      address {
+        id
+        street
+        unit
+        postal_code
+        city
+        province
+      }
     }
     ...JobDetailsPageJob
   }
