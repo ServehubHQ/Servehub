@@ -83,7 +83,7 @@ export default async function hasurajobUpdatedApi(
           Subject: `📑 ${title}`,
           TextBody: `Hello,
 
-Click below to learn more.
+Click below to learn more
 ${ctaUrl}
 
 Servehub Team`,
