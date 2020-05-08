@@ -159,6 +159,7 @@ export type Addresses_Max_Fields = {
    __typename?: 'addresses_max_fields';
   city?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
   postal_code?: Maybe<Scalars['String']>;
   street?: Maybe<Scalars['String']>;
   unit?: Maybe<Scalars['String']>;
@@ -168,6 +169,7 @@ export type Addresses_Max_Fields = {
 export type Addresses_Max_Order_By = {
   city?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
   postal_code?: Maybe<Order_By>;
   street?: Maybe<Order_By>;
   unit?: Maybe<Order_By>;
@@ -178,6 +180,7 @@ export type Addresses_Min_Fields = {
    __typename?: 'addresses_min_fields';
   city?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
   postal_code?: Maybe<Scalars['String']>;
   street?: Maybe<Scalars['String']>;
   unit?: Maybe<Scalars['String']>;
@@ -187,6 +190,7 @@ export type Addresses_Min_Fields = {
 export type Addresses_Min_Order_By = {
   city?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
   postal_code?: Maybe<Order_By>;
   street?: Maybe<Order_By>;
   unit?: Maybe<Order_By>;
@@ -223,6 +227,10 @@ export type Addresses_Order_By = {
   unit?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
   users_aggregate?: Maybe<Users_Aggregate_Order_By>;
+};
+
+export type Addresses_Pk_Columns_Input = {
+  id: Scalars['uuid'];
 };
 
 export enum Addresses_Select_Column {
@@ -339,7 +347,9 @@ export type Attempts_Max_Fields = {
    __typename?: 'attempts_max_fields';
   attempted_at?: Maybe<Scalars['timestamptz']>;
   created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
   image_url?: Maybe<Scalars['String']>;
+  job_id?: Maybe<Scalars['uuid']>;
   notes?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
@@ -347,7 +357,9 @@ export type Attempts_Max_Fields = {
 export type Attempts_Max_Order_By = {
   attempted_at?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
   image_url?: Maybe<Order_By>;
+  job_id?: Maybe<Order_By>;
   notes?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
@@ -356,7 +368,9 @@ export type Attempts_Min_Fields = {
    __typename?: 'attempts_min_fields';
   attempted_at?: Maybe<Scalars['timestamptz']>;
   created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
   image_url?: Maybe<Scalars['String']>;
+  job_id?: Maybe<Scalars['uuid']>;
   notes?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
@@ -364,7 +378,9 @@ export type Attempts_Min_Fields = {
 export type Attempts_Min_Order_By = {
   attempted_at?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
   image_url?: Maybe<Order_By>;
+  job_id?: Maybe<Order_By>;
   notes?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
@@ -396,6 +412,10 @@ export type Attempts_Order_By = {
   notes?: Maybe<Order_By>;
   success?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
+};
+
+export type Attempts_Pk_Columns_Input = {
+  id: Scalars['uuid'];
 };
 
 export enum Attempts_Select_Column {
@@ -543,6 +563,10 @@ export type Auth_Auth_Providers_Order_By = {
   user_providers_aggregate?: Maybe<Auth_User_Providers_Aggregate_Order_By>;
 };
 
+export type Auth_Auth_Providers_Pk_Columns_Input = {
+  provider: Scalars['String'];
+};
+
 export enum Auth_Auth_Providers_Select_Column {
   Provider = 'provider'
 }
@@ -621,22 +645,30 @@ export type Auth_Refresh_Tokens_Max_Fields = {
    __typename?: 'auth_refresh_tokens_max_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
   expires_at?: Maybe<Scalars['timestamptz']>;
+  refresh_token?: Maybe<Scalars['uuid']>;
+  user_id?: Maybe<Scalars['uuid']>;
 };
 
 export type Auth_Refresh_Tokens_Max_Order_By = {
   created_at?: Maybe<Order_By>;
   expires_at?: Maybe<Order_By>;
+  refresh_token?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
 };
 
 export type Auth_Refresh_Tokens_Min_Fields = {
    __typename?: 'auth_refresh_tokens_min_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
   expires_at?: Maybe<Scalars['timestamptz']>;
+  refresh_token?: Maybe<Scalars['uuid']>;
+  user_id?: Maybe<Scalars['uuid']>;
 };
 
 export type Auth_Refresh_Tokens_Min_Order_By = {
   created_at?: Maybe<Order_By>;
   expires_at?: Maybe<Order_By>;
+  refresh_token?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
 };
 
 export type Auth_Refresh_Tokens_Mutation_Response = {
@@ -662,6 +694,10 @@ export type Auth_Refresh_Tokens_Order_By = {
   refresh_token?: Maybe<Order_By>;
   user?: Maybe<Users_Order_By>;
   user_id?: Maybe<Order_By>;
+};
+
+export type Auth_Refresh_Tokens_Pk_Columns_Input = {
+  refresh_token: Scalars['uuid'];
 };
 
 export enum Auth_Refresh_Tokens_Select_Column {
@@ -762,16 +798,20 @@ export type Auth_User_Accounts_Max_Fields = {
    __typename?: 'auth_user_accounts_max_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
   email?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
   password?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
+  user_id?: Maybe<Scalars['uuid']>;
   username?: Maybe<Scalars['String']>;
 };
 
 export type Auth_User_Accounts_Max_Order_By = {
   created_at?: Maybe<Order_By>;
   email?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
   password?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
   username?: Maybe<Order_By>;
 };
 
@@ -779,16 +819,20 @@ export type Auth_User_Accounts_Min_Fields = {
    __typename?: 'auth_user_accounts_min_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
   email?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
   password?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
+  user_id?: Maybe<Scalars['uuid']>;
   username?: Maybe<Scalars['String']>;
 };
 
 export type Auth_User_Accounts_Min_Order_By = {
   created_at?: Maybe<Order_By>;
   email?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
   password?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
   username?: Maybe<Order_By>;
 };
 
@@ -818,6 +862,10 @@ export type Auth_User_Accounts_Order_By = {
   user?: Maybe<Users_Order_By>;
   user_id?: Maybe<Order_By>;
   username?: Maybe<Order_By>;
+};
+
+export type Auth_User_Accounts_Pk_Columns_Input = {
+  id: Scalars['uuid'];
 };
 
 export enum Auth_User_Accounts_Select_Column {
@@ -928,14 +976,18 @@ export type Auth_User_Providers_Max_Fields = {
   auth_provider?: Maybe<Scalars['String']>;
   auth_provider_unique_id?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
+  user_id?: Maybe<Scalars['uuid']>;
 };
 
 export type Auth_User_Providers_Max_Order_By = {
   auth_provider?: Maybe<Order_By>;
   auth_provider_unique_id?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
 };
 
 export type Auth_User_Providers_Min_Fields = {
@@ -943,14 +995,18 @@ export type Auth_User_Providers_Min_Fields = {
   auth_provider?: Maybe<Scalars['String']>;
   auth_provider_unique_id?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
+  user_id?: Maybe<Scalars['uuid']>;
 };
 
 export type Auth_User_Providers_Min_Order_By = {
   auth_provider?: Maybe<Order_By>;
   auth_provider_unique_id?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
 };
 
 export type Auth_User_Providers_Mutation_Response = {
@@ -979,6 +1035,10 @@ export type Auth_User_Providers_Order_By = {
   updated_at?: Maybe<Order_By>;
   user?: Maybe<Users_Order_By>;
   user_id?: Maybe<Order_By>;
+};
+
+export type Auth_User_Providers_Pk_Columns_Input = {
+  id: Scalars['uuid'];
 };
 
 export enum Auth_User_Providers_Select_Column {
@@ -1086,12 +1146,20 @@ export type Available_Jobs_Insert_Input = {
 export type Available_Jobs_Max_Fields = {
    __typename?: 'available_jobs_max_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  pickup_address_id?: Maybe<Scalars['uuid']>;
+  plan_id?: Maybe<Scalars['uuid']>;
+  target_address_id?: Maybe<Scalars['uuid']>;
   target_name?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 export type Available_Jobs_Max_Order_By = {
   created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  pickup_address_id?: Maybe<Order_By>;
+  plan_id?: Maybe<Order_By>;
+  target_address_id?: Maybe<Order_By>;
   target_name?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
@@ -1099,12 +1167,20 @@ export type Available_Jobs_Max_Order_By = {
 export type Available_Jobs_Min_Fields = {
    __typename?: 'available_jobs_min_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  pickup_address_id?: Maybe<Scalars['uuid']>;
+  plan_id?: Maybe<Scalars['uuid']>;
+  target_address_id?: Maybe<Scalars['uuid']>;
   target_name?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 export type Available_Jobs_Min_Order_By = {
   created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  pickup_address_id?: Maybe<Order_By>;
+  plan_id?: Maybe<Order_By>;
+  target_address_id?: Maybe<Order_By>;
   target_name?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
@@ -1299,6 +1375,10 @@ export type Countries_Order_By = {
   name?: Maybe<Order_By>;
 };
 
+export type Countries_Pk_Columns_Input = {
+  id: Scalars['String'];
+};
+
 export enum Countries_Select_Column {
   Id = 'id',
   Name = 'name'
@@ -1325,6 +1405,7 @@ export type Current_User = {
   default_role?: Maybe<Scalars['String']>;
   display_name?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
+  email_notifications_enabled?: Maybe<Scalars['Boolean']>;
   firebase_messaging_token?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   is_anonymous?: Maybe<Scalars['Boolean']>;
@@ -1388,6 +1469,7 @@ export type Current_User_Bool_Exp = {
   default_role?: Maybe<String_Comparison_Exp>;
   display_name?: Maybe<String_Comparison_Exp>;
   email?: Maybe<String_Comparison_Exp>;
+  email_notifications_enabled?: Maybe<Boolean_Comparison_Exp>;
   firebase_messaging_token?: Maybe<String_Comparison_Exp>;
   id?: Maybe<Uuid_Comparison_Exp>;
   is_anonymous?: Maybe<Boolean_Comparison_Exp>;
@@ -1422,6 +1504,7 @@ export type Current_User_Insert_Input = {
   default_role?: Maybe<Scalars['String']>;
   display_name?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
+  email_notifications_enabled?: Maybe<Scalars['Boolean']>;
   firebase_messaging_token?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   is_anonymous?: Maybe<Scalars['Boolean']>;
@@ -1436,26 +1519,32 @@ export type Current_User_Insert_Input = {
 
 export type Current_User_Max_Fields = {
    __typename?: 'current_user_max_fields';
+  address_id?: Maybe<Scalars['uuid']>;
   avatar_url?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   default_role?: Maybe<Scalars['String']>;
   display_name?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
   firebase_messaging_token?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
   name?: Maybe<Scalars['String']>;
+  secret_token?: Maybe<Scalars['uuid']>;
   secret_token_expires_at?: Maybe<Scalars['timestamptz']>;
   stripe_customer_id?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 export type Current_User_Max_Order_By = {
+  address_id?: Maybe<Order_By>;
   avatar_url?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   default_role?: Maybe<Order_By>;
   display_name?: Maybe<Order_By>;
   email?: Maybe<Order_By>;
   firebase_messaging_token?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
+  secret_token?: Maybe<Order_By>;
   secret_token_expires_at?: Maybe<Order_By>;
   stripe_customer_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
@@ -1463,26 +1552,32 @@ export type Current_User_Max_Order_By = {
 
 export type Current_User_Min_Fields = {
    __typename?: 'current_user_min_fields';
+  address_id?: Maybe<Scalars['uuid']>;
   avatar_url?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   default_role?: Maybe<Scalars['String']>;
   display_name?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
   firebase_messaging_token?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
   name?: Maybe<Scalars['String']>;
+  secret_token?: Maybe<Scalars['uuid']>;
   secret_token_expires_at?: Maybe<Scalars['timestamptz']>;
   stripe_customer_id?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 export type Current_User_Min_Order_By = {
+  address_id?: Maybe<Order_By>;
   avatar_url?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   default_role?: Maybe<Order_By>;
   display_name?: Maybe<Order_By>;
   email?: Maybe<Order_By>;
   firebase_messaging_token?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
+  secret_token?: Maybe<Order_By>;
   secret_token_expires_at?: Maybe<Order_By>;
   stripe_customer_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
@@ -1508,6 +1603,7 @@ export type Current_User_Order_By = {
   default_role?: Maybe<Order_By>;
   display_name?: Maybe<Order_By>;
   email?: Maybe<Order_By>;
+  email_notifications_enabled?: Maybe<Order_By>;
   firebase_messaging_token?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   is_anonymous?: Maybe<Order_By>;
@@ -1533,6 +1629,7 @@ export enum Current_User_Select_Column {
   DefaultRole = 'default_role',
   DisplayName = 'display_name',
   Email = 'email',
+  EmailNotificationsEnabled = 'email_notifications_enabled',
   FirebaseMessagingToken = 'firebase_messaging_token',
   Id = 'id',
   IsAnonymous = 'is_anonymous',
@@ -1554,6 +1651,7 @@ export type Current_User_Set_Input = {
   default_role?: Maybe<Scalars['String']>;
   display_name?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
+  email_notifications_enabled?: Maybe<Scalars['Boolean']>;
   firebase_messaging_token?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   is_anonymous?: Maybe<Scalars['Boolean']>;
@@ -1637,6 +1735,8 @@ export type Documents_Insert_Input = {
 export type Documents_Max_Fields = {
    __typename?: 'documents_max_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  job_id?: Maybe<Scalars['uuid']>;
   title?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
   url?: Maybe<Scalars['String']>;
@@ -1644,6 +1744,8 @@ export type Documents_Max_Fields = {
 
 export type Documents_Max_Order_By = {
   created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  job_id?: Maybe<Order_By>;
   title?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
   url?: Maybe<Order_By>;
@@ -1652,6 +1754,8 @@ export type Documents_Max_Order_By = {
 export type Documents_Min_Fields = {
    __typename?: 'documents_min_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  job_id?: Maybe<Scalars['uuid']>;
   title?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
   url?: Maybe<Scalars['String']>;
@@ -1659,6 +1763,8 @@ export type Documents_Min_Fields = {
 
 export type Documents_Min_Order_By = {
   created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  job_id?: Maybe<Order_By>;
   title?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
   url?: Maybe<Order_By>;
@@ -1689,6 +1795,10 @@ export type Documents_Order_By = {
   title?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
   url?: Maybe<Order_By>;
+};
+
+export type Documents_Pk_Columns_Input = {
+  id: Scalars['uuid'];
 };
 
 export enum Documents_Select_Column {
@@ -1943,8 +2053,14 @@ export type Jobs_Max_Fields = {
   case_number?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
+  lawyer_user_id?: Maybe<Scalars['uuid']>;
+  pickup_address_id?: Maybe<Scalars['uuid']>;
+  plan_id?: Maybe<Scalars['uuid']>;
+  server_user_id?: Maybe<Scalars['uuid']>;
   stripe_payment_intent_client_secret?: Maybe<Scalars['String']>;
   stripe_payment_intent_id?: Maybe<Scalars['String']>;
+  target_address_id?: Maybe<Scalars['uuid']>;
   target_name?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
@@ -1953,8 +2069,14 @@ export type Jobs_Max_Order_By = {
   case_number?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   description?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  lawyer_user_id?: Maybe<Order_By>;
+  pickup_address_id?: Maybe<Order_By>;
+  plan_id?: Maybe<Order_By>;
+  server_user_id?: Maybe<Order_By>;
   stripe_payment_intent_client_secret?: Maybe<Order_By>;
   stripe_payment_intent_id?: Maybe<Order_By>;
+  target_address_id?: Maybe<Order_By>;
   target_name?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
@@ -1964,8 +2086,14 @@ export type Jobs_Min_Fields = {
   case_number?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
+  lawyer_user_id?: Maybe<Scalars['uuid']>;
+  pickup_address_id?: Maybe<Scalars['uuid']>;
+  plan_id?: Maybe<Scalars['uuid']>;
+  server_user_id?: Maybe<Scalars['uuid']>;
   stripe_payment_intent_client_secret?: Maybe<Scalars['String']>;
   stripe_payment_intent_id?: Maybe<Scalars['String']>;
+  target_address_id?: Maybe<Scalars['uuid']>;
   target_name?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
@@ -1974,8 +2102,14 @@ export type Jobs_Min_Order_By = {
   case_number?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   description?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  lawyer_user_id?: Maybe<Order_By>;
+  pickup_address_id?: Maybe<Order_By>;
+  plan_id?: Maybe<Order_By>;
+  server_user_id?: Maybe<Order_By>;
   stripe_payment_intent_client_secret?: Maybe<Order_By>;
   stripe_payment_intent_id?: Maybe<Order_By>;
+  target_address_id?: Maybe<Order_By>;
   target_name?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
@@ -2022,6 +2156,10 @@ export type Jobs_Order_By = {
   target_address_id?: Maybe<Order_By>;
   target_name?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
+};
+
+export type Jobs_Pk_Columns_Input = {
+  id: Scalars['uuid'];
 };
 
 export enum Jobs_Select_Column {
@@ -2173,31 +2311,43 @@ export type Messages_Insert_Input = {
 export type Messages_Max_Fields = {
    __typename?: 'messages_max_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  job_id?: Maybe<Scalars['uuid']>;
   message?: Maybe<Scalars['String']>;
   read_at?: Maybe<Scalars['timestamptz']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
+  user_id?: Maybe<Scalars['uuid']>;
 };
 
 export type Messages_Max_Order_By = {
   created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  job_id?: Maybe<Order_By>;
   message?: Maybe<Order_By>;
   read_at?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
 };
 
 export type Messages_Min_Fields = {
    __typename?: 'messages_min_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  job_id?: Maybe<Scalars['uuid']>;
   message?: Maybe<Scalars['String']>;
   read_at?: Maybe<Scalars['timestamptz']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
+  user_id?: Maybe<Scalars['uuid']>;
 };
 
 export type Messages_Min_Order_By = {
   created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  job_id?: Maybe<Order_By>;
   message?: Maybe<Order_By>;
   read_at?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
 };
 
 export type Messages_Mutation_Response = {
@@ -2227,6 +2377,10 @@ export type Messages_Order_By = {
   updated_at?: Maybe<Order_By>;
   user?: Maybe<Users_Order_By>;
   user_id?: Maybe<Order_By>;
+};
+
+export type Messages_Pk_Columns_Input = {
+  id: Scalars['uuid'];
 };
 
 export enum Messages_Select_Column {
@@ -2262,59 +2416,109 @@ export enum Messages_Update_Column {
 export type Mutation_Root = {
    __typename?: 'mutation_root';
   delete_addresses?: Maybe<Addresses_Mutation_Response>;
+  delete_addresses_by_pk?: Maybe<Addresses>;
   delete_attempts?: Maybe<Attempts_Mutation_Response>;
+  delete_attempts_by_pk?: Maybe<Attempts>;
   delete_auth_auth_providers?: Maybe<Auth_Auth_Providers_Mutation_Response>;
+  delete_auth_auth_providers_by_pk?: Maybe<Auth_Auth_Providers>;
   delete_auth_refresh_tokens?: Maybe<Auth_Refresh_Tokens_Mutation_Response>;
+  delete_auth_refresh_tokens_by_pk?: Maybe<Auth_Refresh_Tokens>;
   delete_auth_user_accounts?: Maybe<Auth_User_Accounts_Mutation_Response>;
+  delete_auth_user_accounts_by_pk?: Maybe<Auth_User_Accounts>;
   delete_auth_user_providers?: Maybe<Auth_User_Providers_Mutation_Response>;
+  delete_auth_user_providers_by_pk?: Maybe<Auth_User_Providers>;
   delete_available_jobs?: Maybe<Available_Jobs_Mutation_Response>;
   delete_countries?: Maybe<Countries_Mutation_Response>;
+  delete_countries_by_pk?: Maybe<Countries>;
   delete_current_user?: Maybe<Current_User_Mutation_Response>;
   delete_documents?: Maybe<Documents_Mutation_Response>;
+  delete_documents_by_pk?: Maybe<Documents>;
   delete_jobs?: Maybe<Jobs_Mutation_Response>;
+  delete_jobs_by_pk?: Maybe<Jobs>;
   delete_messages?: Maybe<Messages_Mutation_Response>;
+  delete_messages_by_pk?: Maybe<Messages>;
   delete_plans?: Maybe<Plans_Mutation_Response>;
+  delete_plans_by_pk?: Maybe<Plans>;
   delete_provinces?: Maybe<Provinces_Mutation_Response>;
+  delete_provinces_by_pk?: Maybe<Provinces>;
   delete_ratings?: Maybe<Ratings_Mutation_Response>;
+  delete_ratings_by_pk?: Maybe<Ratings>;
   delete_roles?: Maybe<Roles_Mutation_Response>;
+  delete_roles_by_pk?: Maybe<Roles>;
   delete_user_roles?: Maybe<User_Roles_Mutation_Response>;
+  delete_user_roles_by_pk?: Maybe<User_Roles>;
   delete_users?: Maybe<Users_Mutation_Response>;
+  delete_users_by_pk?: Maybe<Users>;
   insert_addresses?: Maybe<Addresses_Mutation_Response>;
+  insert_addresses_one?: Maybe<Addresses>;
   insert_attempts?: Maybe<Attempts_Mutation_Response>;
+  insert_attempts_one?: Maybe<Attempts>;
   insert_auth_auth_providers?: Maybe<Auth_Auth_Providers_Mutation_Response>;
+  insert_auth_auth_providers_one?: Maybe<Auth_Auth_Providers>;
   insert_auth_refresh_tokens?: Maybe<Auth_Refresh_Tokens_Mutation_Response>;
+  insert_auth_refresh_tokens_one?: Maybe<Auth_Refresh_Tokens>;
   insert_auth_user_accounts?: Maybe<Auth_User_Accounts_Mutation_Response>;
+  insert_auth_user_accounts_one?: Maybe<Auth_User_Accounts>;
   insert_auth_user_providers?: Maybe<Auth_User_Providers_Mutation_Response>;
+  insert_auth_user_providers_one?: Maybe<Auth_User_Providers>;
   insert_available_jobs?: Maybe<Available_Jobs_Mutation_Response>;
+  insert_available_jobs_one?: Maybe<Available_Jobs>;
   insert_countries?: Maybe<Countries_Mutation_Response>;
+  insert_countries_one?: Maybe<Countries>;
   insert_current_user?: Maybe<Current_User_Mutation_Response>;
+  insert_current_user_one?: Maybe<Current_User>;
   insert_documents?: Maybe<Documents_Mutation_Response>;
+  insert_documents_one?: Maybe<Documents>;
   insert_jobs?: Maybe<Jobs_Mutation_Response>;
+  insert_jobs_one?: Maybe<Jobs>;
   insert_messages?: Maybe<Messages_Mutation_Response>;
+  insert_messages_one?: Maybe<Messages>;
   insert_plans?: Maybe<Plans_Mutation_Response>;
+  insert_plans_one?: Maybe<Plans>;
   insert_provinces?: Maybe<Provinces_Mutation_Response>;
+  insert_provinces_one?: Maybe<Provinces>;
   insert_ratings?: Maybe<Ratings_Mutation_Response>;
+  insert_ratings_one?: Maybe<Ratings>;
   insert_roles?: Maybe<Roles_Mutation_Response>;
+  insert_roles_one?: Maybe<Roles>;
   insert_user_roles?: Maybe<User_Roles_Mutation_Response>;
+  insert_user_roles_one?: Maybe<User_Roles>;
   insert_users?: Maybe<Users_Mutation_Response>;
+  insert_users_one?: Maybe<Users>;
   update_addresses?: Maybe<Addresses_Mutation_Response>;
+  update_addresses_by_pk?: Maybe<Addresses>;
   update_attempts?: Maybe<Attempts_Mutation_Response>;
+  update_attempts_by_pk?: Maybe<Attempts>;
   update_auth_auth_providers?: Maybe<Auth_Auth_Providers_Mutation_Response>;
+  update_auth_auth_providers_by_pk?: Maybe<Auth_Auth_Providers>;
   update_auth_refresh_tokens?: Maybe<Auth_Refresh_Tokens_Mutation_Response>;
+  update_auth_refresh_tokens_by_pk?: Maybe<Auth_Refresh_Tokens>;
   update_auth_user_accounts?: Maybe<Auth_User_Accounts_Mutation_Response>;
+  update_auth_user_accounts_by_pk?: Maybe<Auth_User_Accounts>;
   update_auth_user_providers?: Maybe<Auth_User_Providers_Mutation_Response>;
+  update_auth_user_providers_by_pk?: Maybe<Auth_User_Providers>;
   update_available_jobs?: Maybe<Available_Jobs_Mutation_Response>;
   update_countries?: Maybe<Countries_Mutation_Response>;
+  update_countries_by_pk?: Maybe<Countries>;
   update_current_user?: Maybe<Current_User_Mutation_Response>;
   update_documents?: Maybe<Documents_Mutation_Response>;
+  update_documents_by_pk?: Maybe<Documents>;
   update_jobs?: Maybe<Jobs_Mutation_Response>;
+  update_jobs_by_pk?: Maybe<Jobs>;
   update_messages?: Maybe<Messages_Mutation_Response>;
+  update_messages_by_pk?: Maybe<Messages>;
   update_plans?: Maybe<Plans_Mutation_Response>;
+  update_plans_by_pk?: Maybe<Plans>;
   update_provinces?: Maybe<Provinces_Mutation_Response>;
+  update_provinces_by_pk?: Maybe<Provinces>;
   update_ratings?: Maybe<Ratings_Mutation_Response>;
+  update_ratings_by_pk?: Maybe<Ratings>;
   update_roles?: Maybe<Roles_Mutation_Response>;
+  update_roles_by_pk?: Maybe<Roles>;
   update_user_roles?: Maybe<User_Roles_Mutation_Response>;
+  update_user_roles_by_pk?: Maybe<User_Roles>;
   update_users?: Maybe<Users_Mutation_Response>;
+  update_users_by_pk?: Maybe<Users>;
 };
 
 
@@ -2323,8 +2527,18 @@ export type Mutation_RootDelete_AddressesArgs = {
 };
 
 
+export type Mutation_RootDelete_Addresses_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
 export type Mutation_RootDelete_AttemptsArgs = {
   where: Attempts_Bool_Exp;
+};
+
+
+export type Mutation_RootDelete_Attempts_By_PkArgs = {
+  id: Scalars['uuid'];
 };
 
 
@@ -2333,8 +2547,18 @@ export type Mutation_RootDelete_Auth_Auth_ProvidersArgs = {
 };
 
 
+export type Mutation_RootDelete_Auth_Auth_Providers_By_PkArgs = {
+  provider: Scalars['String'];
+};
+
+
 export type Mutation_RootDelete_Auth_Refresh_TokensArgs = {
   where: Auth_Refresh_Tokens_Bool_Exp;
+};
+
+
+export type Mutation_RootDelete_Auth_Refresh_Tokens_By_PkArgs = {
+  refresh_token: Scalars['uuid'];
 };
 
 
@@ -2343,8 +2567,18 @@ export type Mutation_RootDelete_Auth_User_AccountsArgs = {
 };
 
 
+export type Mutation_RootDelete_Auth_User_Accounts_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
 export type Mutation_RootDelete_Auth_User_ProvidersArgs = {
   where: Auth_User_Providers_Bool_Exp;
+};
+
+
+export type Mutation_RootDelete_Auth_User_Providers_By_PkArgs = {
+  id: Scalars['uuid'];
 };
 
 
@@ -2358,6 +2592,11 @@ export type Mutation_RootDelete_CountriesArgs = {
 };
 
 
+export type Mutation_RootDelete_Countries_By_PkArgs = {
+  id: Scalars['String'];
+};
+
+
 export type Mutation_RootDelete_Current_UserArgs = {
   where: Current_User_Bool_Exp;
 };
@@ -2368,8 +2607,18 @@ export type Mutation_RootDelete_DocumentsArgs = {
 };
 
 
+export type Mutation_RootDelete_Documents_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
 export type Mutation_RootDelete_JobsArgs = {
   where: Jobs_Bool_Exp;
+};
+
+
+export type Mutation_RootDelete_Jobs_By_PkArgs = {
+  id: Scalars['uuid'];
 };
 
 
@@ -2378,8 +2627,18 @@ export type Mutation_RootDelete_MessagesArgs = {
 };
 
 
+export type Mutation_RootDelete_Messages_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
 export type Mutation_RootDelete_PlansArgs = {
   where: Plans_Bool_Exp;
+};
+
+
+export type Mutation_RootDelete_Plans_By_PkArgs = {
+  id: Scalars['uuid'];
 };
 
 
@@ -2388,8 +2647,18 @@ export type Mutation_RootDelete_ProvincesArgs = {
 };
 
 
+export type Mutation_RootDelete_Provinces_By_PkArgs = {
+  id: Scalars['String'];
+};
+
+
 export type Mutation_RootDelete_RatingsArgs = {
   where: Ratings_Bool_Exp;
+};
+
+
+export type Mutation_RootDelete_Ratings_By_PkArgs = {
+  id: Scalars['uuid'];
 };
 
 
@@ -2398,8 +2667,18 @@ export type Mutation_RootDelete_RolesArgs = {
 };
 
 
+export type Mutation_RootDelete_Roles_By_PkArgs = {
+  role: Scalars['String'];
+};
+
+
 export type Mutation_RootDelete_User_RolesArgs = {
   where: User_Roles_Bool_Exp;
+};
+
+
+export type Mutation_RootDelete_User_Roles_By_PkArgs = {
+  id: Scalars['uuid'];
 };
 
 
@@ -2408,8 +2687,19 @@ export type Mutation_RootDelete_UsersArgs = {
 };
 
 
+export type Mutation_RootDelete_Users_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
 export type Mutation_RootInsert_AddressesArgs = {
   objects: Array<Addresses_Insert_Input>;
+  on_conflict?: Maybe<Addresses_On_Conflict>;
+};
+
+
+export type Mutation_RootInsert_Addresses_OneArgs = {
+  object: Addresses_Insert_Input;
   on_conflict?: Maybe<Addresses_On_Conflict>;
 };
 
@@ -2420,8 +2710,20 @@ export type Mutation_RootInsert_AttemptsArgs = {
 };
 
 
+export type Mutation_RootInsert_Attempts_OneArgs = {
+  object: Attempts_Insert_Input;
+  on_conflict?: Maybe<Attempts_On_Conflict>;
+};
+
+
 export type Mutation_RootInsert_Auth_Auth_ProvidersArgs = {
   objects: Array<Auth_Auth_Providers_Insert_Input>;
+  on_conflict?: Maybe<Auth_Auth_Providers_On_Conflict>;
+};
+
+
+export type Mutation_RootInsert_Auth_Auth_Providers_OneArgs = {
+  object: Auth_Auth_Providers_Insert_Input;
   on_conflict?: Maybe<Auth_Auth_Providers_On_Conflict>;
 };
 
@@ -2432,8 +2734,20 @@ export type Mutation_RootInsert_Auth_Refresh_TokensArgs = {
 };
 
 
+export type Mutation_RootInsert_Auth_Refresh_Tokens_OneArgs = {
+  object: Auth_Refresh_Tokens_Insert_Input;
+  on_conflict?: Maybe<Auth_Refresh_Tokens_On_Conflict>;
+};
+
+
 export type Mutation_RootInsert_Auth_User_AccountsArgs = {
   objects: Array<Auth_User_Accounts_Insert_Input>;
+  on_conflict?: Maybe<Auth_User_Accounts_On_Conflict>;
+};
+
+
+export type Mutation_RootInsert_Auth_User_Accounts_OneArgs = {
+  object: Auth_User_Accounts_Insert_Input;
   on_conflict?: Maybe<Auth_User_Accounts_On_Conflict>;
 };
 
@@ -2444,8 +2758,19 @@ export type Mutation_RootInsert_Auth_User_ProvidersArgs = {
 };
 
 
+export type Mutation_RootInsert_Auth_User_Providers_OneArgs = {
+  object: Auth_User_Providers_Insert_Input;
+  on_conflict?: Maybe<Auth_User_Providers_On_Conflict>;
+};
+
+
 export type Mutation_RootInsert_Available_JobsArgs = {
   objects: Array<Available_Jobs_Insert_Input>;
+};
+
+
+export type Mutation_RootInsert_Available_Jobs_OneArgs = {
+  object: Available_Jobs_Insert_Input;
 };
 
 
@@ -2455,13 +2780,30 @@ export type Mutation_RootInsert_CountriesArgs = {
 };
 
 
+export type Mutation_RootInsert_Countries_OneArgs = {
+  object: Countries_Insert_Input;
+  on_conflict?: Maybe<Countries_On_Conflict>;
+};
+
+
 export type Mutation_RootInsert_Current_UserArgs = {
   objects: Array<Current_User_Insert_Input>;
 };
 
 
+export type Mutation_RootInsert_Current_User_OneArgs = {
+  object: Current_User_Insert_Input;
+};
+
+
 export type Mutation_RootInsert_DocumentsArgs = {
   objects: Array<Documents_Insert_Input>;
+  on_conflict?: Maybe<Documents_On_Conflict>;
+};
+
+
+export type Mutation_RootInsert_Documents_OneArgs = {
+  object: Documents_Insert_Input;
   on_conflict?: Maybe<Documents_On_Conflict>;
 };
 
@@ -2472,8 +2814,20 @@ export type Mutation_RootInsert_JobsArgs = {
 };
 
 
+export type Mutation_RootInsert_Jobs_OneArgs = {
+  object: Jobs_Insert_Input;
+  on_conflict?: Maybe<Jobs_On_Conflict>;
+};
+
+
 export type Mutation_RootInsert_MessagesArgs = {
   objects: Array<Messages_Insert_Input>;
+  on_conflict?: Maybe<Messages_On_Conflict>;
+};
+
+
+export type Mutation_RootInsert_Messages_OneArgs = {
+  object: Messages_Insert_Input;
   on_conflict?: Maybe<Messages_On_Conflict>;
 };
 
@@ -2484,8 +2838,20 @@ export type Mutation_RootInsert_PlansArgs = {
 };
 
 
+export type Mutation_RootInsert_Plans_OneArgs = {
+  object: Plans_Insert_Input;
+  on_conflict?: Maybe<Plans_On_Conflict>;
+};
+
+
 export type Mutation_RootInsert_ProvincesArgs = {
   objects: Array<Provinces_Insert_Input>;
+  on_conflict?: Maybe<Provinces_On_Conflict>;
+};
+
+
+export type Mutation_RootInsert_Provinces_OneArgs = {
+  object: Provinces_Insert_Input;
   on_conflict?: Maybe<Provinces_On_Conflict>;
 };
 
@@ -2496,8 +2862,20 @@ export type Mutation_RootInsert_RatingsArgs = {
 };
 
 
+export type Mutation_RootInsert_Ratings_OneArgs = {
+  object: Ratings_Insert_Input;
+  on_conflict?: Maybe<Ratings_On_Conflict>;
+};
+
+
 export type Mutation_RootInsert_RolesArgs = {
   objects: Array<Roles_Insert_Input>;
+  on_conflict?: Maybe<Roles_On_Conflict>;
+};
+
+
+export type Mutation_RootInsert_Roles_OneArgs = {
+  object: Roles_Insert_Input;
   on_conflict?: Maybe<Roles_On_Conflict>;
 };
 
@@ -2508,8 +2886,20 @@ export type Mutation_RootInsert_User_RolesArgs = {
 };
 
 
+export type Mutation_RootInsert_User_Roles_OneArgs = {
+  object: User_Roles_Insert_Input;
+  on_conflict?: Maybe<User_Roles_On_Conflict>;
+};
+
+
 export type Mutation_RootInsert_UsersArgs = {
   objects: Array<Users_Insert_Input>;
+  on_conflict?: Maybe<Users_On_Conflict>;
+};
+
+
+export type Mutation_RootInsert_Users_OneArgs = {
+  object: Users_Insert_Input;
   on_conflict?: Maybe<Users_On_Conflict>;
 };
 
@@ -2520,9 +2910,21 @@ export type Mutation_RootUpdate_AddressesArgs = {
 };
 
 
+export type Mutation_RootUpdate_Addresses_By_PkArgs = {
+  _set?: Maybe<Addresses_Set_Input>;
+  pk_columns: Addresses_Pk_Columns_Input;
+};
+
+
 export type Mutation_RootUpdate_AttemptsArgs = {
   _set?: Maybe<Attempts_Set_Input>;
   where: Attempts_Bool_Exp;
+};
+
+
+export type Mutation_RootUpdate_Attempts_By_PkArgs = {
+  _set?: Maybe<Attempts_Set_Input>;
+  pk_columns: Attempts_Pk_Columns_Input;
 };
 
 
@@ -2532,9 +2934,21 @@ export type Mutation_RootUpdate_Auth_Auth_ProvidersArgs = {
 };
 
 
+export type Mutation_RootUpdate_Auth_Auth_Providers_By_PkArgs = {
+  _set?: Maybe<Auth_Auth_Providers_Set_Input>;
+  pk_columns: Auth_Auth_Providers_Pk_Columns_Input;
+};
+
+
 export type Mutation_RootUpdate_Auth_Refresh_TokensArgs = {
   _set?: Maybe<Auth_Refresh_Tokens_Set_Input>;
   where: Auth_Refresh_Tokens_Bool_Exp;
+};
+
+
+export type Mutation_RootUpdate_Auth_Refresh_Tokens_By_PkArgs = {
+  _set?: Maybe<Auth_Refresh_Tokens_Set_Input>;
+  pk_columns: Auth_Refresh_Tokens_Pk_Columns_Input;
 };
 
 
@@ -2544,9 +2958,21 @@ export type Mutation_RootUpdate_Auth_User_AccountsArgs = {
 };
 
 
+export type Mutation_RootUpdate_Auth_User_Accounts_By_PkArgs = {
+  _set?: Maybe<Auth_User_Accounts_Set_Input>;
+  pk_columns: Auth_User_Accounts_Pk_Columns_Input;
+};
+
+
 export type Mutation_RootUpdate_Auth_User_ProvidersArgs = {
   _set?: Maybe<Auth_User_Providers_Set_Input>;
   where: Auth_User_Providers_Bool_Exp;
+};
+
+
+export type Mutation_RootUpdate_Auth_User_Providers_By_PkArgs = {
+  _set?: Maybe<Auth_User_Providers_Set_Input>;
+  pk_columns: Auth_User_Providers_Pk_Columns_Input;
 };
 
 
@@ -2559,6 +2985,12 @@ export type Mutation_RootUpdate_Available_JobsArgs = {
 export type Mutation_RootUpdate_CountriesArgs = {
   _set?: Maybe<Countries_Set_Input>;
   where: Countries_Bool_Exp;
+};
+
+
+export type Mutation_RootUpdate_Countries_By_PkArgs = {
+  _set?: Maybe<Countries_Set_Input>;
+  pk_columns: Countries_Pk_Columns_Input;
 };
 
 
@@ -2579,15 +3011,33 @@ export type Mutation_RootUpdate_DocumentsArgs = {
 };
 
 
+export type Mutation_RootUpdate_Documents_By_PkArgs = {
+  _set?: Maybe<Documents_Set_Input>;
+  pk_columns: Documents_Pk_Columns_Input;
+};
+
+
 export type Mutation_RootUpdate_JobsArgs = {
   _set?: Maybe<Jobs_Set_Input>;
   where: Jobs_Bool_Exp;
 };
 
 
+export type Mutation_RootUpdate_Jobs_By_PkArgs = {
+  _set?: Maybe<Jobs_Set_Input>;
+  pk_columns: Jobs_Pk_Columns_Input;
+};
+
+
 export type Mutation_RootUpdate_MessagesArgs = {
   _set?: Maybe<Messages_Set_Input>;
   where: Messages_Bool_Exp;
+};
+
+
+export type Mutation_RootUpdate_Messages_By_PkArgs = {
+  _set?: Maybe<Messages_Set_Input>;
+  pk_columns: Messages_Pk_Columns_Input;
 };
 
 
@@ -2598,9 +3048,22 @@ export type Mutation_RootUpdate_PlansArgs = {
 };
 
 
+export type Mutation_RootUpdate_Plans_By_PkArgs = {
+  _inc?: Maybe<Plans_Inc_Input>;
+  _set?: Maybe<Plans_Set_Input>;
+  pk_columns: Plans_Pk_Columns_Input;
+};
+
+
 export type Mutation_RootUpdate_ProvincesArgs = {
   _set?: Maybe<Provinces_Set_Input>;
   where: Provinces_Bool_Exp;
+};
+
+
+export type Mutation_RootUpdate_Provinces_By_PkArgs = {
+  _set?: Maybe<Provinces_Set_Input>;
+  pk_columns: Provinces_Pk_Columns_Input;
 };
 
 
@@ -2611,15 +3074,34 @@ export type Mutation_RootUpdate_RatingsArgs = {
 };
 
 
+export type Mutation_RootUpdate_Ratings_By_PkArgs = {
+  _inc?: Maybe<Ratings_Inc_Input>;
+  _set?: Maybe<Ratings_Set_Input>;
+  pk_columns: Ratings_Pk_Columns_Input;
+};
+
+
 export type Mutation_RootUpdate_RolesArgs = {
   _set?: Maybe<Roles_Set_Input>;
   where: Roles_Bool_Exp;
 };
 
 
+export type Mutation_RootUpdate_Roles_By_PkArgs = {
+  _set?: Maybe<Roles_Set_Input>;
+  pk_columns: Roles_Pk_Columns_Input;
+};
+
+
 export type Mutation_RootUpdate_User_RolesArgs = {
   _set?: Maybe<User_Roles_Set_Input>;
   where: User_Roles_Bool_Exp;
+};
+
+
+export type Mutation_RootUpdate_User_Roles_By_PkArgs = {
+  _set?: Maybe<User_Roles_Set_Input>;
+  pk_columns: User_Roles_Pk_Columns_Input;
 };
 
 
@@ -2631,6 +3113,17 @@ export type Mutation_RootUpdate_UsersArgs = {
   _prepend?: Maybe<Users_Prepend_Input>;
   _set?: Maybe<Users_Set_Input>;
   where: Users_Bool_Exp;
+};
+
+
+export type Mutation_RootUpdate_Users_By_PkArgs = {
+  _append?: Maybe<Users_Append_Input>;
+  _delete_at_path?: Maybe<Users_Delete_At_Path_Input>;
+  _delete_elem?: Maybe<Users_Delete_Elem_Input>;
+  _delete_key?: Maybe<Users_Delete_Key_Input>;
+  _prepend?: Maybe<Users_Prepend_Input>;
+  _set?: Maybe<Users_Set_Input>;
+  pk_columns: Users_Pk_Columns_Input;
 };
 
 export enum Order_By {
@@ -2761,6 +3254,7 @@ export type Plans_Max_Fields = {
   bounty?: Maybe<Scalars['Int']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   fee?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['uuid']>;
   name?: Maybe<Scalars['String']>;
   order?: Maybe<Scalars['Int']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
@@ -2771,6 +3265,7 @@ export type Plans_Max_Order_By = {
   bounty?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   fee?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
   order?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
@@ -2782,6 +3277,7 @@ export type Plans_Min_Fields = {
   bounty?: Maybe<Scalars['Int']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   fee?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['uuid']>;
   name?: Maybe<Scalars['String']>;
   order?: Maybe<Scalars['Int']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
@@ -2792,6 +3288,7 @@ export type Plans_Min_Order_By = {
   bounty?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   fee?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
   order?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
@@ -2824,6 +3321,10 @@ export type Plans_Order_By = {
   name?: Maybe<Order_By>;
   order?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
+};
+
+export type Plans_Pk_Columns_Input = {
+  id: Scalars['uuid'];
 };
 
 export enum Plans_Select_Column {
@@ -3109,6 +3610,10 @@ export type Provinces_Order_By = {
   addresses_aggregate?: Maybe<Addresses_Aggregate_Order_By>;
   id?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
+};
+
+export type Provinces_Pk_Columns_Input = {
+  id: Scalars['String'];
 };
 
 export enum Provinces_Select_Column {
@@ -3693,14 +4198,20 @@ export type Ratings_Max_Fields = {
    __typename?: 'ratings_max_fields';
   comment?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  job_id?: Maybe<Scalars['uuid']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
+  user_id?: Maybe<Scalars['uuid']>;
   value?: Maybe<Scalars['Int']>;
 };
 
 export type Ratings_Max_Order_By = {
   comment?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  job_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
   value?: Maybe<Order_By>;
 };
 
@@ -3708,14 +4219,20 @@ export type Ratings_Min_Fields = {
    __typename?: 'ratings_min_fields';
   comment?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  job_id?: Maybe<Scalars['uuid']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
+  user_id?: Maybe<Scalars['uuid']>;
   value?: Maybe<Scalars['Int']>;
 };
 
 export type Ratings_Min_Order_By = {
   comment?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  job_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
   value?: Maybe<Order_By>;
 };
 
@@ -3746,6 +4263,10 @@ export type Ratings_Order_By = {
   user?: Maybe<Users_Order_By>;
   user_id?: Maybe<Order_By>;
   value?: Maybe<Order_By>;
+};
+
+export type Ratings_Pk_Columns_Input = {
+  id: Scalars['uuid'];
 };
 
 export enum Ratings_Select_Column {
@@ -3974,6 +4495,10 @@ export type Roles_Order_By = {
   role?: Maybe<Order_By>;
   user_roles_aggregate?: Maybe<User_Roles_Aggregate_Order_By>;
   users_aggregate?: Maybe<Users_Aggregate_Order_By>;
+};
+
+export type Roles_Pk_Columns_Input = {
+  role: Scalars['String'];
 };
 
 export enum Roles_Select_Column {
@@ -4548,23 +5073,31 @@ export type User_Roles_Insert_Input = {
 export type User_Roles_Max_Fields = {
    __typename?: 'user_roles_max_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
   role?: Maybe<Scalars['String']>;
+  user_id?: Maybe<Scalars['uuid']>;
 };
 
 export type User_Roles_Max_Order_By = {
   created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
   role?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
 };
 
 export type User_Roles_Min_Fields = {
    __typename?: 'user_roles_min_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
   role?: Maybe<Scalars['String']>;
+  user_id?: Maybe<Scalars['uuid']>;
 };
 
 export type User_Roles_Min_Order_By = {
   created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
   role?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
 };
 
 export type User_Roles_Mutation_Response = {
@@ -4591,6 +5124,10 @@ export type User_Roles_Order_By = {
   roleByRole?: Maybe<Roles_Order_By>;
   user?: Maybe<Users_Order_By>;
   user_id?: Maybe<Order_By>;
+};
+
+export type User_Roles_Pk_Columns_Input = {
+  id: Scalars['uuid'];
 };
 
 export enum User_Roles_Select_Column {
@@ -4625,6 +5162,7 @@ export type Users = {
   default_role: Scalars['String'];
   display_name: Scalars['String'];
   email?: Maybe<Scalars['String']>;
+  email_notifications_enabled: Scalars['Boolean'];
   firebase_messaging_token?: Maybe<Scalars['String']>;
   id: Scalars['uuid'];
   is_anonymous: Scalars['Boolean'];
@@ -4830,6 +5368,7 @@ export type Users_Bool_Exp = {
   default_role?: Maybe<String_Comparison_Exp>;
   display_name?: Maybe<String_Comparison_Exp>;
   email?: Maybe<String_Comparison_Exp>;
+  email_notifications_enabled?: Maybe<Boolean_Comparison_Exp>;
   firebase_messaging_token?: Maybe<String_Comparison_Exp>;
   id?: Maybe<Uuid_Comparison_Exp>;
   is_anonymous?: Maybe<Boolean_Comparison_Exp>;
@@ -4878,6 +5417,7 @@ export type Users_Insert_Input = {
   default_role?: Maybe<Scalars['String']>;
   display_name?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
+  email_notifications_enabled?: Maybe<Scalars['Boolean']>;
   firebase_messaging_token?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   is_anonymous?: Maybe<Scalars['Boolean']>;
@@ -4900,26 +5440,32 @@ export type Users_Insert_Input = {
 
 export type Users_Max_Fields = {
    __typename?: 'users_max_fields';
+  address_id?: Maybe<Scalars['uuid']>;
   avatar_url?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   default_role?: Maybe<Scalars['String']>;
   display_name?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
   firebase_messaging_token?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
   name?: Maybe<Scalars['String']>;
+  secret_token?: Maybe<Scalars['uuid']>;
   secret_token_expires_at?: Maybe<Scalars['timestamptz']>;
   stripe_customer_id?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 export type Users_Max_Order_By = {
+  address_id?: Maybe<Order_By>;
   avatar_url?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   default_role?: Maybe<Order_By>;
   display_name?: Maybe<Order_By>;
   email?: Maybe<Order_By>;
   firebase_messaging_token?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
+  secret_token?: Maybe<Order_By>;
   secret_token_expires_at?: Maybe<Order_By>;
   stripe_customer_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
@@ -4927,26 +5473,32 @@ export type Users_Max_Order_By = {
 
 export type Users_Min_Fields = {
    __typename?: 'users_min_fields';
+  address_id?: Maybe<Scalars['uuid']>;
   avatar_url?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   default_role?: Maybe<Scalars['String']>;
   display_name?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
   firebase_messaging_token?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
   name?: Maybe<Scalars['String']>;
+  secret_token?: Maybe<Scalars['uuid']>;
   secret_token_expires_at?: Maybe<Scalars['timestamptz']>;
   stripe_customer_id?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 export type Users_Min_Order_By = {
+  address_id?: Maybe<Order_By>;
   avatar_url?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   default_role?: Maybe<Order_By>;
   display_name?: Maybe<Order_By>;
   email?: Maybe<Order_By>;
   firebase_messaging_token?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
+  secret_token?: Maybe<Order_By>;
   secret_token_expires_at?: Maybe<Order_By>;
   stripe_customer_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
@@ -4979,6 +5531,7 @@ export type Users_Order_By = {
   default_role?: Maybe<Order_By>;
   display_name?: Maybe<Order_By>;
   email?: Maybe<Order_By>;
+  email_notifications_enabled?: Maybe<Order_By>;
   firebase_messaging_token?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   is_anonymous?: Maybe<Order_By>;
@@ -4999,6 +5552,10 @@ export type Users_Order_By = {
   user_roles_aggregate?: Maybe<User_Roles_Aggregate_Order_By>;
 };
 
+export type Users_Pk_Columns_Input = {
+  id: Scalars['uuid'];
+};
+
 export type Users_Prepend_Input = {
   register_data?: Maybe<Scalars['jsonb']>;
 };
@@ -5012,6 +5569,7 @@ export enum Users_Select_Column {
   DefaultRole = 'default_role',
   DisplayName = 'display_name',
   Email = 'email',
+  EmailNotificationsEnabled = 'email_notifications_enabled',
   FirebaseMessagingToken = 'firebase_messaging_token',
   Id = 'id',
   IsAnonymous = 'is_anonymous',
@@ -5033,6 +5591,7 @@ export type Users_Set_Input = {
   default_role?: Maybe<Scalars['String']>;
   display_name?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
+  email_notifications_enabled?: Maybe<Scalars['Boolean']>;
   firebase_messaging_token?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   is_anonymous?: Maybe<Scalars['Boolean']>;
@@ -5054,6 +5613,7 @@ export enum Users_Update_Column {
   DefaultRole = 'default_role',
   DisplayName = 'display_name',
   Email = 'email',
+  EmailNotificationsEnabled = 'email_notifications_enabled',
   FirebaseMessagingToken = 'firebase_messaging_token',
   Id = 'id',
   IsAnonymous = 'is_anonymous',
@@ -5331,6 +5891,20 @@ export type SendMessageMutation = (
   & { insert_messages: Maybe<(
     { __typename?: 'messages_mutation_response' }
     & Pick<Messages_Mutation_Response, 'affected_rows'>
+  )> }
+);
+
+export type SetEmailNotificationsEnabledMutationVariables = {
+  userId: Scalars['uuid'];
+  enabled: Scalars['Boolean'];
+};
+
+
+export type SetEmailNotificationsEnabledMutation = (
+  { __typename?: 'mutation_root' }
+  & { update_users: Maybe<(
+    { __typename?: 'users_mutation_response' }
+    & Pick<Users_Mutation_Response, 'affected_rows'>
   )> }
 );
 
@@ -5823,7 +6397,7 @@ export type SettingsPageQuery = (
   { __typename?: 'query_root' }
   & { current_user: Array<(
     { __typename?: 'current_user' }
-    & Pick<Current_User, 'id' | 'notifications_enabled' | 'firebase_messaging_token'>
+    & Pick<Current_User, 'id' | 'email_notifications_enabled' | 'notifications_enabled' | 'firebase_messaging_token'>
     & { address: Maybe<(
       { __typename?: 'addresses' }
       & Pick<Addresses, 'id' | 'street' | 'unit' | 'city' | 'province'>
@@ -6345,6 +6919,39 @@ export function useSendMessageMutation(baseOptions?: ApolloReactHooks.MutationHo
 export type SendMessageMutationHookResult = ReturnType<typeof useSendMessageMutation>;
 export type SendMessageMutationResult = ApolloReactCommon.MutationResult<SendMessageMutation>;
 export type SendMessageMutationOptions = ApolloReactCommon.BaseMutationOptions<SendMessageMutation, SendMessageMutationVariables>;
+export const SetEmailNotificationsEnabledDocument = gql`
+    mutation SetEmailNotificationsEnabled($userId: uuid!, $enabled: Boolean!) {
+  update_users(_set: {email_notifications_enabled: $enabled}, where: {id: {_eq: $userId}}) {
+    affected_rows
+  }
+}
+    `;
+export type SetEmailNotificationsEnabledMutationFn = ApolloReactCommon.MutationFunction<SetEmailNotificationsEnabledMutation, SetEmailNotificationsEnabledMutationVariables>;
+
+/**
+ * __useSetEmailNotificationsEnabledMutation__
+ *
+ * To run a mutation, you first call `useSetEmailNotificationsEnabledMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetEmailNotificationsEnabledMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setEmailNotificationsEnabledMutation, { data, loading, error }] = useSetEmailNotificationsEnabledMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *      enabled: // value for 'enabled'
+ *   },
+ * });
+ */
+export function useSetEmailNotificationsEnabledMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SetEmailNotificationsEnabledMutation, SetEmailNotificationsEnabledMutationVariables>) {
+        return ApolloReactHooks.useMutation<SetEmailNotificationsEnabledMutation, SetEmailNotificationsEnabledMutationVariables>(SetEmailNotificationsEnabledDocument, baseOptions);
+      }
+export type SetEmailNotificationsEnabledMutationHookResult = ReturnType<typeof useSetEmailNotificationsEnabledMutation>;
+export type SetEmailNotificationsEnabledMutationResult = ApolloReactCommon.MutationResult<SetEmailNotificationsEnabledMutation>;
+export type SetEmailNotificationsEnabledMutationOptions = ApolloReactCommon.BaseMutationOptions<SetEmailNotificationsEnabledMutation, SetEmailNotificationsEnabledMutationVariables>;
 export const SetFirebaseMessagingTokenDocument = gql`
     mutation SetFirebaseMessagingToken($userId: uuid!, $token: String!, $notificationsEnabled: Boolean!) {
   update_users(_set: {firebase_messaging_token: $token, notifications_enabled: $notificationsEnabled}, where: {id: {_eq: $userId}}) {
@@ -7429,6 +8036,7 @@ export const SettingsPageDocument = gql`
     query SettingsPage {
   current_user {
     id
+    email_notifications_enabled
     notifications_enabled
     firebase_messaging_token
     address {

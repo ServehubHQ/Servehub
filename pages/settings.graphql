@@ -1,6 +1,7 @@
 query SettingsPage {
   current_user {
     id
+    email_notifications_enabled
     notifications_enabled
     firebase_messaging_token
 

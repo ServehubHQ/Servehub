@@ -11,11 +11,11 @@ import {
 } from '@material-ui/core'
 import {
   ChangeEvent,
+  MouseEvent,
   useCallback,
   useEffect,
   useMemo,
   useState,
-  MouseEvent,
 } from 'react'
 import { useForm } from 'react-hook-form'
 import { AddressForm } from '../components/AddressForm'
@@ -25,6 +25,7 @@ import { Stack } from '../components/Stack'
 import {
   InsertAddressMutationVariables,
   useInsertAddressMutation,
+  useSetEmailNotificationsEnabledMutation,
   useSettingsPageQuery,
   useSetUserAddressMutation,
 } from '../graphql-codegen'
@@ -84,48 +85,86 @@ export default function SettingsPage() {
     [insertAddress, setUserAddress, setError, userId],
   )
 
-  // Push
+  // Push Notifications
 
   const supportsPush = useMemo(() => pushNotificationsSupported(), [])
-  const [
-    optimisticNotificationsEnabled,
-    setOptimisticNotificationsEnabled,
-  ] = useState<boolean | null>(null)
+  const [optimisticPushEnabled, setOptimisticPushEnabled] = useState<
+    boolean | null
+  >(null)
   const [notificationsLoading, setNotificationsLoading] = useState(false)
-  const notificationsEnabled = useMemo(
+  const pushEnabled = useMemo(
     () =>
-      typeof optimisticNotificationsEnabled === 'boolean'
-        ? optimisticNotificationsEnabled
+      typeof optimisticPushEnabled === 'boolean'
+        ? optimisticPushEnabled
         : Boolean(
             data?.current_user &&
               data?.current_user[0] &&
               data?.current_user[0].firebase_messaging_token &&
               data?.current_user[0].notifications_enabled,
           ),
-    [data, optimisticNotificationsEnabled],
+    [data, optimisticPushEnabled],
   )
 
-  const handleNotificationsSwitch = useCallback(
+  const handlePushSwitch = useCallback(
     async (event: ChangeEvent<HTMLInputElement>, value: boolean) => {
-      setOptimisticNotificationsEnabled(value)
+      setOptimisticPushEnabled(value)
     },
-    [setOptimisticNotificationsEnabled],
+    [setOptimisticPushEnabled],
+  )
+
+  const [
+    setEmailNotificationsEnabled,
+  ] = useSetEmailNotificationsEnabledMutation()
+  const [optimisticEmailEnabled, setOptimisticEmailEnabled] = useState<
+    boolean | null
+  >(null)
+  const emailEnabled = useMemo(
+    () =>
+      typeof optimisticEmailEnabled === 'boolean'
+        ? optimisticEmailEnabled
+        : Boolean(
+            data?.current_user &&
+              data?.current_user[0] &&
+              data?.current_user[0].email_notifications_enabled,
+          ),
+    [data, optimisticEmailEnabled],
+  )
+
+  const handleEmailSwitch = useCallback(
+    async (event: ChangeEvent<HTMLInputElement>, value: boolean) => {
+      setOptimisticEmailEnabled(value)
+    },
+    [setOptimisticEmailEnabled],
   )
 
   const handleNotificationsSave = useCallback(
     async (event: MouseEvent<HTMLButtonElement>) => {
-      if (optimisticNotificationsEnabled !== null) {
-        setNotificationsLoading(true)
-        await getAndSaveMessagingToken(optimisticNotificationsEnabled)
-        await refetch()
-        setOptimisticNotificationsEnabled(null)
-        setNotificationsLoading(false)
+      setNotificationsLoading(true)
+
+      if (optimisticEmailEnabled !== null) {
+        await setEmailNotificationsEnabled({
+          variables: { userId, enabled: optimisticEmailEnabled },
+        })
       }
+
+      if (optimisticPushEnabled !== null) {
+        await getAndSaveMessagingToken(optimisticPushEnabled)
+      }
+
+      await refetch()
+      setOptimisticEmailEnabled(null)
+      setOptimisticPushEnabled(null)
+      setNotificationsLoading(false)
     },
     [
       refetch,
-      setOptimisticNotificationsEnabled,
-      optimisticNotificationsEnabled,
+      userId,
+      setNotificationsLoading,
+      setOptimisticPushEnabled,
+      optimisticPushEnabled,
+      setEmailNotificationsEnabled,
+      optimisticEmailEnabled,
+      setOptimisticEmailEnabled,
     ],
   )
 
@@ -154,33 +193,46 @@ export default function SettingsPage() {
           </Card>
         </form>
         <Card>
-          <CardHeader title='Push Notifications' />
+          <CardHeader title='Notifications' />
           <Divider />
           <CardContent>
-            {supportsPush ? (
+            <Stack>
+              {supportsPush ? (
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={pushEnabled}
+                      onChange={handlePushSwitch}
+                      name='push_notifications'
+                    />
+                  }
+                  label='Push Notifications'
+                />
+              ) : (
+                <Typography>
+                  Unforunately, your browser does not support push
+                  notifications.
+                </Typography>
+              )}
+
               <FormControlLabel
                 control={
                   <Switch
-                    checked={notificationsEnabled}
-                    onChange={handleNotificationsSwitch}
-                    name='Notifications'
+                    checked={emailEnabled}
+                    onChange={handleEmailSwitch}
+                    name='email_notifications'
                   />
                 }
-                label='Enable Push Notifications'
+                label='Email Notifications'
               />
-            ) : (
-              <Typography>
-                Unforunately, your browser does not support push notifications.
-              </Typography>
-            )}
-            {/* await getAndSaveMessagingToken(true) */}
+            </Stack>
           </CardContent>
           <Divider />
           <CardActions>
             <Button
               variant='contained'
               color='primary'
-              disabled={notificationsLoading || !supportsPush}
+              disabled={notificationsLoading}
               onClick={handleNotificationsSave}
             >
               Save

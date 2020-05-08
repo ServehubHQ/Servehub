@@ -1,0 +1,8 @@
+mutation SetEmailNotificationsEnabled($userId: uuid!, $enabled: Boolean!) {
+  update_users(
+    _set: { email_notifications_enabled: $enabled }
+    where: { id: { _eq: $userId } }
+  ) {
+    affected_rows
+  }
+}
