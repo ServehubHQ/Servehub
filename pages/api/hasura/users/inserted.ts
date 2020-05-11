@@ -37,7 +37,7 @@ export default async function hasuraUserInserted(
 
   const role = user.register_data.role
   if (role !== 'lawyer' && role !== 'server') {
-    return res.status(403).end()
+    throw new Error(`User role unrecognized: "${role}"`)
   }
 
   const apollo = getApolloClient(new ApiAuthClient())
@@ -52,6 +52,7 @@ export default async function hasuraUserInserted(
   }
 
   if (role === 'server') {
+    console.log('Sending email')
     const postmark = new ServerClient(config.postmarkSecretKey)
     postmark.sendEmail({
       From: 'Servehub <hello@servehub.com>',
@@ -68,6 +69,8 @@ few days if you've been approved.
 Thanks,
 Servehub Team`,
     })
+  } else {
+    console.log('Not sending email, bad role')
   }
 
   res.send('✔')
