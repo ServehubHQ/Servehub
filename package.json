@@ -41,7 +41,7 @@
     "nhost": "0.0.6",
     "nhost-js-sdk": "^1.2.0",
     "nookies": "^2.0.8",
-    "postmark": "^2.5.1",
+    "postmark": "^2.5.3",
     "ra-data-hasura-graphql": "github:ServehubHQ/ra-data-hasura-graphql#master",
     "react": "^16.13.1",
     "react-admin": "^3.2.3",

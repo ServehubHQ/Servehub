@@ -54,7 +54,7 @@ export default async function hasuraUserInserted(
   if (role === 'server') {
     console.log('Sending email')
     const postmark = new ServerClient(config.postmarkSecretKey)
-    postmark.sendEmail({
+    const response = await postmark.sendEmail({
       From: 'Servehub <hello@servehub.com>',
       To: user.email!,
       Subject: '📑 Get Started on Servehub',
@@ -69,6 +69,7 @@ few days if you've been approved.
 Thanks,
 Servehub Team`,
     })
+    console.log('Postmark response:', response)
   } else {
     console.log('Not sending email, bad role')
   }
