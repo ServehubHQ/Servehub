@@ -75,7 +75,7 @@ export default async function hasuraMessageInsertedApi(
 
       if (recipient.email_notifications_enabled) {
         const postmark = new ServerClient(config.postmarkSecretKey)
-        postmark.sendEmail({
+        await postmark.sendEmail({
           From: 'Servehub <hello@servehub.com>',
           To: `${recipient.email} <${recipient.email!}>`,
           Subject: `📑 ${title}`,

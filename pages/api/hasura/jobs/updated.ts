@@ -75,21 +75,23 @@ export default async function hasurajobUpdatedApi(
     })
 
     const postmark = new ServerClient(config.postmarkSecretKey)
-    for (const recipient of data.users) {
-      if (recipient.email_notifications_enabled) {
-        postmark.sendEmail({
-          From: 'Servehub <hello@servehub.com>',
-          To: `${recipient.email} <${recipient.email!}>`,
-          Subject: `📑 ${title}`,
-          TextBody: `Hello,
+    await Promise.all(
+      data.users.map(async (recipient) => {
+        if (recipient.email_notifications_enabled) {
+          await postmark.sendEmail({
+            From: 'Servehub <hello@servehub.com>',
+            To: `${recipient.email} <${recipient.email!}>`,
+            Subject: `📑 ${title}`,
+            TextBody: `Hello,
 
 Click below to learn more
 ${ctaUrl}
 
 Servehub Team`,
-        })
-      }
-    }
+          })
+        }
+      }),
+    )
   }
 
   res.send('✔')
