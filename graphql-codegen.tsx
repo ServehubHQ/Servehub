@@ -5816,6 +5816,24 @@ export type PostSignupMutation = (
   )> }
 );
 
+export type PrepareResetPasswordMutationVariables = {
+  email: Scalars['String'];
+  expiry: Scalars['timestamptz'];
+};
+
+
+export type PrepareResetPasswordMutation = (
+  { __typename?: 'mutation_root' }
+  & { update_users: Maybe<(
+    { __typename?: 'users_mutation_response' }
+    & Pick<Users_Mutation_Response, 'affected_rows'>
+    & { returning: Array<(
+      { __typename?: 'users' }
+      & Pick<Users, 'id' | 'secret_token' | 'email' | 'name'>
+    )> }
+  )> }
+);
+
 export type SendMessageMutationVariables = {
   jobId: Scalars['uuid'];
   message: Scalars['String'];
@@ -6845,6 +6863,45 @@ export function usePostSignupMutation(baseOptions?: ApolloReactHooks.MutationHoo
 export type PostSignupMutationHookResult = ReturnType<typeof usePostSignupMutation>;
 export type PostSignupMutationResult = ApolloReactCommon.MutationResult<PostSignupMutation>;
 export type PostSignupMutationOptions = ApolloReactCommon.BaseMutationOptions<PostSignupMutation, PostSignupMutationVariables>;
+export const PrepareResetPasswordDocument = gql`
+    mutation PrepareResetPassword($email: String!, $expiry: timestamptz!) {
+  update_users(where: {email: {_eq: $email}}, _set: {secret_token_expires_at: $expiry}) {
+    affected_rows
+    returning {
+      id
+      secret_token
+      email
+      name
+    }
+  }
+}
+    `;
+export type PrepareResetPasswordMutationFn = ApolloReactCommon.MutationFunction<PrepareResetPasswordMutation, PrepareResetPasswordMutationVariables>;
+
+/**
+ * __usePrepareResetPasswordMutation__
+ *
+ * To run a mutation, you first call `usePrepareResetPasswordMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `usePrepareResetPasswordMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [prepareResetPasswordMutation, { data, loading, error }] = usePrepareResetPasswordMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *      expiry: // value for 'expiry'
+ *   },
+ * });
+ */
+export function usePrepareResetPasswordMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<PrepareResetPasswordMutation, PrepareResetPasswordMutationVariables>) {
+        return ApolloReactHooks.useMutation<PrepareResetPasswordMutation, PrepareResetPasswordMutationVariables>(PrepareResetPasswordDocument, baseOptions);
+      }
+export type PrepareResetPasswordMutationHookResult = ReturnType<typeof usePrepareResetPasswordMutation>;
+export type PrepareResetPasswordMutationResult = ApolloReactCommon.MutationResult<PrepareResetPasswordMutation>;
+export type PrepareResetPasswordMutationOptions = ApolloReactCommon.BaseMutationOptions<PrepareResetPasswordMutation, PrepareResetPasswordMutationVariables>;
 export const SendMessageDocument = gql`
     mutation SendMessage($jobId: uuid!, $message: String!) {
   insert_messages(objects: {job_id: $jobId, message: $message}) {

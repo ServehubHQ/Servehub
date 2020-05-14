@@ -1,4 +1,11 @@
-import { Button, Grid, Link, makeStyles, TextField } from '@material-ui/core'
+import {
+  Button,
+  Grid,
+  Link as MuiLink,
+  makeStyles,
+  TextField,
+} from '@material-ui/core'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
@@ -94,10 +101,17 @@ export default function LoginPage() {
         >
           Login
         </Button>
-        <Grid container>
+        <Grid container direction='column' spacing={2}>
           <Grid item>
-            <Link href='/signup' variant='body2'>
-              {"Don't have an account? Sign Up"}
+            <Link href='/signup' passHref>
+              <MuiLink variant='body2'>
+                Don&apos;t have an account? Sign Up
+              </MuiLink>
+            </Link>
+          </Grid>
+          <Grid item>
+            <Link href='/password-reset' passHref>
+              <MuiLink variant='body2'>Forgot your password? Reset it.</MuiLink>
             </Link>
           </Grid>
         </Grid>

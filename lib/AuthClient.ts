@@ -160,6 +160,28 @@ export class AuthClient {
     this.authStateChanged()
   }
 
+  async updatePassword(password: string, secretToken: string): Promise<void> {
+    const response = await fetch(`${this.baseUrl}/auth/local/new-password`, {
+      method: 'POST',
+      body: JSON.stringify({
+        secret_token: secretToken,
+        password,
+      }),
+      headers: {
+        'content-type': 'application/json',
+        accept: 'application/json',
+      },
+    })
+
+    if (response.status - 200 > 100) {
+      const data = await response.json()
+      console.log('updatePassword fail', data)
+      throw new AuthError(data)
+    } else {
+      console.log('updatePassword success')
+    }
+  }
+
   async refreshToken(force = false): Promise<void> {
     if (this.currentlyRefreshing) {
       console.info('[refreshToken] currently refreshing')
@@ -240,17 +262,6 @@ export class AuthClient {
     return null
   }
 
-  async activateAccount(secretToken: string): Promise<void> {
-    console.warn('TODO: implement activate account')
-  }
-
-  async updatePassword(
-    secretToken: string,
-    newPassword: string,
-  ): Promise<void> {
-    console.warn('TODO: update password')
-  }
-
   parseToken(token: string) {
     return jwtDecode(token) as ParsedToken
   }
@@ -279,6 +290,10 @@ export class AuthClient {
           'x-hasura-role': role,
         }
       : {}
+  }
+
+  async activateAccount(secretToken: string): Promise<void> {
+    console.warn('TODO: implement activate account')
   }
 }
 
