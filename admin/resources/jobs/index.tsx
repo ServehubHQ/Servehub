@@ -17,7 +17,8 @@ import {
   SingleFieldList,
   TextField,
 } from 'react-admin'
-import { Total } from '../Total'
+import { Total } from '../../Total'
+import { JobsCompletedField } from './JobCompletedField'
 
 export const JobIcon = WorkIcon
 
@@ -35,6 +36,7 @@ const JobListFilter = (props: any) => (
 export const JobList = (props: any) => (
   <List {...props} filters={<JobListFilter />}>
     <Datagrid rowClick='show'>
+      <JobsCompletedField />
       <TextField source='target_name' label='Target' />
       <ReferenceField
         source='lawyer_user_id'

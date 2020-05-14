@@ -14,7 +14,6 @@ interface JobsSummaryProps extends ReferenceManyFieldChildProps<Job> {
 }
 
 function JobsSummary({ total, userIdField, data, ...props }: JobsSummaryProps) {
-  console.log({ total, ...props })
   const userId = useMemo(() => {
     const firstJob = Object.values(data || {})[0]
     if (firstJob) {
