@@ -1,8 +1,17 @@
-import { Container, makeStyles, Typography } from '@material-ui/core'
+import {
+  Container,
+  makeStyles,
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+  Typography,
+} from '@material-ui/core'
 import moment from 'moment'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { Address } from '../../../components/Address'
+import { Money } from '../../../components/Money'
 import { Stack } from '../../../components/Stack'
 import { useJobDetailsReportQuery } from '../../../graphql-codegen'
 import { DATETIME_FORMAT_LONG } from '../../../lib/constants'
@@ -14,6 +23,12 @@ const useStyles = makeStyles((theme) => ({
   },
   attemptImage: {
     maxWidth: 512,
+  },
+  paymentTable: {
+    maxWidth: theme.spacing(6),
+  },
+  paymentTotalLabel: {
+    fontWeight: 'bold',
   },
 }))
 
@@ -86,6 +101,35 @@ export default function JobDetailsReport() {
             </Typography>
           ))}
         </Stack>
+        {data?.job?.plan ? (
+          <Stack spacing={1}>
+            <Typography variant='h5'>Payment</Typography>
+            <Table size='small' className={classNames.paymentTable}>
+              <TableBody>
+                <TableRow>
+                  <TableCell>Fee</TableCell>
+                  <TableCell align='right'>
+                    <Money cents={data.job.plan.fee} />
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>Bounty</TableCell>
+                  <TableCell align='right'>
+                    <Money cents={data.job.plan.bounty} />
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className={classNames.paymentTotalLabel}>
+                    Total
+                  </TableCell>
+                  <TableCell align='right'>
+                    <Money cents={data.job.plan.fee + data.job.plan.bounty} />
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </Stack>
+        ) : null}
       </Stack>
     </Container>
   )

@@ -45,6 +45,13 @@ query JobDetailsReport($jobId: uuid!) {
       }
     }
 
+    plan {
+      id
+      name
+      fee
+      bounty
+    }
+
     ...JobDetailsPageJob
   }
 

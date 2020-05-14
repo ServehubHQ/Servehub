@@ -1108,10 +1108,6 @@ export type Available_Jobs_Aggregate_Order_By = {
   min?: Maybe<Available_Jobs_Min_Order_By>;
 };
 
-export type Available_Jobs_Arr_Rel_Insert_Input = {
-  data: Array<Available_Jobs_Insert_Input>;
-};
-
 export type Available_Jobs_Bool_Exp = {
   _and?: Maybe<Array<Maybe<Available_Jobs_Bool_Exp>>>;
   _not?: Maybe<Available_Jobs_Bool_Exp>;
@@ -1127,20 +1123,6 @@ export type Available_Jobs_Bool_Exp = {
   target_address_id?: Maybe<Uuid_Comparison_Exp>;
   target_name?: Maybe<String_Comparison_Exp>;
   updated_at?: Maybe<Timestamptz_Comparison_Exp>;
-};
-
-export type Available_Jobs_Insert_Input = {
-  created_at?: Maybe<Scalars['timestamptz']>;
-  id?: Maybe<Scalars['uuid']>;
-  pickup_address?: Maybe<Addresses_Obj_Rel_Insert_Input>;
-  pickup_address_id?: Maybe<Scalars['uuid']>;
-  pickup_required?: Maybe<Scalars['Boolean']>;
-  plan?: Maybe<Plans_Obj_Rel_Insert_Input>;
-  plan_id?: Maybe<Scalars['uuid']>;
-  target_address?: Maybe<Addresses_Obj_Rel_Insert_Input>;
-  target_address_id?: Maybe<Scalars['uuid']>;
-  target_name?: Maybe<Scalars['String']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 export type Available_Jobs_Max_Fields = {
@@ -1185,16 +1167,6 @@ export type Available_Jobs_Min_Order_By = {
   updated_at?: Maybe<Order_By>;
 };
 
-export type Available_Jobs_Mutation_Response = {
-   __typename?: 'available_jobs_mutation_response';
-  affected_rows: Scalars['Int'];
-  returning: Array<Available_Jobs>;
-};
-
-export type Available_Jobs_Obj_Rel_Insert_Input = {
-  data: Available_Jobs_Insert_Input;
-};
-
 export type Available_Jobs_Order_By = {
   created_at?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
@@ -1219,17 +1191,6 @@ export enum Available_Jobs_Select_Column {
   TargetName = 'target_name',
   UpdatedAt = 'updated_at'
 }
-
-export type Available_Jobs_Set_Input = {
-  created_at?: Maybe<Scalars['timestamptz']>;
-  id?: Maybe<Scalars['uuid']>;
-  pickup_address_id?: Maybe<Scalars['uuid']>;
-  pickup_required?: Maybe<Scalars['Boolean']>;
-  plan_id?: Maybe<Scalars['uuid']>;
-  target_address_id?: Maybe<Scalars['uuid']>;
-  target_name?: Maybe<Scalars['String']>;
-  updated_at?: Maybe<Scalars['timestamptz']>;
-};
 
 export type Boolean_Comparison_Exp = {
   _eq?: Maybe<Scalars['Boolean']>;
@@ -2427,7 +2388,6 @@ export type Mutation_Root = {
   delete_auth_user_accounts_by_pk?: Maybe<Auth_User_Accounts>;
   delete_auth_user_providers?: Maybe<Auth_User_Providers_Mutation_Response>;
   delete_auth_user_providers_by_pk?: Maybe<Auth_User_Providers>;
-  delete_available_jobs?: Maybe<Available_Jobs_Mutation_Response>;
   delete_countries?: Maybe<Countries_Mutation_Response>;
   delete_countries_by_pk?: Maybe<Countries>;
   delete_current_user?: Maybe<Current_User_Mutation_Response>;
@@ -2461,8 +2421,6 @@ export type Mutation_Root = {
   insert_auth_user_accounts_one?: Maybe<Auth_User_Accounts>;
   insert_auth_user_providers?: Maybe<Auth_User_Providers_Mutation_Response>;
   insert_auth_user_providers_one?: Maybe<Auth_User_Providers>;
-  insert_available_jobs?: Maybe<Available_Jobs_Mutation_Response>;
-  insert_available_jobs_one?: Maybe<Available_Jobs>;
   insert_countries?: Maybe<Countries_Mutation_Response>;
   insert_countries_one?: Maybe<Countries>;
   insert_current_user?: Maybe<Current_User_Mutation_Response>;
@@ -2497,7 +2455,6 @@ export type Mutation_Root = {
   update_auth_user_accounts_by_pk?: Maybe<Auth_User_Accounts>;
   update_auth_user_providers?: Maybe<Auth_User_Providers_Mutation_Response>;
   update_auth_user_providers_by_pk?: Maybe<Auth_User_Providers>;
-  update_available_jobs?: Maybe<Available_Jobs_Mutation_Response>;
   update_countries?: Maybe<Countries_Mutation_Response>;
   update_countries_by_pk?: Maybe<Countries>;
   update_current_user?: Maybe<Current_User_Mutation_Response>;
@@ -2579,11 +2536,6 @@ export type Mutation_RootDelete_Auth_User_ProvidersArgs = {
 
 export type Mutation_RootDelete_Auth_User_Providers_By_PkArgs = {
   id: Scalars['uuid'];
-};
-
-
-export type Mutation_RootDelete_Available_JobsArgs = {
-  where: Available_Jobs_Bool_Exp;
 };
 
 
@@ -2761,16 +2713,6 @@ export type Mutation_RootInsert_Auth_User_ProvidersArgs = {
 export type Mutation_RootInsert_Auth_User_Providers_OneArgs = {
   object: Auth_User_Providers_Insert_Input;
   on_conflict?: Maybe<Auth_User_Providers_On_Conflict>;
-};
-
-
-export type Mutation_RootInsert_Available_JobsArgs = {
-  objects: Array<Available_Jobs_Insert_Input>;
-};
-
-
-export type Mutation_RootInsert_Available_Jobs_OneArgs = {
-  object: Available_Jobs_Insert_Input;
 };
 
 
@@ -2973,12 +2915,6 @@ export type Mutation_RootUpdate_Auth_User_ProvidersArgs = {
 export type Mutation_RootUpdate_Auth_User_Providers_By_PkArgs = {
   _set?: Maybe<Auth_User_Providers_Set_Input>;
   pk_columns: Auth_User_Providers_Pk_Columns_Input;
-};
-
-
-export type Mutation_RootUpdate_Available_JobsArgs = {
-  _set?: Maybe<Available_Jobs_Set_Input>;
-  where: Available_Jobs_Bool_Exp;
 };
 
 
@@ -6224,7 +6160,10 @@ export type JobDetailsReportQuery = (
         { __typename?: 'addresses' }
         & Pick<Addresses, 'id' | 'street' | 'unit' | 'postal_code' | 'city' | 'province'>
       )> }
-    ) }
+    ), plan: Maybe<(
+      { __typename?: 'plans' }
+      & Pick<Plans, 'id' | 'name' | 'fee' | 'bounty'>
+    )> }
     & JobDetailsPageJobFragment
   )> }
   & JobDetailsPageQueryFragment
@@ -7656,6 +7595,12 @@ export const JobDetailsReportDocument = gql`
         city
         province
       }
+    }
+    plan {
+      id
+      name
+      fee
+      bounty
     }
     ...JobDetailsPageJob
   }
