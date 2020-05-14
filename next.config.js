@@ -14,5 +14,6 @@ module.exports = withOffline({
     HASURA_HTTP_ENDPOINT: process.env.HASURA_HTTP_ENDPOINT,
     HASURA_WS_ENDPOINT: process.env.HASURA_WS_ENDPOINT,
     VERCEL_URL: process.env.VERCEL_URL,
+    VERCEL_GITHUB_COMMIT_REF: process.env.VERCEL_GITHUB_COMMIT_REF,
   },
 })
