@@ -79,7 +79,7 @@ export default function JobDetails() {
             <Stepper
               orientation={isSmall ? 'vertical' : 'horizontal'}
               activeStep={
-                typeof data?.job?.server === 'undefined'
+                typeof data?.job?.server?.id === 'undefined'
                   ? 1
                   : isComplete
                   ? 3
