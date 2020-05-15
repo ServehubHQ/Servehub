@@ -1,6 +1,7 @@
 import moment from 'moment'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { ServerClient } from 'postmark'
+import { v4 as uuid4 } from 'uuid'
 import {
   PrepareResetPasswordDocument,
   PrepareResetPasswordMutation,
@@ -21,6 +22,7 @@ export default async function resetPasswordApi(
     throw new Error('Missing config.postmarkSecretKey')
   }
 
+  const token = uuid4()
   const email = req.body.email?.trim()
 
   if (typeof email !== 'string') {
@@ -35,6 +37,7 @@ export default async function resetPasswordApi(
     mutation: PrepareResetPasswordDocument,
     variables: {
       email,
+      token,
       expiry: moment()
         .add(1, 'day')
         .toISOString(),
@@ -56,9 +59,9 @@ export default async function resetPasswordApi(
 
 Please click the link below to reset your password.
 
-${config.baseUrl}/password-reset?secret=${
-      user.secret_token
-    }&email=${encodeURIComponent(user.email!)}
+${config.baseUrl}/password-reset?secret=${token}&email=${encodeURIComponent(
+      user.email!,
+    )}
 
 Servehub Team`,
   })

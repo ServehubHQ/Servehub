@@ -52,7 +52,8 @@
     "react-perfect-scrollbar": "^1.5.8",
     "seamless-immutable": "^7.1.4",
     "stripe": "^8.31.0",
-    "subscriptions-transport-ws": "^0.9.16"
+    "subscriptions-transport-ws": "^0.9.16",
+    "uuid": "^8.0.0"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^1.13.0",
@@ -67,6 +68,7 @@
     "@types/node": "^13.7.7",
     "@types/react": "^16.9.32",
     "@types/react-router-dom": "^5.1.5",
+    "@types/uuid": "^7.0.3",
     "@typescript-eslint/eslint-plugin": "^2.23.0",
     "@typescript-eslint/parser": "^2.23.0",
     "eslint": "^6.8.0",

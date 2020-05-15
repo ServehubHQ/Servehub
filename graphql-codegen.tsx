@@ -5819,6 +5819,7 @@ export type PostSignupMutation = (
 export type PrepareResetPasswordMutationVariables = {
   email: Scalars['String'];
   expiry: Scalars['timestamptz'];
+  token: Scalars['uuid'];
 };
 
 
@@ -6864,8 +6865,8 @@ export type PostSignupMutationHookResult = ReturnType<typeof usePostSignupMutati
 export type PostSignupMutationResult = ApolloReactCommon.MutationResult<PostSignupMutation>;
 export type PostSignupMutationOptions = ApolloReactCommon.BaseMutationOptions<PostSignupMutation, PostSignupMutationVariables>;
 export const PrepareResetPasswordDocument = gql`
-    mutation PrepareResetPassword($email: String!, $expiry: timestamptz!) {
-  update_users(where: {email: {_eq: $email}}, _set: {secret_token_expires_at: $expiry}) {
+    mutation PrepareResetPassword($email: String!, $expiry: timestamptz!, $token: uuid!) {
+  update_users(where: {email: {_eq: $email}}, _set: {secret_token: $token, secret_token_expires_at: $expiry}) {
     affected_rows
     returning {
       id
@@ -6893,6 +6894,7 @@ export type PrepareResetPasswordMutationFn = ApolloReactCommon.MutationFunction<
  *   variables: {
  *      email: // value for 'email'
  *      expiry: // value for 'expiry'
+ *      token: // value for 'token'
  *   },
  * });
  */
