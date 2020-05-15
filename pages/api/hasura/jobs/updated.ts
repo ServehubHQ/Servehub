@@ -52,7 +52,7 @@ export default async function hasurajobUpdatedApi(
       variables: { jobId: job.id },
     })
 
-    if (!jobData.job?.target_address?.city) {
+    if (!jobData.job?.target_address?.province) {
       throw new Error('Cannot find job city')
     }
 
@@ -61,7 +61,7 @@ export default async function hasurajobUpdatedApi(
       JobUpdatedServersQueryVariables
     >({
       query: JobUpdatedServersDocument,
-      variables: { city: jobData.job.target_address.city },
+      variables: { province: jobData.job.target_address.province },
     })
 
     const title = 'New Servehub job available!'

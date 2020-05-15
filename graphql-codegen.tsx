@@ -5981,13 +5981,13 @@ export type JobUpdatedQuery = (
     & Pick<Jobs, 'id'>
     & { target_address: Maybe<(
       { __typename?: 'addresses' }
-      & Pick<Addresses, 'city'>
+      & Pick<Addresses, 'id' | 'province'>
     )> }
   )> }
 );
 
 export type JobUpdatedServersQueryVariables = {
-  city: Scalars['String'];
+  province: Provinces_Enum;
 };
 
 
@@ -7215,7 +7215,8 @@ export const JobUpdatedDocument = gql`
   job: jobs_by_pk(id: $jobId) {
     id
     target_address {
-      city
+      id
+      province
     }
   }
 }
@@ -7247,8 +7248,8 @@ export type JobUpdatedQueryHookResult = ReturnType<typeof useJobUpdatedQuery>;
 export type JobUpdatedLazyQueryHookResult = ReturnType<typeof useJobUpdatedLazyQuery>;
 export type JobUpdatedQueryResult = ApolloReactCommon.QueryResult<JobUpdatedQuery, JobUpdatedQueryVariables>;
 export const JobUpdatedServersDocument = gql`
-    query JobUpdatedServers($city: String!) {
-  users(where: {role: {role: {_eq: "server"}}, firebase_messaging_token: {_is_null: false}, approved: {_eq: true}, address: {city: {_ilike: $city}}, notifications_enabled: {_eq: true}}) {
+    query JobUpdatedServers($province: provinces_enum!) {
+  users(where: {role: {role: {_eq: "server"}}, approved: {_eq: true}, notifications_enabled: {_eq: true}, firebase_messaging_token: {_is_null: false}, address: {province: {_eq: $province}}}) {
     id
     name
     firebase_messaging_token
@@ -7271,7 +7272,7 @@ export const JobUpdatedServersDocument = gql`
  * @example
  * const { data, loading, error } = useJobUpdatedServersQuery({
  *   variables: {
- *      city: // value for 'city'
+ *      province: // value for 'province'
  *   },
  * });
  */
