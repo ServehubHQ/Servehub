@@ -131,7 +131,7 @@ export default function PasswordResetPage() {
           fullWidth
           disabled={loading || emailSent}
         >
-          {secret ? 'Save' : 'Send Email'}
+          {secret ? 'Save' : 'Reset Password'}
         </Button>
         <Grid container direction='column' spacing={2}>
           {emailSent ? (
@@ -144,7 +144,9 @@ export default function PasswordResetPage() {
           {!secret ? (
             <Grid item>
               <Link href='/login' passHref>
-                <MuiLink variant='body2'>Changed you mind? Login.</MuiLink>
+                <MuiLink variant='body2'>
+                  Remembered your password? Login.
+                </MuiLink>
               </Link>
             </Grid>
           ) : null}

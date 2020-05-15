@@ -105,7 +105,7 @@ export default function LoginPage() {
           <Grid item>
             <Link href='/signup' passHref>
               <MuiLink variant='body2'>
-                Don&apos;t have an account? Sign Up
+                Don&apos;t have an account? Sign Up.
               </MuiLink>
             </Link>
           </Grid>
